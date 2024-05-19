@@ -61,7 +61,7 @@ const translateText = async (
   language: Language,
   previousMessages: Message[] = []
 ): Promise<string> => {
-  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon such as 'Server Components', 'React', or 'React Native'; keep the original jargon in those cases. Do not modify any example codes given, except for the comments.
+  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon including but not limited to 'Server Components', 'React', or 'React Native', 'React Hooks', 'Next.js', 'Gatsby', or 'Expo'; keep the original jargon in those cases. Do not modify any example codes given, except for the comments.
   
   For example,
   
