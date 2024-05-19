@@ -71,7 +71,7 @@ const translateText = async (
   
   - Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text.
   - Do not translate JSX comments (e.g., {/* comment */}).
-  - Do not translate proper nouns, brand names, or tech jargon including but not limited to 'Server Components', 'React', or 'React Native', 'React Hooks', 'Next.js', 'Gatsby', or 'Expo'; keep the original jargon in those cases. Do not modify any example codes given, except for the comments.
+  - Do not translate proper nouns, brand names, or tech jargon including but not limited to 'Server Components', 'React', or 'React Native', 'React Hooks', 'Next.js', 'Gatsby', or 'Expo'; keep the original jargon in those cases. DO NOT MODIFY ANY EXAMPLE CODES, except for the comments.
   
   For example,
   
