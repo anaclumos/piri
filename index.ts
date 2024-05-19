@@ -104,6 +104,16 @@ const translateFrontmatter = async (frontmatter: any, language: Language) => {
   return translatedFrontmatter
 }
 
+// Custom plugin to handle top-level nodes only
+const remarkTopLevelOnly = () => {
+  return (tree: any) => {
+    const topLevelNodes = tree.children.filter(
+      (node: any) => node.type === 'paragraph' || node.type === 'html'
+    )
+    tree.children = topLevelNodes
+  }
+}
+
 // Collect text nodes recursively for translation
 const collectTextNodes = (node: any, texts: string[]) => {
   if (node.type === 'text') {
@@ -137,10 +147,6 @@ const translateMarkdownAst = async (node: any, language: Language) => {
       const translatedTexts = translatedText?.split('\n\n') ?? []
       setTranslatedTextNodes(node, translatedTexts, { value: 0 })
     }
-  } else if (node.children) {
-    for (const child of node.children) {
-      await translateMarkdownAst(child, language)
-    }
   }
 }
 
@@ -153,6 +159,7 @@ const translateMarkdownFile = async (inputContent: string, language: Language) =
   const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
+    .use(remarkTopLevelOnly)
     .use(remarkStringify, {
       bullet: '-',
       fences: true,
@@ -163,8 +170,7 @@ const translateMarkdownFile = async (inputContent: string, language: Language) =
           return node.value
         },
       },
-    });
-
+    })
 
   const ast = processor.parse(parsed.body)
 
