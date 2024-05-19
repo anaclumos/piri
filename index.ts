@@ -11,11 +11,6 @@ import type { Language } from './lang'
 import pLimit from 'p-limit'
 import Bottleneck from 'bottleneck'
 import frontMatter from 'front-matter'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkStringify from 'remark-stringify'
-import remarkGfm from 'remark-gfm'
-import { inspect } from 'unist-util-inspect'
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -27,7 +22,7 @@ const openai = new OpenAI({
 // Initialize rate limiter
 const limiter = new Bottleneck({
   minTime: 100, // Ensures 10 requests per second
-  maxConcurrent: 4, // Max 4 concurrent requests
+  maxConcurrent: 8,
 })
 
 // Ensure target directories exist
@@ -58,37 +53,50 @@ const readMetaFile = async (filePath: string) => {
   }
 }
 
+type Message = { role: 'system' | 'user' | 'assistant'; content: string }
+
 // Translate text using OpenAI API
-const translateText = async (text: string, language: Language) => {
-  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon such as 'Server Components', 'React', or 'React Native'; keep the original jargon in those cases.
+const translateText = async (
+  text: string,
+  language: Language,
+  previousMessages: Message[] = []
+): Promise<string> => {
+  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon such as 'Server Components', 'React', or 'React Native'; keep the original jargon in those cases. Do not modify any example codes given, except for the comments.
   
   For example,
   
+  - If the provided text is <BlogCard title="React Labs: What We've Been Working On – June 2022" date="June 15, 2022" url="/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022"> and we are translating it to 한국어 (ko), the translated text should be <BlogCard title="React 랩스: 우리가 하고 있던 일 – 2022년 6월" date="2022년 6월 15일" url="/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022">.
   - If the provided text is 'React Native' and we are translating it to Español (es), it should be 'React Native' because it's a proper noun.
   - If the provided text is '<Intro>' and we are translating it to Español (es), it should be '<Intro>' because it's inside <angle brackets> and it doesn't have an English string inside.
   - If the provided text is 'React Versions' and we are translating it to 한국어 (ko), it should be 'React 버전'.
   - If the provided text is 'React Versions' and we are translating it to 日本語 (ja), it should be 'React バージョン'.
   
   Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
-  console.log(
-    `\n\n\nTranslating text for language: ${language.name} (${
-      language.code
-    }). Text: ${text.replaceAll('\n', ' ')}`
-  )
   const response = await openai.chat.completions.create({
     model: 'gpt-4o',
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: text },
+      ...previousMessages,
     ],
     temperature: 0,
   })
-  console.log(
-    `Translation completed for language: ${language.name} (${
-      language.code
-    }). Text: ${response.choices[0].message.content?.replaceAll('\n', ' ')}\n\n\n`
+
+  if (response.choices[0].finish_reason === 'length') {
+    console.log('Response was too long, trying again...')
+
+    return await translateText(text, language, [
+      ...previousMessages,
+      {
+        role: 'assistant',
+        content: response.choices[0].message.content ?? '',
+      },
+    ])
+  }
+  return (
+    previousMessages.map((message) => message.content).join('\n') +
+      response.choices[0].message.content ?? ''
   )
-  return response.choices[0].message.content
 }
 
 // Extract and translate frontmatter values
@@ -104,81 +112,20 @@ const translateFrontmatter = async (frontmatter: any, language: Language) => {
   return translatedFrontmatter
 }
 
-// Custom plugin to handle top-level nodes only
-const remarkTopLevelOnly = () => {
-  return (tree: any) => {
-    const topLevelNodes = tree.children.filter(
-      (node: any) => node.type === 'paragraph' || node.type === 'html'
-    )
-    tree.children = topLevelNodes
-  }
+// Preprocess markdown content to remove inline JS comments
+const preprocessMarkdown = (content: string): string => {
+  return content.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 }
 
-// Collect text nodes recursively for translation
-const collectTextNodes = (node: any, texts: string[]) => {
-  if (node.type === 'text') {
-    texts.push(node.value)
-  } else if (node.children) {
-    for (const child of node.children) {
-      collectTextNodes(child, texts)
-    }
-  }
-}
-
-// Set translated text back to nodes
-const setTranslatedTextNodes = (node: any, texts: string[], index: { value: number }) => {
-  if (node.type === 'text') {
-    node.value = texts[index.value++]
-  } else if (node.children) {
-    for (const child of node.children) {
-      setTranslatedTextNodes(child, texts, index)
-    }
-  }
-}
-
-// Translate markdown AST nodes in chunks
-const translateMarkdownAst = async (node: any, language: Language) => {
-  if (node.type === 'root' || node.type === 'paragraph' || node.type === 'html') {
-    const texts: string[] = []
-    collectTextNodes(node, texts)
-    if (texts.length > 0) {
-      const originalText = texts.join('\n\n')
-      const translatedText = await translateText(originalText, language)
-      const translatedTexts = translatedText?.split('\n\n') ?? []
-      setTranslatedTextNodes(node, translatedTexts, { value: 0 })
-    }
-  }
-}
-
-// Handle translation of markdown files
+// Handle translation of markdown files, skipping code blocks
 const translateMarkdownFile = async (inputContent: string, language: Language) => {
-  console.log(`Translating markdown file for language: ${language.name} (${language.code})`)
-  const parsed = frontMatter(inputContent)
+  // Preprocess content to remove inline JS comments
+  const preprocessedContent = preprocessMarkdown(inputContent)
+
+  const parsed = frontMatter(preprocessedContent)
   const frontmatter = await translateFrontmatter(parsed.attributes, language)
 
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    .use(remarkTopLevelOnly)
-    .use(remarkStringify, {
-      bullet: '-',
-      fences: true,
-      quote: '"',
-      listItemIndent: 'one',
-      handlers: {
-        text: (node: any) => {
-          return node.value
-        },
-      },
-    })
-
-  const ast = processor.parse(parsed.body)
-
-  // Print the tree for debugging
-  console.log(inspect(ast))
-
-  await translateMarkdownAst(ast, language)
-  const translatedContent = processor.stringify(ast)
+  const translatedContent = await translateText(parsed.body, language)
 
   const frontmatterString = Object.entries(frontmatter)
     .map(([key, value]) => `${key}: ${value}`)
@@ -263,7 +210,10 @@ const translateFilesForLanguage = async ({
             const translatedContent = await limiter.schedule(() =>
               translateMarkdownFile(inputContent, language)
             )
-            await Bun.write(destination, translatedContent)
+            await Bun.write(
+              destination,
+              translatedContent ?? "PIRI ErrorL: Couldn't translate file"
+            )
             metaContent.translated = true
             await Bun.write(metaDestination, JSON.stringify(metaContent, null, 2))
             console.log(`Translated and updated ${file} at ${destination}`)
