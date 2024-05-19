@@ -10,6 +10,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "openai": "^4.47.1"
+    "bottleneck": "^2.19.5",
+    "openai": "^4.47.1",
+    "p-limit": "^5.0.0"
   }
 }

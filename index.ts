@@ -8,12 +8,20 @@ import { CONTENTS } from './content'
 import OpenAI from 'openai'
 import type { Content } from './content'
 import type { Language } from './lang'
+import pLimit from 'p-limit'
+import Bottleneck from 'bottleneck'
 
 // Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   organization: process.env.OPENAI_ORG_ID,
   project: process.env.OPENAI_PROJECT_ID,
+})
+
+// Initialize rate limiter
+const limiter = new Bottleneck({
+  minTime: 100, // Ensures 10 requests per second
+  maxConcurrent: 4, // Max 4 concurrent requests
 })
 
 // Ensure target directories exist
@@ -46,7 +54,7 @@ const readMetaFile = async (filePath: string) => {
 
 // Translate text using OpenAI API
 const translateText = async (text: string, language: Language) => {
-  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets> such as <Intro> or {/* markdown comments */}. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon such as Server Components, React, or React Native. Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
+  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets> or {/* markdown comments */}. For example, do not translate <Intro>. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon such as 'Server Components', 'React', or 'React Native'; keep the original jargon in those cases. For example, if the provided text is 'React Versions' and we are translating it to 한국어 (ko), it should be 'React 버전'. If the provided text is 'React Versions' and we are translating it to 日本語 (ja), it should be 'React バージョン'. Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
   console.log(
     `Translating text for language: ${language.name} (${language.code}). Text: ${text
       .substring(0, 30)
@@ -88,20 +96,24 @@ const translateFrontmatter = async (frontmatter: string, language: Language) => 
 const translateMarkdownContent = async (content: string, language: Language) => {
   console.log(`Translating markdown content for language: ${language.name} (${language.code})`)
   const paragraphs = content.split('\n\n')
-  const translatedParagraphs = []
-  for (const paragraph of paragraphs) {
-    if (
-      (paragraph.startsWith('</') && paragraph.endsWith('>')) ||
-      (paragraph.startsWith('```') && paragraph.endsWith('```')) ||
-      (paragraph.startsWith('{/*') && paragraph.endsWith('*/}'))
-    ) {
-      translatedParagraphs.push(paragraph)
-    } else {
-      console.log(`Translating paragraph: ${paragraph.substring(0, 30).replaceAll('\n', ' ')}...`)
-      const translatedParagraph = await translateText(paragraph, language)
-      translatedParagraphs.push(translatedParagraph)
-    }
-  }
+  const translatedParagraphs = await Promise.all(
+    paragraphs.map(async (paragraph) => {
+      if (
+        (paragraph.startsWith('<') &&
+          paragraph.endsWith('>') &&
+          !paragraph.includes('"') &&
+          !paragraph.includes("'")) || // Skip HTML tags without attributes
+        (paragraph.startsWith('</') && paragraph.endsWith('>')) ||
+        (paragraph.startsWith('```') && paragraph.endsWith('```')) ||
+        (paragraph.startsWith('{/*') && paragraph.endsWith('*/}'))
+      ) {
+        return paragraph
+      } else {
+        console.log(`Translating paragraph: ${paragraph.substring(0, 30).replaceAll('\n', ' ')}...`)
+        return await translateText(paragraph, language)
+      }
+    })
+  )
   return translatedParagraphs.join('\n\n')
 }
 
@@ -174,29 +186,37 @@ const translateFilesForLanguage = async ({
   const targetPath = content.target.replace('LANG', language.code)
 
   const files = await readdir(targetPath, { recursive: true })
-  for (const file of files) {
-    if (file.endsWith('.md')) {
-      const destination = join(targetPath, file)
-      const metaDestination = `${destination}.meta.json`
+  const limit = pLimit(4)
 
-      let metaContent = await readMetaFile(metaDestination)
+  await Promise.all(
+    files.map((file) =>
+      limit(async () => {
+        if (file.endsWith('.md')) {
+          const destination = join(targetPath, file)
+          const metaDestination = `${destination}.meta.json`
 
-      if (metaContent && !metaContent.translated) {
-        const inputFile = Bun.file(destination)
-        const inputContent = await inputFile.text()
-        console.log(`Starting translation for ${file}`)
-        const translatedContent = await translateMarkdownFile(inputContent, language)
-        await Bun.write(destination, translatedContent)
-        metaContent.translated = true
-        await Bun.write(metaDestination, JSON.stringify(metaContent, null, 2))
-        console.log(`Translated and updated ${file} at ${destination}`)
-      } else {
-        console.log(
-          `Skipped ${file} for ${language.name} (${language.code}) as it's already translated`
-        )
-      }
-    }
-  }
+          let metaContent = await readMetaFile(metaDestination)
+
+          if (metaContent && !metaContent.translated) {
+            const inputFile = Bun.file(destination)
+            const inputContent = await inputFile.text()
+            console.log(`Starting translation for ${file}`)
+            const translatedContent = await limiter.schedule(() =>
+              translateMarkdownFile(inputContent, language)
+            )
+            await Bun.write(destination, translatedContent)
+            metaContent.translated = true
+            await Bun.write(metaDestination, JSON.stringify(metaContent, null, 2))
+            console.log(`Translated and updated ${file} at ${destination}`)
+          } else {
+            console.log(
+              `Skipped ${file} for ${language.name} (${language.code}) as it's already translated`
+            )
+          }
+        }
+      })
+    )
+  )
 }
 
 // Process all contents for copying
