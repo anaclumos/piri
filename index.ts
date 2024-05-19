@@ -22,7 +22,7 @@ const openai = new OpenAI({
 // Initialize rate limiter
 const limiter = new Bottleneck({
   minTime: 100, // Ensures 10 requests per second
-  maxConcurrent: 8,
+  maxConcurrent: 1,
 })
 
 // Ensure target directories exist
@@ -61,6 +61,12 @@ const translateText = async (
   language: Language,
   previousMessages: Message[] = []
 ): Promise<string> => {
+  if (text.split(' ').length === 1) {
+    return text
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 100))
+
   const systemPrompt = `You are a helpful translator that translates technical texts. Remember the following instructions:
   
   - Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text.
@@ -85,6 +91,11 @@ const translateText = async (
     ],
     temperature: 0,
   })
+
+  if (!response || !response.choices || !response.choices[0]) {
+    console.error('No response from OpenAI API')
+    return translateText(text, language, previousMessages)
+  }
 
   if (response.choices[0].finish_reason === 'length') {
     console.log('Response was too long, trying again...')
