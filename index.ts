@@ -61,7 +61,11 @@ const translateText = async (
   language: Language,
   previousMessages: Message[] = []
 ): Promise<string> => {
-  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon including but not limited to 'Server Components', 'React', or 'React Native', 'React Hooks', 'Next.js', 'Gatsby', or 'Expo'; keep the original jargon in those cases. Do not modify any example codes given, except for the comments.
+  const systemPrompt = `You are a helpful translator that translates technical texts. Remember the following instructions:
+  
+  - Do not translate code blocks or text inside <angle brackets>. However, if JSX Objects have an English description or string inside, only translate the English text.
+  - Do not translate JSX comments (e.g., {/* comment */}).
+  - Do not translate proper nouns, brand names, or tech jargon including but not limited to 'Server Components', 'React', or 'React Native', 'React Hooks', 'Next.js', 'Gatsby', or 'Expo'; keep the original jargon in those cases. Do not modify any example codes given, except for the comments.
   
   For example,
   
@@ -112,17 +116,11 @@ const translateFrontmatter = async (frontmatter: any, language: Language) => {
   return translatedFrontmatter
 }
 
-// Preprocess markdown content to remove inline JS comments
-const preprocessMarkdown = (content: string): string => {
-  return content.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
-}
-
 // Handle translation of markdown files, skipping code blocks
 const translateMarkdownFile = async (inputContent: string, language: Language) => {
   // Preprocess content to remove inline JS comments
-  const preprocessedContent = preprocessMarkdown(inputContent)
 
-  const parsed = frontMatter(preprocessedContent)
+  const parsed = frontMatter(inputContent)
   const frontmatter = await translateFrontmatter(parsed.attributes, language)
 
   const translatedContent = await translateText(parsed.body, language)
