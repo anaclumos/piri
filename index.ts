@@ -46,7 +46,7 @@ const readMetaFile = async (filePath: string) => {
 
 // Translate text using OpenAI API
 const translateText = async (text: string, language: Language) => {
-  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets> or {/* markdown comments */}. Do not translate Proper Nouns or brand names. Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
+  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets> such as <Intro> or {/* markdown comments */}. Do not translate proper nouns, brand names, or tech jargon such as Server Components, React, or React Native. Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
   console.log(
     `Translating text for language: ${language.name} (${language.code}). Text: ${text
       .substring(0, 30)
