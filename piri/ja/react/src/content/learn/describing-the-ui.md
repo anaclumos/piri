@@ -1,30 +1,30 @@
 ---
-title: Describing the UI
+title: UIの説明
 ---
 
 <Intro>
 
-React is a JavaScript library for rendering user interfaces (UI). UI is built from small units like buttons, text, and images. React lets you combine them into reusable, nestable *components.* From web sites to phone apps, everything on the screen can be broken down into components. In this chapter, you'll learn to create, customize, and conditionally display React components.
+Reactはユーザーインターフェース（UI）をレンダリングするためのJavaScriptライブラリです。UIはボタン、テキスト、画像などの小さな単位から構築されます。Reactを使用すると、これらを再利用可能でネスト可能な*コンポーネント*に組み合わせることができます。ウェブサイトから電話アプリまで、画面上のすべてのものはコンポーネントに分解できます。この章では、Reactコンポーネントを作成、カスタマイズ、および条件付きで表示する方法を学びます。
 
 </Intro>
 
 <YouWillLearn isChapter={true}>
 
-* [How to write your first React component](/learn/your-first-component)
-* [When and how to create multi-component files](/learn/importing-and-exporting-components)
-* [How to add markup to JavaScript with JSX](/learn/writing-markup-with-jsx)
-* [How to use curly braces with JSX to access JavaScript functionality from your components](/learn/javascript-in-jsx-with-curly-braces)
-* [How to configure components with props](/learn/passing-props-to-a-component)
-* [How to conditionally render components](/learn/conditional-rendering)
-* [How to render multiple components at a time](/learn/rendering-lists)
-* [How to avoid confusing bugs by keeping components pure](/learn/keeping-components-pure)
-* [Why understanding your UI as trees is useful](/learn/understanding-your-ui-as-a-tree)
+* [最初のReactコンポーネントを書く方法](/learn/your-first-component)
+* [複数のコンポーネントファイルを作成するタイミングと方法](/learn/importing-and-exporting-components)
+* [JSXを使用してJavaScriptにマークアップを追加する方法](/learn/writing-markup-with-jsx)
+* [JSXで中括弧を使用してコンポーネントからJavaScript機能にアクセスする方法](/learn/javascript-in-jsx-with-curly-braces)
+* [propsを使用してコンポーネントを設定する方法](/learn/passing-props-to-a-component)
+* [コンポーネントを条件付きでレンダリングする方法](/learn/conditional-rendering)
+* [複数のコンポーネントを一度にレンダリングする方法](/learn/rendering-lists)
+* [コンポーネントを純粋に保つことで混乱するバグを回避する方法](/learn/keeping-components-pure)
+* [UIをツリーとして理解することがなぜ有用か](/learn/understanding-your-ui-as-a-tree)
 
 </YouWillLearn>
 
-## Your first component {/*your-first-component*/}
+## 最初のコンポーネント {/*your-first-component*/}
 
-React applications are built from isolated pieces of UI called *components*. A React component is a JavaScript function that you can sprinkle with markup. Components can be as small as a button, or as large as an entire page. Here is a `Gallery` component rendering three `Profile` components:
+Reactアプリケーションは*コンポーネント*と呼ばれるUIの独立した部分から構築されます。Reactコンポーネントは、マークアップを散りばめることができるJavaScript関数です。コンポーネントはボタンのように小さいものから、ページ全体のように大きいものまであります。以下は、3つの`Profile`コンポーネントをレンダリングする`Gallery`コンポーネントの例です：
 
 <Sandpack>
 
@@ -58,14 +58,13 @@ img { margin: 0 10px 10px 0; height: 90px; }
 
 <LearnMore path="/learn/your-first-component">
 
-Read **[Your First Component](/learn/your-first-component)** to learn how to declare and use React components.
+**[最初のコンポーネント](/learn/your-first-component)**を読んで、Reactコンポーネントの宣言と使用方法を学びましょう。
 
 </LearnMore>
 
-## Importing and exporting components {/*importing-and-exporting-components*/}
+## コンポーネントのインポートとエクスポート {/*importing-and-exporting-components*/}
 
-You can declare many components in one file, but large files can get difficult to navigate. To solve this, you can *export* a component into its own file, and then *import* that component from another file:
-
+1つのファイルに多くのコンポーネントを宣言できますが、大きなファイルはナビゲートが難しくなることがあります。これを解決するために、コンポーネントを独自のファイルに*エクスポート*し、別のファイルからそのコンポーネントを*インポート*することができます：
 
 <Sandpack>
 
@@ -113,22 +112,22 @@ img { margin: 0 10px 10px 0; }
 
 <LearnMore path="/learn/importing-and-exporting-components">
 
-Read **[Importing and Exporting Components](/learn/importing-and-exporting-components)** to learn how to split components into their own files.
+**[コンポーネントのインポートとエクスポート](/learn/importing-and-exporting-components)**を読んで、コンポーネントを独自のファイルに分割する方法を学びましょう。
 
 </LearnMore>
 
-## Writing markup with JSX {/*writing-markup-with-jsx*/}
+## JSXでマークアップを書く {/*writing-markup-with-jsx*/}
 
-Each React component is a JavaScript function that may contain some markup that React renders into the browser. React components use a syntax extension called JSX to represent that markup. JSX looks a lot like HTML, but it is a bit stricter and can display dynamic information.
+各Reactコンポーネントは、Reactがブラウザにレンダリングするマークアップを含むJavaScript関数です。Reactコンポーネントは、JSXと呼ばれる構文拡張を使用してそのマークアップを表現します。JSXはHTMLに非常に似ていますが、少し厳格で動的な情報を表示できます。
 
-If we paste existing HTML markup into a React component, it won't always work:
+既存のHTMLマークアップをReactコンポーネントに貼り付けると、必ずしも動作するわけではありません：
 
 <Sandpack>
 
 ```js
 export default function TodoList() {
   return (
-    // This doesn't quite work!
+    // これはうまくいきません！
     <h1>Hedy Lamarr's Todos</h1>
     <img
       src="https://i.imgur.com/yXOvdOSs.jpg"
@@ -136,9 +135,9 @@ export default function TodoList() {
       class="photo"
     >
     <ul>
-      <li>Invent new traffic lights
-      <li>Rehearse a movie scene
-      <li>Improve spectrum technology
+      <li>新しい信号機を発明する
+      <li>映画のシーンをリハーサルする
+      <li>スペクトル技術を改善する
     </ul>
   );
 }
@@ -150,7 +149,7 @@ img { height: 90px; }
 
 </Sandpack>
 
-If you have existing HTML like this, you can fix it using a [converter](https://transform.tools/html-to-jsx):
+このような既存のHTMLがある場合は、[コンバーター](https://transform.tools/html-to-jsx)を使用して修正できます：
 
 <Sandpack>
 
@@ -165,9 +164,9 @@ export default function TodoList() {
         className="photo"
       />
       <ul>
-        <li>Invent new traffic lights</li>
-        <li>Rehearse a movie scene</li>
-        <li>Improve spectrum technology</li>
+        <li>新しい信号機を発明する</li>
+        <li>映画のシーンをリハーサルする</li>
+        <li>スペクトル技術を改善する</li>
       </ul>
     </>
   );
@@ -182,13 +181,13 @@ img { height: 90px; }
 
 <LearnMore path="/learn/writing-markup-with-jsx">
 
-Read **[Writing Markup with JSX](/learn/writing-markup-with-jsx)** to learn how to write valid JSX.
+**[JSXでマークアップを書く](/learn/writing-markup-with-jsx)**を読んで、有効なJSXの書き方を学びましょう。
 
 </LearnMore>
 
-## JavaScript in JSX with curly braces {/*javascript-in-jsx-with-curly-braces*/}
+## JSXで中括弧を使用してJavaScriptにアクセスする {/*javascript-in-jsx-with-curly-braces*/}
 
-JSX lets you write HTML-like markup inside a JavaScript file, keeping rendering logic and content in the same place. Sometimes you will want to add a little JavaScript logic or reference a dynamic property inside that markup. In this situation, you can use curly braces in your JSX to "open a window" to JavaScript:
+JSXを使用すると、JavaScriptファイル内にHTMLのようなマークアップを書くことができ、レンダリングロジックとコンテンツを同じ場所に保持できます。時々、そのマークアップ内に少しのJavaScriptロジックを追加したり、動的なプロパティを参照したりすることがあります。このような場合、JSX内で中括弧を使用してJavaScriptへの「窓」を開くことができます：
 
 <Sandpack>
 
@@ -204,16 +203,16 @@ const person = {
 export default function TodoList() {
   return (
     <div style={person.theme}>
-      <h1>{person.name}'s Todos</h1>
+      <h1>{person.name}のTodos</h1>
       <img
         className="avatar"
         src="https://i.imgur.com/7vQD0fPs.jpg"
         alt="Gregorio Y. Zara"
       />
       <ul>
-        <li>Improve the videophone</li>
-        <li>Prepare aeronautics lectures</li>
-        <li>Work on the alcohol-fuelled engine</li>
+        <li>ビデオフォンを改善する</li>
+        <li>航空学の講義を準備する</li>
+        <li>アルコール燃料エンジンに取り組む</li>
       </ul>
     </div>
   );
@@ -230,13 +229,13 @@ body > div > div { padding: 20px; }
 
 <LearnMore path="/learn/javascript-in-jsx-with-curly-braces">
 
-Read **[JavaScript in JSX with Curly Braces](/learn/javascript-in-jsx-with-curly-braces)** to learn how to access JavaScript data from JSX.
+**[JSXで中括弧を使用してJavaScriptにアクセスする](/learn/javascript-in-jsx-with-curly-braces)**を読んで、JSXからJavaScriptデータにアクセスする方法を学びましょう。
 
 </LearnMore>
 
-## Passing props to a component {/*passing-props-to-a-component*/}
+## コンポーネントにpropsを渡す {/*passing-props-to-a-component*/}
 
-React components use *props* to communicate with each other. Every parent component can pass some information to its child components by giving them props. Props might remind you of HTML attributes, but you can pass any JavaScript value through them, including objects, arrays, functions, and even JSX!
+Reactコンポーネントは*props*を使用して互いに通信します。すべての親コンポーネントは、子コンポーネントにpropsを渡すことで情報を伝えることができます。PropsはHTML属性を思い出させるかもしれませんが、オブジェクト、配列、関数、さらにはJSXなど、任意のJavaScript値を渡すことができます！
 
 <Sandpack>
 
@@ -311,15 +310,15 @@ export function getImageUrl(person, size = 's') {
 
 <LearnMore path="/learn/passing-props-to-a-component">
 
-Read **[Passing Props to a Component](/learn/passing-props-to-a-component)** to learn how to pass and read props.
+**[コンポーネントにpropsを渡す](/learn/passing-props-to-a-component)**を読んで、propsを渡して読み取る方法を学びましょう。
 
 </LearnMore>
 
-## Conditional rendering {/*conditional-rendering*/}
+## 条件付きレンダリング {/*conditional-rendering*/}
 
-Your components will often need to display different things depending on different conditions. In React, you can conditionally render JSX using JavaScript syntax like `if` statements, `&&`, and `? :` operators.
+コンポーネントは、異なる条件に応じて異なるものを表示する必要があることがよくあります。Reactでは、`if`文、`&&`、および`? :`演算子などのJavaScript構文を使用してJSXを条件付きでレンダリングできます。
 
-In this example, the JavaScript `&&` operator is used to conditionally render a checkmark:
+この例では、JavaScriptの`&&`演算子を使用してチェックマークを条件付きでレンダリングしています：
 
 <Sandpack>
 
@@ -335,19 +334,19 @@ function Item({ name, isPacked }) {
 export default function PackingList() {
   return (
     <section>
-      <h1>Sally Ride's Packing List</h1>
+      <h1>Sally Rideのパッキングリスト</h1>
       <ul>
         <Item
           isPacked={true}
-          name="Space suit"
+          name="宇宙服"
         />
         <Item
           isPacked={true}
-          name="Helmet with a golden leaf"
+          name="金の葉のヘルメット"
         />
         <Item
           isPacked={false}
-          name="Photo of Tam"
+          name="Tamの写真"
         />
       </ul>
     </section>
@@ -359,15 +358,15 @@ export default function PackingList() {
 
 <LearnMore path="/learn/conditional-rendering">
 
-Read **[Conditional Rendering](/learn/conditional-rendering)** to learn the different ways to render content conditionally.
+**[条件付きレンダリング](/learn/conditional-rendering)**を読んで、コンテンツを条件付きでレンダリングするさまざまな方法を学びましょう。
 
 </LearnMore>
 
-## Rendering lists {/*rendering-lists*/}
+## リストのレンダリング {/*rendering-lists*/}
 
-You will often want to display multiple similar components from a collection of data. You can use JavaScript's `filter()` and `map()` with React to filter and transform your array of data into an array of components.
+データのコレクションから複数の類似したコンポーネントを表示したいことがよくあります。JavaScriptの`filter()`および`map()`をReactと一緒に使用して、データの配列をフィルタリングおよび変換し、コンポーネントの配列に変換できます。
 
-For each array item, you will need to specify a `key`. Usually, you will want to use an ID from the database as a `key`. Keys let React keep track of each item's place in the list even if the list changes.
+各配列アイテムには`key`を指定する必要があります。通常、データベースのIDを`key`として使用します。キーは、リストが変更されてもReactが各アイテムの位置を追跡できるようにします。
 
 <Sandpack>
 
@@ -459,18 +458,18 @@ h2 { font-size: 20px; }
 
 <LearnMore path="/learn/rendering-lists">
 
-Read **[Rendering Lists](/learn/rendering-lists)** to learn how to render a list of components, and how to choose a key.
+**[リストのレンダリング](/learn/rendering-lists)**を読んで、コンポーネントのリストをレンダリングする方法と、キーを選択する方法を学びましょう。
 
 </LearnMore>
 
-## Keeping components pure {/*keeping-components-pure*/}
+## コンポーネントを純粋に保つ {/*keeping-components-pure*/}
 
-Some JavaScript functions are *pure.* A pure function:
+一部のJavaScript関数は*純粋*です。純粋な関数は：
 
-* **Minds its own business.** It does not change any objects or variables that existed before it was called.
-* **Same inputs, same output.** Given the same inputs, a pure function should always return the same result.
+* **自分の仕事に専念する。** 呼び出される前に存在していたオブジェクトや変数を変更しません。
+* **同じ入力、同じ出力。** 同じ入力を与えられた場合、純粋な関数は常に同じ結果を返すべきです。
 
-By strictly only writing your components as pure functions, you can avoid an entire class of baffling bugs and unpredictable behavior as your codebase grows. Here is an example of an impure component:
+コンポーネントを純粋な関数として厳密に記述することで、コードベースが成長するにつれて混乱するバグや予測不可能な動作を回避できます。以下は不純なコンポーネントの例です：
 
 <Sandpack>
 
@@ -478,9 +477,9 @@ By strictly only writing your components as pure functions, you can avoid an ent
 let guest = 0;
 
 function Cup() {
-  // Bad: changing a preexisting variable!
+  // 悪い例：既存の変数を変更しています！
   guest = guest + 1;
-  return <h2>Tea cup for guest #{guest}</h2>;
+  return <h2>ゲスト#{guest}のためのティーカップ</h2>;
 }
 
 export default function TeaSet() {
@@ -496,13 +495,13 @@ export default function TeaSet() {
 
 </Sandpack>
 
-You can make this component pure by passing a prop instead of modifying a preexisting variable:
+このコンポーネントを純粋にするには、既存の変数を変更する代わりにpropsを渡します：
 
 <Sandpack>
 
 ```js
 function Cup({ guest }) {
-  return <h2>Tea cup for guest #{guest}</h2>;
+  return <h2>ゲスト#{guest}のためのティーカップ</h2>;
 }
 
 export default function TeaSet() {
@@ -520,43 +519,42 @@ export default function TeaSet() {
 
 <LearnMore path="/learn/keeping-components-pure">
 
-Read **[Keeping Components Pure](/learn/keeping-components-pure)** to learn how to write components as pure, predictable functions.
+**[コンポーネントを純粋に保つ](/learn/keeping-components-pure)**を読んで、純粋で予測可能な関数としてコンポーネントを記述する方法を学びましょう。
 
 </LearnMore>
 
-## Your UI as a tree {/*your-ui-as-a-tree*/}
+## UIをツリーとして理解する {/*your-ui-as-a-tree*/}
 
-React uses trees to model the relationships between components and modules. 
+Reactはコンポーネントとモジュール間の関係をモデル化するためにツリーを使用します。
 
-A React render tree is a representation of the parent and child relationship between components. 
+Reactのレンダーツリーは、コンポーネント間の親子関係を表すものです。
 
-<Diagram name="generic_render_tree" height={250} width={500} alt="A tree graph with five nodes, with each node representing a component. The root node is located at the top the tree graph and is labelled 'Root Component'. It has two arrows extending down to two nodes labelled 'Component A' and 'Component C'. Each of the arrows is labelled with 'renders'. 'Component A' has a single 'renders' arrow to a node labelled 'Component B'. 'Component C' has a single 'renders' arrow to a node labelled 'Component D'.">
+<Diagram name="generic_render_tree" height={250} width={500} alt="5つのノードを持つツリーグラフで、各ノードはコンポーネントを表しています。ルートノードはツリーグラフの最上部にあり、「Root Component」とラベル付けされています。2つの矢印が「Component A」と「Component C」に向かって下に伸びています。各矢印には「renders」とラベル付けされています。「Component A」には「Component B」に向かう1つの「renders」矢印があります。「Component C」には「Component D」に向かう1つの「renders」矢印があります。">
 
-An example React render tree.
-
-</Diagram>
-
-Components near the top of the tree, near the root component, are considered top-level components. Components with no child components are leaf components. This categorization of components is useful for understanding data flow and rendering performance.
-
-Modelling the relationship between JavaScript modules is another useful way to understand your app. We refer to it as a module dependency tree. 
-
-<Diagram name="generic_dependency_tree" height={250} width={500} alt="A tree graph with five nodes. Each node represents a JavaScript module. The top-most node is labelled 'RootModule.js'. It has three arrows extending to the nodes: 'ModuleA.js', 'ModuleB.js', and 'ModuleC.js'. Each arrow is labelled as 'imports'. 'ModuleC.js' node has a single 'imports' arrow that points to a node labelled 'ModuleD.js'.">
-
-An example module dependency tree.
+Reactレンダーツリーの例。
 
 </Diagram>
 
-A dependency tree is often used by build tools to bundle all the relevant JavaScript code for the client to download and render. A large bundle size regresses user experience for React apps. Understanding the module dependency tree is helpful to debug such issues. 
+ツリーの上部、ルートコンポーネントの近くにあるコンポーネントは、トップレベルコンポーネントと見なされます。子コンポーネントを持たないコンポーネントはリーフコンポーネントです。このコンポーネントの分類は、データフローとレンダリングパフォーマンスを理解するのに役立ちます。
+
+JavaScriptモジュール間の関係をモデル化することも、アプリを理解するための有用な方法です。これをモジュール依存ツリーと呼びます。
+
+<Diagram name="generic_dependency_tree" height={250} width={500} alt="5つのノードを持つツリーグラフで、各ノードはJavaScriptモジュールを表しています。最上部のノードは「RootModule.js」とラベル付けされています。3つの矢印が「ModuleA.js」、「ModuleB.js」、および「ModuleC.js」に向かって伸びています。各矢印には「imports」とラベル付けされています。「ModuleC.js」ノードには「ModuleD.js」に向かう1つの「imports」矢印があります。">
+
+モジュール依存ツリーの例。
+
+</Diagram>
+
+依存ツリーは、クライアントがダウンロードしてレンダリングするための関連するJavaScriptコードをバンドルするためにビルドツールによってよく使用されます。大きなバンドルサイズはReactアプリのユーザーエクスペリエンスを低下させます。モジュール依存ツリーを理解することは、このような問題をデバッグするのに役立ちます。
 
 <LearnMore path="/learn/understanding-your-ui-as-a-tree">
 
-Read **[Your UI as a Tree](/learn/understanding-your-ui-as-a-tree)** to learn how to create a render and module dependency trees for a React app and how they're useful mental models for improving user experience and performance.
+**[UIをツリーとして理解する](/learn/understanding-your-ui-as-a-tree)**を読んで、Reactアプリのレンダーおよびモジュール依存ツリーを作成する方法と、それらがユーザーエクスペリエンスとパフォーマンスを向上させるための有用なメンタルモデルである理由を学びましょう。
 
 </LearnMore>
 
+## 次は何ですか？ {/*whats-next*/}
 
-## What's next? {/*whats-next*/}
+[最初のコンポーネント](/learn/your-first-component)に進んで、この章をページごとに読み始めましょう！
 
-Head over to [Your First Component](/learn/your-first-component) to start reading this chapter page by page!
-
-Or, if you're already familiar with these topics, why not read about [Adding Interactivity](/learn/adding-interactivity)?
+または、これらのトピックにすでに精通している場合は、[インタラクティビティの追加](/learn/adding-interactivity)について読んでみてください。

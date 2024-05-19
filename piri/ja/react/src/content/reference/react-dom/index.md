@@ -1,10 +1,10 @@
 ---
-title: React DOM APIs
+title: React DOM API
 ---
 
 <Intro>
 
-The `react-dom` package contains methods that are only supported for the web applications (which run in the browser DOM environment). They are not supported for React Native.
+`react-dom`パッケージには、ウェブアプリケーション（ブラウザのDOM環境で実行される）でのみサポートされるメソッドが含まれています。これらはReact Nativeではサポートされていません。
 
 </Intro>
 
@@ -12,45 +12,44 @@ The `react-dom` package contains methods that are only supported for the web app
 
 ## APIs {/*apis*/}
 
-These APIs can be imported from your components. They are rarely used:
+これらのAPIはコンポーネントからインポートして使用できますが、使用頻度は低いです：
 
-* [`createPortal`](/reference/react-dom/createPortal) lets you render child components in a different part of the DOM tree.
-* [`flushSync`](/reference/react-dom/flushSync) lets you force React to flush a state update and update the DOM synchronously.
+* [`createPortal`](/reference/react-dom/createPortal)は、子コンポーネントをDOMツリーの別の部分にレンダリングすることができます。
+* [`flushSync`](/reference/react-dom/flushSync)は、Reactに状態更新を強制的にフラッシュさせ、DOMを同期的に更新させることができます。
 
-## Resource Preloading APIs {/*resource-preloading-apis*/}
+## リソースプリロードAPI {/*resource-preloading-apis*/}
 
-These APIs can be used to make apps faster by pre-loading resources such as scripts, stylesheets, and fonts as soon as you know you need them, for example before navigating to another page where the resources will be used.
+これらのAPIは、スクリプト、スタイルシート、フォントなどのリソースを事前にロードすることでアプリを高速化するために使用できます。例えば、リソースが使用される別のページに移動する前にロードする場合などです。
 
-[React-based frameworks](/learn/start-a-new-react-project) frequently handle resource loading for you, so you might not have to call these APIs yourself. Consult your framework's documentation for details.
+[Reactベースのフレームワーク](/learn/start-a-new-react-project)は、リソースのロードを自動的に処理することが多いため、これらのAPIを自分で呼び出す必要がないかもしれません。詳細はフレームワークのドキュメントを参照してください。
 
-* [`prefetchDNS`](/reference/react-dom/prefetchDNS) lets you prefetch the IP address of a DNS domain name that you expect to connect to.
-* [`preconnect`](/reference/react-dom/preconnect) lets you connect to a server you expect to request resources from, even if you don't know what resources you'll need yet.
-* [`preload`](/reference/react-dom/preload) lets you fetch a stylesheet, font, image, or external script that you expect to use.
-* [`preloadModule`](/reference/react-dom/preloadModule) lets you fetch an ESM module that you expect to use.
-* [`preinit`](/reference/react-dom/preinit) lets you fetch and evaluate an external script or fetch and insert a stylesheet.
-* [`preinitModule`](/reference/react-dom/preinitModule) lets you fetch and evaluate an ESM module.
-
----
-
-## Entry points {/*entry-points*/}
-
-The `react-dom` package provides two additional entry points:
-
-* [`react-dom/client`](/reference/react-dom/client) contains APIs to render React components on the client (in the browser).
-* [`react-dom/server`](/reference/react-dom/server) contains APIs to render React components on the server.
+* [`prefetchDNS`](/reference/react-dom/prefetchDNS)は、接続する予定のDNSドメイン名のIPアドレスを事前に取得することができます。
+* [`preconnect`](/reference/react-dom/preconnect)は、リソースを要求する予定のサーバーに事前に接続することができます。どのリソースが必要かまだわからない場合でも接続できます。
+* [`preload`](/reference/react-dom/preload)は、使用する予定のスタイルシート、フォント、画像、または外部スクリプトを事前に取得することができます。
+* [`preloadModule`](/reference/react-dom/preloadModule)は、使用する予定のESMモジュールを事前に取得することができます。
+* [`preinit`](/reference/react-dom/preinit)は、外部スクリプトを取得して評価するか、スタイルシートを取得して挿入することができます。
+* [`preinitModule`](/reference/react-dom/preinitModule)は、ESMモジュールを取得して評価することができます。
 
 ---
 
-## Deprecated APIs {/*deprecated-apis*/}
+## エントリーポイント {/*entry-points*/}
+
+`react-dom`パッケージは、2つの追加エントリーポイントを提供します：
+
+* [`react-dom/client`](/reference/react-dom/client)は、クライアント（ブラウザ）でReactコンポーネントをレンダリングするためのAPIを含んでいます。
+* [`react-dom/server`](/reference/react-dom/server)は、サーバーでReactコンポーネントをレンダリングするためのAPIを含んでいます。
+
+---
+
+## 廃止予定のAPI {/*deprecated-apis*/}
 
 <Deprecated>
 
-These APIs will be removed in a future major version of React.
+これらのAPIは、将来のReactのメジャーバージョンで削除される予定です。
 
 </Deprecated>
 
-* [`findDOMNode`](/reference/react-dom/findDOMNode) finds the closest DOM node corresponding to a class component instance.
-* [`hydrate`](/reference/react-dom/hydrate) mounts a tree into the DOM created from server HTML. Deprecated in favor of [`hydrateRoot`](/reference/react-dom/client/hydrateRoot).
-* [`render`](/reference/react-dom/render) mounts a tree into the DOM. Deprecated in favor of [`createRoot`](/reference/react-dom/client/createRoot).
-* [`unmountComponentAtNode`](/reference/react-dom/unmountComponentAtNode) unmounts a tree from the DOM. Deprecated in favor of [`root.unmount()`](/reference/react-dom/client/createRoot#root-unmount).
-
+* [`findDOMNode`](/reference/react-dom/findDOMNode)は、クラスコンポーネントインスタンスに対応する最も近いDOMノードを見つけます。
+* [`hydrate`](/reference/react-dom/hydrate)は、サーバーHTMLから作成されたツリーをDOMにマウントします。[`hydrateRoot`](/reference/react-dom/client/hydrateRoot)に置き換えられました。
+* [`render`](/reference/react-dom/render)は、ツリーをDOMにマウントします。[`createRoot`](/reference/react-dom/client/createRoot)に置き換えられました。
+* [`unmountComponentAtNode`](/reference/react-dom/unmountComponentAtNode)は、ツリーをDOMからアンマウントします。[`root.unmount()`](/reference/react-dom/client/createRoot#root-unmount)に置き換えられました。

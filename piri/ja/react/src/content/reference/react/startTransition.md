@@ -4,7 +4,7 @@ title: startTransition
 
 <Intro>
 
-`startTransition` lets you update the state without blocking the UI.
+`startTransition`を使用すると、UIをブロックせずに状態を更新できます。
 
 ```js
 startTransition(scope)
@@ -16,11 +16,11 @@ startTransition(scope)
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `startTransition(scope)` {/*starttransitionscope*/}
 
-The `startTransition` function lets you mark a state update as a Transition.
+`startTransition`関数を使用すると、状態更新をトランジションとしてマークできます。
 
 ```js {7,9}
 import { startTransition } from 'react';
@@ -37,37 +37,37 @@ function TabContainer() {
 }
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `scope`: A function that updates some state by calling one or more [`set` functions.](/reference/react/useState#setstate) React immediately calls `scope` with no arguments and marks all state updates scheduled synchronously during the `scope` function call as Transitions. They will be [non-blocking](/reference/react/useTransition#marking-a-state-update-as-a-non-blocking-transition) and [will not display unwanted loading indicators.](/reference/react/useTransition#preventing-unwanted-loading-indicators)
+* `scope`: 1つ以上の[`set`関数](/reference/react/useState#setstate)を呼び出して状態を更新する関数。Reactは引数なしで`scope`を直ちに呼び出し、`scope`関数呼び出し中に同期的にスケジュールされたすべての状態更新をトランジションとしてマークします。これらは[非ブロッキング](/reference/react/useTransition#marking-a-state-update-as-a-non-blocking-transition)であり、[不要なローディングインジケーターを表示しません。](/reference/react/useTransition#preventing-unwanted-loading-indicators)
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`startTransition` does not return anything.
+`startTransition`は何も返しません。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* `startTransition` does not provide a way to track whether a Transition is pending. To show a pending indicator while the Transition is ongoing, you need [`useTransition`](/reference/react/useTransition) instead.
+* `startTransition`はトランジションが保留中かどうかを追跡する方法を提供しません。トランジションが進行中である間に保留インジケーターを表示するには、代わりに[`useTransition`](/reference/react/useTransition)を使用する必要があります。
 
-* You can wrap an update into a Transition only if you have access to the `set` function of that state. If you want to start a Transition in response to some prop or a custom Hook return value, try [`useDeferredValue`](/reference/react/useDeferredValue) instead.
+* 状態の`set`関数にアクセスできる場合にのみ、更新をトランジションにラップできます。プロップやカスタムフックの戻り値に応じてトランジションを開始したい場合は、代わりに[`useDeferredValue`](/reference/react/useDeferredValue)を試してください。
 
-* The function you pass to `startTransition` must be synchronous. React immediately executes this function, marking all state updates that happen while it executes as Transitions. If you try to perform more state updates later (for example, in a timeout), they won't be marked as Transitions.
+* `startTransition`に渡す関数は同期的でなければなりません。Reactはこの関数を直ちに実行し、その実行中に発生するすべての状態更新をトランジションとしてマークします。後で（例えばタイムアウト内で）さらに状態更新を行おうとすると、それらはトランジションとしてマークされません。
 
-* A state update marked as a Transition will be interrupted by other state updates. For example, if you update a chart component inside a Transition, but then start typing into an input while the chart is in the middle of a re-render, React will restart the rendering work on the chart component after handling the input state update.
+* トランジションとしてマークされた状態更新は、他の状態更新によって中断されます。例えば、トランジション内でチャートコンポーネントを更新している最中に、入力フィールドに文字を入力し始めると、Reactは入力状態の更新を処理した後にチャートコンポーネントのレンダリング作業を再開します。
 
-* Transition updates can't be used to control text inputs.
+* トランジション更新はテキスト入力を制御するために使用できません。
 
-* If there are multiple ongoing Transitions, React currently batches them together. This is a limitation that will likely be removed in a future release.
+* 複数のトランジションが進行中の場合、Reactは現在それらを一緒にバッチ処理します。これは将来のリリースで削除される可能性が高い制限です。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Marking a state update as a non-blocking Transition {/*marking-a-state-update-as-a-non-blocking-transition*/}
+### 状態更新を非ブロッキングトランジションとしてマークする {/*marking-a-state-update-as-a-non-blocking-transition*/}
 
-You can mark a state update as a *Transition* by wrapping it in a `startTransition` call:
+状態更新を*トランジション*としてマークするには、`startTransition`呼び出しでラップします：
 
 ```js {7,9}
 import { startTransition } from 'react';
@@ -84,14 +84,14 @@ function TabContainer() {
 }
 ```
 
-Transitions let you keep the user interface updates responsive even on slow devices.
+トランジションを使用すると、遅いデバイスでもユーザーインターフェースの更新をレスポンシブに保つことができます。
 
-With a Transition, your UI stays responsive in the middle of a re-render. For example, if the user clicks a tab but then change their mind and click another tab, they can do that without waiting for the first re-render to finish.
+トランジションを使用すると、再レンダリングの途中でもUIがレスポンシブに保たれます。例えば、ユーザーがタブをクリックした後に気が変わって別のタブをクリックしても、最初の再レンダリングが完了するのを待たずにそれを行うことができます。
 
 <Note>
 
-`startTransition` is very similar to [`useTransition`](/reference/react/useTransition), except that it does not provide the `isPending` flag to track whether a Transition is ongoing. You can call `startTransition` when `useTransition` is not available. For example, `startTransition` works outside components, such as from a data library.
+`startTransition`は[`useTransition`](/reference/react/useTransition)と非常に似ていますが、トランジションが進行中かどうかを追跡するための`isPending`フラグを提供しません。`useTransition`が利用できない場合に`startTransition`を呼び出すことができます。例えば、`startTransition`はデータライブラリなどのコンポーネント外でも動作します。
 
-[Learn about Transitions and see examples on the `useTransition` page.](/reference/react/useTransition)
+[トランジションについて学び、`useTransition`ページで例を参照してください。](/reference/react/useTransition)
 
 </Note>

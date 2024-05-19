@@ -1,34 +1,34 @@
 ---
-title: Writing Markup with JSX
+title: JSXでマークアップを書く
 ---
 
 <Intro>
 
-*JSX* is a syntax extension for JavaScript that lets you write HTML-like markup inside a JavaScript file. Although there are other ways to write components, most React developers prefer the conciseness of JSX, and most codebases use it.
+*JSX*は、JavaScriptファイル内にHTMLのようなマークアップを書くことができるJavaScriptの構文拡張です。コンポーネントを書く他の方法もありますが、ほとんどのReact開発者はJSXの簡潔さを好み、ほとんどのコードベースで使用されています。
 
 </Intro>
 
 <YouWillLearn>
 
-* Why React mixes markup with rendering logic
-* How JSX is different from HTML
-* How to display information with JSX
+* なぜReactはマークアップとレンダリングロジックを混ぜるのか
+* JSXがHTMLとどのように異なるのか
+* JSXで情報を表示する方法
 
 </YouWillLearn>
 
-## JSX: Putting markup into JavaScript {/*jsx-putting-markup-into-javascript*/}
+## JSX: マークアップをJavaScriptに組み込む {/*jsx-putting-markup-into-javascript*/}
 
-The Web has been built on HTML, CSS, and JavaScript. For many years, web developers kept content in HTML, design in CSS, and logic in JavaScript—often in separate files! Content was marked up inside HTML while the page's logic lived separately in JavaScript:
+WebはHTML、CSS、JavaScriptの上に構築されています。長年にわたり、ウェブ開発者はコンテンツをHTMLに、デザインをCSSに、ロジックをJavaScriptに分けていました—しばしば別々のファイルに！コンテンツはHTML内でマークアップされ、ページのロジックは別々にJavaScriptで管理されていました：
 
 <DiagramGroup>
 
-<Diagram name="writing_jsx_html" height={237} width={325} alt="HTML markup with purple background and a div with two child tags: p and form. ">
+<Diagram name="writing_jsx_html" height={237} width={325} alt="紫色の背景にHTMLマークアップと、2つの子タグ（pとform）を持つdiv。">
 
 HTML
 
 </Diagram>
 
-<Diagram name="writing_jsx_js" height={237} width={325} alt="Three JavaScript handlers with yellow background: onSubmit, onLogin, and onClick.">
+<Diagram name="writing_jsx_js" height={237} width={325} alt="黄色の背景に3つのJavaScriptハンドラー：onSubmit、onLogin、onClick。">
 
 JavaScript
 
@@ -36,53 +36,53 @@ JavaScript
 
 </DiagramGroup>
 
-But as the Web became more interactive, logic increasingly determined content. JavaScript was in charge of the HTML! This is why **in React, rendering logic and markup live together in the same place—components.**
+しかし、Webがよりインタラクティブになるにつれて、ロジックがコンテンツを決定することが増えました。JavaScriptがHTMLを管理していたのです！これが**Reactでは、レンダリングロジックとマークアップが同じ場所—コンポーネント—に存在する理由です。**
 
 <DiagramGroup>
 
-<Diagram name="writing_jsx_sidebar" height={330} width={325} alt="React component with HTML and JavaScript from previous examples mixed. Function name is Sidebar which calls the function isLoggedIn, highlighted in yellow. Nested inside the function highlighted in purple is the p tag from before, and a Form tag referencing the component shown in the next diagram.">
+<Diagram name="writing_jsx_sidebar" height={330} width={325} alt="前の例からHTMLとJavaScriptが混在するReactコンポーネント。関数名はSidebarで、黄色で強調表示されたisLoggedIn関数を呼び出します。関数内に紫色で強調表示されたpタグと、次の図で示されるコンポーネントを参照するFormタグがネストされています。">
 
-`Sidebar.js` React component
+`Sidebar.js` Reactコンポーネント
 
 </Diagram>
 
-<Diagram name="writing_jsx_form" height={330} width={325} alt="React component with HTML and JavaScript from previous examples mixed. Function name is Form containing two handlers onClick and onSubmit highlighted in yellow. Following the handlers is HTML highlighted in purple. The HTML contains a form element with a nested input element, each with an onClick prop.">
+<Diagram name="writing_jsx_form" height={330} width={325} alt="前の例からHTMLとJavaScriptが混在するReactコンポーネント。関数名はFormで、黄色で強調表示された2つのハンドラーonClickとonSubmitを含みます。ハンドラーの後には紫色で強調表示されたHTMLが続きます。HTMLには、各onClickプロップを持つネストされたinput要素を含むform要素が含まれています。">
 
-`Form.js` React component
+`Form.js` Reactコンポーネント
 
 </Diagram>
 
 </DiagramGroup>
 
-Keeping a button's rendering logic and markup together ensures that they stay in sync with each other on every edit. Conversely, details that are unrelated, such as the button's markup and a sidebar's markup, are isolated from each other, making it safer to change either of them on their own.
+ボタンのレンダリングロジックとマークアップを一緒に保つことで、編集のたびにそれらが同期していることが保証されます。逆に、ボタンのマークアップとサイドバーのマークアップのように関連のない詳細は互いに分離されているため、どちらか一方を安全に変更することができます。
 
-Each React component is a JavaScript function that may contain some markup that React renders into the browser. React components use a syntax extension called JSX to represent that markup. JSX looks a lot like HTML, but it is a bit stricter and can display dynamic information. The best way to understand this is to convert some HTML markup to JSX markup.
+各Reactコンポーネントは、Reactがブラウザにレンダリングするマークアップを含むJavaScript関数です。Reactコンポーネントは、JSXと呼ばれる構文拡張を使用してそのマークアップを表現します。JSXはHTMLに非常に似ていますが、少し厳格で動的な情報を表示することができます。これを理解する最良の方法は、いくつかのHTMLマークアップをJSXマークアップに変換することです。
 
 <Note>
 
-JSX and React are two separate things. They're often used together, but you *can* [use them independently](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-a-jsx-transform) of each other. JSX is a syntax extension, while React is a JavaScript library.
+JSXとReactは別物です。しばしば一緒に使用されますが、*独立して使用することもできます*。[詳細はこちら](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-a-jsx-transform)。JSXは構文拡張であり、ReactはJavaScriptライブラリです。
 
 </Note>
 
-## Converting HTML to JSX {/*converting-html-to-jsx*/}
+## HTMLをJSXに変換する {/*converting-html-to-jsx*/}
 
-Suppose that you have some (perfectly valid) HTML:
+有効なHTMLがあるとします：
 
 ```html
-<h1>Hedy Lamarr's Todos</h1>
+<h1>ヘディ・ラマーのToDoリスト</h1>
 <img 
   src="https://i.imgur.com/yXOvdOSs.jpg" 
-  alt="Hedy Lamarr" 
+  alt="ヘディ・ラマー" 
   class="photo"
 >
 <ul>
-    <li>Invent new traffic lights
-    <li>Rehearse a movie scene
-    <li>Improve the spectrum technology
+    <li>新しい信号機を発明する
+    <li>映画のシーンをリハーサルする
+    <li>スペクトル技術を改善する
 </ul>
 ```
 
-And you want to put it into your component:
+そして、これをコンポーネントに組み込みたいとします：
 
 ```js
 export default function TodoList() {
@@ -92,25 +92,24 @@ export default function TodoList() {
 }
 ```
 
-If you copy and paste it as is, it will not work:
-
+そのままコピー＆ペーストすると、動作しません：
 
 <Sandpack>
 
 ```js
 export default function TodoList() {
   return (
-    // This doesn't quite work!
-    <h1>Hedy Lamarr's Todos</h1>
+    // これはうまくいきません！
+    <h1>ヘディ・ラマーのToDoリスト</h1>
     <img 
       src="https://i.imgur.com/yXOvdOSs.jpg" 
-      alt="Hedy Lamarr" 
+      alt="ヘディ・ラマー" 
       class="photo"
     >
     <ul>
-      <li>Invent new traffic lights
-      <li>Rehearse a movie scene
-      <li>Improve the spectrum technology
+      <li>新しい信号機を発明する
+      <li>映画のシーンをリハーサルする
+      <li>スペクトル技術を改善する
     </ul>
   );
 }
@@ -122,28 +121,28 @@ img { height: 90px }
 
 </Sandpack>
 
-This is because JSX is stricter and has a few more rules than HTML! If you read the error messages above, they'll guide you to fix the markup, or you can follow the guide below.
+これは、JSXがHTMLよりも厳格で、いくつかの追加ルールがあるためです！上記のエラーメッセージを読めば、マークアップを修正するためのガイドが表示されます。または、以下のガイドに従うこともできます。
 
 <Note>
 
-Most of the time, React's on-screen error messages will help you find where the problem is. Give them a read if you get stuck!
+ほとんどの場合、Reactの画面上のエラーメッセージが問題の場所を見つけるのに役立ちます。行き詰まった場合は、エラーメッセージを読んでみてください！
 
 </Note>
 
-## The Rules of JSX {/*the-rules-of-jsx*/}
+## JSXのルール {/*the-rules-of-jsx*/}
 
-### 1. Return a single root element {/*1-return-a-single-root-element*/}
+### 1. 単一のルート要素を返す {/*1-return-a-single-root-element*/}
 
-To return multiple elements from a component, **wrap them with a single parent tag.**
+コンポーネントから複数の要素を返すには、**単一の親タグでラップします。**
 
-For example, you can use a `<div>`:
+例えば、`<div>`を使用できます：
 
 ```js {1,11}
 <div>
-  <h1>Hedy Lamarr's Todos</h1>
+  <h1>ヘディ・ラマーのToDoリスト</h1>
   <img 
     src="https://i.imgur.com/yXOvdOSs.jpg" 
-    alt="Hedy Lamarr" 
+    alt="ヘディ・ラマー" 
     class="photo"
   >
   <ul>
@@ -152,15 +151,14 @@ For example, you can use a `<div>`:
 </div>
 ```
 
-
-If you don't want to add an extra `<div>` to your markup, you can write `<>` and `</>` instead:
+マークアップに余分な`<div>`を追加したくない場合は、`<>`と`</>`を使用できます：
 
 ```js {1,11}
 <>
-  <h1>Hedy Lamarr's Todos</h1>
+  <h1>ヘディ・ラマーのToDoリスト</h1>
   <img 
     src="https://i.imgur.com/yXOvdOSs.jpg" 
-    alt="Hedy Lamarr" 
+    alt="ヘディ・ラマー" 
     class="photo"
   >
   <ul>
@@ -169,64 +167,64 @@ If you don't want to add an extra `<div>` to your markup, you can write `<>` and
 </>
 ```
 
-This empty tag is called a *[Fragment.](/reference/react/Fragment)* Fragments let you group things without leaving any trace in the browser HTML tree.
+この空のタグは*[Fragment](/reference/react/Fragment)*と呼ばれます。Fragmentを使用すると、ブラウザのHTMLツリーに痕跡を残さずにグループ化できます。
 
 <DeepDive>
 
-#### Why do multiple JSX tags need to be wrapped? {/*why-do-multiple-jsx-tags-need-to-be-wrapped*/}
+#### なぜ複数のJSXタグをラップする必要があるのか？ {/*why-do-multiple-jsx-tags-need-to-be-wrapped*/}
 
-JSX looks like HTML, but under the hood it is transformed into plain JavaScript objects. You can't return two objects from a function without wrapping them into an array. This explains why you also can't return two JSX tags without wrapping them into another tag or a Fragment.
+JSXはHTMLのように見えますが、内部ではプレーンなJavaScriptオブジェクトに変換されます。関数から2つのオブジェクトをラップせずに返すことはできません。これが、他のタグやFragmentでラップせずに2つのJSXタグを返すことができない理由です。
 
 </DeepDive>
 
-### 2. Close all the tags {/*2-close-all-the-tags*/}
+### 2. すべてのタグを閉じる {/*2-close-all-the-tags*/}
 
-JSX requires tags to be explicitly closed: self-closing tags like `<img>` must become `<img />`, and wrapping tags like `<li>oranges` must be written as `<li>oranges</li>`.
+JSXではタグを明示的に閉じる必要があります：自己閉じタグの`<img>`は`<img />`に、ラッピングタグの`<li>oranges`は`<li>oranges</li>`と書く必要があります。
 
-This is how Hedy Lamarr's image and list items look closed:
+これがヘディ・ラマーの画像とリストアイテムを閉じた状態です：
 
 ```js {2-6,8-10}
 <>
   <img 
     src="https://i.imgur.com/yXOvdOSs.jpg" 
-    alt="Hedy Lamarr" 
+    alt="ヘディ・ラマー" 
     class="photo"
    />
   <ul>
-    <li>Invent new traffic lights</li>
-    <li>Rehearse a movie scene</li>
-    <li>Improve the spectrum technology</li>
+    <li>新しい信号機を発明する</li>
+    <li>映画のシーンをリハーサルする</li>
+    <li>スペクトル技術を改善する</li>
   </ul>
 </>
 ```
 
-### 3. camelCase <s>all</s> most of the things! {/*3-camelcase-salls-most-of-the-things*/}
+### 3. camelCase <s>すべて</s> ほとんどのもの！ {/*3-camelcase-salls-most-of-the-things*/}
 
-JSX turns into JavaScript and attributes written in JSX become keys of JavaScript objects. In your own components, you will often want to read those attributes into variables. But JavaScript has limitations on variable names. For example, their names can't contain dashes or be reserved words like `class`.
+JSXはJavaScriptに変換され、JSXで書かれた属性はJavaScriptオブジェクトのキーになります。独自のコンポーネントでは、これらの属性を変数に読み込むことがよくあります。しかし、JavaScriptには変数名に制限があります。例えば、名前にダッシュを含めることはできず、`class`のような予約語を使用することもできません。
 
-This is why, in React, many HTML and SVG attributes are written in camelCase. For example, instead of `stroke-width` you use `strokeWidth`. Since `class` is a reserved word, in React you write `className` instead, named after the [corresponding DOM property](https://developer.mozilla.org/en-US/docs/Web/API/Element/className):
+このため、Reactでは多くのHTMLおよびSVG属性がcamelCaseで書かれます。例えば、`stroke-width`の代わりに`strokeWidth`を使用します。`class`は予約語であるため、Reactでは代わりに`className`と書きます。これは[対応するDOMプロパティ](https://developer.mozilla.org/en-US/docs/Web/API/Element/className)にちなんで名付けられています：
 
 ```js {4}
 <img 
   src="https://i.imgur.com/yXOvdOSs.jpg" 
-  alt="Hedy Lamarr" 
+  alt="ヘディ・ラマー" 
   className="photo"
 />
 ```
 
-You can [find all these attributes in the list of DOM component props.](/reference/react-dom/components/common) If you get one wrong, don't worry—React will print a message with a possible correction to the [browser console.](https://developer.mozilla.org/docs/Tools/Browser_Console)
+これらの属性は[DOMコンポーネントのプロップのリスト](/reference/react-dom/components/common)で見つけることができます。間違えた場合でも心配しないでください—Reactは[ブラウザコンソール](https://developer.mozilla.org/docs/Tools/Browser_Console)に可能な修正を含むメッセージを表示します。
 
 <Pitfall>
 
-For historical reasons, [`aria-*`](https://developer.mozilla.org/docs/Web/Accessibility/ARIA) and [`data-*`](https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes) attributes are written as in HTML with dashes.
+歴史的な理由から、[`aria-*`](https://developer.mozilla.org/docs/Web/Accessibility/ARIA)および[`data-*`](https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes)属性はダッシュを使用してHTMLのように書かれます。
 
 </Pitfall>
 
-### Pro-tip: Use a JSX Converter {/*pro-tip-use-a-jsx-converter*/}
+### プロのヒント: JSXコンバーターを使用する {/*pro-tip-use-a-jsx-converter*/}
 
-Converting all these attributes in existing markup can be tedious! We recommend using a [converter](https://transform.tools/html-to-jsx) to translate your existing HTML and SVG to JSX. Converters are very useful in practice, but it's still worth understanding what is going on so that you can comfortably write JSX on your own.
+既存のマークアップのすべての属性を変換するのは面倒です！既存のHTMLおよびSVGをJSXに変換するために[コンバーター](https://transform.tools/html-to-jsx)を使用することをお勧めします。コンバーターは実際に非常に便利ですが、何が起こっているのかを理解して、自分でJSXを書くことができるようにする価値があります。
 
-Here is your final result:
+最終結果は次のとおりです：
 
 <Sandpack>
 
@@ -234,16 +232,16 @@ Here is your final result:
 export default function TodoList() {
   return (
     <>
-      <h1>Hedy Lamarr's Todos</h1>
+      <h1>ヘディ・ラマーのToDoリスト</h1>
       <img 
         src="https://i.imgur.com/yXOvdOSs.jpg" 
-        alt="Hedy Lamarr" 
+        alt="ヘディ・ラマー" 
         className="photo" 
       />
       <ul>
-        <li>Invent new traffic lights</li>
-        <li>Rehearse a movie scene</li>
-        <li>Improve the spectrum technology</li>
+        <li>新しい信号機を発明する</li>
+        <li>映画のシーンをリハーサルする</li>
+        <li>スペクトル技術を改善する</li>
       </ul>
     </>
   );
@@ -258,21 +256,19 @@ img { height: 90px }
 
 <Recap>
 
-Now you know why JSX exists and how to use it in components:
+これで、JSXが存在する理由とコンポーネントでの使用方法がわかりました：
 
-* React components group rendering logic together with markup because they are related.
-* JSX is similar to HTML, with a few differences. You can use a [converter](https://transform.tools/html-to-jsx) if you need to.
-* Error messages will often point you in the right direction to fixing your markup.
+* Reactコンポーネントは、関連するレンダリングロジックとマークアップを一緒にグループ化します。
+* JSXはHTMLに似ていますが、いくつかの違いがあります。必要に応じて[コンバーター](https://transform.tools/html-to-jsx)を使用できます。
+* エラーメッセージは、マークアップを修正するための正しい方向を示してくれることがよくあります。
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Convert some HTML to JSX {/*convert-some-html-to-jsx*/}
+#### HTMLをJSXに変換する {/*convert-some-html-to-jsx*/}
 
-This HTML was pasted into a component, but it's not valid JSX. Fix it:
+このHTMLはコンポーネントに貼り付けられましたが、有効なJSXではありません。修正してください：
 
 <Sandpack>
 
@@ -280,12 +276,12 @@ This HTML was pasted into a component, but it's not valid JSX. Fix it:
 export default function Bio() {
   return (
     <div class="intro">
-      <h1>Welcome to my website!</h1>
+      <h1>私のウェブサイトへようこそ！</h1>
     </div>
     <p class="summary">
-      You can find my thoughts here.
+      ここで私の考えを見つけることができます。
       <br><br>
-      <b>And <i>pictures</b></i> of scientists!
+      <b>そして<i>科学者の写真</b></i>も！
     </p>
   );
 }
@@ -308,7 +304,7 @@ export default function Bio() {
 
 </Sandpack>
 
-Whether to do it by hand or using the converter is up to you!
+手作業で行うか、コンバーターを使用するかはあなた次第です！
 
 <Solution>
 
@@ -319,12 +315,12 @@ export default function Bio() {
   return (
     <div>
       <div className="intro">
-        <h1>Welcome to my website!</h1>
+        <h1>私のウェブサイトへようこそ！</h1>
       </div>
       <p className="summary">
-        You can find my thoughts here.
+        ここで私の考えを見つけることができます。
         <br /><br />
-        <b>And <i>pictures</i></b> of scientists!
+        <b>そして<i>科学者の写真</i></b>も！
       </p>
     </div>
   );

@@ -1,26 +1,26 @@
 ---
-title: Importing and Exporting Components
+title: 컴포넌트 가져오기 및 내보내기
 ---
 
 <Intro>
 
-The magic of components lies in their reusability: you can create components that are composed of other components. But as you nest more and more components, it often makes sense to start splitting them into different files. This lets you keep your files easy to scan and reuse components in more places.
+컴포넌트의 마법은 재사용성에 있습니다: 다른 컴포넌트로 구성된 컴포넌트를 만들 수 있습니다. 하지만 더 많은 컴포넌트를 중첩할수록 이를 다른 파일로 분할하는 것이 합리적일 때가 많습니다. 이렇게 하면 파일을 쉽게 스캔하고 더 많은 곳에서 컴포넌트를 재사용할 수 있습니다.
 
 </Intro>
 
 <YouWillLearn>
 
-* What a root component file is
-* How to import and export a component
-* When to use default and named imports and exports
-* How to import and export multiple components from one file
-* How to split components into multiple files
+* 루트 컴포넌트 파일이 무엇인지
+* 컴포넌트를 import하고 export하는 방법
+* default와 named import 및 export를 언제 사용하는지
+* 하나의 파일에서 여러 컴포넌트를 import하고 export하는 방법
+* 컴포넌트를 여러 파일로 분할하는 방법
 
 </YouWillLearn>
 
-## The root component file {/*the-root-component-file*/}
+## 루트 컴포넌트 파일 {/*the-root-component-file*/}
 
-In [Your First Component](/learn/your-first-component), you made a `Profile` component and a `Gallery` component that renders it:
+[Your First Component](/learn/your-first-component)에서 `Profile` 컴포넌트와 이를 렌더링하는 `Gallery` 컴포넌트를 만들었습니다:
 
 <Sandpack>
 
@@ -52,17 +52,17 @@ img { margin: 0 10px 10px 0; height: 90px; }
 
 </Sandpack>
 
-These currently live in a **root component file,** named `App.js` in this example. Depending on your setup, your root component could be in another file, though. If you use a framework with file-based routing, such as Next.js, your root component will be different for every page.
+이들은 현재 `App.js`라는 이름의 **루트 컴포넌트 파일**에 있습니다. 설정에 따라 루트 컴포넌트가 다른 파일에 있을 수도 있습니다. Next.js와 같은 파일 기반 라우팅을 사용하는 프레임워크를 사용하면 페이지마다 루트 컴포넌트가 다를 것입니다.
 
-## Exporting and importing a component {/*exporting-and-importing-a-component*/}
+## 컴포넌트 export 및 import하기 {/*exporting-and-importing-a-component*/}
 
-What if you want to change the landing screen in the future and put a list of science books there? Or place all the profiles somewhere else? It makes sense to move `Gallery` and `Profile` out of the root component file. This will make them more modular and reusable in other files. You can move a component in three steps:
+미래에 랜딩 화면을 변경하여 과학 책 목록을 넣거나 모든 프로필을 다른 곳에 배치하고 싶다면 어떻게 해야 할까요? `Gallery`와 `Profile`을 루트 컴포넌트 파일에서 이동하는 것이 합리적입니다. 이렇게 하면 더 모듈화되고 다른 파일에서 재사용할 수 있습니다. 컴포넌트를 이동하는 방법은 세 단계로 이루어집니다:
 
-1. **Make** a new JS file to put the components in.
-2. **Export** your function component from that file (using either [default](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/export#using_the_default_export) or [named](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/export#using_named_exports) exports).
-3. **Import** it in the file where you’ll use the component (using the corresponding technique for importing [default](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import#importing_defaults) or [named](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import#import_a_single_export_from_a_module) exports).
+1. **새로운 JS 파일을 만들어** 컴포넌트를 넣습니다.
+2. **컴포넌트 함수**를 해당 파일에서 export합니다 (default 또는 named export를 사용).
+3. **컴포넌트를 사용할 파일에서** import합니다 (default 또는 named import를 사용).
 
-Here both `Profile` and `Gallery` have been moved out of `App.js` into a new file called `Gallery.js`. Now you can change `App.js` to import `Gallery` from `Gallery.js`:
+여기서 `Profile`과 `Gallery`는 `App.js`에서 `Gallery.js`라는 새 파일로 이동되었습니다. 이제 `App.js`를 변경하여 `Gallery.js`에서 `Gallery`를 import할 수 있습니다:
 
 <Sandpack>
 
@@ -104,25 +104,24 @@ img { margin: 0 10px 10px 0; height: 90px; }
 
 </Sandpack>
 
-Notice how this example is broken down into two component files now:
+이 예제는 이제 두 개의 컴포넌트 파일로 나뉘어 있습니다:
 
 1. `Gallery.js`:
-     - Defines the `Profile` component which is only used within the same file and is not exported.
-     - Exports the `Gallery` component as a **default export.**
+     - 동일한 파일 내에서만 사용되고 export되지 않는 `Profile` 컴포넌트를 정의합니다.
+     - `Gallery` 컴포넌트를 **default export**로 export합니다.
 2. `App.js`:
-     - Imports `Gallery` as a **default import** from `Gallery.js`.
-     - Exports the root `App` component as a **default export.**
-
+     - `Gallery.js`에서 **default import**로 `Gallery`를 import합니다.
+     - 루트 `App` 컴포넌트를 **default export**로 export합니다.
 
 <Note>
 
-You may encounter files that leave off the `.js` file extension like so:
+`.js` 파일 확장자를 생략한 파일을 만날 수 있습니다:
 
 ```js 
 import Gallery from './Gallery';
 ```
 
-Either `'./Gallery.js'` or `'./Gallery'` will work with React, though the former is closer to how [native ES Modules](https://developer.mozilla.org/docs/Web/JavaScript/Guide/Modules) work.
+`'./Gallery.js'` 또는 `'./Gallery'` 둘 다 React에서 작동하지만, 전자는 [native ES Modules](https://developer.mozilla.org/docs/Web/JavaScript/Guide/Modules) 방식에 더 가깝습니다.
 
 </Note>
 
@@ -130,34 +129,34 @@ Either `'./Gallery.js'` or `'./Gallery'` will work with React, though the former
 
 #### Default vs named exports {/*default-vs-named-exports*/}
 
-There are two primary ways to export values with JavaScript: default exports and named exports. So far, our examples have only used default exports. But you can use one or both of them in the same file. **A file can have no more than one _default_ export, but it can have as many _named_ exports as you like.**
+JavaScript에서 값을 export하는 주요 방법은 default export와 named export 두 가지가 있습니다. 지금까지의 예제는 default export만 사용했습니다. 하지만 동일한 파일에서 둘 다 사용할 수 있습니다. **파일은 하나의 _default_ export만 가질 수 있지만, 원하는 만큼 _named_ export를 가질 수 있습니다.**
 
 ![Default and named exports](/images/docs/illustrations/i_import-export.svg)
 
-How you export your component dictates how you must import it. You will get an error if you try to import a default export the same way you would a named export! This chart can help you keep track:
+컴포넌트를 export하는 방식에 따라 import하는 방식이 결정됩니다. default export를 named export처럼 import하려고 하면 오류가 발생합니다! 이 표는 이를 추적하는 데 도움이 됩니다:
 
-| Syntax           | Export statement                           | Import statement                          |
+| 구문           | Export 문장                           | Import 문장                          |
 | -----------      | -----------                                | -----------                               |
 | Default  | `export default function Button() {}` | `import Button from './Button.js';`     |
 | Named    | `export function Button() {}`         | `import { Button } from './Button.js';` |
 
-When you write a _default_ import, you can put any name you want after `import`. For example, you could write `import Banana from './Button.js'` instead and it would still provide you with the same default export. In contrast, with named imports, the name has to match on both sides. That's why they are called _named_ imports!
+_default_ import를 작성할 때 `import` 뒤에 원하는 이름을 넣을 수 있습니다. 예를 들어, `import Banana from './Button.js'`라고 작성해도 동일한 default export를 제공합니다. 반면, named import의 경우 이름이 양쪽에서 일치해야 합니다. 그래서 _named_ import라고 불리는 것입니다!
 
-**People often use default exports if the file exports only one component, and use named exports if it exports multiple components and values.** Regardless of which coding style you prefer, always give meaningful names to your component functions and the files that contain them. Components without names, like `export default () => {}`, are discouraged because they make debugging harder.
+**파일이 하나의 컴포넌트만 export하는 경우 default export를 사용하고, 여러 컴포넌트와 값을 export하는 경우 named export를 사용하는 경우가 많습니다.** 어떤 코딩 스타일을 선호하든, 항상 컴포넌트 함수와 이를 포함하는 파일에 의미 있는 이름을 부여하세요. `export default () => {}`와 같은 이름 없는 컴포넌트는 디버깅을 어렵게 만들기 때문에 권장되지 않습니다.
 
 </DeepDive>
 
-## Exporting and importing multiple components from the same file {/*exporting-and-importing-multiple-components-from-the-same-file*/}
+## 동일한 파일에서 여러 컴포넌트 export 및 import하기 {/*exporting-and-importing-multiple-components-from-the-same-file*/}
 
-What if you want to show just one `Profile` instead of a gallery? You can export the `Profile` component, too. But `Gallery.js` already has a *default* export, and you can't have _two_ default exports. You could create a new file with a default export, or you could add a *named* export for `Profile`. **A file can only have one default export, but it can have numerous named exports!**
+갤러리 대신 하나의 `Profile`만 표시하고 싶다면 어떻게 해야 할까요? `Profile` 컴포넌트도 export할 수 있습니다. 하지만 `Gallery.js`에는 이미 *default* export가 있으며, _두 개의_ default export를 가질 수는 없습니다. 새로운 파일을 만들어 default export를 하거나 `Profile`에 *named* export를 추가할 수 있습니다. **파일은 하나의 default export만 가질 수 있지만, 여러 named export를 가질 수 있습니다!**
 
 <Note>
 
-To reduce the potential confusion between default and named exports, some teams choose to only stick to one style (default or named), or avoid mixing them in a single file. Do what works best for you!
+default와 named export 간의 혼란을 줄이기 위해 일부 팀은 하나의 스타일(default 또는 named)만 고수하거나 단일 파일에서 혼합 사용을 피합니다. 자신에게 가장 잘 맞는 방식을 선택하세요!
 
 </Note>
 
-First, **export** `Profile` from `Gallery.js` using a named export (no `default` keyword):
+먼저, `Profile`을 named export로 `Gallery.js`에서 **export**합니다 (default 키워드 없이):
 
 ```js
 export function Profile() {
@@ -165,13 +164,13 @@ export function Profile() {
 }
 ```
 
-Then, **import** `Profile` from `Gallery.js` to `App.js` using a named import (with the curly braces):
+그런 다음, `App.js`에서 `Gallery.js`로부터 named import로 `Profile`을 **import**합니다 (중괄호 사용):
 
 ```js
 import { Profile } from './Gallery.js';
 ```
 
-Finally, **render** `<Profile />` from the `App` component:
+마지막으로, `App` 컴포넌트에서 `<Profile />`을 **렌더링**합니다:
 
 ```js
 export default function App() {
@@ -179,7 +178,7 @@ export default function App() {
 }
 ```
 
-Now `Gallery.js` contains two exports: a default `Gallery` export, and a named `Profile` export. `App.js` imports both of them. Try editing `<Profile />` to `<Gallery />` and back in this example:
+이제 `Gallery.js`에는 두 개의 export가 있습니다: default `Gallery` export와 named `Profile` export. `App.js`는 둘 다 import합니다. 이 예제에서 `<Profile />`을 `<Gallery />`로 변경하고 다시 되돌려 보세요:
 
 <Sandpack>
 
@@ -222,47 +221,45 @@ img { margin: 0 10px 10px 0; height: 90px; }
 
 </Sandpack>
 
-Now you're using a mix of default and named exports:
+이제 default와 named export를 혼합하여 사용하고 있습니다:
 
 * `Gallery.js`:
-  - Exports the `Profile` component as a **named export called `Profile`.**
-  - Exports the `Gallery` component as a **default export.**
+  - `Profile` 컴포넌트를 **`Profile`이라는 named export**로 export합니다.
+  - `Gallery` 컴포넌트를 **default export**로 export합니다.
 * `App.js`:
-  - Imports `Profile` as a **named import called `Profile`** from `Gallery.js`.
-  - Imports `Gallery` as a **default import** from `Gallery.js`.
-  - Exports the root `App` component as a **default export.**
+  - `Gallery.js`에서 **`Profile`이라는 named import**로 `Profile`을 import합니다.
+  - `Gallery.js`에서 **default import**로 `Gallery`를 import합니다.
+  - 루트 `App` 컴포넌트를 **default export**로 export합니다.
 
 <Recap>
 
-On this page you learned:
+이 페이지에서 배운 내용:
 
-* What a root component file is
-* How to import and export a component
-* When and how to use default and named imports and exports
-* How to export multiple components from the same file
+* 루트 컴포넌트 파일이 무엇인지
+* 컴포넌트를 import하고 export하는 방법
+* default와 named import 및 export를 언제 어떻게 사용하는지
+* 동일한 파일에서 여러 컴포넌트를 export하는 방법
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Split the components further {/*split-the-components-further*/}
+#### 컴포넌트를 더 분할하기 {/*split-the-components-further*/}
 
-Currently, `Gallery.js` exports both `Profile` and `Gallery`, which is a bit confusing.
+현재 `Gallery.js`는 `Profile`과 `Gallery`를 모두 export하고 있어 약간 혼란스럽습니다.
 
-Move the `Profile` component to its own `Profile.js`, and then change the `App` component to render both `<Profile />` and `<Gallery />` one after another.
+`Profile` 컴포넌트를 별도의 `Profile.js`로 이동한 다음, `App` 컴포넌트를 변경하여 `<Profile />`과 `<Gallery />`를 차례로 렌더링하세요.
 
-You may use either a default or a named export for `Profile`, but make sure that you use the corresponding import syntax in both `App.js` and `Gallery.js`! You can refer to the table from the deep dive above:
+`Profile`에 대해 default 또는 named export를 사용할 수 있지만, `App.js`와 `Gallery.js`에서 해당하는 import 구문을 사용해야 합니다! 위의 deep dive에서 제공된 표를 참조할 수 있습니다:
 
-| Syntax           | Export statement                           | Import statement                          |
+| 구문           | Export 문장                           | Import 문장                          |
 | -----------      | -----------                                | -----------                               |
 | Default  | `export default function Button() {}` | `import Button from './Button.js';`     |
 | Named    | `export function Button() {}`         | `import { Button } from './Button.js';` |
 
 <Hint>
 
-Don't forget to import your components where they are called. Doesn't `Gallery` use `Profile`, too?
+컴포넌트가 호출되는 곳에서 컴포넌트를 import하는 것을 잊지 마세요. `Gallery`도 `Profile`을 사용하지 않나요?
 
 </Hint>
 
@@ -313,11 +310,11 @@ img { margin: 0 10px 10px 0; height: 90px; }
 
 </Sandpack>
 
-After you get it working with one kind of exports, make it work with the other kind.
+한 종류의 export로 작동하게 한 후, 다른 종류의 export로 작동하게 만드세요.
 
 <Solution>
 
-This is the solution with named exports:
+이것은 named export를 사용한 솔루션입니다:
 
 <Sandpack>
 
@@ -367,7 +364,7 @@ img { margin: 0 10px 10px 0; height: 90px; }
 
 </Sandpack>
 
-This is the solution with default exports:
+이것은 default export를 사용한 솔루션입니다:
 
 <Sandpack>
 

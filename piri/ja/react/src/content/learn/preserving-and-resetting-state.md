@@ -1,28 +1,28 @@
 ---
-title: Preserving and Resetting State
+title: 状態の保持とリセット
 ---
 
 <Intro>
 
-State is isolated between components. React keeps track of which state belongs to which component based on their place in the UI tree. You can control when to preserve state and when to reset it between re-renders.
+状態はコンポーネント間で分離されています。ReactはUIツリー内の位置に基づいて、どの状態がどのコンポーネントに属するかを追跡します。再レンダリング間で状態を保持するかリセットするかを制御できます。
 
 </Intro>
 
 <YouWillLearn>
 
-* When React chooses to preserve or reset the state
-* How to force React to reset component's state
-* How keys and types affect whether the state is preserved
+* Reactが状態を保持するかリセットするかを選択するタイミング
+* Reactにコンポーネントの状態をリセットさせる方法
+* キーとタイプが状態の保持にどのように影響するか
 
 </YouWillLearn>
 
-## State is tied to a position in the render tree {/*state-is-tied-to-a-position-in-the-tree*/}
+## 状態はレンダーツリー内の位置に結びついている {/*state-is-tied-to-a-position-in-the-tree*/}
 
-React builds [render trees](learn/understanding-your-ui-as-a-tree#the-render-tree) for the component structure in your UI.
+ReactはUI内のコンポーネント構造のために[レンダーツリー](learn/understanding-your-ui-as-a-tree#the-render-tree)を構築します。
 
-When you give a component state, you might think the state "lives" inside the component. But the state is actually held inside React. React associates each piece of state it's holding with the correct component by where that component sits in the render tree.
+コンポーネントに状態を与えると、その状態がコンポーネント内に「存在する」と考えるかもしれません。しかし、実際には状態はReact内に保持されています。Reactは保持している各状態を、そのコンポーネントがレンダーツリー内のどこにあるかによって正しいコンポーネントに関連付けます。
 
-Here, there is only one `<Counter />` JSX tag, but it's rendered at two different positions:
+ここでは、1つの`<Counter />` JSXタグしかありませんが、2つの異なる位置にレンダリングされています：
 
 <Sandpack>
 
@@ -86,23 +86,23 @@ label {
 
 </Sandpack>
 
-Here's how these look as a tree:    
+これらがツリーとしてどのように見えるかを示します：
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_tree" height={248} width={395} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. Each of the children are labeled 'Counter' and both contain a state bubble labeled 'count' with value 0.">
+<Diagram name="preserving_state_tree" height={248} width={395} alt="Reactコンポーネントのツリーの図。ルートノードは'div'とラベル付けされ、2つの子を持っています。各子は'Counter'とラベル付けされ、両方とも値0の'state'バブルを含んでいます。">
 
-React tree
+Reactツリー
 
 </Diagram>
 
 </DiagramGroup>
 
-**These are two separate counters because each is rendered at its own position in the tree.** You don't usually have to think about these positions to use React, but it can be useful to understand how it works.
+**これらはツリー内のそれぞれの位置にレンダリングされているため、2つの別々のカウンターです。** Reactを使用するためにこれらの位置について通常は考える必要はありませんが、どのように機能するかを理解することは役立ちます。
 
-In React, each component on the screen has fully isolated state. For example, if you render two `Counter` components side by side, each of them will get its own, independent, `score` and `hover` states.
+Reactでは、画面上の各コンポーネントは完全に分離された状態を持っています。例えば、2つの`Counter`コンポーネントを並べてレンダリングすると、それぞれが独自の独立した`score`と`hover`状態を持ちます。
 
-Try clicking both counters and notice they don't affect each other:
+両方のカウンターをクリックして、それらが互いに影響しないことを確認してください：
 
 <Sandpack>
 
@@ -160,21 +160,19 @@ function Counter() {
 
 </Sandpack>
 
-As you can see, when one counter is updated, only the state for that component is updated:
-
+ご覧の通り、1つのカウンターが更新されると、そのコンポーネントの状態のみが更新されます：
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_increment" height={248} width={441} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. The left child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is labeled 'Counter' and contains a state bubble labeled 'count' with value 1. The state bubble of the right child is highlighted in yellow to indicate its value has updated.">
+<Diagram name="preserving_state_increment" height={248} width={441} alt="Reactコンポーネントのツリーの図。ルートノードは'div'とラベル付けされ、2つの子を持っています。左の子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。右の子は'Counter'とラベル付けされ、値1の'state'バブルを含んでいます。右の子の'state'バブルは、その値が更新されたことを示すために黄色でハイライトされています。">
 
-Updating state
+状態の更新
 
 </Diagram>
 
 </DiagramGroup>
 
-
-React will keep the state around for as long as you render the same component at the same position in the tree. To see this, increment both counters, then remove the second component by unchecking "Render the second counter" checkbox, and then add it back by ticking it again:
+Reactは、同じコンポーネントをツリー内の同じ位置にレンダリングしている限り、状態を保持します。これを確認するために、両方のカウンターをインクリメントし、次に「2番目のカウンターをレンダリングする」チェックボックスをオフにして2番目のコンポーネントを削除し、再度オンにして追加してください：
 
 <Sandpack>
 
@@ -248,35 +246,35 @@ label {
 
 </Sandpack>
 
-Notice how the moment you stop rendering the second counter, its state disappears completely. That's because when React removes a component, it destroys its state.
+2番目のカウンターのレンダリングを停止した瞬間に、その状態が完全に消えることに注意してください。これは、Reactがコンポーネントを削除すると、その状態を破棄するためです。
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_remove_component" height={253} width={422} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. The left child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is missing, and in its place is a yellow 'poof' image, highlighting the component being deleted from the tree.">
+<Diagram name="preserving_state_remove_component" height={253} width={422} alt="Reactコンポーネントのツリーの図。ルートノードは'div'とラベル付けされ、2つの子を持っています。左の子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。右の子は欠けており、その代わりに黄色の'poof'画像があり、コンポーネントがツリーから削除されたことを強調しています。">
 
-Deleting a component
+コンポーネントの削除
 
 </Diagram>
 
 </DiagramGroup>
 
-When you tick "Render the second counter", a second `Counter` and its state are initialized from scratch (`score = 0`) and added to the DOM.
+「2番目のカウンターをレンダリングする」をチェックすると、2番目の`Counter`とその状態が最初から初期化され（`score = 0`）、DOMに追加されます。
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_add_component" height={258} width={500} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. The left child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The entire right child node is highlighted in yellow, indicating that it was just added to the tree.">
+<Diagram name="preserving_state_add_component" height={258} width={500} alt="Reactコンポーネントのツリーの図。ルートノードは'div'とラベル付けされ、2つの子を持っています。左の子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。右の子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。右の子ノード全体が黄色でハイライトされており、ツリーに追加されたことを示しています。">
 
-Adding a component
+コンポーネントの追加
 
 </Diagram>
 
 </DiagramGroup>
 
-**React preserves a component's state for as long as it's being rendered at its position in the UI tree.** If it gets removed, or a different component gets rendered at the same position, React discards its state.
+**Reactは、UIツリー内の位置にレンダリングされている限り、コンポーネントの状態を保持します。** それが削除されるか、同じ位置に異なるコンポーネントがレンダリングされると、Reactはその状態を破棄します。
 
-## Same component at the same position preserves state {/*same-component-at-the-same-position-preserves-state*/}
+## 同じ位置にある同じコンポーネントは状態を保持する {/*same-component-at-the-same-position-preserves-state*/}
 
-In this example, there are two different `<Counter />` tags:
+この例では、2つの異なる`<Counter />`タグがあります：
 
 <Sandpack>
 
@@ -361,24 +359,23 @@ label {
 
 </Sandpack>
 
-When you tick or clear the checkbox, the counter state does not get reset. Whether `isFancy` is `true` or `false`, you always have a `<Counter />` as the first child of the `div` returned from the root `App` component:
+チェックボックスをオンまたはオフにすると、カウンターの状態はリセットされません。`isFancy`が`true`であろうと`false`であろうと、常にルート`App`コンポーネントから返される`div`の最初の子として`<Counter />`があります：
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_same_component" height={461} width={600} alt="Diagram with two sections separated by an arrow transitioning between them. Each section contains a layout of components with a parent labeled 'App' containing a state bubble labeled isFancy. This component has one child labeled 'div', which leads to a prop bubble containing isFancy (highlighted in purple) passed down to the only child. The last child is labeled 'Counter' and contains a state bubble with label 'count' and value 3 in both diagrams. In the left section of the diagram, nothing is highlighted and the isFancy parent state value is false. In the right section of the diagram, the isFancy parent state value has changed to true and it is highlighted in yellow, and so is the props bubble below, which has also changed its isFancy value to true.">
+<Diagram name="preserving_state_same_component" height={461} width={600} alt="2つのセクションが矢印で区切られた図。各セクションには、親が'isFancy'という状態バブルを持つ'App'とラベル付けされたコンポーネントのレイアウトが含まれています。このコンポーネントには1つの子があり、'div'とラベル付けされ、その下に'isFancy'（紫色でハイライト）というプロップバブルが渡されます。最後の子は'Counter'とラベル付けされ、両方の図で値3の'state'バブルを含んでいます。左のセクションでは、何もハイライトされておらず、親のisFancy状態値はfalseです。右のセクションでは、親のisFancy状態値がtrueに変わり、黄色でハイライトされています。">
 
-Updating the `App` state does not reset the `Counter` because `Counter` stays in the same position
+`App`の状態を更新しても、`Counter`は同じ位置にあるためリセットされません
 
 </Diagram>
 
 </DiagramGroup>
 
-
-It's the same component at the same position, so from React's perspective, it's the same counter.
+同じ位置にある同じコンポーネントなので、Reactの視点からは同じカウンターです。
 
 <Pitfall>
 
-Remember that **it's the position in the UI tree--not in the JSX markup--that matters to React!** This component has two `return` clauses with different `<Counter />` JSX tags inside and outside the `if`:
+**Reactにとって重要なのは、JSXマークアップ内の位置ではなく、UIツリー内の位置です！** このコンポーネントには、`if`の内外に異なる`<Counter />` JSXタグを持つ2つの`return`句があります：
 
 <Sandpack>
 
@@ -476,15 +473,15 @@ label {
 
 </Sandpack>
 
-You might expect the state to reset when you tick checkbox, but it doesn't! This is because **both of these `<Counter />` tags are rendered at the same position.** React doesn't know where you place the conditions in your function. All it "sees" is the tree you return.
+チェックボックスをオンにすると状態がリセットされると予想するかもしれませんが、そうではありません！ これは、**これらの`<Counter />`タグが同じ位置にレンダリングされているためです。** Reactは関数内の条件の配置場所を認識しません。Reactが「見る」のは返されるツリーだけです。
 
-In both cases, the `App` component returns a `<div>` with `<Counter />` as a first child. To React, these two counters have the same "address": the first child of the first child of the root. This is how React matches them up between the previous and next renders, regardless of how you structure your logic.
+どちらの場合も、`App`コンポーネントは最初の子として`<Counter />`を持つ`<div>`を返します。Reactにとって、これらの2つのカウンターは同じ「アドレス」を持っています：ルートの最初の子の最初の子です。これが、前回のレンダリングと次回のレンダリングの間でそれらを一致させる方法です。ロジックの構造に関係なく。
 
 </Pitfall>
 
-## Different components at the same position reset state {/*different-components-at-the-same-position-reset-state*/}
+## 同じ位置にある異なるコンポーネントは状態をリセットする {/*different-components-at-the-same-position-reset-state*/}
 
-In this example, ticking the checkbox will replace `<Counter>` with a `<p>`:
+この例では、チェックボックスをオンにすると`<Counter>`が`<p>`に置き換わります：
 
 <Sandpack>
 
@@ -546,7 +543,8 @@ label {
 
 .counter {
   width: 100px;
-  text-align: center;
+  text
+-align: center;
   border: 1px solid gray;
   border-radius: 4px;
   padding: 20px;
@@ -561,13 +559,13 @@ label {
 
 </Sandpack>
 
-Here, you switch between _different_ component types at the same position. Initially, the first child of the `<div>` contained a `Counter`. But when you swapped in a `p`, React removed the `Counter` from the UI tree and destroyed its state.
+ここでは、同じ位置に異なるコンポーネントタイプを切り替えています。最初は、`<div>`の最初の子に`Counter`が含まれていました。しかし、`p`を挿入すると、Reactは`Counter`をUIツリーから削除し、その状態を破棄します。
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_pt1" height={290} width={753} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'Counter' containing a state bubble labeled 'count' with value 3. The middle section has the same 'div' parent, but the child component has now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'p', highlighted in yellow.">
+<Diagram name="preserving_state_diff_pt1" height={290} width={753} alt="Reactコンポーネントのツリーの図。最初のセクションには、'div'とラベル付けされたReactコンポーネントがあり、1つの子があり、'Counter'とラベル付けされ、値3の'state'バブルを含んでいます。中央のセクションでは、同じ'div'親がありますが、子コンポーネントは削除され、黄色の'poof'画像で示されています。最後のセクションでは、同じ'div'親があり、新しい子が追加され、黄色でハイライトされています。新しい子は'p'とラベル付けされています。">
 
-When `Counter` changes to `p`, the `Counter` is deleted and the `p` is added
+`Counter`が`p`に変わると、`Counter`が削除され、`p`が追加されます
 
 </Diagram>
 
@@ -575,15 +573,15 @@ When `Counter` changes to `p`, the `Counter` is deleted and the `p` is added
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_pt2" height={290} width={753} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'p'. The middle section has the same 'div' parent, but the child component has now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, highlighted in yellow.">
+<Diagram name="preserving_state_diff_pt2" height={290} width={753} alt="Reactコンポーネントのツリーの図。最初のセクションには、'p'とラベル付けされたReactコンポーネントがあります。中央のセクションでは、同じ'div'親がありますが、子コンポーネントは削除され、黄色の'poof'画像で示されています。最後のセクションでは、同じ'div'親があり、新しい子が追加され、黄色でハイライトされています。新しい子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。">
 
-When switching back, the `p` is deleted and the `Counter` is added
+切り替えると、`p`が削除され、`Counter`が追加されます
 
 </Diagram>
 
 </DiagramGroup>
 
-Also, **when you render a different component in the same position, it resets the state of its entire subtree.** To see how this works, increment the counter and then tick the checkbox:
+また、**同じ位置に異なるコンポーネントをレンダリングすると、そのサブツリー全体の状態がリセットされます。** これがどのように機能するかを見るために、カウンターをインクリメントしてからチェックボックスをオンにしてください：
 
 <Sandpack>
 
@@ -672,13 +670,13 @@ label {
 
 </Sandpack>
 
-The counter state gets reset when you click the checkbox. Although you render a `Counter`, the first child of the `div` changes from a `div` to a `section`. When the child `div` was removed from the DOM, the whole tree below it (including the `Counter` and its state) was destroyed as well.
+チェックボックスをクリックすると、カウンターの状態がリセットされます。`Counter`をレンダリングしているにもかかわらず、`div`の最初の子が`div`から`section`に変わります。子の`div`がDOMから削除されると、その下のツリー全体（`Counter`とその状態を含む）が破壊されます。
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_same_pt1" height={350} width={794} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'section', which has a single child labeled 'Counter' containing a state bubble labeled 'count' with value 3. The middle section has the same 'div' parent, but the child components have now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'div', highlighted in yellow, also with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, all highlighted in yellow.">
+<Diagram name="preserving_state_diff_same_pt1" height={350} width={794} alt="Reactコンポーネントのツリーの図。最初のセクションには、'div'とラベル付けされたReactコンポーネントがあり、1つの子があり、'section'とラベル付けされ、その中に'Counter'があり、値3の'state'バブルを含んでいます。中央のセクションでは、同じ'div'親がありますが、子コンポーネントは削除され、黄色の'poof'画像で示されています。最後のセクションでは、同じ'div'親があり、新しい子が追加され、黄色でハイライトされています。新しい子は'div'とラベル付けされ、その中に'Counter'があり、値0の'state'バブルを含んでいます。">
 
-When `section` changes to `div`, the `section` is deleted and the new `div` is added
+`section`が`div`に変わると、`section`が削除され、新しい`div`が追加されます
 
 </Diagram>
 
@@ -686,21 +684,21 @@ When `section` changes to `div`, the `section` is deleted and the new `div` is a
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_same_pt2" height={350} width={794} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'div', which has a single child labeled 'Counter' containing a state bubble labeled 'count' with value 0. The middle section has the same 'div' parent, but the child components have now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'section', highlighted in yellow, also with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, all highlighted in yellow.">
+<Diagram name="preserving_state_diff_same_pt2" height={350} width={794} alt="Reactコンポーネントのツリーの図。最初のセクションには、'div'とラベル付けされたReactコンポーネントがあり、1つの子があり、'div'とラベル付けされ、その中に'Counter'があり、値0の'state'バブルを含んでいます。中央のセクションでは、同じ'div'親がありますが、子コンポーネントは削除され、黄色の'poof'画像で示されています。最後のセクションでは、同じ'div'親があり、新しい子が追加され、黄色でハイライトされています。新しい子は'section'とラベル付けされ、その中に'Counter'があり、値0の'state'バブルを含んでいます。">
 
-When switching back, the `div` is deleted and the new `section` is added
+切り替えると、`div`が削除され、新しい`section`が追加されます
 
 </Diagram>
 
 </DiagramGroup>
 
-As a rule of thumb, **if you want to preserve the state between re-renders, the structure of your tree needs to "match up"** from one render to another. If the structure is different, the state gets destroyed because React destroys state when it removes a component from the tree.
+経験則として、**再レンダリング間で状態を保持したい場合、ツリーの構造が一致する必要があります。** 構造が異なる場合、Reactはコンポーネントをツリーから削除すると状態を破棄するため、状態が破壊されます。
 
 <Pitfall>
 
-This is why you should not nest component function definitions.
+これが、コンポーネント関数の定義をネストしない理由です。
 
-Here, the `MyTextField` component function is defined *inside* `MyComponent`:
+ここでは、`MyTextField`コンポーネント関数が`MyComponent`の内部に定義されています：
 
 <Sandpack>
 
@@ -734,14 +732,13 @@ export default function MyComponent() {
 
 </Sandpack>
 
-
-Every time you click the button, the input state disappears! This is because a *different* `MyTextField` function is created for every render of `MyComponent`. You're rendering a *different* component in the same position, so React resets all state below. This leads to bugs and performance problems. To avoid this problem, **always declare component functions at the top level, and don't nest their definitions.**
+ボタンをクリックするたびに、入力状態が消えます！ これは、`MyComponent`の各レンダリングに対して異なる`MyTextField`関数が作成されるためです。同じ位置に異なるコンポーネントをレンダリングしているため、Reactはその下のすべての状態をリセットします。これによりバグやパフォーマンスの問題が発生します。この問題を回避するために、**常にコンポーネント関数をトップレベルで宣言し、その定義をネストしないでください。**
 
 </Pitfall>
 
-## Resetting state at the same position {/*resetting-state-at-the-same-position*/}
+## 同じ位置で状態をリセットする {/*resetting-state-at-the-same-position*/}
 
-By default, React preserves state of a component while it stays at the same position. Usually, this is exactly what you want, so it makes sense as the default behavior. But sometimes, you may want to reset a component's state. Consider this app that lets two players keep track of their scores during each turn:
+デフォルトでは、Reactは同じ位置にあるコンポーネントの状態を保持します。通常、これはまさに望むものであり、デフォルトの動作として理にかなっています。しかし、時にはコンポーネントの状態をリセットしたい場合もあります。このアプリでは、2人のプレイヤーが各ターンのスコアを追跡できます：
 
 <Sandpack>
 
@@ -811,19 +808,18 @@ h1 {
 
 </Sandpack>
 
-Currently, when you change the player, the score is preserved. The two `Counter`s appear in the same position, so React sees them as *the same* `Counter` whose `person` prop has changed.
+現在、プレイヤーを変更するとスコアが保持されます。2つの`Counter`は同じ位置に表示されるため、Reactはそれらを*同じ*`Counter`と見なし、その`person`プロップが変更されたと認識します。
 
-But conceptually, in this app they should be two separate counters. They might appear in the same place in the UI, but one is a counter for Taylor, and another is a counter for Sarah.
+しかし、このアプリでは概念的には2つの別々のカウンターであるべきです。UIの同じ場所に表示されるかもしれませんが、1つはTaylorのカウンターであり、もう1つはSarahのカウンターです。
 
-There are two ways to reset state when switching between them:
+それらを切り替えるときに状態をリセットする方法は2つあります：
 
-1. Render components in different positions
-2. Give each component an explicit identity with `key`
+1. 異なる位置にコンポーネントをレンダリングする
+2. 各コンポーネントに`key`を使って明示的な識別子を与える
 
+### オプション1: 異なる位置にコンポーネントをレンダリングする {/*option-1-rendering-a-component-in-different-positions*/}
 
-### Option 1: Rendering a component in different positions {/*option-1-rendering-a-component-in-different-positions*/}
-
-If you want these two `Counter`s to be independent, you can render them in two different positions:
+これらの2つの`Counter`を独立させたい場合は、異なる位置にレンダリングできます：
 
 <Sandpack>
 
@@ -894,42 +890,42 @@ h1 {
 
 </Sandpack>
 
-* Initially, `isPlayerA` is `true`. So the first position contains `Counter` state, and the second one is empty.
-* When you click the "Next player" button the first position clears but the second one now contains a `Counter`.
+* 最初は、`isPlayerA`が`true`です。したがって、最初の位置には`Counter`の状態があり、2番目の位置は空です。
+* 「Next player」ボタンをクリックすると、最初の位置がクリアされ、2番目の位置に`Counter`が表示されます。
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_position_p1" height={375} width={504} alt="Diagram with a tree of React components. The parent is labeled 'Scoreboard' with a state bubble labeled isPlayerA with value 'true'. The only child, arranged to the left, is labeled Counter with a state bubble labeled 'count' and value 0. All of the left child is highlighted in yellow, indicating it was added.">
+<Diagram name="preserving_state_diff_position_p1" height={375} width={504} alt="Reactコンポーネントのツリーの図。親は'Scoreboard'とラベル付けされ、'isPlayerA'という状態バブルを持っています。唯一の子は左に配置され、'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。左の子全体が黄色でハイライトされ、追加されたことを示しています。">
 
-Initial state
-
-</Diagram>
-
-<Diagram name="preserving_state_diff_position_p2" height={375} width={504} alt="Diagram with a tree of React components. The parent is labeled 'Scoreboard' with a state bubble labeled isPlayerA with value 'false'. The state bubble is highlighted in yellow, indicating that it has changed. The left child is replaced with a yellow 'poof' image indicating that it has been deleted and there is a new child on the right, highlighted in yellow indicating that it was added. The new child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0.">
-
-Clicking "next"
+初期状態
 
 </Diagram>
 
-<Diagram name="preserving_state_diff_position_p3" height={375} width={504} alt="Diagram with a tree of React components. The parent is labeled 'Scoreboard' with a state bubble labeled isPlayerA with value 'true'. The state bubble is highlighted in yellow, indicating that it has changed. There is a new child on the left, highlighted in yellow indicating that it was added. The new child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is replaced with a yellow 'poof' image indicating that it has been deleted.">
+<Diagram name="preserving_state_diff_position_p2" height={375} width={504} alt="Reactコンポーネントのツリーの図。親は'Scoreboard'とラベル付けされ、'isPlayerA'という状態バブルを持っています。状態バブルは黄色でハイライトされ、変更されたことを示しています。左の子は黄色の'poof'画像で置き換えられ、削除されたことを示しています。右には新しい子があり、黄色でハイライトされ、追加されたことを示しています。新しい子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。">
 
-Clicking "next" again
+「Next」をクリック
+
+</Diagram>
+
+<Diagram name="preserving_state_diff_position_p3" height={375} width={504} alt="Reactコンポーネントのツリーの図。親は'Scoreboard'とラベル付けされ、'isPlayerA'という状態バブルを持っています。状態バブルは黄色でハイライトされ、変更されたことを示しています。左には新しい子があり、黄色でハイライトされ、追加されたことを示しています。新しい子は'Counter'とラベル付けされ、値0の'state'バブルを含んでいます。右の子は黄色の'poof'画像で置き換えられ、削除されたことを示しています。">
+
+再度「Next」をクリック
 
 </Diagram>
 
 </DiagramGroup>
 
-Each `Counter`'s state gets destroyed each time it's removed from the DOM. This is why they reset every time you click the button.
+各`Counter`の状態は、DOMから削除されるたびに破壊されます。これが、ボタンをクリックするたびにリセットされる理由です。
 
-This solution is convenient when you only have a few independent components rendered in the same place. In this example, you only have two, so it's not a hassle to render both separately in the JSX.
+この解決策は、同じ場所にレンダリングされる独立したコンポーネントが少数しかない場合に便利です。この例では、2つしかないため、JSXでそれぞれを別々にレンダリングするのは手間ではありません。
 
-### Option 2: Resetting state with a key {/*option-2-resetting-state-with-a-key*/}
+### オプション2: `key`を使って状態をリセットする {/*option-2-resetting-state-with-a-key*/}
 
-There is also another, more generic, way to reset a component's state.
+状態をリセットするためのもう1つの汎用的な方法もあります。
 
-You might have seen `key`s when [rendering lists.](/learn/rendering-lists#keeping-list-items-in-order-with-key) Keys aren't just for lists! You can use keys to make React distinguish between any components. By default, React uses order within the parent ("first counter", "second counter") to discern between components. But keys let you tell React that this is not just a *first* counter, or a *second* counter, but a specific counter--for example, *Taylor's* counter. This way, React will know *Taylor's* counter wherever it appears in the tree!
+リストをレンダリングする際に`key`を見たことがあるかもしれません。[リストをレンダリングする際に](/learn/rendering-lists#keeping-list-items-in-order-with-key) キーはリストだけのものではありません！ キーを使ってReactに任意のコンポーネントを区別させることができます。デフォルトでは、Reactは親内の順序（「最初のカウンター」、「2番目のカウンター」）を使ってコンポーネントを区別します。しかし、キーを使うことで、これは単なる*最初の*カウンターや*2番目の*カウンターではなく、特定のカウンター、例えば*Taylorの*カウンターであることをReactに伝えることができます。このようにして、Reactはツリー内のどこに現れても*Taylorの*カウンターを認識します！
 
-In this example, the two `<Counter />`s don't share state even though they appear in the same place in JSX:
+この例では、2つの`<Counter />`は同じ場所に表示されても状態を共有しません：
 
 <Sandpack>
 
@@ -956,7 +952,8 @@ export default function Scoreboard() {
 
 function Counter({ person }) {
   const [score, setScore] = useState(0);
-  const [hover, setHover] = useState(false);
+  const [
+hover, setHover] = useState(false);
 
   let className = 'counter';
   if (hover) {
@@ -999,7 +996,7 @@ h1 {
 
 </Sandpack>
 
-Switching between Taylor and Sarah does not preserve the state. This is because **you gave them different `key`s:**
+TaylorとSarahを切り替えると、状態は保持されません。これは、**異なる`key`を与えたためです：**
 
 ```js
 {isPlayerA ? (
@@ -1009,19 +1006,19 @@ Switching between Taylor and Sarah does not preserve the state. This is because 
 )}
 ```
 
-Specifying a `key` tells React to use the `key` itself as part of the position, instead of their order within the parent. This is why, even though you render them in the same place in JSX, React sees them as two different counters, and so they will never share state. Every time a counter appears on the screen, its state is created. Every time it is removed, its state is destroyed. Toggling between them resets their state over and over.
+`key`を指定することで、Reactに位置の一部として`key`自体を使用するように指示します。これにより、JSX内で同じ場所にレンダリングされても、Reactはそれらを2つの異なるカウンターとして認識し、状態を共有することはありません。カウンターが画面に表示されるたびに、その状態が作成されます。削除されるたびに、その状態が破壊されます。切り替えるたびに状態がリセットされます。
 
 <Note>
 
-Remember that keys are not globally unique. They only specify the position *within the parent*.
+キーはグローバルに一意ではないことを覚えておいてください。キーは親内の位置を指定するだけです。
 
 </Note>
 
-### Resetting a form with a key {/*resetting-a-form-with-a-key*/}
+### フォームをキーでリセットする {/*resetting-a-form-with-a-key*/}
 
-Resetting state with a key is particularly useful when dealing with forms.
+キーを使って状態をリセットすることは、フォームを扱う際に特に便利です。
 
-In this chat app, the `<Chat>` component contains the text input state:
+このチャットアプリでは、`<Chat>`コンポーネントがテキスト入力の状態を含んでいます：
 
 <Sandpack>
 
@@ -1116,17 +1113,17 @@ textarea {
 
 </Sandpack>
 
-Try entering something into the input, and then press "Alice" or "Bob" to choose a different recipient. You will notice that the input state is preserved because the `<Chat>` is rendered at the same position in the tree.
+入力に何かを入力してから、別の受信者を選択するために「Alice」や「Bob」を押してみてください。入力状態が保持されることに気付くでしょう。これは、`<Chat>`がツリー内の同じ位置にレンダリングされているためです。
 
-**In many apps, this may be the desired behavior, but not in a chat app!** You don't want to let the user send a message they already typed to a wrong person due to an accidental click. To fix it, add a `key`:
+**多くのアプリでは、これは望ましい動作かもしれませんが、チャットアプリではそうではありません！** ユーザーが誤ってクリックしたために、既に入力したメッセージを間違った人に送信することを防ぎたいのです。これを修正するために、`key`を追加します：
 
 ```js
 <Chat key={to.id} contact={to} />
 ```
 
-This ensures that when you select a different recipient, the `Chat` component will be recreated from scratch, including any state in the tree below it. React will also re-create the DOM elements instead of reusing them.
+これにより、異なる受信者を選択すると、`Chat`コンポーネントが最初から再作成され、その下のツリー内の状態も含まれます。ReactはDOM要素も再作成し、再利用しません。
 
-Now switching the recipient always clears the text field:
+これで、受信者を切り替えると常にテキストフィールドがクリアされます：
 
 <Sandpack>
 
@@ -1223,34 +1220,32 @@ textarea {
 
 <DeepDive>
 
-#### Preserving state for removed components {/*preserving-state-for-removed-components*/}
+#### 削除されたコンポーネントの状態を保持する {/*preserving-state-for-removed-components*/}
 
-In a real chat app, you'd probably want to recover the input state when the user selects the previous recipient again. There are a few ways to keep the state "alive" for a component that's no longer visible:
+実際のチャットアプリでは、ユーザーが以前の受信者を再選択したときに入力状態を回復したいと思うでしょう。表示されなくなったコンポーネントの状態を「生かしておく」方法はいくつかあります：
 
-- You could render _all_ chats instead of just the current one, but hide all the others with CSS. The chats would not get removed from the tree, so their local state would be preserved. This solution works great for simple UIs. But it can get very slow if the hidden trees are large and contain a lot of DOM nodes.
-- You could [lift the state up](/learn/sharing-state-between-components) and hold the pending message for each recipient in the parent component. This way, when the child components get removed, it doesn't matter, because it's the parent that keeps the important information. This is the most common solution.
-- You might also use a different source in addition to React state. For example, you probably want a message draft to persist even if the user accidentally closes the page. To implement this, you could have the `Chat` component initialize its state by reading from the [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), and save the drafts there too.
+- すべてのチャットをレンダリングし、CSSで他のすべてを非表示にすることができます。チャットはツリーから削除されないため、そのローカル状態は保持されます。この解決策はシンプルなUIに最適です。しかし、非表示のツリーが大きく、DOMノードが多い場合は非常に遅くなる可能性があります。
+- 状態を上に持ち上げ、各受信者の保留中のメッセージを親コンポーネントに保持することができます。この方法では、子コンポーネントが削除されても重要な情報は親が保持しているため問題ありません。これが最も一般的な解決策です。
+- Reactの状態に加えて別のソースを使用することもできます。例えば、ユーザーがページを誤って閉じてもメッセージの下書きを保持したい場合があります。これを実装するには、`Chat`コンポーネントが[`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)から読み取って状態を初期化し、下書きをそこに保存することができます。
 
-No matter which strategy you pick, a chat _with Alice_ is conceptually distinct from a chat _with Bob_, so it makes sense to give a `key` to the `<Chat>` tree based on the current recipient.
+どの戦略を選んでも、AliceとのチャットはBobとのチャットとは概念的に異なるため、現在の受信者に基づいて`<Chat>`ツリーにキーを与えることが理にかなっています。
 
 </DeepDive>
 
 <Recap>
 
-- React keeps state for as long as the same component is rendered at the same position.
-- State is not kept in JSX tags. It's associated with the tree position in which you put that JSX.
-- You can force a subtree to reset its state by giving it a different key.
-- Don't nest component definitions, or you'll reset state by accident.
+- Reactは、同じコンポーネントが同じ位置にレンダリングされている限り、状態を保持します。
+- 状態はJSXタグに保持されていません。それを配置したツリーの位置に関連付けられています。
+- 異なるキーを与えることで、サブツリーの状態をリセットできます。
+- コンポーネント定義をネストしないでください。そうしないと、状態が誤ってリセットされます。
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Fix disappearing input text {/*fix-disappearing-input-text*/}
+#### 消える入力テキストを修正する {/*fix-disappearing-input-text*/}
 
-This example shows a message when you press the button. However, pressing the button also accidentally resets the input. Why does this happen? Fix it so that pressing the button does not reset the input text.
+この例では、ボタンを押すとメッセージが表示されます。しかし、ボタンを押すと入力も誤ってリセットされます。なぜこれが起こるのでしょうか？ボタンを押しても入力テキストがリセットされないように修正してください。
 
 <Sandpack>
 
@@ -1299,9 +1294,9 @@ textarea { display: block; margin: 10px 0; }
 
 <Solution>
 
-The problem is that `Form` is rendered in different positions. In the `if` branch, it is the second child of the `<div>`, but in the `else` branch, it is the first child. Therefore, the component type in each position changes. The first position changes between holding a `p` and a `Form`, while the second position changes between holding a `Form` and a `button`. React resets the state every time the component type changes.
+問題は、`Form`が異なる位置にレンダリングされていることです。`if`ブランチでは、`<div>`の2番目の子ですが、`else`ブランチでは最初の子です。したがって、各位置のコンポーネントタイプが変わります。最初の位置は`p`と`Form`の間で変わり、2番目の位置は`Form`と`button`の間で変わります。Reactはコンポーネントタイプが変わるたびに状態をリセットします。
 
-The easiest solution is to unify the branches so that `Form` always renders in the same position:
+最も簡単な解決策は、ブランチを統一して`Form`が常に同じ位置にレンダリングされるようにすることです：
 
 <Sandpack>
 
@@ -1346,8 +1341,7 @@ textarea { display: block; margin: 10px 0; }
 
 </Sandpack>
 
-
-Technically, you could also add `null` before `<Form />` in the `else` branch to match the `if` branch structure:
+技術的には、`else`ブランチに`<Form />`の前に`null`を追加して`if`ブランチの構造に一致させることもできます：
 
 <Sandpack>
 
@@ -1395,19 +1389,19 @@ textarea { display: block; margin: 10px 0; }
 
 </Sandpack>
 
-This way, `Form` is always the second child, so it stays in the same position and keeps its state. But this approach is much less obvious and introduces a risk that someone else will remove that `null`.
+この方法では、`Form`が常に2番目の子であるため、同じ位置に留まり、その状態を保持します。しかし、このアプローチはあまり明白ではなく、他の誰かがその`null`を削除するリスクがあります。
 
 </Solution>
 
-#### Swap two form fields {/*swap-two-form-fields*/}
+#### 2つのフォームフィールドを入れ替える {/*swap-two-form-fields*/}
 
-This form lets you enter first and last name. It also has a checkbox controlling which field goes first. When you tick the checkbox, the "Last name" field will appear before the "First name" field.
+このフォームでは、名前と姓を入力できます。また、どのフィールドが最初に表示されるかを制御するチェックボックスがあります。チェックボックスをオンにすると、「姓」フィールドが「名前」フィールドの前に表示されます。
 
-It almost works, but there is a bug. If you fill in the "First name" input and tick the checkbox, the text will stay in the first input (which is now "Last name"). Fix it so that the input text *also* moves when you reverse the order.
+ほぼ動作しますが、バグがあります。「名前」入力に入力してからチェックボックスをオンにすると、テキストが最初の入力（現在は「姓」）に残ります。順序を逆にするときに入力テキストも移動するように修正してください。
 
 <Hint>
 
-It seems like for these fields, their position within the parent is not enough. Is there some way to tell React how to match up the state between re-renders?
+これらのフィールドにとって、親内の位置だけでは不十分なようです。再レンダリング間で状態を一致させる方法はありますか？
 
 </Hint>
 
@@ -1471,7 +1465,7 @@ label { display: block; margin: 10px 0; }
 
 <Solution>
 
-Give a `key` to both `<Field>` components in both `if` and `else` branches. This tells React how to "match up" the correct state for either `<Field>` even if their order within the parent changes:
+両方の`<Field>`コンポーネントに`key`を与えます。これにより、親内の順序が変わっても、Reactが各`<Field>`の正しい状態を「一致させる」方法を指示します：
 
 <Sandpack>
 
@@ -1533,11 +1527,11 @@ label { display: block; margin: 10px 0; }
 
 </Solution>
 
-#### Reset a detail form {/*reset-a-detail-form*/}
+#### 詳細フォームをリセットする {/*reset-a-detail-form*/}
 
-This is an editable contact list. You can edit the selected contact's details and then either press "Save" to update it, or "Reset" to undo your changes.
+これは編集可能な連絡先リストです。選択した連絡先の詳細を編集し、「保存」を押して更新するか、「リセット」を押して変更を元に戻すことができます。
 
-When you select a different contact (for example, Alice), the state updates but the form keeps showing the previous contact's details. Fix it so that the form gets reset when the selected contact changes.
+異なる連絡先（例えば、Alice）を選択すると、状態は更新されますが、フォームには前の連絡先の詳細が表示されたままです。選択した連絡先が変更されたときにフォームがリセットされるように修正してください。
 
 <Sandpack>
 
@@ -1689,7 +1683,7 @@ button {
 
 <Solution>
 
-Give `key={selectedId}` to the `EditContact` component. This way, switching between different contacts will reset the form:
+`EditContact`コンポーネントに`key={selectedId}`を与えます。これにより、異なる連絡先に切り替えるとフォームがリセットされます：
 
 <Sandpack>
 
@@ -1842,13 +1836,13 @@ button {
 
 </Solution>
 
-#### Clear an image while it's loading {/*clear-an-image-while-its-loading*/}
+#### 画像の読み込み中にクリアする {/*clear-an-image-while-its-loading*/}
 
-When you press "Next", the browser starts loading the next image. However, because it's displayed in the same `<img>` tag, by default you would still see the previous image until the next one loads. This may be undesirable if it's important for the text to always match the image. Change it so that the moment you press "Next", the previous image immediately clears.
+「Next」を押すと、ブラウザは次の画像の読み込みを開始します。しかし、同じ`<img>`タグに表示されるため、デフォルトでは次の画像が読み込まれるまで前の画像が表示されたままです。テキストが常に画像と一致することが重要な場合、これは望ましくないかもしれません。「Next」を押した瞬間に前の画像がすぐにクリアされるように変更してください。
 
 <Hint>
 
-Is there a way to tell React to re-create the DOM instead of reusing it?
+ReactにDOMを再利用せずに再作成するように指示する方法はありますか？
 
 </Hint>
 
@@ -1918,7 +1912,7 @@ img { width: 150px; height: 150px; }
 
 <Solution>
 
-You can provide a `key` to the `<img>` tag. When that `key` changes, React will re-create the `<img>` DOM node from scratch. This causes a brief flash when each image loads, so it's not something you'd want to do for every image in your app. But it makes sense if you want to ensure the image always matches the text.
+`<img>`タグに`key`を提供できます。その`key`が変わると、Reactは`<img>` DOMノードを最初から再作成します。これにより、各画像が読み込まれるときに一瞬のフラッシュが発生するため、アプリ内のすべての画像に対して行うことはお勧めしません。しかし、画像が常にテキストと一致することを保証したい場合には理にかなっています。
 
 <Sandpack>
 
@@ -1986,11 +1980,11 @@ img { width: 150px; height: 150px; }
 
 </Solution>
 
-#### Fix misplaced state in the list {/*fix-misplaced-state-in-the-list*/}
+#### リスト内の誤った状態を修正する {/*fix-misplaced-state-in-the-list*/}
 
-In this list, each `Contact` has state that determines whether "Show email" has been pressed for it. Press "Show email" for Alice, and then tick the "Show in reverse order" checkbox. You will notice that it's _Taylor's_ email that is expanded now, but Alice's--which has moved to the bottom--appears collapsed.
+このリストでは、各`Contact`には「Show email」が押されたかどうかを決定する状態があります。Aliceの「Show email」を押してから「Show in reverse order」チェックボックスをオンにすると、今度はTaylorのメールが展開され、Aliceのメールは折りたたまれたままです。
 
-Fix it so that the expanded state is associated with each contact, regardless of the chosen ordering.
+選択した順序に関係なく、展開状態が各連絡先に関連付けられるように修正してください。
 
 <Sandpack>
 
@@ -2080,16 +2074,16 @@ button {
 
 <Solution>
 
-The problem is that this example was using index as a `key`:
+問題は、この例がインデックスを`key`として使用していたことです：
 
 ```js
 {displayedContacts.map((contact, i) =>
   <li key={i}>
 ```
 
-However, you want the state to be associated with _each particular contact_.
+しかし、状態を各連絡先に関連付けたいのです。
 
-Using the contact ID as a `key` instead fixes the issue:
+連絡先IDを`key`として使用することで問題が解決します：
 
 <Sandpack>
 
@@ -2177,7 +2171,7 @@ button {
 
 </Sandpack>
 
-State is associated with the tree position. A `key` lets you specify a named position instead of relying on order.
+状態はツリーの位置に関連付けられています。`key`を使用すると、順序に依存せずに名前付きの位置を指定できます。
 
 </Solution>
 

@@ -1,49 +1,49 @@
 ---
-title: Server React DOM APIs
+title: サーバー React DOM API
 ---
 
 <Intro>
 
-The `react-dom/server` APIs let you render React components to HTML on the server. These APIs are only used on the server at the top level of your app to generate the initial HTML. A [framework](/learn/start-a-new-react-project#production-grade-react-frameworks) may call them for you. Most of your components don't need to import or use them.
+`react-dom/server` APIは、サーバー上でReactコンポーネントをHTMLにレンダリングすることを可能にします。これらのAPIは、アプリのトップレベルで初期HTMLを生成するためにのみサーバー上で使用されます。[フレームワーク](/learn/start-a-new-react-project#production-grade-react-frameworks)がこれらを呼び出すことがあります。ほとんどのコンポーネントはこれらをインポートしたり使用したりする必要はありません。
 
 </Intro>
 
 ---
 
-## Server APIs for Node.js Streams {/*server-apis-for-nodejs-streams*/}
+## Node.js Streams用のサーバーAPI {/*server-apis-for-nodejs-streams*/}
 
-These methods are only available in the environments with [Node.js Streams:](https://nodejs.org/api/stream.html)
+これらのメソッドは、[Node.js Streams:](https://nodejs.org/api/stream.html)がある環境でのみ利用可能です。
 
-* [`renderToPipeableStream`](/reference/react-dom/server/renderToPipeableStream) renders a React tree to a pipeable [Node.js Stream.](https://nodejs.org/api/stream.html)
-* [`renderToStaticNodeStream`](/reference/react-dom/server/renderToStaticNodeStream) renders a non-interactive React tree to a [Node.js Readable Stream.](https://nodejs.org/api/stream.html#readable-streams)
-
----
-
-## Server APIs for Web Streams {/*server-apis-for-web-streams*/}
-
-These methods are only available in the environments with [Web Streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API), which includes browsers, Deno, and some modern edge runtimes:
-
-* [`renderToReadableStream`](/reference/react-dom/server/renderToReadableStream) renders a React tree to a [Readable Web Stream.](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
+* [`renderToPipeableStream`](/reference/react-dom/server/renderToPipeableStream) は、Reactツリーをパイプ可能な[Node.js Stream](https://nodejs.org/api/stream.html)にレンダリングします。
+* [`renderToStaticNodeStream`](/reference/react-dom/server/renderToStaticNodeStream) は、非インタラクティブなReactツリーを[Node.js Readable Stream](https://nodejs.org/api/stream.html#readable-streams)にレンダリングします。
 
 ---
 
-## Server APIs for non-streaming environments {/*server-apis-for-non-streaming-environments*/}
+## Web Streams用のサーバーAPI {/*server-apis-for-web-streams*/}
 
-These methods can be used in the environments that don't support streams:
+これらのメソッドは、ブラウザ、Deno、および一部の最新のエッジランタイムを含む[Web Streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API)がある環境でのみ利用可能です。
 
-* [`renderToString`](/reference/react-dom/server/renderToString) renders a React tree to a string.
-* [`renderToStaticMarkup`](/reference/react-dom/server/renderToStaticMarkup) renders a non-interactive React tree to a string.
-
-They have limited functionality compared to the streaming APIs.
+* [`renderToReadableStream`](/reference/react-dom/server/renderToReadableStream) は、Reactツリーを[Readable Web Stream](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)にレンダリングします。
 
 ---
 
-## Deprecated server APIs {/*deprecated-server-apis*/}
+## ストリーミングをサポートしない環境用のサーバーAPI {/*server-apis-for-non-streaming-environments*/}
+
+これらのメソッドは、ストリームをサポートしない環境で使用できます。
+
+* [`renderToString`](/reference/react-dom/server/renderToString) は、Reactツリーを文字列にレンダリングします。
+* [`renderToStaticMarkup`](/reference/react-dom/server/renderToStaticMarkup) は、非インタラクティブなReactツリーを文字列にレンダリングします。
+
+これらは、ストリーミングAPIと比較して機能が制限されています。
+
+---
+
+## 廃止予定のサーバーAPI {/*deprecated-server-apis*/}
 
 <Deprecated>
 
-These APIs will be removed in a future major version of React.
+これらのAPIは、将来のReactのメジャーバージョンで削除される予定です。
 
 </Deprecated>
 
-* [`renderToNodeStream`](/reference/react-dom/server/renderToNodeStream) renders a React tree to a [Node.js Readable stream.](https://nodejs.org/api/stream.html#readable-streams) (Deprecated.)
+* [`renderToNodeStream`](/reference/react-dom/server/renderToNodeStream) は、Reactツリーを[Node.js Readable stream](https://nodejs.org/api/stream.html#readable-streams)にレンダリングします。（廃止予定）

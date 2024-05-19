@@ -1,57 +1,57 @@
 ---
-title: React Compiler
+title: React 컴파일러
 ---
 
 <Intro>
-This page will give you an introduction to the new experimental React Compiler and how to try it out successfully.
+이 페이지는 새로운 실험적인 React Compiler와 이를 성공적으로 시도하는 방법에 대한 소개를 제공합니다.
 </Intro>
 
 <Wip>
-These docs are still a work in progress. More documentation is available in the [React Compiler Working Group repo](https://github.com/reactwg/react-compiler/discussions), and will be upstreamed into these docs when they are more stable.
+이 문서는 아직 작업 중입니다. 더 많은 문서는 [React Compiler Working Group repo](https://github.com/reactwg/react-compiler/discussions)에서 확인할 수 있으며, 안정화되면 이 문서에 반영될 예정입니다.
 </Wip>
 
 <YouWillLearn>
 
-* Getting started with the compiler
-* Installing the compiler and eslint plugin
-* Troubleshooting
+* 컴파일러 시작하기
+* 컴파일러 및 eslint 플러그인 설치
+* 문제 해결
 
 </YouWillLearn>
 
 <Note>
-React Compiler is a new experimental compiler that we've open sourced to get early feedback from the community. It still has rough edges and is not yet fully ready for production.
+React Compiler는 커뮤니티의 초기 피드백을 받기 위해 오픈 소스화된 새로운 실험적인 컴파일러입니다. 아직 거친 부분이 있으며, 프로덕션에 완전히 준비되지 않았습니다.
 
-React Compiler requires React 19 Beta.
+React Compiler는 React 19 Beta가 필요합니다.
 </Note>
 
-React Compiler is a new experimental compiler that we've open sourced to get early feedback from the community. It is a build-time only tool that automatically optimizes your React app. It works with plain JavaScript, and understands the [Rules of React](/reference/rules), so you don't need to rewrite any code to use it.
+React Compiler는 커뮤니티의 초기 피드백을 받기 위해 오픈 소스화된 새로운 실험적인 컴파일러입니다. 이는 빌드 타임 전용 도구로, 자동으로 React 앱을 최적화합니다. 일반 JavaScript와 함께 작동하며, [React의 규칙](/reference/rules)을 이해하므로 코드를 다시 작성할 필요가 없습니다.
 
-The compiler also includes an [eslint plugin](#installing-eslint-plugin-react-compiler) that surfaces the analysis from the compiler right in your editor. The plugin runs independently of the compiler and can be used even if you aren't using the compiler in your app. We recommend all React developers to use this eslint plugin to help improve the quality of your codebase.
+컴파일러는 또한 컴파일러의 분석 결과를 편집기에서 바로 보여주는 [eslint 플러그인](#installing-eslint-plugin-react-compiler)을 포함합니다. 이 플러그인은 컴파일러와 독립적으로 실행되며, 앱에서 컴파일러를 사용하지 않더라도 사용할 수 있습니다. 모든 React 개발자에게 이 eslint 플러그인을 사용하여 코드베이스의 품질을 향상시키는 것을 권장합니다.
 
-### What does the compiler do? {/*what-does-the-compiler-do*/}
+### 컴파일러는 무엇을 하나요? {/*what-does-the-compiler-do*/}
 
-The compiler understands your code at a deep level through its understanding of plain JavaScript semantics and the [Rules of React](/reference/rules). This allows it to add automatic optimizations to your code.
+컴파일러는 일반 JavaScript 의미론과 [React의 규칙](/reference/rules)을 깊이 이해하여 코드를 자동으로 최적화할 수 있습니다.
 
-You may be familiar today with manual memoization through [`useMemo`](/reference/react/useMemo), [`useCallback`](/reference/react/useCallback), and [`React.memo`](/reference/react/memo). The compiler can automatically do this for you, if your code follows the [Rules of React](/reference/rules). If it detects breakages of the rules, it will automatically skip over just those components or hooks, and continue safely compiling other code.
+오늘날 [`useMemo`](/reference/react/useMemo), [`useCallback`](/reference/react/useCallback), [`React.memo`](/reference/react/memo)를 통한 수동 메모이제이션에 익숙할 수 있습니다. 컴파일러는 코드가 [React의 규칙](/reference/rules)을 따르는 경우 이를 자동으로 수행할 수 있습니다. 규칙 위반을 감지하면 해당 컴포넌트나 훅을 건너뛰고 다른 코드를 안전하게 컴파일합니다.
 
-If your codebase is already very well memoized, you might not expect to see major performance improvements with the compiler. However, in practice memoizing the correct dependencies that cause performance issues is tricky to get right by hand.
+코드베이스가 이미 잘 메모이제이션되어 있다면 컴파일러로 큰 성능 향상을 기대하지 않을 수 있습니다. 그러나 성능 문제를 일으키는 올바른 종속성을 메모이제이션하는 것은 수작업으로 정확하게 하기 어렵습니다.
 
-### Should I try out the compiler? {/*should-i-try-out-the-compiler*/}
+### 컴파일러를 시도해봐야 할까요? {/*should-i-try-out-the-compiler*/}
 
-Please note that the compiler is still experimental and has many rough edges. While it has been used in production at companies like Meta, rolling out the compiler to production for your app will depend on the health of your codebase and how well you've followed the [Rules of React](/reference/rules).
+컴파일러는 여전히 실험적이며 거친 부분이 많다는 점을 유의하세요. Meta와 같은 회사에서 프로덕션에서 사용되었지만, 앱의 코드베이스 상태와 [React의 규칙](/reference/rules)을 얼마나 잘 따랐는지에 따라 프로덕션에 컴파일러를 도입할 수 있습니다.
 
-**You don't have to rush into using the compiler now. It's okay to wait until it reaches a stable release before adopting it.** However, we do appreciate trying it out in small experiments in your apps so that you can [provide feedback](#reporting-issues) to us to help make the compiler better.
+**지금 당장 컴파일러를 사용해야 할 필요는 없습니다. 안정적인 릴리스가 될 때까지 기다려도 괜찮습니다.** 그러나 앱에서 작은 실험으로 시도해보고 [피드백을 제공](#reporting-issues)하여 컴파일러를 개선하는 데 도움을 주시면 감사하겠습니다.
 
-## Getting Started {/*getting-started*/}
+## 시작하기 {/*getting-started*/}
 
-In addition to these docs, we recommend checking the [React Compiler Working Group](https://github.com/reactwg/react-compiler) for additional information and discussion about the compiler.
+이 문서 외에도 [React Compiler Working Group](https://github.com/reactwg/react-compiler)에서 컴파일러에 대한 추가 정보와 토론을 확인하는 것을 권장합니다.
 
-### Rolling out the compiler to your codebase {/*using-the-compiler-effectively*/}
+### 코드베이스에 컴파일러 도입하기 {/*using-the-compiler-effectively*/}
 
-#### Existing projects {/*existing-projects*/}
-The compiler is designed to compile functional components and hooks that follow the [Rules of React](/reference/rules). It can also handle code that breaks those rules by bailing out (skipping over) those components or hooks. However, due to the flexible nature of JavaScript, the compiler cannot catch every possible violation and may compile with false negatives: that is, the compiler may accidentally compile a component/hook that breaks the Rules of React which can lead to undefined behavior.
+#### 기존 프로젝트 {/*existing-projects*/}
+컴파일러는 [React의 규칙](/reference/rules)을 따르는 함수형 컴포넌트와 훅을 컴파일하도록 설계되었습니다. 규칙을 위반하는 코드를 건너뛰어 처리할 수도 있습니다. 그러나 JavaScript의 유연한 특성으로 인해 컴파일러는 모든 가능한 위반을 잡아내지 못할 수 있으며, 규칙을 위반하는 컴포넌트/훅을 실수로 컴파일할 수 있습니다. 이는 정의되지 않은 동작을 초래할 수 있습니다.
 
-For this reason, to adopt the compiler successfully on existing projects, we recommend running it on a small directory in your product code first. You can do this by configuring the compiler to only run on a specific set of directories:
+이러한 이유로, 기존 프로젝트에 컴파일러를 성공적으로 도입하려면 제품 코드의 작은 디렉토리에서 먼저 실행해보는 것을 권장합니다. 특정 디렉토리 집합에서만 컴파일러가 실행되도록 구성할 수 있습니다:
 
 ```js {3}
 const ReactCompilerConfig = {
@@ -61,7 +61,7 @@ const ReactCompilerConfig = {
 };
 ```
 
-In rare cases, you can also configure the compiler to run in "opt-in" mode using the `compilationMode: "annotation"` option. This makes it so the compiler will only compile components and hooks annotated with a `"use memo"` directive. Please note that the `annotation` mode is a temporary one to aid early adopters, and that we don't intend for the `"use memo"` directive to be used for the long term.
+드물게, `compilationMode: "annotation"` 옵션을 사용하여 "opt-in" 모드로 컴파일러를 구성할 수도 있습니다. 이는 `"use memo"` 지시어로 주석이 달린 컴포넌트와 훅만 컴파일하도록 합니다. `annotation` 모드는 초기 도입자를 돕기 위한 임시 모드이며, `"use memo"` 지시어를 장기적으로 사용할 계획은 없습니다.
 
 ```js {2,7}
 const ReactCompilerConfig = {
@@ -75,29 +75,29 @@ export default function App() {
 }
 ```
 
-When you have more confidence with rolling out the compiler, you can expand coverage to other directories as well and slowly roll it out to your whole app.
+컴파일러 도입에 더 자신감이 생기면 다른 디렉토리로 범위를 확장하고 전체 앱에 천천히 도입할 수 있습니다.
 
-#### New projects {/*new-projects*/}
+#### 새로운 프로젝트 {/*new-projects*/}
 
-If you're starting a new project, you can enable the compiler on your entire codebase, which is the default behavior.
+새 프로젝트를 시작하는 경우, 기본적으로 코드베이스 전체에 컴파일러를 활성화할 수 있습니다.
 
-## Installation {/*installation*/}
+## 설치 {/*installation*/}
 
-### Checking compatibility {/*checking-compatibility*/}
+### 호환성 확인 {/*checking-compatibility*/}
 
-Prior to installing the compiler, you can first check to see if your codebase is compatible:
+컴파일러를 설치하기 전에 코드베이스가 호환되는지 확인할 수 있습니다:
 
 <TerminalBlock>
 npx react-compiler-healthcheck
 </TerminalBlock>
 
-This script will:
+이 스크립트는 다음을 확인합니다:
 
-- Check how many components can be successfully optimized: higher is better
-- Check for `<StrictMode>` usage: having this enabled and followed means a higher chance that the [Rules of React](/reference/rules) are followed
-- Check for incompatible library usage: known libaries that are incompatible with the compiler
+- 최적화할 수 있는 컴포넌트 수: 높을수록 좋습니다
+- `<StrictMode>` 사용 여부: 이를 활성화하고 따르면 [React의 규칙](/reference/rules)을 따를 가능성이 높습니다
+- 호환되지 않는 라이브러리 사용 여부: 컴파일러와 호환되지 않는 알려진 라이브러리
 
-As an example:
+예를 들어:
 
 <TerminalBlock>
 Successfully compiled 8 out of 9 components.
@@ -105,15 +105,15 @@ StrictMode usage not found.
 Found no usage of incompatible libraries.
 </TerminalBlock>
 
-### Installing eslint-plugin-react-compiler {/*installing-eslint-plugin-react-compiler*/}
+### eslint-plugin-react-compiler 설치 {/*installing-eslint-plugin-react-compiler*/}
 
-React Compiler also powers an eslint plugin. The eslint plugin can be used **independently** of the compiler, meaning you can use the eslint plugin even if you don't use the compiler.
+React Compiler는 eslint 플러그인도 지원합니다. eslint 플러그인은 컴파일러와 **독립적으로** 사용할 수 있으며, 컴파일러를 사용하지 않더라도 사용할 수 있습니다.
 
 <TerminalBlock>
 npm install eslint-plugin-react-compiler
 </TerminalBlock>
 
-Then, add it to your eslint config:
+그런 다음 eslint 설정에 추가합니다:
 
 ```js
 module.exports = {
@@ -126,15 +126,15 @@ module.exports = {
 }
 ```
 
-### Usage with Babel {/*usage-with-babel*/}
+### Babel과 함께 사용하기 {/*usage-with-babel*/}
 
 <TerminalBlock>
 npm install babel-plugin-react-compiler
 </TerminalBlock>
 
-The compiler includes a Babel plugin which you can use in your build pipeline to run the compiler.
+컴파일러는 빌드 파이프라인에서 컴파일러를 실행하기 위한 Babel 플러그인을 포함합니다.
 
-After installing, add it to your Babel config. Please note that it's critical that the compiler run **first** in the pipeline:
+설치 후 Babel 설정에 추가합니다. 컴파일러가 파이프라인에서 **먼저** 실행되는 것이 중요합니다:
 
 ```js {7}
 // babel.config.js
@@ -150,11 +150,11 @@ module.exports = function () {
 };
 ```
 
-`babel-plugin-react-compiler` should run first before other Babel plugins as the compiler requires the input source information for sound analysis.
+`babel-plugin-react-compiler`는 컴파일러가 정확한 분석을 위해 입력 소스 정보를 필요로 하기 때문에 다른 Babel 플러그인보다 먼저 실행되어야 합니다.
 
-### Usage with Vite {/*usage-with-vite*/}
+### Vite와 함께 사용하기 {/*usage-with-vite*/}
 
-If you use Vite, you can add the plugin to vite-plugin-react:
+Vite를 사용하는 경우, vite-plugin-react에 플러그인을 추가할 수 있습니다:
 
 ```js {10}
 // vite.config.js
@@ -176,18 +176,18 @@ export default defineConfig(() => {
 });
 ```
 
-### Usage with Next.js {/*usage-with-nextjs*/}
+### Next.js와 함께 사용하기 {/*usage-with-nextjs*/}
 
-Next.js has an experimental configuration to enable the React Compiler. It automatically ensures Babel is set up with `babel-plugin-react-compiler`.
+Next.js는 React Compiler를 활성화하는 실험적 구성을 가지고 있습니다. 이는 자동으로 `babel-plugin-react-compiler`가 설정되도록 합니다.
 
-- Install Next.js canary, which uses React 19 Release Candidate
-- Install `babel-plugin-react-compiler`
+- React 19 Release Candidate를 사용하는 Next.js canary 설치
+- `babel-plugin-react-compiler` 설치
 
 <TerminalBlock>
 npm install next@canary babel-plugin-react-compiler
 </TerminalBlock>
 
-Then configure the experimental option in `next.config.js`:
+그런 다음 `next.config.js`에서 실험적 옵션을 구성합니다:
 
 ```js {4,5,6}
 // next.config.js
@@ -201,16 +201,15 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-Using the experimental option ensures support for the React Compiler in:
+실험적 옵션을 사용하면 다음에서 React Compiler를 지원합니다:
 
 - App Router
 - Pages Router
-- Webpack (default)
-- Turbopack (opt-in through `--turbo`)
+- Webpack (기본)
+- Turbopack (`--turbo`를 통해 opt-in)
 
-
-### Usage with Remix {/*usage-with-remix*/}
-Install `vite-plugin-babel`, and add the compiler's Babel plugin to it:
+### Remix와 함께 사용하기 {/*usage-with-remix*/}
+`vite-plugin-babel`을 설치하고, 컴파일러의 Babel 플러그인을 추가합니다:
 
 <TerminalBlock>
 npm install vite-plugin-babel
@@ -238,9 +237,9 @@ export default defineConfig({
 });
 ```
 
-### Usage with Webpack {/*usage-with-webpack*/}
+### Webpack과 함께 사용하기 {/*usage-with-webpack*/}
 
-You can create your own loader for React Compiler, like so:
+React Compiler를 위한 로더를 다음과 같이 만들 수 있습니다:
 
 ```js
 const ReactCompilerConfig = { /* ... */ };
@@ -275,37 +274,37 @@ function reactCompilerLoader(sourceCode, sourceMap) {
 module.exports = reactCompilerLoader;
 ```
 
-### Usage with Expo {/*usage-with-expo*/}
+### Expo와 함께 사용하기 {/*usage-with-expo*/}
 
-Expo uses Babel via Metro, so refer to the [Usage with Babel](#usage-with-babel) section for installation instructions.
+Expo는 Metro를 통해 Babel을 사용하므로, 설치 지침은 [Babel과 함께 사용하기](#usage-with-babel) 섹션을 참조하세요.
 
-### Usage with React Native (Metro) {/*usage-with-react-native-metro*/}
+### React Native (Metro)와 함께 사용하기 {/*usage-with-react-native-metro*/}
 
-React Native uses Babel via Metro, so refer to the [Usage with Babel](#usage-with-babel) section for installation instructions.
+React Native는 Metro를 통해 Babel을 사용하므로, 설치 지침은 [Babel과 함께 사용하기](#usage-with-babel) 섹션을 참조하세요.
 
-## Troubleshooting {/*troubleshooting*/}
+## 문제 해결 {/*troubleshooting*/}
 
-### Reporting Issues {/*reporting-issues*/}
+### 문제 보고 {/*reporting-issues*/}
 
-To report issues, please first create a minimal repro on the [React Compiler Playground](https://playground.react.dev/) and include it in your bug report.
+문제를 보고하려면 먼저 [React Compiler Playground](https://playground.react.dev/)에서 최소 재현을 만들고 버그 보고서에 포함하세요.
 
-You can open issues in the [facebook/react](https://github.com/facebook/react/issues) repo.
+[facebook/react](https://github.com/facebook/react/issues) repo에서 이슈를 열 수 있습니다.
 
-You can also provide feedback in the React Compiler Working Group by applying to be a member. Please see [the README for more details on joining](https://github.com/reactwg/react-compiler).
+또한 React Compiler Working Group에 멤버로 신청하여 피드백을 제공할 수 있습니다. 가입에 대한 자세한 내용은 [README](https://github.com/reactwg/react-compiler)를 참조하세요.
 
-### Common Issues {/*common-issues*/}
+### 일반적인 문제 {/*common-issues*/}
 
-#### `(0 , _c) is not a function` error {/*0--_c-is-not-a-function-error*/}
+#### `(0 , _c) is not a function` 오류 {/*0--_c-is-not-a-function-error*/}
 
-This occurs during JavaScript module evaluation when you are not using React 19 Beta and up. To fix this, [upgrade your app to React 19 Beta](https://react.dev/blog/2024/04/25/react-19-upgrade-guide) first.
+이 오류는 React 19 Beta 이상을 사용하지 않을 때 JavaScript 모듈 평가 중에 발생합니다. 이를 해결하려면 [앱을 React 19 Beta로 업그레이드](https://react.dev/blog/2024/04/25/react-19-upgrade-guide)하세요.
 
-### Debugging {/*debugging*/}
+### 디버깅 {/*debugging*/}
 
-#### Checking if components have been optimized {/*checking-if-components-have-been-optimized*/}
+#### 컴포넌트가 최적화되었는지 확인하기 {/*checking-if-components-have-been-optimized*/}
 ##### React DevTools {/*react-devtools*/}
 
-React Devtools (v5.0+) has built-in support for React Compiler and will display a "Memo ✨" badge next to components that have been optimized by the compiler.
+React Devtools (v5.0+)는 React Compiler를 지원하며, 컴파일러에 의해 최적화된 컴포넌트 옆에 "Memo ✨" 배지를 표시합니다.
 
-##### Other issues {/*other-issues*/}
+##### 기타 문제 {/*other-issues*/}
 
-Please see https://github.com/reactwg/react-compiler/discussions/7.
+자세한 내용은 https://github.com/reactwg/react-compiler/discussions/7을 참조하세요.

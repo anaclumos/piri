@@ -1,40 +1,40 @@
 ---
-title: "React DOM Components"
+title: React DOMコンポーネント
 ---
 
 <Intro>
 
-React supports all of the browser built-in [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) and [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG/Element) components.
+Reactは、すべてのブラウザ組み込みの[HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element)および[SVG](https://developer.mozilla.org/en-US/docs/Web/SVG/Element)コンポーネントをサポートしています。
 
 </Intro>
 
 ---
 
-## Common components {/*common-components*/}
+## 共通コンポーネント {/*common-components*/}
 
-All of the built-in browser components support some props and events.
+すべての組み込みブラウザコンポーネントは、いくつかのプロパティとイベントをサポートしています。
 
-* [Common components (e.g. `<div>`)](/reference/react-dom/components/common)
+* [共通コンポーネント（例：`<div>`）](/reference/react-dom/components/common)
 
-This includes React-specific props like `ref` and `dangerouslySetInnerHTML`.
+これには、`ref`や`dangerouslySetInnerHTML`のようなReact固有のプロパティが含まれます。
 
 ---
 
-## Form components {/*form-components*/}
+## フォームコンポーネント {/*form-components*/}
 
-These built-in browser components accept user input:
+これらの組み込みブラウザコンポーネントは、ユーザー入力を受け付けます：
 
 * [`<input>`](/reference/react-dom/components/input)
 * [`<select>`](/reference/react-dom/components/select)
 * [`<textarea>`](/reference/react-dom/components/textarea)
 
-They are special in React because passing the `value` prop to them makes them *[controlled.](/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)*
+これらはReactでは特別で、`value`プロパティを渡すことで*[制御された](/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)*状態になります。
 
 ---
 
-## Resource and Metadata Components {/*resource-and-metadata-components*/}
+## リソースおよびメタデータコンポーネント {/*resource-and-metadata-components*/}
 
-These bulit-in browser components let you load external resources or annotate the document with metadata:
+これらの組み込みブラウザコンポーネントは、外部リソースを読み込んだり、ドキュメントにメタデータを注釈付けたりすることができます：
 
 * [`<link>`](/reference/react-dom/components/link)
 * [`<meta>`](/reference/react-dom/components/meta)
@@ -42,13 +42,13 @@ These bulit-in browser components let you load external resources or annotate th
 * [`<style>`](/reference/react-dom/components/style)
 * [`<title>`](/reference/react-dom/components/title)
 
-They are special in React because React can render them into the document head, suspend while resources are loading, and enact other behaviors that are described on the reference page for each specific component.
+これらはReactでは特別で、Reactはこれらをドキュメントのヘッドにレンダリングしたり、リソースの読み込み中にサスペンドしたり、各特定のコンポーネントのリファレンスページで説明されている他の動作を実行したりすることができます。
 
 ---
 
-## All HTML components {/*all-html-components*/}
+## すべてのHTMLコンポーネント {/*all-html-components*/}
 
-React supports all built-in browser HTML components. This includes:
+Reactはすべての組み込みブラウザHTMLコンポーネントをサポートしています。これには以下が含まれます：
 
 * [`<aside>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside)
 * [`<audio>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio)
@@ -154,38 +154,38 @@ React supports all built-in browser HTML components. This includes:
 
 <Note>
 
-Similar to the [DOM standard,](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) React uses a `camelCase` convention for prop names. For example, you'll write `tabIndex` instead of `tabindex`. You can convert existing HTML to JSX with an [online converter.](https://transform.tools/html-to-jsx)
+[DOM標準](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)と同様に、Reactはプロパティ名に`camelCase`の命名規則を使用します。例えば、`tabindex`の代わりに`tabIndex`と書きます。既存のHTMLをJSXに変換するには、[オンラインコンバーター](https://transform.tools/html-to-jsx)を使用できます。
 
 </Note>
 
 ---
 
-### Custom HTML elements {/*custom-html-elements*/}
+### カスタムHTML要素 {/*custom-html-elements*/}
 
-If you render a tag with a dash, like `<my-element>`, React will assume you want to render a [custom HTML element.](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) In React, rendering custom elements works differently from rendering built-in browser tags:
+ダッシュを含むタグ（例：`<my-element>`）をレンダリングすると、Reactは[カスタムHTML要素](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)をレンダリングしたいと仮定します。Reactでは、カスタム要素のレンダリングは組み込みブラウザタグのレンダリングとは異なります：
 
-- All custom element props are serialized to strings and are always set using attributes.
-- Custom elements accept `class` rather than `className`, and `for` rather than `htmlFor`.
+- すべてのカスタム要素のプロパティは文字列にシリアライズされ、常に属性を使用して設定されます。
+- カスタム要素は`className`ではなく`class`、`htmlFor`ではなく`for`を受け入れます。
 
-If you render a built-in browser HTML element with an [`is`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/is) attribute, it will also be treated as a custom element.
+[`is`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/is)属性を持つ組み込みブラウザHTML要素をレンダリングすると、それもカスタム要素として扱われます。
 
 <Note>
 
-[A future version of React will include more comprehensive support for custom elements.](https://github.com/facebook/react/issues/11347#issuecomment-1122275286)
+[Reactの将来のバージョンでは、カスタム要素のより包括的なサポートが含まれる予定です。](https://github.com/facebook/react/issues/11347#issuecomment-1122275286)
 
-You can try it by upgrading React packages to the most recent experimental version:
+最も最近の実験的バージョンにReactパッケージをアップグレードすることで試すことができます：
 
 - `react@experimental`
 - `react-dom@experimental`
 
-Experimental versions of React may contain bugs. Don't use them in production.
+Reactの実験的バージョンにはバグが含まれている可能性があります。プロダクションで使用しないでください。
 
 </Note>
 ---
 
-## All SVG components {/*all-svg-components*/}
+## すべてのSVGコンポーネント {/*all-svg-components*/}
 
-React supports all built-in browser SVG components. This includes:
+Reactはすべての組み込みブラウザSVGコンポーネントをサポートしています。これには以下が含まれます：
 
 * [`<a>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/a)
 * [`<animate>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animate)
@@ -256,20 +256,20 @@ React supports all built-in browser SVG components. This includes:
 
 <Note>
 
-Similar to the [DOM standard,](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) React uses a `camelCase` convention for prop names. For example, you'll write `tabIndex` instead of `tabindex`. You can convert existing SVG to JSX with an [online converter.](https://transform.tools/)
+[DOM標準](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)と同様に、Reactはプロパティ名に`camelCase`の命名規則を使用します。例えば、`tabindex`の代わりに`tabIndex`と書きます。既存のSVGをJSXに変換するには、[オンラインコンバーター](https://transform.tools/)を使用できます。
 
-Namespaced attributes also have to be written without the colon:
+名前空間付き属性もコロンなしで書く必要があります：
 
-* `xlink:actuate` becomes `xlinkActuate`.
-* `xlink:arcrole` becomes `xlinkArcrole`.
-* `xlink:href` becomes `xlinkHref`.
-* `xlink:role` becomes `xlinkRole`.
-* `xlink:show` becomes `xlinkShow`.
-* `xlink:title` becomes `xlinkTitle`.
-* `xlink:type` becomes `xlinkType`.
-* `xml:base` becomes `xmlBase`.
-* `xml:lang` becomes `xmlLang`.
-* `xml:space` becomes `xmlSpace`.
-* `xmlns:xlink` becomes `xmlnsXlink`.
+* `xlink:actuate`は`xlinkActuate`になります。
+* `xlink:arcrole`は`xlinkArcrole`になります。
+* `xlink:href`は`xlinkHref`になります。
+* `xlink:role`は`xlinkRole`になります。
+* `xlink:show`は`xlinkShow`になります。
+* `xlink:title`は`xlinkTitle`になります。
+* `xlink:type`は`xlinkType`になります。
+* `xml:base`は`xmlBase`になります。
+* `xml:lang`は`xmlLang`になります。
+* `xml:space`は`xmlSpace`になります。
+* `xmlns:xlink`は`xmlnsXlink`になります。
 
 </Note>

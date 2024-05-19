@@ -1,28 +1,28 @@
 ---
-title: Preserving and Resetting State
+title: 상태 보존 및 재설정
 ---
 
 <Intro>
 
-State is isolated between components. React keeps track of which state belongs to which component based on their place in the UI tree. You can control when to preserve state and when to reset it between re-renders.
+상태는 컴포넌트 간에 격리됩니다. React는 UI 트리에서의 위치를 기준으로 각 상태가 어떤 컴포넌트에 속하는지 추적합니다. 상태를 유지할 때와 재설정할 때를 제어할 수 있습니다.
 
 </Intro>
 
 <YouWillLearn>
 
-* When React chooses to preserve or reset the state
-* How to force React to reset component's state
-* How keys and types affect whether the state is preserved
+* React가 상태를 유지하거나 재설정할 때
+* React가 컴포넌트의 상태를 강제로 재설정하는 방법
+* 키와 타입이 상태 유지 여부에 미치는 영향
 
 </YouWillLearn>
 
-## State is tied to a position in the render tree {/*state-is-tied-to-a-position-in-the-tree*/}
+## 상태는 렌더 트리의 위치에 연결됩니다 {/*state-is-tied-to-a-position-in-the-tree*/}
 
-React builds [render trees](learn/understanding-your-ui-as-a-tree#the-render-tree) for the component structure in your UI.
+React는 UI의 컴포넌트 구조에 대해 [렌더 트리](learn/understanding-your-ui-as-a-tree#the-render-tree)를 빌드합니다.
 
-When you give a component state, you might think the state "lives" inside the component. But the state is actually held inside React. React associates each piece of state it's holding with the correct component by where that component sits in the render tree.
+컴포넌트에 상태를 부여할 때, 상태가 컴포넌트 내부에 "존재"한다고 생각할 수 있습니다. 하지만 상태는 실제로 React 내부에 저장됩니다. React는 각 상태를 렌더 트리에서 해당 컴포넌트가 위치한 곳과 연결합니다.
 
-Here, there is only one `<Counter />` JSX tag, but it's rendered at two different positions:
+여기에는 하나의 `<Counter />` JSX 태그만 있지만, 두 개의 다른 위치에 렌더링됩니다:
 
 <Sandpack>
 
@@ -56,7 +56,7 @@ function Counter() {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -86,23 +86,23 @@ label {
 
 </Sandpack>
 
-Here's how these look as a tree:    
+이것들이 트리로 어떻게 보이는지 확인해보세요:    
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_tree" height={248} width={395} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. Each of the children are labeled 'Counter' and both contain a state bubble labeled 'count' with value 0.">
+<Diagram name="preserving_state_tree" height={248} width={395} alt="React 컴포넌트 트리의 다이어그램. 루트 노드는 'div'로 표시되며 두 개의 자식을 가지고 있습니다. 각 자식은 'Counter'로 표시되며 둘 다 값이 0인 'count' 상태 버블을 포함합니다.">
 
-React tree
+React 트리
 
 </Diagram>
 
 </DiagramGroup>
 
-**These are two separate counters because each is rendered at its own position in the tree.** You don't usually have to think about these positions to use React, but it can be useful to understand how it works.
+**이들은 각각 트리의 고유한 위치에 렌더링되기 때문에 두 개의 별도 카운터입니다.** React를 사용할 때 이러한 위치에 대해 생각할 필요는 없지만, 작동 방식을 이해하는 데 유용할 수 있습니다.
 
-In React, each component on the screen has fully isolated state. For example, if you render two `Counter` components side by side, each of them will get its own, independent, `score` and `hover` states.
+React에서는 화면의 각 컴포넌트가 완전히 격리된 상태를 가집니다. 예를 들어, 두 개의 `Counter` 컴포넌트를 나란히 렌더링하면 각각 독립적인 `score`와 `hover` 상태를 가집니다.
 
-Try clicking both counters and notice they don't affect each other:
+두 카운터를 클릭해보면 서로 영향을 주지 않는 것을 확인할 수 있습니다:
 
 <Sandpack>
 
@@ -135,7 +135,7 @@ function Counter() {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -160,21 +160,19 @@ function Counter() {
 
 </Sandpack>
 
-As you can see, when one counter is updated, only the state for that component is updated:
-
+보시다시피, 하나의 카운터가 업데이트될 때 해당 컴포넌트의 상태만 업데이트됩니다:
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_increment" height={248} width={441} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. The left child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is labeled 'Counter' and contains a state bubble labeled 'count' with value 1. The state bubble of the right child is highlighted in yellow to indicate its value has updated.">
+<Diagram name="preserving_state_increment" height={248} width={441} alt="React 컴포넌트 트리의 다이어그램. 루트 노드는 'div'로 표시되며 두 개의 자식을 가지고 있습니다. 왼쪽 자식은 'Counter'로 표시되며 값이 0인 'count' 상태 버블을 포함합니다. 오른쪽 자식은 'Counter'로 표시되며 값이 1인 'count' 상태 버블을 포함합니다. 오른쪽 자식의 상태 버블은 값이 업데이트되었음을 나타내기 위해 노란색으로 강조 표시됩니다.">
 
-Updating state
+상태 업데이트
 
 </Diagram>
 
 </DiagramGroup>
 
-
-React will keep the state around for as long as you render the same component at the same position in the tree. To see this, increment both counters, then remove the second component by unchecking "Render the second counter" checkbox, and then add it back by ticking it again:
+React는 동일한 위치에 동일한 컴포넌트를 렌더링하는 한 상태를 유지합니다. 이를 확인하려면 두 카운터를 모두 증가시키고, "두 번째 카운터 렌더링" 체크박스를 해제하여 두 번째 컴포넌트를 제거한 다음 다시 체크하여 추가해보세요:
 
 <Sandpack>
 
@@ -195,7 +193,7 @@ export default function App() {
             setShowB(e.target.checked)
           }}
         />
-        Render the second counter
+        두 번째 카운터 렌더링
       </label>
     </div>
   );
@@ -218,7 +216,7 @@ function Counter() {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -248,35 +246,35 @@ label {
 
 </Sandpack>
 
-Notice how the moment you stop rendering the second counter, its state disappears completely. That's because when React removes a component, it destroys its state.
+두 번째 카운터를 렌더링하지 않으면 상태가 완전히 사라지는 것을 확인할 수 있습니다. 이는 React가 컴포넌트를 제거할 때 상태를 파괴하기 때문입니다.
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_remove_component" height={253} width={422} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. The left child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is missing, and in its place is a yellow 'poof' image, highlighting the component being deleted from the tree.">
+<Diagram name="preserving_state_remove_component" height={253} width={422} alt="React 컴포넌트 트리의 다이어그램. 루트 노드는 'div'로 표시되며 두 개의 자식을 가지고 있습니다. 왼쪽 자식은 'Counter'로 표시되며 값이 0인 'count' 상태 버블을 포함합니다. 오른쪽 자식은 사라졌고, 그 자리에 노란색 'poof' 이미지가 있어 컴포넌트가 트리에서 삭제되었음을 강조합니다.">
 
-Deleting a component
+컴포넌트 삭제
 
 </Diagram>
 
 </DiagramGroup>
 
-When you tick "Render the second counter", a second `Counter` and its state are initialized from scratch (`score = 0`) and added to the DOM.
+"두 번째 카운터 렌더링"을 체크하면 두 번째 `Counter`와 그 상태가 처음부터 초기화되어 (`score = 0`) DOM에 추가됩니다.
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_add_component" height={258} width={500} alt="Diagram of a tree of React components. The root node is labeled 'div' and has two children. The left child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The entire right child node is highlighted in yellow, indicating that it was just added to the tree.">
+<Diagram name="preserving_state_add_component" height={258} width={500} alt="React 컴포넌트 트리의 다이어그램. 루트 노드는 'div'로 표시되며 두 개의 자식을 가지고 있습니다. 왼쪽 자식은 'Counter'로 표시되며 값이 0인 'count' 상태 버블을 포함합니다. 오른쪽 자식은 'Counter'로 표시되며 값이 0인 'count' 상태 버블을 포함합니다. 오른쪽 자식 노드 전체가 노란색으로 강조되어 트리에 방금 추가되었음을 나타냅니다.">
 
-Adding a component
+컴포넌트 추가
 
 </Diagram>
 
 </DiagramGroup>
 
-**React preserves a component's state for as long as it's being rendered at its position in the UI tree.** If it gets removed, or a different component gets rendered at the same position, React discards its state.
+**React는 UI 트리의 위치에서 렌더링되는 한 컴포넌트의 상태를 유지합니다.** 컴포넌트가 제거되거나 동일한 위치에 다른 컴포넌트가 렌더링되면 React는 상태를 폐기합니다.
 
-## Same component at the same position preserves state {/*same-component-at-the-same-position-preserves-state*/}
+## 동일한 위치의 동일한 컴포넌트는 상태를 유지합니다 {/*same-component-at-the-same-position-preserves-state*/}
 
-In this example, there are two different `<Counter />` tags:
+이 예제에서는 두 개의 다른 `<Counter />` 태그가 있습니다:
 
 <Sandpack>
 
@@ -300,7 +298,7 @@ export default function App() {
             setIsFancy(e.target.checked)
           }}
         />
-        Use fancy styling
+        화려한 스타일 사용
       </label>
     </div>
   );
@@ -326,7 +324,7 @@ function Counter({ isFancy }) {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -361,24 +359,23 @@ label {
 
 </Sandpack>
 
-When you tick or clear the checkbox, the counter state does not get reset. Whether `isFancy` is `true` or `false`, you always have a `<Counter />` as the first child of the `div` returned from the root `App` component:
+체크박스를 체크하거나 해제할 때 카운터 상태는 재설정되지 않습니다. `isFancy`가 `true`이든 `false`이든 항상 루트 `App` 컴포넌트에서 반환된 `div`의 첫 번째 자식으로 `<Counter />`가 있습니다:
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_same_component" height={461} width={600} alt="Diagram with two sections separated by an arrow transitioning between them. Each section contains a layout of components with a parent labeled 'App' containing a state bubble labeled isFancy. This component has one child labeled 'div', which leads to a prop bubble containing isFancy (highlighted in purple) passed down to the only child. The last child is labeled 'Counter' and contains a state bubble with label 'count' and value 3 in both diagrams. In the left section of the diagram, nothing is highlighted and the isFancy parent state value is false. In the right section of the diagram, the isFancy parent state value has changed to true and it is highlighted in yellow, and so is the props bubble below, which has also changed its isFancy value to true.">
+<Diagram name="preserving_state_same_component" height={461} width={600} alt="두 섹션이 화살표로 구분된 다이어그램. 각 섹션에는 'App'으로 표시된 부모가 있으며, 'isFancy' 상태 버블이 있습니다. 이 컴포넌트는 'div'로 표시된 하나의 자식을 가지고 있으며, 자식은 'isFancy' 속성을 포함한 속성 버블을 가지고 있습니다. 마지막 자식은 'Counter'로 표시되며, 두 다이어그램 모두에서 값이 3인 'count' 상태 버블을 포함합니다. 다이어그램의 왼쪽 섹션에서는 아무것도 강조 표시되지 않았고, isFancy 부모 상태 값은 false입니다. 다이어그램의 오른쪽 섹션에서는 isFancy 부모 상태 값이 true로 변경되어 노란색으로 강조 표시되었으며, 아래의 속성 버블도 isFancy 값이 true로 변경되어 노란색으로 강조 표시되었습니다.">
 
-Updating the `App` state does not reset the `Counter` because `Counter` stays in the same position
+`App` 상태를 업데이트해도 `Counter`는 동일한 위치에 있기 때문에 재설정되지 않습니다
 
 </Diagram>
 
 </DiagramGroup>
 
-
-It's the same component at the same position, so from React's perspective, it's the same counter.
+React의 관점에서 동일한 위치에 있는 동일한 컴포넌트이므로 동일한 카운터입니다.
 
 <Pitfall>
 
-Remember that **it's the position in the UI tree--not in the JSX markup--that matters to React!** This component has two `return` clauses with different `<Counter />` JSX tags inside and outside the `if`:
+**React에게 중요한 것은 JSX 마크업이 아닌 UI 트리의 위치입니다!** 이 컴포넌트에는 `if` 내부와 외부에 다른 `<Counter />` JSX 태그가 있는 두 개의 `return` 절이 있습니다:
 
 <Sandpack>
 
@@ -395,11 +392,9 @@ export default function App() {
           <input
             type="checkbox"
             checked={isFancy}
-            onChange={e => {
-              setIsFancy(e.target.checked)
-            }}
+            onChange={e => setIsFancy(e.target.checked)}
           />
-          Use fancy styling
+          화려한 스타일 사용
         </label>
       </div>
     );
@@ -411,11 +406,9 @@ export default function App() {
         <input
           type="checkbox"
           checked={isFancy}
-          onChange={e => {
-            setIsFancy(e.target.checked)
-          }}
-        />
-        Use fancy styling
+          onChange={e => setIsFancy(e.target.checked)}
+          />
+          화려한 스타일 사용
       </label>
     </div>
   );
@@ -441,7 +434,7 @@ function Counter({ isFancy }) {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -476,15 +469,15 @@ label {
 
 </Sandpack>
 
-You might expect the state to reset when you tick checkbox, but it doesn't! This is because **both of these `<Counter />` tags are rendered at the same position.** React doesn't know where you place the conditions in your function. All it "sees" is the tree you return.
+체크박스를 체크할 때 상태가 재설정될 것이라고 예상할 수 있지만, 그렇지 않습니다! 이는 **이 두 `<Counter />` 태그가 동일한 위치에 렌더링되기 때문입니다.** React는 함수 내 조건의 위치를 알지 못합니다. React가 "보는" 것은 반환된 트리입니다.
 
-In both cases, the `App` component returns a `<div>` with `<Counter />` as a first child. To React, these two counters have the same "address": the first child of the first child of the root. This is how React matches them up between the previous and next renders, regardless of how you structure your logic.
+두 경우 모두 `App` 컴포넌트는 첫 번째 자식으로 `<Counter />`가 있는 `<div>`를 반환합니다. React에게는 이 두 카운터가 동일한 "주소"를 가지고 있습니다: 루트의 첫 번째 자식의 첫 번째 자식. 이는 로직을 어떻게 구성하든 이전과 다음 렌더링 간에 React가 이를 일치시키는 방식입니다.
 
 </Pitfall>
 
-## Different components at the same position reset state {/*different-components-at-the-same-position-reset-state*/}
+## 동일한 위치의 다른 컴포넌트는 상태를 재설정합니다 {/*different-components-at-the-same-position-reset-state*/}
 
-In this example, ticking the checkbox will replace `<Counter>` with a `<p>`:
+이 예제에서는 체크박스를 체크하면 `<Counter>`가 `<p>`로 대체됩니다:
 
 <Sandpack>
 
@@ -496,7 +489,7 @@ export default function App() {
   return (
     <div>
       {isPaused ? (
-        <p>See you later!</p> 
+        <p>나중에 봐요!</p> 
       ) : (
         <Counter /> 
       )}
@@ -508,7 +501,7 @@ export default function App() {
             setIsPaused(e.target.checked)
           }}
         />
-        Take a break
+        휴식하기
       </label>
     </div>
   );
@@ -531,7 +524,7 @@ function Counter() {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -561,13 +554,14 @@ label {
 
 </Sandpack>
 
-Here, you switch between _different_ component types at the same position. Initially, the first child of the `<div>` contained a `Counter`. But when you swapped in a `p`, React removed the `Counter` from the UI tree and destroyed its state.
+여기서는 동일한 위치에 _다른_ 컴포넌트 유형을 전환합니다. 처음에는 `<div>`의 첫 번째 자식이 `Counter`를 포함했습니다. 하지만 `p`로 교체하면 React는 `Counter`를 UI 트리에서 제거하고 상태를 파괴합니다.
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_pt1" height={290} width={753} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'Counter' containing a state bubble labeled 'count' with value 3. The middle section has the same 'div' parent, but the child component has now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'p', highlighted in yellow.">
+<Diagram name="preserving_state_diff_pt1" height={290} width={753} alt="세 섹션이 화살표로 구분된 다이어그램. 첫 번째 섹션에는 'div'로 표시된 React 컴포넌트가 있으며, 'count' 상태 버블이 값 3인 'Counter' 자식이 있습니다. 중간 섹션에는 동일한
+'div' 부모가 있지만, 자식 컴포넌트는 삭제되었으며, 노란색 'poof' 이미지로 표시됩니다. 세 번째 섹션에는 동일한 'div' 부모가 있으며, 이제 노란색으로 강조된 새로운 자식 'p'가 있습니다.">
 
-When `Counter` changes to `p`, the `Counter` is deleted and the `p` is added
+`Counter`가 `p`로 변경될 때, `Counter`는 삭제되고 `p`가 추가됩니다
 
 </Diagram>
 
@@ -575,15 +569,15 @@ When `Counter` changes to `p`, the `Counter` is deleted and the `p` is added
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_pt2" height={290} width={753} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'p'. The middle section has the same 'div' parent, but the child component has now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, highlighted in yellow.">
+<Diagram name="preserving_state_diff_pt2" height={290} width={753} alt="세 섹션이 화살표로 구분된 다이어그램. 첫 번째 섹션에는 'p'로 표시된 React 컴포넌트가 있습니다. 중간 섹션에는 동일한 'div' 부모가 있지만, 자식 컴포넌트는 삭제되었으며, 노란색 'poof' 이미지로 표시됩니다. 세 번째 섹션에는 동일한 'div' 부모가 있으며, 이제 노란색으로 강조된 새로운 자식 'Counter'가 있으며, 'count' 상태 버블이 값 0으로 설정되어 있습니다.">
 
-When switching back, the `p` is deleted and the `Counter` is added
+다시 전환할 때, `p`는 삭제되고 `Counter`가 추가됩니다
 
 </Diagram>
 
 </DiagramGroup>
 
-Also, **when you render a different component in the same position, it resets the state of its entire subtree.** To see how this works, increment the counter and then tick the checkbox:
+또한, **동일한 위치에 다른 컴포넌트를 렌더링할 때, 해당 하위 트리의 상태가 재설정됩니다.** 이를 확인하려면 카운터를 증가시키고 체크박스를 체크해보세요:
 
 <Sandpack>
 
@@ -611,7 +605,7 @@ export default function App() {
             setIsFancy(e.target.checked)
           }}
         />
-        Use fancy styling
+        화려한 스타일 사용
       </label>
     </div>
   );
@@ -637,7 +631,7 @@ function Counter({ isFancy }) {
     >
       <h1>{score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -672,13 +666,13 @@ label {
 
 </Sandpack>
 
-The counter state gets reset when you click the checkbox. Although you render a `Counter`, the first child of the `div` changes from a `div` to a `section`. When the child `div` was removed from the DOM, the whole tree below it (including the `Counter` and its state) was destroyed as well.
+체크박스를 클릭하면 카운터 상태가 재설정됩니다. 비록 `Counter`를 렌더링하지만, `div`의 첫 번째 자식이 `div`에서 `section`으로 변경됩니다. 자식 `div`가 DOM에서 제거되면 그 아래의 전체 트리(포함된 `Counter`와 그 상태 포함)가 파괴됩니다.
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_same_pt1" height={350} width={794} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'section', which has a single child labeled 'Counter' containing a state bubble labeled 'count' with value 3. The middle section has the same 'div' parent, but the child components have now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'div', highlighted in yellow, also with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, all highlighted in yellow.">
+<Diagram name="preserving_state_diff_same_pt1" height={350} width={794} alt="세 섹션이 화살표로 구분된 다이어그램. 첫 번째 섹션에는 'div'로 표시된 React 컴포넌트가 있으며, 'section' 자식이 있으며, 'count' 상태 버블이 값 3인 'Counter' 자식이 있습니다. 중간 섹션에는 동일한 'div' 부모가 있지만, 자식 컴포넌트는 삭제되었으며, 노란색 'poof' 이미지로 표시됩니다. 세 번째 섹션에는 동일한 'div' 부모가 있으며, 이제 노란색으로 강조된 새로운 자식 'div'가 있으며, 'count' 상태 버블이 값 0으로 설정된 새로운 자식 'Counter'가 있습니다.">
 
-When `section` changes to `div`, the `section` is deleted and the new `div` is added
+`section`이 `div`로 변경될 때, `section`은 삭제되고 새로운 `div`가 추가됩니다
 
 </Diagram>
 
@@ -686,21 +680,21 @@ When `section` changes to `div`, the `section` is deleted and the new `div` is a
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_same_pt2" height={350} width={794} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'div', which has a single child labeled 'Counter' containing a state bubble labeled 'count' with value 0. The middle section has the same 'div' parent, but the child components have now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'section', highlighted in yellow, also with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, all highlighted in yellow.">
+<Diagram name="preserving_state_diff_same_pt2" height={350} width={794} alt="세 섹션이 화살표로 구분된 다이어그램. 첫 번째 섹션에는 'div'로 표시된 React 컴포넌트가 있으며, 'div' 자식이 있으며, 'count' 상태 버블이 값 0인 'Counter' 자식이 있습니다. 중간 섹션에는 동일한 'div' 부모가 있지만, 자식 컴포넌트는 삭제되었으며, 노란색 'poof' 이미지로 표시됩니다. 세 번째 섹션에는 동일한 'div' 부모가 있으며, 이제 노란색으로 강조된 새로운 자식 'section'이 있으며, 'count' 상태 버블이 값 0으로 설정된 새로운 자식 'Counter'가 있습니다.">
 
-When switching back, the `div` is deleted and the new `section` is added
+다시 전환할 때, `div`는 삭제되고 새로운 `section`이 추가됩니다
 
 </Diagram>
 
 </DiagramGroup>
 
-As a rule of thumb, **if you want to preserve the state between re-renders, the structure of your tree needs to "match up"** from one render to another. If the structure is different, the state gets destroyed because React destroys state when it removes a component from the tree.
+일반적으로, **재렌더링 간에 상태를 유지하려면 트리 구조가 일치해야 합니다.** 구조가 다르면 상태가 파괴됩니다. React는 컴포넌트를 트리에서 제거할 때 상태를 파괴하기 때문입니다.
 
 <Pitfall>
 
-This is why you should not nest component function definitions.
+이것이 컴포넌트 함수 정의를 중첩하지 말아야 하는 이유입니다.
 
-Here, the `MyTextField` component function is defined *inside* `MyComponent`:
+여기서 `MyTextField` 컴포넌트 함수는 `MyComponent` 내부에 정의되어 있습니다:
 
 <Sandpack>
 
@@ -726,7 +720,7 @@ export default function MyComponent() {
       <MyTextField />
       <button onClick={() => {
         setCounter(counter + 1)
-      }}>Clicked {counter} times</button>
+      }}>클릭 {counter} 번</button>
     </>
   );
 }
@@ -734,14 +728,13 @@ export default function MyComponent() {
 
 </Sandpack>
 
-
-Every time you click the button, the input state disappears! This is because a *different* `MyTextField` function is created for every render of `MyComponent`. You're rendering a *different* component in the same position, so React resets all state below. This leads to bugs and performance problems. To avoid this problem, **always declare component functions at the top level, and don't nest their definitions.**
+버튼을 클릭할 때마다 입력 상태가 사라집니다! 이는 `MyComponent`의 각 렌더링에 대해 *다른* `MyTextField` 함수가 생성되기 때문입니다. 동일한 위치에 *다른* 컴포넌트를 렌더링하고 있으므로 React는 모든 하위 상태를 재설정합니다. 이는 버그와 성능 문제를 초래합니다. 이 문제를 피하려면 **항상 최상위 수준에서 컴포넌트 함수를 선언하고 정의를 중첩하지 마세요.**
 
 </Pitfall>
 
-## Resetting state at the same position {/*resetting-state-at-the-same-position*/}
+## 동일한 위치에서 상태 재설정 {/*resetting-state-at-the-same-position*/}
 
-By default, React preserves state of a component while it stays at the same position. Usually, this is exactly what you want, so it makes sense as the default behavior. But sometimes, you may want to reset a component's state. Consider this app that lets two players keep track of their scores during each turn:
+기본적으로 React는 동일한 위치에 있는 동안 컴포넌트의 상태를 유지합니다. 일반적으로 이는 원하는 동작이므로 기본 동작으로 적합합니다. 하지만 때로는 컴포넌트의 상태를 재설정하고 싶을 때가 있습니다. 각 턴 동안 두 플레이어가 점수를 기록할 수 있는 이 앱을 고려해보세요:
 
 <Sandpack>
 
@@ -760,7 +753,7 @@ export default function Scoreboard() {
       <button onClick={() => {
         setIsPlayerA(!isPlayerA);
       }}>
-        Next player!
+        다음 플레이어!
       </button>
     </div>
   );
@@ -781,9 +774,9 @@ function Counter({ person }) {
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
     >
-      <h1>{person}'s score: {score}</h1>
+      <h1>{person}의 점수: {score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -811,19 +804,18 @@ h1 {
 
 </Sandpack>
 
-Currently, when you change the player, the score is preserved. The two `Counter`s appear in the same position, so React sees them as *the same* `Counter` whose `person` prop has changed.
+현재 플레이어를 변경할 때 점수가 유지됩니다. 두 `Counter`는 동일한 위치에 나타나므로 React는 이를 *동일한* `Counter`로 간주하고 `person` 속성만 변경합니다.
 
-But conceptually, in this app they should be two separate counters. They might appear in the same place in the UI, but one is a counter for Taylor, and another is a counter for Sarah.
+하지만 개념적으로 이 앱에서는 두 개의 별도 카운터여야 합니다. UI에서 동일한 위치에 나타날 수 있지만, 하나는 Taylor의 카운터이고 다른 하나는 Sarah의 카운터입니다.
 
-There are two ways to reset state when switching between them:
+전환할 때 상태를 재설정하는 두 가지 방법이 있습니다:
 
-1. Render components in different positions
-2. Give each component an explicit identity with `key`
+1. 다른 위치에 컴포넌트를 렌더링하기
+2. `key`를 사용하여 각 컴포넌트에 명시적인 ID 부여하기
 
+### 옵션 1: 다른 위치에 컴포넌트 렌더링하기 {/*option-1-rendering-a-component-in-different-positions*/}
 
-### Option 1: Rendering a component in different positions {/*option-1-rendering-a-component-in-different-positions*/}
-
-If you want these two `Counter`s to be independent, you can render them in two different positions:
+이 두 `Counter`가 독립적이기를 원한다면, 두 개의 다른 위치에 렌더링할 수 있습니다:
 
 <Sandpack>
 
@@ -843,7 +835,7 @@ export default function Scoreboard() {
       <button onClick={() => {
         setIsPlayerA(!isPlayerA);
       }}>
-        Next player!
+        다음 플레이어!
       </button>
     </div>
   );
@@ -864,9 +856,9 @@ function Counter({ person }) {
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
     >
-      <h1>{person}'s score: {score}</h1>
+      <h1>{person}의 점수: {score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -894,42 +886,42 @@ h1 {
 
 </Sandpack>
 
-* Initially, `isPlayerA` is `true`. So the first position contains `Counter` state, and the second one is empty.
-* When you click the "Next player" button the first position clears but the second one now contains a `Counter`.
+* 처음에는 `isPlayerA`가 `true`입니다. 따라서 첫 번째 위치에는 `Counter` 상태가 있고, 두 번째 위치는 비어 있습니다.
+* "다음 플레이어" 버튼을 클릭하면 첫 번째 위치는 비워지지만 두 번째 위치에는 `Counter`가 있습니다.
 
 <DiagramGroup>
 
-<Diagram name="preserving_state_diff_position_p1" height={375} width={504} alt="Diagram with a tree of React components. The parent is labeled 'Scoreboard' with a state bubble labeled isPlayerA with value 'true'. The only child, arranged to the left, is labeled Counter with a state bubble labeled 'count' and value 0. All of the left child is highlighted in yellow, indicating it was added.">
+<Diagram name="preserving_state_diff_position_p1" height={375} width={504} alt="React 컴포넌트 트리의 다이어그램. 부모는 'Scoreboard'로 표시되며, 'isPlayerA' 상태 버블이 'true' 값을 가집니다. 왼쪽에 배치된 유일한 자식은 'Counter'로 표시되며, 'count' 상태 버블이 값 0을 가집니다. 왼쪽 자식 전체가 노란색으로 강조되어 추가되었음을 나타냅니다.">
 
-Initial state
-
-</Diagram>
-
-<Diagram name="preserving_state_diff_position_p2" height={375} width={504} alt="Diagram with a tree of React components. The parent is labeled 'Scoreboard' with a state bubble labeled isPlayerA with value 'false'. The state bubble is highlighted in yellow, indicating that it has changed. The left child is replaced with a yellow 'poof' image indicating that it has been deleted and there is a new child on the right, highlighted in yellow indicating that it was added. The new child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0.">
-
-Clicking "next"
+초기 상태
 
 </Diagram>
 
-<Diagram name="preserving_state_diff_position_p3" height={375} width={504} alt="Diagram with a tree of React components. The parent is labeled 'Scoreboard' with a state bubble labeled isPlayerA with value 'true'. The state bubble is highlighted in yellow, indicating that it has changed. There is a new child on the left, highlighted in yellow indicating that it was added. The new child is labeled 'Counter' and contains a state bubble labeled 'count' with value 0. The right child is replaced with a yellow 'poof' image indicating that it has been deleted.">
+<Diagram name="preserving_state_diff_position_p2" height={375} width={504} alt="React 컴포넌트 트리의 다이어그램. 부모는 'Scoreboard'로 표시되며, 'isPlayerA' 상태 버블이 'false' 값을 가집니다. 상태 버블은 노란색으로 강조되어 변경되었음을 나타냅니다. 왼쪽 자식은 노란색 'poof' 이미지로 대체되어 삭제되었음을 나타내며, 오른쪽에는 노란색으로 강조된 새로운 자식이 있습니다. 새로운 자식은 'Counter'로 표시되며, 'count' 상태 버블이 값 0을 가집니다.">
 
-Clicking "next" again
+"다음" 클릭
+
+</Diagram>
+
+<Diagram name="preserving_state_diff_position_p3" height={375} width={504} alt="React 컴포넌트 트리의 다이어그램. 부모는 'Scoreboard'로 표시되며, 'isPlayerA' 상태 버블이 'true' 값을 가집니다. 상태 버블은 노란색으로 강조되어 변경되었음을 나타냅니다. 왼쪽에는 노란색으로 강조된 새로운 자식이 있습니다. 새로운 자식은 'Counter'로 표시되며, 'count' 상태 버블이 값 0을 가집니다. 오른쪽 자식은 노란색 'poof' 이미지로 대체되어 삭제되었음을 나타냅니다.">
+
+다시 "다음" 클릭
 
 </Diagram>
 
 </DiagramGroup>
 
-Each `Counter`'s state gets destroyed each time it's removed from the DOM. This is why they reset every time you click the button.
+각 `Counter`의 상태는 DOM에서 제거될 때마다 파괴됩니다. 이것이 버튼을 클릭할 때마다 상태가 재설정되는 이유입니다.
 
-This solution is convenient when you only have a few independent components rendered in the same place. In this example, you only have two, so it's not a hassle to render both separately in the JSX.
+이 솔루션은 동일한 위치에 렌더링되는 독립적인 컴포넌트가 몇 개만 있을 때 편리합니다. 이 예제에서는 두 개만 있으므로 JSX에서 둘 다 별도로 렌더링하는 것이 번거롭지 않습니다.
 
-### Option 2: Resetting state with a key {/*option-2-resetting-state-with-a-key*/}
+### 옵션 2: 키를 사용하여 상태 재설정하기 {/*option-2-resetting-state-with-a-key*/}
 
-There is also another, more generic, way to reset a component's state.
+컴포넌트의 상태를 재설정하는 또 다른, 더 일반적인 방법이 있습니다.
 
-You might have seen `key`s when [rendering lists.](/learn/rendering-lists#keeping-list-items-in-order-with-key) Keys aren't just for lists! You can use keys to make React distinguish between any components. By default, React uses order within the parent ("first counter", "second counter") to discern between components. But keys let you tell React that this is not just a *first* counter, or a *second* counter, but a specific counter--for example, *Taylor's* counter. This way, React will know *Taylor's* counter wherever it appears in the tree!
+[리스트를 렌더링할 때](/learn/rendering-lists#keeping-list-items-in-order-with-key) `key`를 본 적이 있을 것입니다. 키는 리스트에만 국한되지 않습니다! 키를 사용하여 React가 모든 컴포넌트를 구별할 수 있습니다. 기본적으로 React는 부모 내의 순서("첫 번째 카운터", "두 번째 카운터")를 사용하여 컴포넌트를 구분합니다. 하지만 키를 사용하면 React에게 이것이 단순히 *첫 번째* 카운터나 *두 번째* 카운터가 아니라 특정 카운터임을 알릴 수 있습니다. 예를 들어, *Taylor의* 카운터입니다. 이렇게 하면 React는 트리 어디에 나타나든 *Taylor의* 카운터를 인식할 수 있습니다!
 
-In this example, the two `<Counter />`s don't share state even though they appear in the same place in JSX:
+이 예제에서는 두 `<Counter />`가 동일한 위치에 나타나도 상태를 공유하지 않습니다:
 
 <Sandpack>
 
@@ -948,7 +940,7 @@ export default function Scoreboard() {
       <button onClick={() => {
         setIsPlayerA(!isPlayerA);
       }}>
-        Next player!
+        다음 플레이어!
       </button>
     </div>
   );
@@ -969,9 +961,9 @@ function Counter({ person }) {
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
     >
-      <h1>{person}'s score: {score}</h1>
+      <h1>{person}의 점수: {score}</h1>
       <button onClick={() => setScore(score + 1)}>
-        Add one
+        하나 추가
       </button>
     </div>
   );
@@ -999,7 +991,7 @@ h1 {
 
 </Sandpack>
 
-Switching between Taylor and Sarah does not preserve the state. This is because **you gave them different `key`s:**
+Taylor와 Sarah 사이를 전환할 때 상태가 유지되지 않습니다. 이는 **각각 다른 `key`를 부여했기 때문입니다:**
 
 ```js
 {isPlayerA ? (
@@ -1009,19 +1001,19 @@ Switching between Taylor and Sarah does not preserve the state. This is because 
 )}
 ```
 
-Specifying a `key` tells React to use the `key` itself as part of the position, instead of their order within the parent. This is why, even though you render them in the same place in JSX, React sees them as two different counters, and so they will never share state. Every time a counter appears on the screen, its state is created. Every time it is removed, its state is destroyed. Toggling between them resets their state over and over.
+`key`를 지정하면 React는 순서 대신 `key` 자체를 위치의 일부로 사용합니다. 이 때문에 JSX에서 동일한 위치에 렌더링해도 React는 이를 두 개의 다른 카운터로 인식하여 상태를 공유하지 않습니다. 카운터가 화면에 나타날 때마다 상태가 생성됩니다. 제거될 때마다 상태가 파괴됩니다. 전환할 때마다 상태가 계속 재설정됩니다.
 
 <Note>
 
-Remember that keys are not globally unique. They only specify the position *within the parent*.
+키는 전역적으로 고유하지 않다는 점을 기억하세요. 부모 내에서만 위치를 지정합니다.
 
 </Note>
 
-### Resetting a form with a key {/*resetting-a-form-with-a-key*/}
+### 키를 사용하여 폼 재설정하기 {/*resetting-a-form-with-a-key*/}
 
-Resetting state with a key is particularly useful when dealing with forms.
+키를 사용하여 상태를 재설정하는 것은 폼을 다룰 때 특히 유용합니다.
 
-In this chat app, the `<Chat>` component contains the text input state:
+이 채팅 앱에서 `<Chat>` 컴포넌트는 텍스트 입력 상태를 포함합니다:
 
 <Sandpack>
 
@@ -1116,17 +1108,17 @@ textarea {
 
 </Sandpack>
 
-Try entering something into the input, and then press "Alice" or "Bob" to choose a different recipient. You will notice that the input state is preserved because the `<Chat>` is rendered at the same position in the tree.
+입력란에 무언가를 입력한 후 "Alice" 또는 "Bob"을 선택해보세요. 입력 상태가 유지되는 것을 확인할 수 있습니다. 이는 `<Chat>`이 트리의 동일한 위치에 렌더링되기 때문입니다.
 
-**In many apps, this may be the desired behavior, but not in a chat app!** You don't want to let the user send a message they already typed to a wrong person due to an accidental click. To fix it, add a `key`:
+**많은 앱에서는 이것이 원하는 동작일 수 있지만, 채팅 앱에서는 그렇지 않습니다!** 사용자가 실수로 클릭하여 잘못된 사람에게 메시지를 보내지 않도록 해야 합니다. 이를 해결하려면 `key`를 추가하세요:
 
 ```js
 <Chat key={to.id} contact={to} />
 ```
 
-This ensures that when you select a different recipient, the `Chat` component will be recreated from scratch, including any state in the tree below it. React will also re-create the DOM elements instead of reusing them.
+이렇게 하면 다른 수신자를 선택할 때마다 `Chat` 컴포넌트가 처음부터 다시 생성되며, 그 아래의 모든 상태도 초기화됩니다. React는 DOM 요소도 재생성합니다.
 
-Now switching the recipient always clears the text field:
+이제 수신자를 전환할 때마다 텍스트 필드가 항상 초기화됩니다:
 
 <Sandpack>
 
@@ -1223,131 +1215,32 @@ textarea {
 
 <DeepDive>
 
-#### Preserving state for removed components {/*preserving-state-for-removed-components*/}
+#### 제거된 컴포넌트의 상태 유지하기 {/*preserving-state-for-removed-components*/}
 
-In a real chat app, you'd probably want to recover the input state when the user selects the previous recipient again. There are a few ways to keep the state "alive" for a component that's no longer visible:
+실제 채팅 앱에서는 사용자가 이전 수신자를 다시 선택할 때 입력 상태를 복구하고 싶을 것입니다. 보이지 않는 컴포넌트의 상태를 "살려두는" 몇 가지 방법이 있습니다:
 
-- You could render _all_ chats instead of just the current one, but hide all the others with CSS. The chats would not get removed from the tree, so their local state would be preserved. This solution works great for simple UIs. But it can get very slow if the hidden trees are large and contain a lot of DOM nodes.
-- You could [lift the state up](/learn/sharing-state-between-components) and hold the pending message for each recipient in the parent component. This way, when the child components get removed, it doesn't matter, because it's the parent that keeps the important information. This is the most common solution.
-- You might also use a different source in addition to React state. For example, you probably want a message draft to persist even if the user accidentally closes the page. To implement this, you could have the `Chat` component initialize its state by reading from the [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), and save the drafts there too.
+- 모든 채팅을 렌더링하고 CSS로 나머지를 숨길 수 있습니다. 채팅이 트리에서 제거되지 않으므로 로컬 상태가 유지됩니다. 이 솔루션은 간단한 UI에 적합합니다. 하지만 숨겨진 트리가 크고 많은 DOM 노드를 포함하면 매우 느려질 수 있습니다.
+- 상태를 [상위로 올려서](/learn/sharing-state-between-components) 각 수신자의 보류 중인 메시지를 부모 컴포넌트에 저장할 수 있습니다. 이렇게 하면 자식 컴포넌트가 제거되더라도 중요한 정보는 부모가 유지합니다. 이것이 가장 일반적인 솔루션입니다.
+- React 상태 외에 다른 소스를 사용할 수도 있습니다. 예를 들어, 사용자가 페이지를 실수로 닫아도 메시지 초안이 유지되기를 원할 수 있습니다. 이를 구현하려면 `Chat` 컴포넌트가 [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)에서 상태를 초기화하고 초안을 저장하도록 할 수 있습니다.
 
-No matter which strategy you pick, a chat _with Alice_ is conceptually distinct from a chat _with Bob_, so it makes sense to give a `key` to the `<Chat>` tree based on the current recipient.
+어떤 전략을 선택하든, Alice와의 채팅은 Bob과의 채팅과 개념적으로 다르므로 현재 수신자에 따라 `<Chat>` 트리에 `key`를 부여하는 것이 합리적입니다.
 
 </DeepDive>
 
 <Recap>
 
-- React keeps state for as long as the same component is rendered at the same position.
-- State is not kept in JSX tags. It's associated with the tree position in which you put that JSX.
-- You can force a subtree to reset its state by giving it a different key.
-- Don't nest component definitions, or you'll reset state by accident.
+- React는 동일한 위치에 동일한 컴포넌트를 렌더링하는 한 상태를 유지합니다.
+- 상태는 JSX 태그에 저장되지 않습니다. 상태는 JSX를 배치한 트리 위치와 연결됩니다.
+- 다른 키를 부여하여 하위 트리의 상태를 재설정할 수 있습니다.
+- 컴포넌트 정의를 중첩하지 마세요. 그렇지 않으면 상태가 의도치 않게 재설정됩니다.
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Fix disappearing input text {/*fix-disappearing-input-text*/}
+#### 사라지는 입력 텍스트 수정하기 {/*fix-disappearing-input-text*/}
 
-This example shows a message when you press the button. However, pressing the button also accidentally resets the input. Why does this happen? Fix it so that pressing the button does not reset the input text.
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-
-export default function App() {
-  const [showHint, setShowHint] = useState(false);
-  if (showHint) {
-    return (
-      <div>
-        <p><i>Hint: Your favorite city?</i></p>
-        <Form />
-        <button onClick={() => {
-          setShowHint(false);
-        }}>Hide hint</button>
-      </div>
-    );
-  }
-  return (
-    <div>
-      <Form />
-      <button onClick={() => {
-        setShowHint(true);
-      }}>Show hint</button>
-    </div>
-  );
-}
-
-function Form() {
-  const [text, setText] = useState('');
-  return (
-    <textarea
-      value={text}
-      onChange={e => setText(e.target.value)}
-    />
-  );
-}
-```
-
-```css
-textarea { display: block; margin: 10px 0; }
-```
-
-</Sandpack>
-
-<Solution>
-
-The problem is that `Form` is rendered in different positions. In the `if` branch, it is the second child of the `<div>`, but in the `else` branch, it is the first child. Therefore, the component type in each position changes. The first position changes between holding a `p` and a `Form`, while the second position changes between holding a `Form` and a `button`. React resets the state every time the component type changes.
-
-The easiest solution is to unify the branches so that `Form` always renders in the same position:
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-
-export default function App() {
-  const [showHint, setShowHint] = useState(false);
-  return (
-    <div>
-      {showHint &&
-        <p><i>Hint: Your favorite city?</i></p>
-      }
-      <Form />
-      {showHint ? (
-        <button onClick={() => {
-          setShowHint(false);
-        }}>Hide hint</button>
-      ) : (
-        <button onClick={() => {
-          setShowHint(true);
-        }}>Show hint</button>
-      )}
-    </div>
-  );
-}
-
-function Form() {
-  const [text, setText] = useState('');
-  return (
-    <textarea
-      value={text}
-      onChange={e => setText(e.target.value)}
-    />
-  );
-}
-```
-
-```css
-textarea { display: block; margin: 10px 0; }
-```
-
-</Sandpack>
-
-
-Technically, you could also add `null` before `<Form />` in the `else` branch to match the `if` branch structure:
+이 예제는 버튼을 누르면 메시지를 표시합니다. 그러나 버튼을 누르면 입력도 의도치 않게 재설정됩니다. 왜 이런 일이 발생할까요? 버튼을 눌러도 입력 텍스트가 재설정되지 않도록 수정하세요.
 
 <Sandpack>
 
@@ -1359,21 +1252,20 @@ export default function App() {
   if (showHint) {
     return (
       <div>
-        <p><i>Hint: Your favorite city?</i></p>
+        <p><i>힌트: 당신이 좋아하는 도시?</i></p>
         <Form />
         <button onClick={() => {
           setShowHint(false);
-        }}>Hide hint</button>
+        }}>힌트 숨기기</button>
       </div>
     );
   }
   return (
     <div>
-      {null}
       <Form />
       <button onClick={() => {
         setShowHint(true);
-      }}>Show hint</button>
+      }}>힌트 보기</button>
     </div>
   );
 }
@@ -1395,790 +1287,15 @@ textarea { display: block; margin: 10px 0; }
 
 </Sandpack>
 
-This way, `Form` is always the second child, so it stays in the same position and keeps its state. But this approach is much less obvious and introduces a risk that someone else will remove that `null`.
-
-</Solution>
-
-#### Swap two form fields {/*swap-two-form-fields*/}
-
-This form lets you enter first and last name. It also has a checkbox controlling which field goes first. When you tick the checkbox, the "Last name" field will appear before the "First name" field.
-
-It almost works, but there is a bug. If you fill in the "First name" input and tick the checkbox, the text will stay in the first input (which is now "Last name"). Fix it so that the input text *also* moves when you reverse the order.
-
-<Hint>
-
-It seems like for these fields, their position within the parent is not enough. Is there some way to tell React how to match up the state between re-renders?
-
-</Hint>
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-
-export default function App() {
-  const [reverse, setReverse] = useState(false);
-  let checkbox = (
-    <label>
-      <input
-        type="checkbox"
-        checked={reverse}
-        onChange={e => setReverse(e.target.checked)}
-      />
-      Reverse order
-    </label>
-  );
-  if (reverse) {
-    return (
-      <>
-        <Field label="Last name" /> 
-        <Field label="First name" />
-        {checkbox}
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Field label="First name" /> 
-        <Field label="Last name" />
-        {checkbox}
-      </>
-    );    
-  }
-}
-
-function Field({ label }) {
-  const [text, setText] = useState('');
-  return (
-    <label>
-      {label}:{' '}
-      <input
-        type="text"
-        value={text}
-        placeholder={label}
-        onChange={e => setText(e.target.value)}
-      />
-    </label>
-  );
-}
-```
-
-```css
-label { display: block; margin: 10px 0; }
-```
-
-</Sandpack>
-
 <Solution>
 
-Give a `key` to both `<Field>` components in both `if` and `else` branches. This tells React how to "match up" the correct state for either `<Field>` even if their order within the parent changes:
+문제는 `Form`이 다른 위치에 렌더링된다는 것입니다. `if` 분기에서는 `div`의 두 번째 자식이지만, `else` 분기에서는 첫 번째 자식입니다. 따라서 각 위치의 컴포넌트 유형이 변경됩니다. 첫 번째 위치는 `p`와 `Form` 사이를 변경하고, 두 번째 위치는 `Form`과 `button` 사이를 변경합니다. React는 컴포넌트 유형이 변경될 때마다 상태를 재설정합니다.
+
+가장 쉬운 해결책은 분기를 통합하여 `Form`이 항상 동일한 위치에 렌더링되도록 하는 것입니다:
 
 <Sandpack>
 
 ```js src/App.js
 import { useState } from 'react';
 
-export default function App() {
-  const [reverse, setReverse] = useState(false);
-  let checkbox = (
-    <label>
-      <input
-        type="checkbox"
-        checked={reverse}
-        onChange={e => setReverse(e.target.checked)}
-      />
-      Reverse order
-    </label>
-  );
-  if (reverse) {
-    return (
-      <>
-        <Field key="lastName" label="Last name" /> 
-        <Field key="firstName" label="First name" />
-        {checkbox}
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Field key="firstName" label="First name" /> 
-        <Field key="lastName" label="Last name" />
-        {checkbox}
-      </>
-    );    
-  }
-}
-
-function Field({ label }) {
-  const [text, setText] = useState('');
-  return (
-    <label>
-      {label}:{' '}
-      <input
-        type="text"
-        value={text}
-        placeholder={label}
-        onChange={e => setText(e.target.value)}
-      />
-    </label>
-  );
-}
-```
-
-```css
-label { display: block; margin: 10px 0; }
-```
-
-</Sandpack>
-
-</Solution>
-
-#### Reset a detail form {/*reset-a-detail-form*/}
-
-This is an editable contact list. You can edit the selected contact's details and then either press "Save" to update it, or "Reset" to undo your changes.
-
-When you select a different contact (for example, Alice), the state updates but the form keeps showing the previous contact's details. Fix it so that the form gets reset when the selected contact changes.
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-import ContactList from './ContactList.js';
-import EditContact from './EditContact.js';
-
-export default function ContactManager() {
-  const [
-    contacts,
-    setContacts
-  ] = useState(initialContacts);
-  const [
-    selectedId,
-    setSelectedId
-  ] = useState(0);
-  const selectedContact = contacts.find(c =>
-    c.id === selectedId
-  );
-
-  function handleSave(updatedData) {
-    const nextContacts = contacts.map(c => {
-      if (c.id === updatedData.id) {
-        return updatedData;
-      } else {
-        return c;
-      }
-    });
-    setContacts(nextContacts);
-  }
-
-  return (
-    <div>
-      <ContactList
-        contacts={contacts}
-        selectedId={selectedId}
-        onSelect={id => setSelectedId(id)}
-      />
-      <hr />
-      <EditContact
-        initialData={selectedContact}
-        onSave={handleSave}
-      />
-    </div>
-  )
-}
-
-const initialContacts = [
-  { id: 0, name: 'Taylor', email: 'taylor@mail.com' },
-  { id: 1, name: 'Alice', email: 'alice@mail.com' },
-  { id: 2, name: 'Bob', email: 'bob@mail.com' }
-];
-```
-
-```js src/ContactList.js
-export default function ContactList({
-  contacts,
-  selectedId,
-  onSelect
-}) {
-  return (
-    <section>
-      <ul>
-        {contacts.map(contact =>
-          <li key={contact.id}>
-            <button onClick={() => {
-              onSelect(contact.id);
-            }}>
-              {contact.id === selectedId ?
-                <b>{contact.name}</b> :
-                contact.name
-              }
-            </button>
-          </li>
-        )}
-      </ul>
-    </section>
-  );
-}
-```
-
-```js src/EditContact.js
-import { useState } from 'react';
-
-export default function EditContact({ initialData, onSave }) {
-  const [name, setName] = useState(initialData.name);
-  const [email, setEmail] = useState(initialData.email);
-  return (
-    <section>
-      <label>
-        Name:{' '}
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-      </label>
-      <label>
-        Email:{' '}
-        <input
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-      </label>
-      <button onClick={() => {
-        const updatedData = {
-          id: initialData.id,
-          name: name,
-          email: email
-        };
-        onSave(updatedData);
-      }}>
-        Save
-      </button>
-      <button onClick={() => {
-        setName(initialData.name);
-        setEmail(initialData.email);
-      }}>
-        Reset
-      </button>
-    </section>
-  );
-}
-```
-
-```css
-ul, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-li { display: inline-block; }
-li button {
-  padding: 10px;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-button {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-```
-
-</Sandpack>
-
-<Solution>
-
-Give `key={selectedId}` to the `EditContact` component. This way, switching between different contacts will reset the form:
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-import ContactList from './ContactList.js';
-import EditContact from './EditContact.js';
-
-export default function ContactManager() {
-  const [
-    contacts,
-    setContacts
-  ] = useState(initialContacts);
-  const [
-    selectedId,
-    setSelectedId
-  ] = useState(0);
-  const selectedContact = contacts.find(c =>
-    c.id === selectedId
-  );
-
-  function handleSave(updatedData) {
-    const nextContacts = contacts.map(c => {
-      if (c.id === updatedData.id) {
-        return updatedData;
-      } else {
-        return c;
-      }
-    });
-    setContacts(nextContacts);
-  }
-
-  return (
-    <div>
-      <ContactList
-        contacts={contacts}
-        selectedId={selectedId}
-        onSelect={id => setSelectedId(id)}
-      />
-      <hr />
-      <EditContact
-        key={selectedId}
-        initialData={selectedContact}
-        onSave={handleSave}
-      />
-    </div>
-  )
-}
-
-const initialContacts = [
-  { id: 0, name: 'Taylor', email: 'taylor@mail.com' },
-  { id: 1, name: 'Alice', email: 'alice@mail.com' },
-  { id: 2, name: 'Bob', email: 'bob@mail.com' }
-];
-```
-
-```js src/ContactList.js
-export default function ContactList({
-  contacts,
-  selectedId,
-  onSelect
-}) {
-  return (
-    <section>
-      <ul>
-        {contacts.map(contact =>
-          <li key={contact.id}>
-            <button onClick={() => {
-              onSelect(contact.id);
-            }}>
-              {contact.id === selectedId ?
-                <b>{contact.name}</b> :
-                contact.name
-              }
-            </button>
-          </li>
-        )}
-      </ul>
-    </section>
-  );
-}
-```
-
-```js src/EditContact.js
-import { useState } from 'react';
-
-export default function EditContact({ initialData, onSave }) {
-  const [name, setName] = useState(initialData.name);
-  const [email, setEmail] = useState(initialData.email);
-  return (
-    <section>
-      <label>
-        Name:{' '}
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-      </label>
-      <label>
-        Email:{' '}
-        <input
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-      </label>
-      <button onClick={() => {
-        const updatedData = {
-          id: initialData.id,
-          name: name,
-          email: email
-        };
-        onSave(updatedData);
-      }}>
-        Save
-      </button>
-      <button onClick={() => {
-        setName(initialData.name);
-        setEmail(initialData.email);
-      }}>
-        Reset
-      </button>
-    </section>
-  );
-}
-```
-
-```css
-ul, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-li { display: inline-block; }
-li button {
-  padding: 10px;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-button {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-```
-
-</Sandpack>
-
-</Solution>
-
-#### Clear an image while it's loading {/*clear-an-image-while-its-loading*/}
-
-When you press "Next", the browser starts loading the next image. However, because it's displayed in the same `<img>` tag, by default you would still see the previous image until the next one loads. This may be undesirable if it's important for the text to always match the image. Change it so that the moment you press "Next", the previous image immediately clears.
-
-<Hint>
-
-Is there a way to tell React to re-create the DOM instead of reusing it?
-
-</Hint>
-
-<Sandpack>
-
-```js
-import { useState } from 'react';
-
-export default function Gallery() {
-  const [index, setIndex] = useState(0);
-  const hasNext = index < images.length - 1;
-
-  function handleClick() {
-    if (hasNext) {
-      setIndex(index + 1);
-    } else {
-      setIndex(0);
-    }
-  }
-
-  let image = images[index];
-  return (
-    <>
-      <button onClick={handleClick}>
-        Next
-      </button>
-      <h3>
-        Image {index + 1} of {images.length}
-      </h3>
-      <img src={image.src} />
-      <p>
-        {image.place}
-      </p>
-    </>
-  );
-}
-
-let images = [{
-  place: 'Penang, Malaysia',
-  src: 'https://i.imgur.com/FJeJR8M.jpg'
-}, {
-  place: 'Lisbon, Portugal',
-  src: 'https://i.imgur.com/dB2LRbj.jpg'
-}, {
-  place: 'Bilbao, Spain',
-  src: 'https://i.imgur.com/z08o2TS.jpg'
-}, {
-  place: 'Valparaíso, Chile',
-  src: 'https://i.imgur.com/Y3utgTi.jpg'
-}, {
-  place: 'Schwyz, Switzerland',
-  src: 'https://i.imgur.com/JBbMpWY.jpg'
-}, {
-  place: 'Prague, Czechia',
-  src: 'https://i.imgur.com/QwUKKmF.jpg'
-}, {
-  place: 'Ljubljana, Slovenia',
-  src: 'https://i.imgur.com/3aIiwfm.jpg'
-}];
-```
-
-```css
-img { width: 150px; height: 150px; }
-```
-
-</Sandpack>
-
-<Solution>
-
-You can provide a `key` to the `<img>` tag. When that `key` changes, React will re-create the `<img>` DOM node from scratch. This causes a brief flash when each image loads, so it's not something you'd want to do for every image in your app. But it makes sense if you want to ensure the image always matches the text.
-
-<Sandpack>
-
-```js
-import { useState } from 'react';
-
-export default function Gallery() {
-  const [index, setIndex] = useState(0);
-  const hasNext = index < images.length - 1;
-
-  function handleClick() {
-    if (hasNext) {
-      setIndex(index + 1);
-    } else {
-      setIndex(0);
-    }
-  }
-
-  let image = images[index];
-  return (
-    <>
-      <button onClick={handleClick}>
-        Next
-      </button>
-      <h3>
-        Image {index + 1} of {images.length}
-      </h3>
-      <img key={image.src} src={image.src} />
-      <p>
-        {image.place}
-      </p>
-    </>
-  );
-}
-
-let images = [{
-  place: 'Penang, Malaysia',
-  src: 'https://i.imgur.com/FJeJR8M.jpg'
-}, {
-  place: 'Lisbon, Portugal',
-  src: 'https://i.imgur.com/dB2LRbj.jpg'
-}, {
-  place: 'Bilbao, Spain',
-  src: 'https://i.imgur.com/z08o2TS.jpg'
-}, {
-  place: 'Valparaíso, Chile',
-  src: 'https://i.imgur.com/Y3utgTi.jpg'
-}, {
-  place: 'Schwyz, Switzerland',
-  src: 'https://i.imgur.com/JBbMpWY.jpg'
-}, {
-  place: 'Prague, Czechia',
-  src: 'https://i.imgur.com/QwUKKmF.jpg'
-}, {
-  place: 'Ljubljana, Slovenia',
-  src: 'https://i.imgur.com/3aIiwfm.jpg'
-}];
-```
-
-```css
-img { width: 150px; height: 150px; }
-```
-
-</Sandpack>
-
-</Solution>
-
-#### Fix misplaced state in the list {/*fix-misplaced-state-in-the-list*/}
-
-In this list, each `Contact` has state that determines whether "Show email" has been pressed for it. Press "Show email" for Alice, and then tick the "Show in reverse order" checkbox. You will notice that it's _Taylor's_ email that is expanded now, but Alice's--which has moved to the bottom--appears collapsed.
-
-Fix it so that the expanded state is associated with each contact, regardless of the chosen ordering.
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-import Contact from './Contact.js';
-
-export default function ContactList() {
-  const [reverse, setReverse] = useState(false);
-
-  const displayedContacts = [...contacts];
-  if (reverse) {
-    displayedContacts.reverse();
-  }
-
-  return (
-    <>
-      <label>
-        <input
-          type="checkbox"
-          value={reverse}
-          onChange={e => {
-            setReverse(e.target.checked)
-          }}
-        />{' '}
-        Show in reverse order
-      </label>
-      <ul>
-        {displayedContacts.map((contact, i) =>
-          <li key={i}>
-            <Contact contact={contact} />
-          </li>
-        )}
-      </ul>
-    </>
-  );
-}
-
-const contacts = [
-  { id: 0, name: 'Alice', email: 'alice@mail.com' },
-  { id: 1, name: 'Bob', email: 'bob@mail.com' },
-  { id: 2, name: 'Taylor', email: 'taylor@mail.com' }
-];
-```
-
-```js src/Contact.js
-import { useState } from 'react';
-
-export default function Contact({ contact }) {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <>
-      <p><b>{contact.name}</b></p>
-      {expanded &&
-        <p><i>{contact.email}</i></p>
-      }
-      <button onClick={() => {
-        setExpanded(!expanded);
-      }}>
-        {expanded ? 'Hide' : 'Show'} email
-      </button>
-    </>
-  );
-}
-```
-
-```css
-ul, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-li {
-  margin-bottom: 20px;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-button {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-```
-
-</Sandpack>
-
-<Solution>
-
-The problem is that this example was using index as a `key`:
-
-```js
-{displayedContacts.map((contact, i) =>
-  <li key={i}>
-```
-
-However, you want the state to be associated with _each particular contact_.
-
-Using the contact ID as a `key` instead fixes the issue:
-
-<Sandpack>
-
-```js src/App.js
-import { useState } from 'react';
-import Contact from './Contact.js';
-
-export default function ContactList() {
-  const [reverse, setReverse] = useState(false);
-
-  const displayedContacts = [...contacts];
-  if (reverse) {
-    displayedContacts.reverse();
-  }
-
-  return (
-    <>
-      <label>
-        <input
-          type="checkbox"
-          value={reverse}
-          onChange={e => {
-            setReverse(e.target.checked)
-          }}
-        />{' '}
-        Show in reverse order
-      </label>
-      <ul>
-        {displayedContacts.map(contact =>
-          <li key={contact.id}>
-            <Contact contact={contact} />
-          </li>
-        )}
-      </ul>
-    </>
-  );
-}
-
-const contacts = [
-  { id: 0, name: 'Alice', email: 'alice@mail.com' },
-  { id: 1, name: 'Bob', email: 'bob@mail.com' },
-  { id: 2, name: 'Taylor', email: 'taylor@mail.com' }
-];
-```
-
-```js src/Contact.js
-import { useState } from 'react';
-
-export default function Contact({ contact }) {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <>
-      <p><b>{contact.name}</b></p>
-      {expanded &&
-        <p><i>{contact.email}</i></p>
-      }
-      <button onClick={() => {
-        setExpanded(!expanded);
-      }}>
-        {expanded ? 'Hide' : 'Show'} email
-      </button>
-    </>
-  );
-}
-```
-
-```css
-ul, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-li {
-  margin-bottom: 20px;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-button {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-```
-
-</Sandpack>
-
-State is associated with the tree position. A `key` lets you specify a named position instead of relying on order.
-
-</Solution>
-
-</Challenges>
+export

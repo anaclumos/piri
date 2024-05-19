@@ -1,17 +1,17 @@
 ---
-title: "React Labs: What We've Been Working On – March 2023"
+title: React ラボ: 私たちが取り組んでいたこと – 2023年3月
 author: Joseph Savona, Josh Story, Lauren Tan, Mengdi Chen, Samuel Susla, Sathya Gunasekaran, Sebastian Markbage, and Andrew Clark
 date: 2023/03/22
-description: In React Labs posts, we write about projects in active research and development. We've made significant progress on them since our last update, and we'd like to share what we learned.
+description: React Labsの投稿では、現在研究開発中のプロジェクトについて書いています。前回の更新以来、これらのプロジェクトで大きな進展がありましたので、学んだことを共有したいと思います。
 ---
 
-March 22, 2023 by [Joseph Savona](https://twitter.com/en_JS), [Josh Story](https://twitter.com/joshcstory), [Lauren Tan](https://twitter.com/potetotes), [Mengdi Chen](https://twitter.com/mengdi_en), [Samuel Susla](https://twitter.com/SamuelSusla), [Sathya Gunasekaran](https://twitter.com/_gsathya), [Sebastian Markbåge](https://twitter.com/sebmarkbage), and [Andrew Clark](https://twitter.com/acdlite)
+2023年3月22日 [Joseph Savona](https://twitter.com/en_JS)、[Josh Story](https://twitter.com/joshcstory)、[Lauren Tan](https://twitter.com/potetotes)、[Mengdi Chen](https://twitter.com/mengdi_en)、[Samuel Susla](https://twitter.com/SamuelSusla)、[Sathya Gunasekaran](https://twitter.com/_gsathya)、[Sebastian Markbåge](https://twitter.com/sebmarkbage)、および [Andrew Clark](https://twitter.com/acdlite)
 
 ---
 
 <Intro>
 
-In React Labs posts, we write about projects in active research and development. We've made significant progress on them since our [last update](/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022), and we'd like to share what we learned.
+React Labsの投稿では、現在進行中の研究開発プロジェクトについて書いています。前回の[更新](/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022)以来、これらのプロジェクトで大きな進展があり、その学びを共有したいと思います。
 
 </Intro>
 
@@ -19,87 +19,87 @@ In React Labs posts, we write about projects in active research and development.
 
 ## React Server Components {/*react-server-components*/}
 
-React Server Components (or RSC) is a new application architecture designed by the React team.
+React Server Components（またはRSC）は、Reactチームによって設計された新しいアプリケーションアーキテクチャです。
 
-We've first shared our research on RSC in an [introductory talk](/blog/2020/12/21/data-fetching-with-react-server-components) and an [RFC](https://github.com/reactjs/rfcs/pull/188). To recap them, we are introducing a new kind of component--Server Components--that run ahead of time and are excluded from your JavaScript bundle. Server Components can run during the build, letting you read from the filesystem or fetch static content. They can also run on the server, letting you access your data layer without having to build an API. You can pass data by props from Server Components to the interactive Client Components in the browser.
+RSCに関する研究を最初に共有したのは、[紹介トーク](/blog/2020/12/21/data-fetching-with-react-server-components)と[RFC](https://github.com/reactjs/rfcs/pull/188)でした。それらを要約すると、事前に実行され、JavaScriptバンドルから除外される新しい種類のコンポーネントであるServer Componentsを導入しています。Server Componentsはビルド中に実行され、ファイルシステムから読み取ったり、静的コンテンツをフェッチしたりできます。また、サーバー上で実行され、APIを構築することなくデータレイヤーにアクセスできます。Server ComponentsからブラウザのインタラクティブなClient Componentsにプロップスを介してデータを渡すことができます。
 
-RSC combines the simple "request/response" mental model of server-centric Multi-Page Apps with the seamless interactivity of client-centric Single-Page Apps, giving you the best of both worlds.
+RSCは、サーバー中心のマルチページアプリのシンプルな「リクエスト/レスポンス」メンタルモデルと、クライアント中心のシングルページアプリのシームレスなインタラクティビティを組み合わせ、両方の利点を提供します。
 
-Since our last update, we have merged the [React Server Components RFC](https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md) to ratify the proposal. We resolved outstanding issues with the [React Server Module Conventions](https://github.com/reactjs/rfcs/blob/main/text/0227-server-module-conventions.md) proposal, and reached consensus with our partners to go with the `"use client"` convention. These documents also act as specification for what an RSC-compatible implementation should support.
+前回の更新以来、[React Server Components RFC](https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md)をマージして提案を正式に承認しました。[React Server Module Conventions](https://github.com/reactjs/rfcs/blob/main/text/0227-server-module-conventions.md)提案の未解決の問題を解決し、パートナーと合意して「"use client"」の規約を採用しました。これらの文書は、RSC互換の実装がサポートすべき仕様としても機能します。
 
-The biggest change is that we introduced [`async` / `await`](https://github.com/reactjs/rfcs/pull/229) as the primary way to do data fetching from Server Components. We also plan to support data loading from the client by introducing a new Hook called `use` that unwraps Promises. Although we can't support `async / await` in arbitrary components in client-only apps, we plan to add support for it when you structure your client-only app similar to how RSC apps are structured.
+最大の変更点は、Server Componentsからデータをフェッチするための主要な方法として[`async` / `await`](https://github.com/reactjs/rfcs/pull/229)を導入したことです。また、Promiseをアンラップする新しいフック`use`を導入して、クライアントからのデータロードをサポートする予定です。クライアント専用のアプリでは任意のコンポーネントで`async / await`をサポートすることはできませんが、RSCアプリと同様の構造にすることでサポートを追加する予定です。
 
-Now that we have data fetching pretty well sorted, we're exploring the other direction: sending data from the client to the server, so that you can execute database mutations and implement forms. We're doing this by letting you pass Server Action functions across the server/client boundary, which the client can then call, providing seamless RPC. Server Actions also give you progressively enhanced forms before JavaScript loads.
+データフェッチがかなり整理されたので、次の方向性として、クライアントからサーバーにデータを送信することを検討しています。これにより、データベースの変更を実行し、フォームを実装できるようになります。これを実現するために、サーバー/クライアントの境界を越えてServer Action関数を渡し、クライアントがそれを呼び出すことでシームレスなRPCを提供します。Server Actionsは、JavaScriptが読み込まれる前に段階的に強化されたフォームも提供します。
 
-React Server Components has shipped in [Next.js App Router](/learn/start-a-new-react-project#nextjs-app-router). This showcases a deep integration of a router that really buys into RSC as a primitive, but it's not the only way to build a RSC-compatible router and framework. There's a clear separation for features provided by the RSC spec and implementation. React Server Components is meant as a spec for components that work across compatible React frameworks.
+React Server Componentsは[Next.js App Router](/learn/start-a-new-react-project#nextjs-app-router)に搭載されています。これは、RSCをプリミティブとして本当に取り入れたルーターの深い統合を示していますが、RSC互換のルーターとフレームワークを構築する唯一の方法ではありません。RSC仕様と実装が提供する機能には明確な分離があります。React Server Componentsは、互換性のあるReactフレームワーク全体で機能するコンポーネントの仕様として意図されています。
 
-We generally recommend using an existing framework, but if you need to build your own custom framework, it is possible. Building your own RSC-compatible framework is not as easy as we'd like it to be, mainly due to the deep bundler integration needed. The current generation of bundlers are great for use on the client, but they weren't designed with first-class support for splitting a single module graph between the server and the client. This is why we're now partnering directly with bundler developers to get the primitives for RSC built-in.
+一般的には既存のフレームワークを使用することをお勧めしますが、独自のカスタムフレームワークを構築することも可能です。RSC互換のフレームワークを構築するのは、必要な深いバンドラー統合のため、思ったほど簡単ではありません。現在のバンドラーの世代はクライアントでの使用には優れていますが、サーバーとクライアントの間で単一のモジュールグラフを分割するための一級のサポートを念頭に置いて設計されていません。これが、RSCのプリミティブを組み込むためにバンドラー開発者と直接協力している理由です。
 
 ## Asset Loading {/*asset-loading*/}
 
-[Suspense](/reference/react/Suspense) lets you specify what to display on the screen while the data or code for your components is still being loaded. This lets your users progressively see more content while the page is loading as well as during the router navigations that load more data and code. However, from the user's perspective, data loading and rendering do not tell the whole story when considering whether new content is ready. By default, browsers load stylesheets, fonts, and images independently, which can lead to UI jumps and consecutive layout shifts.
+[Suspense](/reference/react/Suspense)は、コンポーネントのデータやコードがまだ読み込まれている間に画面に表示する内容を指定できます。これにより、ページの読み込み中やルーターのナビゲーション中にユーザーが徐々に多くのコンテンツを見ることができます。しかし、ユーザーの視点から見ると、新しいコンテンツが準備完了かどうかを判断する際に、データの読み込みとレンダリングだけでは全体像を伝えきれません。デフォルトでは、ブラウザはスタイルシート、フォント、画像を独立して読み込むため、UIのジャンプや連続的なレイアウトシフトが発生する可能性があります。
 
-We're working to fully integrate Suspense with the loading lifecycle of stylesheets, fonts, and images, so that React takes them into account to determine whether the content is ready to be displayed. Without any change to the way you author your React components, updates will behave in a more coherent and pleasing manner. As an optimization, we will also provide a manual way to preload assets like fonts directly from components.
+Reactは、スタイルシート、フォント、画像の読み込みライフサイクルと完全に統合するために取り組んでおり、それらを考慮してコンテンツが表示準備が整っているかどうかを判断します。Reactコンポーネントの作成方法を変更することなく、更新はより一貫性があり、心地よい動作をします。最適化として、フォントなどのアセットをコンポーネントから直接プリロードする手動の方法も提供します。
 
-We are currently implementing these features and will have more to share soon.
+これらの機能を現在実装中で、近日中にさらに詳細を共有する予定です。
 
 ## Document Metadata {/*document-metadata*/}
 
-Different pages and screens in your app may have different metadata like the `<title>` tag, description, and other `<meta>` tags specific to this screen. From the maintenance perspective, it's more scalable to keep this information close to the React component for that page or screen. However, the HTML tags for this metadata need to be in the document `<head>` which is typically rendered in a component at the very root of your app.
+アプリの異なるページや画面には、特定の画面に固有の`<title>`タグ、説明、およびその他の`<meta>`タグなどの異なるメタデータが含まれている場合があります。メンテナンスの観点からは、この情報をそのページや画面のReactコンポーネントの近くに保持する方がスケーラブルです。しかし、このメタデータのHTMLタグは、通常アプリの最上位のコンポーネントでレンダリングされるドキュメントの`<head>`にある必要があります。
 
-Today, people solve this problem with one of the two techniques.
+今日では、この問題を解決するために2つの技術のいずれかを使用しています。
 
-One technique is to render a special third-party component that moves `<title>`, `<meta>`, and other tags inside it into the document `<head>`. This works for major browsers but there are many clients which do not run client-side JavaScript, such as Open Graph parsers, and so this technique is not universally suitable.
+1つの技術は、`<title>`、`<meta>`、およびその他のタグをドキュメントの`<head>`に移動する特別なサードパーティコンポーネントをレンダリングすることです。これは主要なブラウザでは機能しますが、Open GraphパーサーなどのクライアントサイドJavaScriptを実行しない多くのクライアントには適していません。
 
-Another technique is to server-render the page in two parts. First, the main content is rendered and all such tags are collected. Then, the `<head>` is rendered with these tags. Finally, the `<head>` and the main content are sent to the browser. This approach works, but it prevents you from taking advantage of the [React 18's Streaming Server Renderer](/reference/react-dom/server/renderToReadableStream) because you'd have to wait for all content to render before sending the `<head>`.
+もう1つの技術は、ページを2つの部分に分けてサーバーレンダリングすることです。まず、メインコンテンツをレンダリングし、すべてのタグを収集します。次に、これらのタグを使用して`<head>`をレンダリングします。最後に、`<head>`とメインコンテンツをブラウザに送信します。このアプローチは機能しますが、[React 18のストリーミングサーバーレンダラー](/reference/react-dom/server/renderToReadableStream)を利用することができません。すべてのコンテンツがレンダリングされるまで待つ必要があるためです。
 
-This is why we're adding built-in support for rendering `<title>`, `<meta>`, and metadata `<link>` tags anywhere in your component tree out of the box. It would work the same way in all environments, including fully client-side code, SSR, and in the future, RSC. We will share more details about this soon.
+このため、コンポーネントツリーのどこにでも`<title>`、`<meta>`、およびメタデータ`<link>`タグをレンダリングするための組み込みサポートを追加しています。これは、完全にクライアントサイドのコード、SSR、および将来的にはRSCを含むすべての環境で同じように機能します。近日中にさらに詳細を共有する予定です。
 
 ## React Optimizing Compiler {/*react-optimizing-compiler*/}
 
-Since our previous update we've been actively iterating on the design of [React Forget](/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022#react-compiler), an optimizing compiler for React. We've previously talked about it as an "auto-memoizing compiler", and that is true in some sense. But building the compiler has helped us understand React's programming model even more deeply. A better way to understand React Forget is as an automatic *reactivity* compiler.
+前回の更新以来、[React Forget](/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022#react-compiler)の設計を積極的に繰り返しています。これはReactの最適化コンパイラです。以前は「自動メモ化コンパイラ」として話していましたが、ある意味ではそれは真実です。しかし、コンパイラを構築することで、Reactのプログラミングモデルをさらに深く理解することができました。React Forgetを理解するためのより良い方法は、自動的な*リアクティビティ*コンパイラとして理解することです。
 
-The core idea of React is that developers define their UI as a function of the current state. You work with plain JavaScript values — numbers, strings, arrays, objects — and use standard JavaScript idioms — if/else, for, etc — to describe your component logic. The mental model is that React will re-render whenever the application state changes. We believe this simple mental model and keeping close to JavaScript semantics is an important principle in React's programming model.
+Reactのコアアイデアは、開発者が現在の状態の関数としてUIを定義することです。開発者は、数値、文字列、配列、オブジェクトなどのプレーンなJavaScript値を使用し、if/else、forなどの標準的なJavaScriptのイディオムを使用してコンポーネントロジックを記述します。メンタルモデルは、アプリケーションの状態が変わるたびにReactが再レンダリングするというものです。このシンプルなメンタルモデルとJavaScriptのセマンティクスに近づけることは、Reactのプログラミングモデルにおいて重要な原則であると考えています。
 
-The catch is that React can sometimes be *too* reactive: it can re-render too much. For example, in JavaScript we don't have cheap ways to compare if two objects or arrays are equivalent (having the same keys and values), so creating a new object or array on each render may cause React to do more work than it strictly needs to. This means developers have to explicitly memoize components so as to not over-react to changes.
+問題は、Reactが時々*過剰に*リアクティブになることです。たとえば、JavaScriptでは2つのオブジェクトや配列が同等かどうかを比較する安価な方法がないため、各レンダリングで新しいオブジェクトや配列を作成すると、Reactが必要以上に多くの作業を行う可能性があります。これにより、開発者は変更に過剰に反応しないようにコンポーネントを明示的にメモ化する必要があります。
 
-Our goal with React Forget is to ensure that React apps have just the right amount of reactivity by default: that apps re-render only when state values *meaningfully* change. From an implementation perspective this means automatically memoizing, but we believe that the reactivity framing is a better way to understand React and Forget. One way to think about this is that React currently re-renders when object identity changes. With Forget, React re-renders when the semantic value changes — but without incurring the runtime cost of deep comparisons.
+React Forgetの目標は、Reactアプリがデフォルトで適切な量のリアクティビティを持つようにすることです。つまり、状態値が*意味的に*変化したときにのみアプリが再レンダリングされることです。実装の観点からは、これは自動的にメモ化することを意味しますが、リアクティビティのフレーミングはReactとForgetを理解するためのより良い方法であると考えています。現在のReactはオブジェクトの同一性が変わると再レンダリングしますが、Forgetでは、Reactは意味的な値が変わると再レンダリングしますが、深い比較のランタイムコストをかけずに行います。
 
-In terms of concrete progress, since our last update we have substantially iterated on the design of the compiler to align with this automatic reactivity approach and to incorporate feedback from using the compiler internally. After some significant refactors to the compiler starting late last year, we've now begun using the compiler in production in limited areas at Meta. We plan to open-source it once we've proved it in production.
+具体的な進捗としては、前回の更新以来、この自動リアクティビティアプローチに合わせてコンパイラの設計を大幅に繰り返し、内部でコンパイラを使用したフィードバックを取り入れました。昨年末からコンパイラの大規模なリファクタリングを行った後、現在Metaの限られた領域でコンパイラを本番環境で使用し始めています。本番環境での検証が完了次第、オープンソース化する予定です。
 
-Finally, a lot of people have expressed interest in how the compiler works. We're looking forward to sharing a lot more details when we prove the compiler and open-source it. But there are a few bits we can share now:
+最後に、多くの人々がコンパイラの動作に興味を持っています。コンパイラを証明し、オープンソース化する際に、さらに多くの詳細を共有することを楽しみにしています。しかし、今共有できるいくつかの点があります：
 
-The core of the compiler is almost completely decoupled from Babel, and the core compiler API is (roughly) old AST in, new AST out (while retaining source location data). Under the hood we use a custom code representation and transformation pipeline in order to do low-level semantic analysis. However, the primary public interface to the compiler will be via Babel and other build system plugins. For ease of testing we currently have a Babel plugin which is a very thin wrapper that calls the compiler to generate a new version of each function and swap it in.
+コンパイラのコアはBabelからほぼ完全に分離されており、コアコンパイラAPIは（大まかに言えば）古いASTを入力し、新しいASTを出力します（ソースロケーションデータを保持しながら）。内部では、低レベルのセマンティック分析を行うためにカスタムコード表現と変換パイプラインを使用しています。ただし、コンパイラの主な公開インターフェースはBabelおよびその他のビルドシステムプラグインを介して提供されます。テストの容易さのために、現在、各関数の新しいバージョンを生成し、それを入れ替えるコンパイラを呼び出す非常に薄いラッパーであるBabelプラグインを持っています。
 
-As we refactored the compiler over the last few months, we wanted to focus on refining the core compilation model to ensure we could handle complexities such as conditionals, loops, reassignment, and mutation. However, JavaScript has a lot of ways to express each of those features: if/else, ternaries, for, for-in, for-of, etc. Trying to support the full language up-front would have delayed the point where we could validate the core model. Instead, we started with a small but representative subset of the language: let/const, if/else, for loops, objects, arrays, primitives, function calls, and a few other features. As we gained confidence in the core model and refined our internal abstractions, we expanded the supported language subset. We're also explicit about syntax we don't yet support, logging diagnostics and skipping compilation for unsupported input. We have utilities to try the compiler on Meta's codebases and see what unsupported features are most common so we can prioritize those next. We'll continue incrementally expanding towards supporting the whole language.
+過去数か月間にコンパイラをリファクタリングする際、条件文、ループ、再代入、および変更などの複雑さを処理できるようにコアコンパイルモデルを洗練することに焦点を当てました。しかし、JavaScriptにはそれらの機能を表現する多くの方法があります：if/else、三項演算子、for、for-in、for-ofなど。最初から完全な言語をサポートしようとすると、コアモデルを検証するポイントが遅れることになります。代わりに、言語の小さくても代表的なサブセットから始めました：let/const、if/else、forループ、オブジェクト、配列、プリミティブ、関数呼び出し、およびその他のいくつかの機能。コアモデルに自信を持ち、内部抽象化を洗練するにつれて、サポートされる言語サブセットを拡大しました。まだサポートされていない構文については明示的に診断を記録し、サポートされていない入力のコンパイルをスキップします。Metaのコードベースでコンパイラを試して、最も一般的なサポートされていない機能を確認し、次に優先するものを決定するためのユーティリティを持っています。言語全体をサポートする方向に向かって段階的に拡大し続けます。
 
-Making plain JavaScript in React components reactive requires a compiler with a deep understanding of semantics so that it can understand exactly what the code is doing. By taking this approach, we're creating a system for reactivity within JavaScript that lets you write product code of any complexity with the full expressivity of the language, instead of being limited to a domain specific language.
+Reactコンポーネント内のプレーンなJavaScriptをリアクティブにするには、コードが正確に何をしているのかを理解するためのセマンティクスの深い理解を持つコンパイラが必要です。このアプローチを取ることで、JavaScript内でのリアクティビティのシステムを作成し、特定のドメイン固有言語に制限されることなく、言語の完全な表現力を持つ任意の複雑さの製品コードを記述できるようにしています。
 
 ## Offscreen Rendering {/*offscreen-rendering*/}
 
-Offscreen rendering is an upcoming capability in React for rendering screens in the background without additional performance overhead. You can think of it as a version of the [`content-visibility` CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility) that works not only for DOM elements but React components, too. During our research, we've discovered a variety of use cases:
+Offscreen renderingは、追加のパフォーマンスオーバーヘッドなしにバックグラウンドで画面をレンダリングするためのReactの新しい機能です。これは、DOM要素だけでなくReactコンポーネントにも機能する[`content-visibility` CSSプロパティ](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility)のバージョンと考えることができます。研究中に、さまざまなユースケースを発見しました：
 
-- A router can prerender screens in the background so that when a user navigates to them, they're instantly available.
-- A tab switching component can preserve the state of hidden tabs, so the user can switch between them without losing their progress.
-- A virtualized list component can prerender additional rows above and below the visible window.
-- When opening a modal or popup, the rest of the app can be put into "background" mode so that events and updates are disabled for everything except the modal.
+- ルーターはバックグラウンドで画面を事前レンダリングし、ユーザーがそれに移動するとすぐに利用可能になります。
+- タブ切り替えコンポーネントは、非表示のタブの状態を保持し、ユーザーが進行状況を失うことなくタブを切り替えることができます。
+- 仮想化リストコンポーネントは、表示ウィンドウの上下に追加の行を事前レンダリングできます。
+- モーダルやポップアップを開くとき、アプリの残りの部分を「バックグラウンド」モードにして、モーダル以外のすべてのイベントと更新を無効にすることができます。
 
-Most React developers will not interact with React's offscreen APIs directly. Instead, offscreen rendering will be integrated into things like routers and UI libraries, and then developers who use those libraries will automatically benefit without additional work.
+ほとんどのReact開発者は、Reactのoffscreen APIと直接対話することはありません。代わりに、offscreen renderingはルーターやUIライブラリに統合され、これらのライブラリを使用する開発者は追加の作業なしに自動的に恩恵を受けます。
 
-The idea is that you should be able to render any React tree offscreen without changing the way you write your components. When a component is rendered offscreen, it does not actually *mount* until the component becomes visible — its effects are not fired. For example, if a component uses `useEffect` to log analytics when it appears for the first time, prerendering won't mess up the accuracy of those analytics. Similarly, when a component goes offscreen, its effects are unmounted, too. A key feature of offscreen rendering is that you can toggle the visibility of a component without losing its state.
+アイデアは、コンポーネントの書き方を変更することなく、任意のReactツリーをオフスクリーンでレンダリングできるようにすることです。コンポーネントがオフスクリーンでレンダリングされると、そのコンポーネントは実際には*マウント*されず、コンポーネントが表示されるまでその効果は発動しません。たとえば、コンポーネントが初めて表示されるときに`useEffect`を使用して分析をログする場合、事前レンダリングはその分析の正確性を損なうことはありません。同様に、コンポーネントがオフスクリーンになると、その効果もアンマウントされます。オフスクリーンレンダリングの重要な機能は、コンポーネントの状態を失うことなくその可視性を切り替えることができることです。
 
-Since our last update, we've tested an experimental version of prerendering internally at Meta in our React Native apps on Android and iOS, with positive performance results. We've also improved how offscreen rendering works with Suspense — suspending inside an offscreen tree will not trigger Suspense fallbacks. Our remaining work involves finalizing the primitives that are exposed to library developers. We expect to publish an RFC later this year, alongside an experimental API for testing and feedback.
+前回の更新以来、AndroidおよびiOSのReact Nativeアプリで事前レンダリングの実験的バージョンを内部でテストし、ポジティブなパフォーマンス結果を得ました。また、Suspenseとの連携を改善し、オフスクリーンツリー内でのサスペンドがSuspenseフォールバックをトリガーしないようにしました。残りの作業は、ライブラリ開発者に公開されるプリミティブを最終化することです。今年後半にRFCを公開し、テストとフィードバックのための実験的APIを提供する予定です。
 
 ## Transition Tracing {/*transition-tracing*/}
 
-The Transition Tracing API lets you detect when [React Transitions](/reference/react/useTransition) become slower and investigate why they may be slow. Following our last update, we have completed the initial design of the API and published an [RFC](https://github.com/reactjs/rfcs/pull/238). The basic capabilities have also been implemented. The project is currently on hold. We welcome feedback on the RFC and look forward to resuming its development to provide a better performance measurement tool for React. This will be particularly useful with routers built on top of React Transitions, like the [Next.js App Router](/learn/start-a-new-react-project#nextjs-app-router).
+Transition Tracing APIは、[React Transitions](/reference/react/useTransition)が遅くなるときにそれを検出し、なぜ遅くなるのかを調査することができます。前回の更新に続いて、APIの初期設計を完了し、[RFC](https://github.com/reactjs/rfcs/pull/238)を公開しました。基本的な機能も実装されています。このプロジェクトは現在保留中です。RFCに対するフィードバックを歓迎し、Reactのパフォーマンス測定ツールを提供するために開発を再開することを楽しみにしています。これは、[Next.js App Router](/learn/start-a-new-react-project#nextjs-app-router)のようなReact Transitions上に構築されたルーターに特に役立ちます。
 
 * * *
-In addition to this update, our team has made recent guest appearances on community podcasts and livestreams to speak more on our work and answer questions.
+この更新に加えて、私たちのチームは最近、コミュニティのポッドキャストやライブストリームにゲスト出演し、私たちの仕事について話し、質問に答えました。
 
-* [Dan Abramov](https://twitter.com/dan_abramov) and [Joe Savona](https://twitter.com/en_JS) were interviewed by [Kent C. Dodds on his YouTube channel](https://www.youtube.com/watch?v=h7tur48JSaw), where they discussed concerns around React Server Components.
-* [Dan Abramov](https://twitter.com/dan_abramov) and [Joe Savona](https://twitter.com/en_JS) were guests on the [JSParty podcast](https://jsparty.fm/267) and shared their thoughts about the future of React.
+* [Dan Abramov](https://twitter.com/dan_abramov)と[Joe Savona](https://twitter.com/en_JS)は、[Kent C. DoddsのYouTubeチャンネル](https://www.youtube.com/watch?v=h7tur48JSaw)でインタビューを受け、React Server Componentsに関する懸念について話しました。
+* [Dan Abramov](https://twitter.com/dan_abramov)と[Joe Savona](https://twitter.com/en_JS)は、[JSPartyポッドキャスト](https://jsparty.fm/267)にゲスト出演し、Reactの将来についての考えを共有しました。
 
-Thanks to [Andrew Clark](https://twitter.com/acdlite), [Dan Abramov](https://twitter.com/dan_abramov), [Dave McCabe](https://twitter.com/mcc_abe), [Luna Wei](https://twitter.com/lunaleaps), [Matt Carroll](https://twitter.com/mattcarrollcode), [Sean Keegan](https://twitter.com/DevRelSean), [Sebastian Silbermann](https://twitter.com/sebsilbermann), [Seth Webster](https://twitter.com/sethwebster), and [Sophie Alpert](https://twitter.com/sophiebits) for reviewing this post.
+この投稿をレビューしてくれた[Andrew Clark](https://twitter.com/acdlite)、[Dan Abramov](https://twitter.com/dan_abramov)、[Dave McCabe](https://twitter.com/mcc_abe)、[Luna Wei](https://twitter.com/lunaleaps)、[Matt Carroll](https://twitter.com/mattcarrollcode)、[Sean Keegan](https://twitter.com/DevRelSean)、[Sebastian Silbermann](https://twitter.com/sebsilbermann)、[Seth Webster](https://twitter.com/sethwebster)、および[Sophie Alpert](https://twitter.com/sophiebits)に感謝します。
 
-Thanks for reading, and see you in the next update!
+読んでいただきありがとうございます。次回の更新でお会いしましょう！

@@ -1,57 +1,57 @@
 ---
-title: React Compiler
+title: React コンパイラ
 ---
 
 <Intro>
-This page will give you an introduction to the new experimental React Compiler and how to try it out successfully.
+このページでは、新しい実験的なReact Compilerの紹介と、それを成功裏に試す方法について説明します。
 </Intro>
 
 <Wip>
-These docs are still a work in progress. More documentation is available in the [React Compiler Working Group repo](https://github.com/reactwg/react-compiler/discussions), and will be upstreamed into these docs when they are more stable.
+これらのドキュメントはまだ作業中です。詳細なドキュメントは[React Compiler Working Groupリポジトリ](https://github.com/reactwg/react-compiler/discussions)で利用可能で、安定したらこれらのドキュメントに反映されます。
 </Wip>
 
 <YouWillLearn>
 
-* Getting started with the compiler
-* Installing the compiler and eslint plugin
-* Troubleshooting
+* コンパイラの始め方
+* コンパイラとeslintプラグインのインストール
+* トラブルシューティング
 
 </YouWillLearn>
 
 <Note>
-React Compiler is a new experimental compiler that we've open sourced to get early feedback from the community. It still has rough edges and is not yet fully ready for production.
+React Compilerは、コミュニティからの早期フィードバックを得るためにオープンソース化された新しい実験的なコンパイラです。まだ粗削りな部分があり、プロダクションでの使用には完全に準備が整っていません。
 
-React Compiler requires React 19 Beta.
+React CompilerはReact 19 Betaを必要とします。
 </Note>
 
-React Compiler is a new experimental compiler that we've open sourced to get early feedback from the community. It is a build-time only tool that automatically optimizes your React app. It works with plain JavaScript, and understands the [Rules of React](/reference/rules), so you don't need to rewrite any code to use it.
+React Compilerは、コミュニティからの早期フィードバックを得るためにオープンソース化された新しい実験的なコンパイラです。これはビルド時のみのツールで、あなたのReactアプリを自動的に最適化します。通常のJavaScriptと[Reactのルール](/reference/rules)を理解しているため、コードを書き直す必要はありません。
 
-The compiler also includes an [eslint plugin](#installing-eslint-plugin-react-compiler) that surfaces the analysis from the compiler right in your editor. The plugin runs independently of the compiler and can be used even if you aren't using the compiler in your app. We recommend all React developers to use this eslint plugin to help improve the quality of your codebase.
+コンパイラには、エディタ内でコンパイラの分析結果を表示する[eslintプラグイン](#installing-eslint-plugin-react-compiler)も含まれています。このプラグインはコンパイラとは独立して動作し、アプリでコンパイラを使用していなくても利用できます。すべてのReact開発者に、このeslintプラグインを使用してコードベースの品質向上をお勧めします。
 
-### What does the compiler do? {/*what-does-the-compiler-do*/}
+### コンパイラは何をするのか？ {/*what-does-the-compiler-do*/}
 
-The compiler understands your code at a deep level through its understanding of plain JavaScript semantics and the [Rules of React](/reference/rules). This allows it to add automatic optimizations to your code.
+コンパイラは、通常のJavaScriptの意味論と[Reactのルール](/reference/rules)を深く理解することで、コードに自動的な最適化を追加します。
 
-You may be familiar today with manual memoization through [`useMemo`](/reference/react/useMemo), [`useCallback`](/reference/react/useCallback), and [`React.memo`](/reference/react/memo). The compiler can automatically do this for you, if your code follows the [Rules of React](/reference/rules). If it detects breakages of the rules, it will automatically skip over just those components or hooks, and continue safely compiling other code.
+今日では、[`useMemo`](/reference/react/useMemo)、[`useCallback`](/reference/react/useCallback)、および[`React.memo`](/reference/react/memo)を使用した手動のメモ化に慣れているかもしれません。コンパイラは、コードが[Reactのルール](/reference/rules)に従っている場合、自動的にこれを行うことができます。ルールの違反を検出した場合、そのコンポーネントやフックをスキップし、他のコードを安全にコンパイルし続けます。
 
-If your codebase is already very well memoized, you might not expect to see major performance improvements with the compiler. However, in practice memoizing the correct dependencies that cause performance issues is tricky to get right by hand.
+コードベースがすでに非常によくメモ化されている場合、コンパイラによる大きなパフォーマンス向上は期待できないかもしれません。しかし、実際には、パフォーマンス問題を引き起こす正しい依存関係を手動でメモ化するのは難しいです。
 
-### Should I try out the compiler? {/*should-i-try-out-the-compiler*/}
+### コンパイラを試すべきか？ {/*should-i-try-out-the-compiler*/}
 
-Please note that the compiler is still experimental and has many rough edges. While it has been used in production at companies like Meta, rolling out the compiler to production for your app will depend on the health of your codebase and how well you've followed the [Rules of React](/reference/rules).
+コンパイラはまだ実験的であり、多くの粗削りな部分があることに注意してください。Metaのような企業でプロダクションで使用されていますが、アプリにコンパイラを導入するかどうかは、コードベースの健全性と[Reactのルール](/reference/rules)にどれだけ従っているかに依存します。
 
-**You don't have to rush into using the compiler now. It's okay to wait until it reaches a stable release before adopting it.** However, we do appreciate trying it out in small experiments in your apps so that you can [provide feedback](#reporting-issues) to us to help make the compiler better.
+**今すぐコンパイラを使用する必要はありません。安定版がリリースされるまで待つのも良いでしょう。** しかし、アプリで小規模な実験を行い、[フィードバックを提供](#reporting-issues)してコンパイラの改善に協力していただけるとありがたいです。
 
-## Getting Started {/*getting-started*/}
+## 始め方 {/*getting-started*/}
 
-In addition to these docs, we recommend checking the [React Compiler Working Group](https://github.com/reactwg/react-compiler) for additional information and discussion about the compiler.
+これらのドキュメントに加えて、コンパイラに関する追加情報や議論については[React Compiler Working Group](https://github.com/reactwg/react-compiler)を参照することをお勧めします。
 
-### Rolling out the compiler to your codebase {/*using-the-compiler-effectively*/}
+### コードベースへのコンパイラの導入 {/*using-the-compiler-effectively*/}
 
-#### Existing projects {/*existing-projects*/}
-The compiler is designed to compile functional components and hooks that follow the [Rules of React](/reference/rules). It can also handle code that breaks those rules by bailing out (skipping over) those components or hooks. However, due to the flexible nature of JavaScript, the compiler cannot catch every possible violation and may compile with false negatives: that is, the compiler may accidentally compile a component/hook that breaks the Rules of React which can lead to undefined behavior.
+#### 既存のプロジェクト {/*existing-projects*/}
+コンパイラは、[Reactのルール](/reference/rules)に従う関数コンポーネントとフックをコンパイルするように設計されています。また、これらのルールを破るコードもスキップ（バイパス）することができます。しかし、JavaScriptの柔軟な性質のため、コンパイラはすべての違反を検出することはできず、誤検出（ルールを破るコンポーネント/フックを誤ってコンパイルする）する可能性があります。
 
-For this reason, to adopt the compiler successfully on existing projects, we recommend running it on a small directory in your product code first. You can do this by configuring the compiler to only run on a specific set of directories:
+このため、既存のプロジェクトでコンパイラを成功裏に導入するには、まず製品コードの小さなディレクトリで実行することをお勧めします。特定のディレクトリでのみコンパイラを実行するように設定することでこれを行うことができます：
 
 ```js {3}
 const ReactCompilerConfig = {
@@ -61,7 +61,7 @@ const ReactCompilerConfig = {
 };
 ```
 
-In rare cases, you can also configure the compiler to run in "opt-in" mode using the `compilationMode: "annotation"` option. This makes it so the compiler will only compile components and hooks annotated with a `"use memo"` directive. Please note that the `annotation` mode is a temporary one to aid early adopters, and that we don't intend for the `"use memo"` directive to be used for the long term.
+稀なケースでは、`compilationMode: "annotation"`オプションを使用してコンパイラを「オプトイン」モードで実行するように設定することもできます。これにより、`"use memo"`ディレクティブで注釈されたコンポーネントとフックのみがコンパイルされます。`annotation`モードは初期採用者を支援するための一時的なものであり、`"use memo"`ディレクティブを長期的に使用することは意図していないことに注意してください。
 
 ```js {2,7}
 const ReactCompilerConfig = {
@@ -75,29 +75,29 @@ export default function App() {
 }
 ```
 
-When you have more confidence with rolling out the compiler, you can expand coverage to other directories as well and slowly roll it out to your whole app.
+コンパイラの導入に自信がついたら、他のディレクトリにもカバレッジを拡大し、アプリ全体に徐々に展開することができます。
 
-#### New projects {/*new-projects*/}
+#### 新しいプロジェクト {/*new-projects*/}
 
-If you're starting a new project, you can enable the compiler on your entire codebase, which is the default behavior.
+新しいプロジェクトを開始する場合、デフォルトでコードベース全体にコンパイラを有効にすることができます。
 
-## Installation {/*installation*/}
+## インストール {/*installation*/}
 
-### Checking compatibility {/*checking-compatibility*/}
+### 互換性の確認 {/*checking-compatibility*/}
 
-Prior to installing the compiler, you can first check to see if your codebase is compatible:
+コンパイラをインストールする前に、まずコードベースが互換性があるかどうかを確認できます：
 
 <TerminalBlock>
 npx react-compiler-healthcheck
 </TerminalBlock>
 
-This script will:
+このスクリプトは以下をチェックします：
 
-- Check how many components can be successfully optimized: higher is better
-- Check for `<StrictMode>` usage: having this enabled and followed means a higher chance that the [Rules of React](/reference/rules) are followed
-- Check for incompatible library usage: known libaries that are incompatible with the compiler
+- どれだけ多くのコンポーネントが最適化されるか：多いほど良い
+- `<StrictMode>`の使用：これが有効で従っている場合、[Reactのルール](/reference/rules)が守られている可能性が高い
+- 互換性のないライブラリの使用：コンパイラと互換性のない既知のライブラリ
 
-As an example:
+例として：
 
 <TerminalBlock>
 Successfully compiled 8 out of 9 components.
@@ -105,15 +105,15 @@ StrictMode usage not found.
 Found no usage of incompatible libraries.
 </TerminalBlock>
 
-### Installing eslint-plugin-react-compiler {/*installing-eslint-plugin-react-compiler*/}
+### eslint-plugin-react-compilerのインストール {/*installing-eslint-plugin-react-compiler*/}
 
-React Compiler also powers an eslint plugin. The eslint plugin can be used **independently** of the compiler, meaning you can use the eslint plugin even if you don't use the compiler.
+React Compilerはeslintプラグインも提供しています。このeslintプラグインはコンパイラとは**独立して**使用できるため、コンパイラを使用していなくても利用できます。
 
 <TerminalBlock>
 npm install eslint-plugin-react-compiler
 </TerminalBlock>
 
-Then, add it to your eslint config:
+次に、eslint設定に追加します：
 
 ```js
 module.exports = {
@@ -126,15 +126,15 @@ module.exports = {
 }
 ```
 
-### Usage with Babel {/*usage-with-babel*/}
+### Babelとの使用 {/*usage-with-babel*/}
 
 <TerminalBlock>
 npm install babel-plugin-react-compiler
 </TerminalBlock>
 
-The compiler includes a Babel plugin which you can use in your build pipeline to run the compiler.
+コンパイラには、ビルドパイプラインでコンパイラを実行するためのBabelプラグインが含まれています。
 
-After installing, add it to your Babel config. Please note that it's critical that the compiler run **first** in the pipeline:
+インストール後、Babel設定に追加します。コンパイラが**最初**に実行されることが重要です：
 
 ```js {7}
 // babel.config.js
@@ -150,11 +150,11 @@ module.exports = function () {
 };
 ```
 
-`babel-plugin-react-compiler` should run first before other Babel plugins as the compiler requires the input source information for sound analysis.
+`babel-plugin-react-compiler`は他のBabelプラグインよりも先に実行される必要があります。コンパイラは正確な解析のために入力ソース情報を必要とします。
 
-### Usage with Vite {/*usage-with-vite*/}
+### Viteとの使用 {/*usage-with-vite*/}
 
-If you use Vite, you can add the plugin to vite-plugin-react:
+Viteを使用している場合、vite-plugin-reactにプラグインを追加できます：
 
 ```js {10}
 // vite.config.js
@@ -176,18 +176,18 @@ export default defineConfig(() => {
 });
 ```
 
-### Usage with Next.js {/*usage-with-nextjs*/}
+### Next.jsとの使用 {/*usage-with-nextjs*/}
 
-Next.js has an experimental configuration to enable the React Compiler. It automatically ensures Babel is set up with `babel-plugin-react-compiler`.
+Next.jsにはReact Compilerを有効にする実験的な設定があります。これにより、Babelが自動的に`babel-plugin-react-compiler`で設定されます。
 
-- Install Next.js canary, which uses React 19 Release Candidate
-- Install `babel-plugin-react-compiler`
+- React 19 Release Candidateを使用するNext.js canaryをインストール
+- `babel-plugin-react-compiler`をインストール
 
 <TerminalBlock>
 npm install next@canary babel-plugin-react-compiler
 </TerminalBlock>
 
-Then configure the experimental option in `next.config.js`:
+次に、`next.config.js`で実験的なオプションを設定します：
 
 ```js {4,5,6}
 // next.config.js
@@ -201,16 +201,15 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-Using the experimental option ensures support for the React Compiler in:
+実験的なオプションを使用すると、以下のサポートが確保されます：
 
 - App Router
 - Pages Router
-- Webpack (default)
-- Turbopack (opt-in through `--turbo`)
+- Webpack（デフォルト）
+- Turbopack（`--turbo`オプションでオプトイン）
 
-
-### Usage with Remix {/*usage-with-remix*/}
-Install `vite-plugin-babel`, and add the compiler's Babel plugin to it:
+### Remixとの使用 {/*usage-with-remix*/}
+`vite-plugin-babel`をインストールし、コンパイラのBabelプラグインを追加します：
 
 <TerminalBlock>
 npm install vite-plugin-babel
@@ -238,9 +237,9 @@ export default defineConfig({
 });
 ```
 
-### Usage with Webpack {/*usage-with-webpack*/}
+### Webpackとの使用 {/*usage-with-webpack*/}
 
-You can create your own loader for React Compiler, like so:
+React Compiler用の独自のローダーを作成できます：
 
 ```js
 const ReactCompilerConfig = { /* ... */ };
@@ -275,37 +274,37 @@ function reactCompilerLoader(sourceCode, sourceMap) {
 module.exports = reactCompilerLoader;
 ```
 
-### Usage with Expo {/*usage-with-expo*/}
+### Expoとの使用 {/*usage-with-expo*/}
 
-Expo uses Babel via Metro, so refer to the [Usage with Babel](#usage-with-babel) section for installation instructions.
+ExpoはMetro経由でBabelを使用するため、インストール手順については[Usage with Babel](#usage-with-babel)セクションを参照してください。
 
-### Usage with React Native (Metro) {/*usage-with-react-native-metro*/}
+### React Native (Metro)との使用 {/*usage-with-react-native-metro*/}
 
-React Native uses Babel via Metro, so refer to the [Usage with Babel](#usage-with-babel) section for installation instructions.
+React NativeはMetro経由でBabelを使用するため、インストール手順については[Usage with Babel](#usage-with-babel)セクションを参照してください。
 
-## Troubleshooting {/*troubleshooting*/}
+## トラブルシューティング {/*troubleshooting*/}
 
-### Reporting Issues {/*reporting-issues*/}
+### 問題の報告 {/*reporting-issues*/}
 
-To report issues, please first create a minimal repro on the [React Compiler Playground](https://playground.react.dev/) and include it in your bug report.
+問題を報告するには、まず[React Compiler Playground](https://playground.react.dev/)で最小限の再現を作成し、バグレポートに含めてください。
 
-You can open issues in the [facebook/react](https://github.com/facebook/react/issues) repo.
+[facebook/react](https://github.com/facebook/react/issues)リポジトリで問題を報告できます。
 
-You can also provide feedback in the React Compiler Working Group by applying to be a member. Please see [the README for more details on joining](https://github.com/reactwg/react-compiler).
+また、React Compiler Working Groupにメンバーとして参加してフィードバックを提供することもできます。参加方法の詳細については[README](https://github.com/reactwg/react-compiler)を参照してください。
 
-### Common Issues {/*common-issues*/}
+### よくある問題 {/*common-issues*/}
 
-#### `(0 , _c) is not a function` error {/*0--_c-is-not-a-function-error*/}
+#### `(0 , _c) is not a function`エラー {/*0--_c-is-not-a-function-error*/}
 
-This occurs during JavaScript module evaluation when you are not using React 19 Beta and up. To fix this, [upgrade your app to React 19 Beta](https://react.dev/blog/2024/04/25/react-19-upgrade-guide) first.
+これは、React 19 Beta以降を使用していない場合にJavaScriptモジュールの評価中に発生します。これを修正するには、まず[React 19 Betaにアップグレード](https://react.dev/blog/2024/04/25/react-19-upgrade-guide)してください。
 
-### Debugging {/*debugging*/}
+### デバッグ {/*debugging*/}
 
-#### Checking if components have been optimized {/*checking-if-components-have-been-optimized*/}
+#### コンポーネントが最適化されているかの確認 {/*checking-if-components-have-been-optimized*/}
 ##### React DevTools {/*react-devtools*/}
 
-React Devtools (v5.0+) has built-in support for React Compiler and will display a "Memo ✨" badge next to components that have been optimized by the compiler.
+React Devtools（v5.0+）はReact Compilerをサポートしており、コンパイラによって最適化されたコンポーネントの横に「Memo ✨」バッジを表示します。
 
-##### Other issues {/*other-issues*/}
+##### その他の問題 {/*other-issues*/}
 
-Please see https://github.com/reactwg/react-compiler/discussions/7.
+詳細はhttps://github.com/reactwg/react-compiler/discussions/7を参照してください。

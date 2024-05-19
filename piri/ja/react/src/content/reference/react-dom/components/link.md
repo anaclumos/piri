@@ -1,17 +1,17 @@
 ---
-link: "<link>"
+link: <link>
 canary: true
 ---
 
 <Canary>
 
-React's extensions to `<link>` are currently only available in React's canary and experimental channels. In stable releases of React `<link>` works only as a [built-in browser HTML component](https://react.dev/reference/react-dom/components#all-html-components). Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+Reactの`<link>`に対する拡張機能は現在、Reactのcanaryおよび実験的なチャンネルでのみ利用可能です。Reactの安定版リリースでは、`<link>`は[組み込みのブラウザHTMLコンポーネント](https://react.dev/reference/react-dom/components#all-html-components)としてのみ機能します。[Reactのリリースチャンネルについてはこちら](https://react.dev/community/versioning-policy#all-release-channels)をご覧ください。
 
 </Canary>
 
 <Intro>
 
-The [built-in browser `<link>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link) lets you use external resources such as stylesheets or annotate the document with link metadata.
+[組み込みのブラウザ`<link>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)を使用すると、スタイルシートなどの外部リソースを使用したり、リンクメタデータでドキュメントに注釈を付けたりできます。
 
 ```js
 <link rel="icon" href="favicon.ico" />
@@ -23,94 +23,94 @@ The [built-in browser `<link>` component](https://developer.mozilla.org/en-US/do
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `<link>` {/*link*/}
 
-To link to external resources such as stylesheets, fonts, and icons, or to annotate the document with link metadata, render the [built-in browser `<link>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link). You can render `<link>` from any component and React will [in most cases](#special-rendering-behavior) place the corresponding DOM element in the document head.
+スタイルシート、フォント、アイコンなどの外部リソースにリンクするか、リンクメタデータでドキュメントに注釈を付けるには、[組み込みのブラウザ`<link>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)をレンダリングします。どのコンポーネントからでも`<link>`をレンダリングでき、Reactは[ほとんどの場合](#special-rendering-behavior)、対応するDOM要素をドキュメントのヘッドに配置します。
 
 ```js
 <link rel="icon" href="favicon.ico" />
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
 #### Props {/*props*/}
 
-`<link>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<link>`はすべての[共通要素のprops](/reference/react-dom/components/common#props)をサポートします。
 
-* `rel`: a string, required. Specifies the [relationship to the resource](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel). React [treats links with `rel="stylesheet"` differently](#special-rendering-behavior) from other links.
+* `rel`: 文字列、必須。リソースとの[関係を指定](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel)します。Reactは`rel="stylesheet"`のリンクを他のリンクとは[異なる扱い](#special-rendering-behavior)をします。
 
-These props apply when `rel="stylesheet"`:
+これらのpropsは`rel="stylesheet"`の場合に適用されます：
 
-* `precedence`: a string. Tells React where to rank the `<link>` DOM node relative to others in the document `<head>`, which determines which stylesheet can override the other. Its value can be (in order of precedence) `"reset"`, `"low"`, `"medium"`, `"high"`. Stylesheets with the same precedence go together whether they are `<link>` or inline `<style>` tags or loaded using the [`preload`](/reference/react-dom/preload) or [`preinit`](/reference/react-dom/preinit) functions.
-* `media`: a string. Restricts the stylesheet to a certain [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries).
-* `title`: a string. Specifies the name of an [alternative stylesheet](https://developer.mozilla.org/en-US/docs/Web/CSS/Alternative_style_sheets).
+* `precedence`: 文字列。ドキュメントの`<head>`内の他の`<link>`DOMノードに対する順位をReactに伝え、どのスタイルシートが他のスタイルシートを上書きできるかを決定します。その値は（優先順位の順に）`"reset"`、`"low"`、`"medium"`、`"high"`です。同じ優先順位のスタイルシートは、`<link>`またはインライン`<style>`タグ、または[`preload`](/reference/react-dom/preload)や[`preinit`](/reference/react-dom/preinit)関数を使用してロードされたものであっても一緒に配置されます。
+* `media`: 文字列。スタイルシートを特定の[メディアクエリ](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries)に制限します。
+* `title`: 文字列。[代替スタイルシート](https://developer.mozilla.org/en-US/docs/Web/CSS/Alternative_style_sheets)の名前を指定します。
 
-These props apply when `rel="stylesheet"` but disable React's [special treatment of stylesheets](#special-rendering-behavior):
+これらのpropsは`rel="stylesheet"`の場合に適用されますが、Reactの[スタイルシートの特別な扱い](#special-rendering-behavior)を無効にします：
 
-* `disabled`: a boolean. Disables the stylesheet.
-* `onError`: a function. Called when the stylesheet fails to load.
-* `onLoad`: a function. Called when the stylesheet finishes being loaded.
+* `disabled`: ブール値。スタイルシートを無効にします。
+* `onError`: 関数。スタイルシートの読み込みに失敗したときに呼び出されます。
+* `onLoad`: 関数。スタイルシートの読み込みが完了したときに呼び出されます。
 
-These props apply when `rel="preload"` or `rel="modulepreload"`:
+これらのpropsは`rel="preload"`または`rel="modulepreload"`の場合に適用されます：
 
-* `as`: a string. The type of resource. Its possible values are `audio`, `document`, `embed`, `fetch`, `font`, `image`, `object`, `script`, `style`, `track`, `video`, `worker`.
-* `imageSrcSet`: a string. Applicable only when `as="image"`. Specifies the [source set of the image](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
-* `imageSizes`: a string. Applicable only when `as="image"`. Specifies the [sizes of the image](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
+* `as`: 文字列。リソースの種類。可能な値は`audio`、`document`、`embed`、`fetch`、`font`、`image`、`object`、`script`、`style`、`track`、`video`、`worker`です。
+* `imageSrcSet`: 文字列。`as="image"`の場合にのみ適用されます。画像の[ソースセット](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)を指定します。
+* `imageSizes`: 文字列。`as="image"`の場合にのみ適用されます。画像の[サイズ](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)を指定します。
 
-These props apply when `rel="icon"` or `rel="apple-touch-icon"`:
+これらのpropsは`rel="icon"`または`rel="apple-touch-icon"`の場合に適用されます：
 
-* `sizes`: a string. The [sizes of the icon](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
+* `sizes`: 文字列。アイコンの[サイズ](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)です。
 
-These props apply in all cases:
+これらのpropsはすべての場合に適用されます：
 
-* `href`: a string. The URL of the linked resource.
-*  `crossOrigin`: a string. The [CORS policy](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin) to use. Its possible values are `anonymous` and `use-credentials`. It is required when `as` is set to `"fetch"`.
-*  `referrerPolicy`: a string. The [Referrer header](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#referrerpolicy) to send when fetching. Its possible values are `no-referrer-when-downgrade` (the default), `no-referrer`, `origin`, `origin-when-cross-origin`, and `unsafe-url`.
-* `fetchPriority`: a string. Suggests a relative priority for fetching the resource. The possible values are `auto` (the default), `high`, and `low`.
-* `hrefLang`: a string. The language of the linked resource.
-* `integrity`: a string. A cryptographic hash of the resource, to [verify its authenticity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).
-* `type`: a string. The MIME type of the linked resource.
+* `href`: 文字列。リンクされたリソースのURL。
+* `crossOrigin`: 文字列。使用する[CORSポリシー](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin)。可能な値は`anonymous`と`use-credentials`です。`as`が`"fetch"`に設定されている場合に必須です。
+* `referrerPolicy`: 文字列。フェッチ時に送信する[Referrerヘッダー](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#referrerpolicy)。可能な値は`no-referrer-when-downgrade`（デフォルト）、`no-referrer`、`origin`、`origin-when-cross-origin`、および`unsafe-url`です。
+* `fetchPriority`: 文字列。リソースのフェッチの相対的な優先順位を示唆します。可能な値は`auto`（デフォルト）、`high`、および`low`です。
+* `hrefLang`: 文字列。リンクされたリソースの言語。
+* `integrity`: 文字列。リソースの暗号ハッシュで、その[真正性を検証](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)します。
+* `type`: 文字列。リンクされたリソースのMIMEタイプ。
 
-Props that are **not recommended** for use with React:
+Reactでの使用が**推奨されない**props：
 
-* `blocking`: a string. If set to `"render"`, instructs the browser not to render the page until the stylesheet is loaded. React provides more fine-grained control using Suspense.
+* `blocking`: 文字列。`"render"`に設定されている場合、スタイルシートが読み込まれるまでページをレンダリングしないようにブラウザに指示します。ReactはSuspenseを使用してより細かい制御を提供します。
 
-#### Special rendering behavior {/*special-rendering-behavior*/}
+#### 特別なレンダリング動作 {/*special-rendering-behavior*/}
 
-React will always place the DOM element corresponding to the `<link>` component within the document’s `<head>`, regardless of where in the React tree it is rendered. The `<head>` is the only valid place for `<link>` to exist within the DOM, yet it’s convenient and keeps things composable if a component representing a specific page can render `<link>` components itself.
+Reactは、`<link>`コンポーネントに対応するDOM要素をReactツリー内のどこにレンダリングされてもドキュメントの`<head>`内に配置します。`<head>`はDOM内で`<link>`が存在する唯一の有効な場所ですが、特定のページを表すコンポーネントが自分自身で`<link>`コンポーネントをレンダリングできると便利であり、コンポーザブルな状態を保ちます。
 
-There are a few exceptions to this:
+これにはいくつかの例外があります：
 
-* If the `<link>` has a `rel="stylesheet"` prop, then it has to also have a `precedence` prop to get this special behavior. This is because the order of stylesheets within the document is significant, so React needs to know how to order this stylesheet relative to others, which you specify using the `precedence` prop. If the `precedence` prop is omitted, there is no special behavior.
-* If the `<link>` has an [`itemProp`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemprop) prop, there is no special behavior, because in this case it doesn’t apply to the document but instead represents metadata about a specific part of the page.
-* If the `<link>` has an `onLoad` or `onError` prop, because in that case you are managing the loading of the linked resource manually within your React component.
+* `<link>`に`rel="stylesheet"`プロップがある場合、この特別な動作を得るためには`precedence`プロップも必要です。これは、ドキュメント内のスタイルシートの順序が重要であるため、Reactが他のスタイルシートに対してこのスタイルシートをどのように順序付けするかを知る必要があるためです。`precedence`プロップが省略された場合、特別な動作はありません。
+* `<link>`に[`itemProp`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemprop)プロップがある場合、特別な動作はありません。この場合、ドキュメントには適用されず、ページの特定の部分に関するメタデータを表すためです。
+* `<link>`に`onLoad`または`onError`プロップがある場合、その場合、リンクされたリソースの読み込みをReactコンポーネント内で手動で管理しているためです。
 
-#### Special behavior for stylesheets {/*special-behavior-for-stylesheets*/}
+#### スタイルシートの特別な動作 {/*special-behavior-for-stylesheets*/}
 
-In addition, if the `<link>` is to a stylesheet (namely, it has `rel="stylesheet"` in its props), React treats it specially in the following ways:
+さらに、`<link>`がスタイルシートへのリンクである場合（つまり、プロップに`rel="stylesheet"`がある場合）、Reactは次の方法で特別に扱います：
 
-* The component that renders `<link>` will [suspend](/reference/react/Suspense) while the stylesheet is loading.
-* If multiple components render links to the same stylesheet, React will de-duplicate them and only put a single link into the DOM. Two links are considered the same if they have the same `href` prop.
+* `<link>`をレンダリングするコンポーネントは、スタイルシートが読み込まれている間[サスペンド](/reference/react/Suspense)します。
+* 複数のコンポーネントが同じスタイルシートへのリンクをレンダリングする場合、Reactはそれらを重複排除し、DOMに単一のリンクのみを配置します。2つのリンクは、`href`プロップが同じである場合に同じと見なされます。
 
-There are two exception to this special behavior:
+この特別な動作には2つの例外があります：
 
-* If the link doesn't have a `precedence` prop, there is no special behavior, because the order of stylesheets within the document is significant, so React needs to know how to order this stylesheet relative to others, which you specify using the `precedence` prop.
-* If you supply any of the `onLoad`, `onError`, or `disabled` props, there is no special behavior, because these props indicate that you are managing the loading of the stylesheet manually within your component.
+* リンクに`precedence`プロップがない場合、特別な動作はありません。これは、ドキュメント内のスタイルシートの順序が重要であるため、Reactが他のスタイルシートに対してこのスタイルシートをどのように順序付けするかを知る必要があるためです。
+* `onLoad`、`onError`、または`disabled`プロップのいずれかを提供する場合、特別な動作はありません。これらのプロップは、コンポーネント内でスタイルシートの読み込みを手動で管理していることを示しているためです。
 
-This special treatment comes with two caveats:
+この特別な扱いには2つの注意点があります：
 
-* React will ignore changes to props after the link has been rendered. (React will issue a warning in development if this happens.)
-* React may leave the link in the DOM even after the component that rendered it has been unmounted.
+* リンクがレンダリングされた後にプロップの変更をReactは無視します。（これが発生した場合、開発中にReactは警告を発します。）
+* リンクをレンダリングしたコンポーネントがアンマウントされた後でも、ReactはリンクをDOMに残す場合があります。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Linking to related resources {/*linking-to-related-resources*/}
+### 関連リソースへのリンク {/*linking-to-related-resources*/}
 
-You can annotate the document with links to related resources such as an icon, canonical URL, or pingback. React will place this metadata within the document `<head>` regardless of where in the React tree it is rendered.
+アイコン、正規URL、またはpingbackなどの関連リソースへのリンクでドキュメントに注釈を付けることができます。Reactは、Reactツリー内のどこにレンダリングされても、このメタデータをドキュメントの`<head>`内に配置します。
 
 <SandpackWithHTMLOutput>
 
@@ -131,12 +131,12 @@ export default function BlogPage() {
 
 </SandpackWithHTMLOutput>
 
-### Linking to a stylesheet {/*linking-to-a-stylesheet*/}
+### スタイルシートへのリンク {/*linking-to-a-stylesheet*/}
 
-If a component depends on a certain stylesheet in order to be displayed correctly, you can render a link to that stylesheet within the component. Your component will [suspend](/reference/react/Suspense) while the stylesheet is loading. You must supply the `precedence` prop, which tells React where to place this stylesheet relative to others — stylesheets with higher precedence can override those with lower precedence.
+コンポーネントが正しく表示されるために特定のスタイルシートに依存している場合、そのスタイルシートへのリンクをコンポーネント内でレンダリングできます。コンポーネントはスタイルシートが読み込まれている間[サスペンド](/reference/react/Suspense)します。`precedence`プロップを指定する必要があります。これは、他のスタイルシートに対してこのスタイルシートをどこに配置するかをReactに伝えます。優先順位の高いスタイルシートは、優先順位の低いスタイルシートを上書きできます。
 
 <Note>
-When you want to use a stylesheet, it can be beneficial to call the [preinit](/reference/react-dom/preinit) function. Calling this function may allow the browser to start fetching the stylesheet earlier than if you just render a `<link>` component, for example by sending an [HTTP Early Hints response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103).
+スタイルシートを使用する場合、[preinit](/reference/react-dom/preinit)関数を呼び出すことが有益です。この関数を呼び出すことで、単に`<link>`コンポーネントをレンダリングするよりも早くブラウザがスタイルシートのフェッチを開始できる場合があります。例えば、[HTTP Early Hintsレスポンス](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103)を送信することによってです。
 </Note>
 
 <SandpackWithHTMLOutput>
@@ -156,11 +156,11 @@ export default function SiteMapPage() {
 
 </SandpackWithHTMLOutput>
 
-### Controlling stylesheet precedence {/*controlling-stylesheet-precedence*/}
+### スタイルシートの優先順位の制御 {/*controlling-stylesheet-precedence*/}
 
-Stylesheets can conflict with each other, and when they do, the browser goes with the one that comes later in the document. React lets you control the order of stylesheets with the `precedence` prop. In this example, two components render stylesheets, and the one with the higher precedence goes later in the document even though the component that renders it comes earlier.
+スタイルシートは互いに競合することがあり、その場合、ブラウザはドキュメント内で後に来るものを採用します。Reactは`precedence`プロップを使用してスタイルシートの順序を制御できます。この例では、2つのコンポーネントがスタイルシートをレンダリングし、優先順位の高い方がドキュメント内で後に来ますが、レンダリングするコンポーネントは先に来ます。
 
-{/*FIXME: this doesn't appear to actually work -- I guess precedence isn't implemented yet?*/}
+{/*FIXME: 実際には機能していないようです -- おそらくprecedenceはまだ実装されていないのでは？*/}
 
 <SandpackWithHTMLOutput>
 
@@ -189,9 +189,9 @@ function SecondComponent() {
 
 </SandpackWithHTMLOutput>
 
-### Deduplicated stylesheet rendering {/*deduplicated-stylesheet-rendering*/}
+### 重複排除されたスタイルシートのレンダリング {/*deduplicated-stylesheet-rendering*/}
 
-If you render the same stylesheet from multiple components, React will place only a single `<link>` in the document head.
+複数のコンポーネントから同じスタイルシートをレンダリングする場合、Reactはドキュメントのヘッドに単一の`<link>`のみを配置します。
 
 <SandpackWithHTMLOutput>
 
@@ -215,13 +215,13 @@ function Component() {
 
 </SandpackWithHTMLOutput>
 
-### Annotating specific items within the document with links {/*annotating-specific-items-within-the-document-with-links*/}
+### ドキュメント内の特定の項目にリンクで注釈を付ける {/*annotating-specific-items-within-the-document-with-links*/}
 
-You can use the `<link>` component with the `itemProp` prop to annotate specific items within the document with links to related resources. In this case, React will *not* place these annotations within the document `<head>` but will place them like any other React component.
+`itemProp`プロップを使用して、ドキュメント内の特定の項目に関連リソースへのリンクで注釈を付けるために`<link>`コンポーネントを使用できます。この場合、Reactはこれらの注釈をドキュメントの`<head>`内に配置せず、他のReactコンポーネントと同様に配置します。
 
 ```js
 <section itemScope>
-  <h3>Annotating specific items</h3>
+  <h3>特定の項目に注釈を付ける</h3>
   <link itemProp="author" href="http://example.com/" />
   <p>...</p>
 </section>

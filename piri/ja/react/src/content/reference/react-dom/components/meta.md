@@ -1,18 +1,18 @@
 ---
-meta: "<meta>"
+meta: <meta>
 canary: true
 ---
 
 <Canary>
 
-React's extensions to `<meta>` are currently only available in React's canary and experimental channels. In stable releases of React `<meta>` works only as a [built-in browser HTML component](https://react.dev/reference/react-dom/components#all-html-components). Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+Reactの`<meta>`に対する拡張機能は、現在Reactのcanaryおよび実験的なチャンネルでのみ利用可能です。Reactの安定版リリースでは、`<meta>`は[組み込みのブラウザHTMLコンポーネント](https://react.dev/reference/react-dom/components#all-html-components)としてのみ機能します。[Reactのリリースチャンネルについてはこちら](https://react.dev/community/versioning-policy#all-release-channels)をご覧ください。
 
 </Canary>
 
 
 <Intro>
 
-The [built-in browser `<meta>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta) lets you add metadata to the document.
+[組み込みのブラウザ`<meta>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)を使用すると、ドキュメントにメタデータを追加できます。
 
 ```js
 <meta name="keywords" content="React, JavaScript, semantic markup, html" />
@@ -24,43 +24,43 @@ The [built-in browser `<meta>` component](https://developer.mozilla.org/en-US/do
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `<meta>` {/*meta*/}
 
-To add document metadata, render the [built-in browser `<meta>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta). You can render `<meta>` from any component and React will always place the corresponding DOM element in the document head.
+ドキュメントのメタデータを追加するには、[組み込みのブラウザ`<meta>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)をレンダリングします。どのコンポーネントからでも`<meta>`をレンダリングでき、Reactは常に対応するDOM要素をドキュメントのヘッドに配置します。
 
 ```js
 <meta name="keywords" content="React, JavaScript, semantic markup, html" />
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
 #### Props {/*props*/}
 
-`<meta>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<meta>`はすべての[共通要素のprops](/reference/react-dom/components/common#props)をサポートします。
 
-It should have *exactly one* of the following props: `name`, `httpEquiv`, `charset`, `itemProp`. The `<meta>` component does something different depending on which of these props is specified.
+次のpropsのうち*正確に1つ*を持つ必要があります: `name`, `httpEquiv`, `charset`, `itemProp`。どのpropsが指定されるかによって、`<meta>`コンポーネントの動作が異なります。
 
-* `name`: a string. Specifies the [kind of metadata](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name) to be attached to the document. 
-* `charset`: a string. Specifies the character set used by the document. The only valid value is `"utf-8"`.
-* `httpEquiv`: a string. Specifies a directive for processing the document.
-* `itemProp`: a string. Specifies metadata about a particular item within the document rather than the document as a whole.
-* `content`: a string. Specifies the metadata to be attached when used with the `name` or `itemProp` props or the behavior of the directive when used with the `httpEquiv` prop.
+* `name`: 文字列。ドキュメントに添付する[メタデータの種類](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name)を指定します。
+* `charset`: 文字列。ドキュメントで使用される文字セットを指定します。有効な値は`"utf-8"`のみです。
+* `httpEquiv`: 文字列。ドキュメントの処理に関する指示を指定します。
+* `itemProp`: 文字列。ドキュメント全体ではなく、ドキュメント内の特定の項目に関するメタデータを指定します。
+* `content`: 文字列。`name`または`itemProp`のpropsと一緒に使用する場合は添付するメタデータを、`httpEquiv`のpropsと一緒に使用する場合は指示の動作を指定します。
 
-#### Special rendering behavior {/*special-rendering-behavior*/}
+#### 特殊なレンダリング動作 {/*special-rendering-behavior*/}
 
-React will always place the DOM element corresponding to the `<meta>` component within the document’s `<head>`, regardless of where in the React tree it is rendered. The `<head>` is the only valid place for `<meta>` to exist within the DOM, yet it’s convenient and keeps things composable if a component representing a specific page can render `<meta>` components itself. 
+Reactは、Reactツリーのどこにレンダリングされても、`<meta>`コンポーネントに対応するDOM要素をドキュメントの`<head>`内に常に配置します。`<head>`はDOM内で`<meta>`が存在する唯一の有効な場所ですが、特定のページを表すコンポーネントが自分自身で`<meta>`コンポーネントをレンダリングできると便利であり、コンポーザブルな状態を保つことができます。
 
-There is one exception to this: if `<meta>` has an [`itemProp`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemprop) prop, there is no special behavior, because in this case it doesn’t represent metadata about the document but rather metadata about a specific part of the page. 
+ただし、1つの例外があります。`<meta>`に[`itemProp`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemprop)のpropsがある場合、この場合はドキュメントに関するメタデータではなく、ページの特定の部分に関するメタデータを表すため、特別な動作はありません。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Annotating the document with metadata {/*annotating-the-document-with-metadata*/}
+### ドキュメントにメタデータを注釈する {/*annotating-the-document-with-metadata*/}
 
-You can annotate the document with metadata such as keywords, a summary, or the author’s name. React will place this metadata within the document `<head>` regardless of where in the React tree it is rendered. 
+キーワード、要約、または著者名などのメタデータをドキュメントに注釈できます。Reactは、Reactツリーのどこにレンダリングされても、このメタデータをドキュメントの`<head>`内に配置します。
 
 ```html
 <meta name="author" content="John Smith" />
@@ -68,7 +68,7 @@ You can annotate the document with metadata such as keywords, a summary, or the 
 <meta name="description" content="API reference for the <meta> component in React DOM" />
 ```
 
-You can render the `<meta>` component from any component. React will put a `<meta>` DOM node in the document `<head>`.
+どのコンポーネントからでも`<meta>`コンポーネントをレンダリングできます。Reactはドキュメントの`<head>`に`<meta>`のDOMノードを配置します。
 
 <SandpackWithHTMLOutput>
 
@@ -89,13 +89,13 @@ export default function SiteMapPage() {
 
 </SandpackWithHTMLOutput>
 
-### Annotating specific items within the document with metadata {/*annotating-specific-items-within-the-document-with-metadata*/}
+### ドキュメント内の特定の項目にメタデータを注釈する {/*annotating-specific-items-within-the-document-with-metadata*/}
 
-You can use the `<meta>` component with the `itemProp` prop to annotate specific items within the document with metadata. In this case, React will *not* place these annotations within the document `<head>` but will place them like any other React component. 
+`itemProp`のpropsを使用して、ドキュメント内の特定の項目にメタデータを注釈するために`<meta>`コンポーネントを使用できます。この場合、Reactはこれらの注釈をドキュメントの`<head>`内には配置せず、他のReactコンポーネントと同様に配置します。
 
 ```js
 <section itemScope>
-  <h3>Annotating specific items</h3>
+  <h3>特定の項目に注釈を付ける</h3>
   <meta itemProp="description" content="API reference for using <meta> with itemProp" />
   <p>...</p>
 </section>

@@ -1,33 +1,33 @@
 ---
-title: React Developer Tools
+title: React 개발자 도구
 ---
 
 <Intro>
 
-Use React Developer Tools to inspect React [components](/learn/your-first-component), edit [props](/learn/passing-props-to-a-component) and [state](/learn/state-a-components-memory), and identify performance problems.
+React Developer Tools를 사용하여 React [컴포넌트](/learn/your-first-component)를 검사하고, [props](/learn/passing-props-to-a-component)와 [state](/learn/state-a-components-memory)를 편집하며, 성능 문제를 식별하세요.
 
 </Intro>
 
 <YouWillLearn>
 
-* How to install React Developer Tools
+* React Developer Tools 설치 방법
 
 </YouWillLearn>
 
-## Browser extension {/*browser-extension*/}
+## 브라우저 확장 프로그램 {/*browser-extension*/}
 
-The easiest way to debug websites built with React is to install the React Developer Tools browser extension. It is available for several popular browsers:
+React로 구축된 웹사이트를 디버그하는 가장 쉬운 방법은 React Developer Tools 브라우저 확장 프로그램을 설치하는 것입니다. 이는 여러 인기 있는 브라우저에서 사용할 수 있습니다:
 
-* [Install for **Chrome**](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
-* [Install for **Firefox**](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
-* [Install for **Edge**](https://microsoftedge.microsoft.com/addons/detail/react-developer-tools/gpphkfbcpidddadnkolkpfckpihlkkil)
+* [**Chrome**에 설치](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+* [**Firefox**에 설치](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
+* [**Edge**에 설치](https://microsoftedge.microsoft.com/addons/detail/react-developer-tools/gpphkfbcpidddadnkolkpfckpihlkkil)
 
-Now, if you visit a website **built with React,** you will see the _Components_ and _Profiler_ panels.
+이제 **React로 구축된** 웹사이트를 방문하면 _Components_ 및 _Profiler_ 패널을 볼 수 있습니다.
 
-![React Developer Tools extension](/images/docs/react-devtools-extension.png)
+![React Developer Tools 확장 프로그램](/images/docs/react-devtools-extension.png)
 
-### Safari and other browsers {/*safari-and-other-browsers*/}
-For other browsers (for example, Safari), install the [`react-devtools`](https://www.npmjs.com/package/react-devtools) npm package:
+### Safari 및 기타 브라우저 {/*safari-and-other-browsers*/}
+다른 브라우저(Safari 등)의 경우, [`react-devtools`](https://www.npmjs.com/package/react-devtools) npm 패키지를 설치하세요:
 ```bash
 # Yarn
 yarn global add react-devtools
@@ -36,26 +36,26 @@ yarn global add react-devtools
 npm install -g react-devtools
 ```
 
-Next open the developer tools from the terminal:
+다음으로 터미널에서 개발자 도구를 엽니다:
 ```bash
 react-devtools
 ```
 
-Then connect your website by adding the following `<script>` tag to the beginning of your website's `<head>`:
+그런 다음 웹사이트의 `<head>` 시작 부분에 다음 `<script>` 태그를 추가하여 웹사이트를 연결하세요:
 ```html {3}
 <html>
   <head>
     <script src="http://localhost:8097"></script>
 ```
 
-Reload your website in the browser now to view it in developer tools.
+이제 브라우저에서 웹사이트를 다시 로드하여 개발자 도구에서 확인하세요.
 
-![React Developer Tools standalone](/images/docs/react-devtools-standalone.png)
+![React Developer Tools 독립 실행형](/images/docs/react-devtools-standalone.png)
 
-## Mobile (React Native) {/*mobile-react-native*/}
-React Developer Tools can be used to inspect apps built with [React Native](https://reactnative.dev/) as well.
+## 모바일 (React Native) {/*mobile-react-native*/}
+React Developer Tools는 [React Native](https://reactnative.dev/)로 구축된 앱을 검사하는 데에도 사용할 수 있습니다.
 
-The easiest way to use React Developer Tools is to install it globally:
+React Developer Tools를 사용하는 가장 쉬운 방법은 전역으로 설치하는 것입니다:
 ```bash
 # Yarn
 yarn global add react-devtools
@@ -64,13 +64,13 @@ yarn global add react-devtools
 npm install -g react-devtools
 ```
 
-Next open the developer tools from the terminal.
+다음으로 터미널에서 개발자 도구를 엽니다.
 ```bash
 react-devtools
 ```
 
-It should connect to any local React Native app that's running.
+로컬에서 실행 중인 모든 React Native 앱에 연결되어야 합니다.
 
-> Try reloading the app if developer tools doesn't connect after a few seconds.
+> 몇 초 후에도 개발자 도구가 연결되지 않으면 앱을 다시 로드해 보세요.
 
-[Learn more about debugging React Native.](https://reactnative.dev/docs/debugging)
+[React Native 디버깅에 대해 자세히 알아보세요.](https://reactnative.dev/docs/debugging)

@@ -4,13 +4,13 @@ title: cloneElement
 
 <Pitfall>
 
-Using `cloneElement` is uncommon and can lead to fragile code. [See common alternatives.](#alternatives)
+`cloneElement`를 사용하는 것은 드물며 취약한 코드를 초래할 수 있습니다. [일반적인 대안을 참조하세요.](#alternatives)
 
 </Pitfall>
 
 <Intro>
 
-`cloneElement` lets you create a new React element using another element as a starting point.
+`cloneElement`를 사용하면 다른 요소를 시작점으로 하여 새로운 React 요소를 만들 수 있습니다.
 
 ```js
 const clonedElement = cloneElement(element, props, ...children)
@@ -22,11 +22,11 @@ const clonedElement = cloneElement(element, props, ...children)
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `cloneElement(element, props, ...children)` {/*cloneelement*/}
 
-Call `cloneElement` to create a React element based on the `element`, but with different `props` and `children`:
+`cloneElement`를 호출하여 `element`를 기반으로 하지만 다른 `props`와 `children`을 가진 React 요소를 만듭니다:
 
 ```js
 import { cloneElement } from 'react';
@@ -43,42 +43,42 @@ const clonedElement = cloneElement(
 console.log(clonedElement); // <Row title="Cabbage" isHighlighted={true}>Goodbye</Row>
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 참조하세요.](#usage)
 
-#### Parameters {/*parameters*/}
+#### 매개변수 {/*parameters*/}
 
-* `element`: The `element` argument must be a valid React element. For example, it could be a JSX node like `<Something />`, the result of calling [`createElement`](/reference/react/createElement), or the result of another `cloneElement` call.
+* `element`: `element` 인수는 유효한 React 요소여야 합니다. 예를 들어, JSX 노드 `<Something />`, [`createElement`](/reference/react/createElement) 호출 결과, 또는 다른 `cloneElement` 호출 결과일 수 있습니다.
 
-* `props`: The `props` argument must either be an object or `null`. If you pass `null`, the cloned element will retain all of the original `element.props`. Otherwise, for every prop in the `props` object, the returned element will "prefer" the value from `props` over the value from `element.props`. The rest of the props will be filled from the original `element.props`. If you pass `props.key` or `props.ref`, they will replace the original ones.
+* `props`: `props` 인수는 객체 또는 `null`이어야 합니다. `null`을 전달하면 복제된 요소는 원래 `element.props`를 모두 유지합니다. 그렇지 않으면 `props` 객체의 모든 prop에 대해 반환된 요소는 `element.props`의 값보다 `props`의 값을 "선호"합니다. 나머지 props는 원래 `element.props`에서 채워집니다. `props.key` 또는 `props.ref`를 전달하면 원래 값을 대체합니다.
 
-* **optional** `...children`: Zero or more child nodes. They can be any React nodes, including React elements, strings, numbers, [portals](/reference/react-dom/createPortal), empty nodes (`null`, `undefined`, `true`, and `false`), and arrays of React nodes. If you don't pass any `...children` arguments, the original `element.props.children` will be preserved.
+* **선택적** `...children`: 0개 이상의 자식 노드. React 요소, 문자열, 숫자, [포털](/reference/react-dom/createPortal), 빈 노드(`null`, `undefined`, `true`, `false`), React 노드 배열 등 모든 React 노드가 될 수 있습니다. `...children` 인수를 전달하지 않으면 원래 `element.props.children`이 유지됩니다.
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-`cloneElement` returns a React element object with a few properties:
+`cloneElement`는 몇 가지 속성이 있는 React 요소 객체를 반환합니다:
 
-* `type`: Same as `element.type`.
-* `props`: The result of shallowly merging `element.props` with the overriding `props` you have passed.
-* `ref`: The original `element.ref`, unless it was overridden by `props.ref`.
-* `key`: The original `element.key`, unless it was overridden by `props.key`.
+* `type`: `element.type`과 동일합니다.
+* `props`: `element.props`와 전달된 `props`를 얕게 병합한 결과입니다.
+* `ref`: 원래 `element.ref`, `props.ref`로 재정의되지 않은 경우.
+* `key`: 원래 `element.key`, `props.key`로 재정의되지 않은 경우.
 
-Usually, you'll return the element from your component or make it a child of another element. Although you may read the element's properties, it's best to treat every element as opaque after it's created, and only render it.
+일반적으로 요소를 컴포넌트에서 반환하거나 다른 요소의 자식으로 만듭니다. 요소의 속성을 읽을 수 있지만, 생성된 후에는 모든 요소를 불투명하게 취급하고 렌더링만 하는 것이 좋습니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* Cloning an element **does not modify the original element.**
+* 요소를 복제해도 **원래 요소는 수정되지 않습니다.**
 
-* You should only **pass children as multiple arguments to `cloneElement` if they are all statically known,** like `cloneElement(element, null, child1, child2, child3)`. If your children are dynamic, pass the entire array as the third argument: `cloneElement(element, null, listItems)`. This ensures that React will [warn you about missing `key`s](/learn/rendering-lists#keeping-list-items-in-order-with-key) for any dynamic lists. For static lists this is not necessary because they never reorder.
+* **모든 자식이 정적으로 알려진 경우에만 `cloneElement`에 자식을 여러 인수로 전달해야 합니다.** 예: `cloneElement(element, null, child1, child2, child3)`. 자식이 동적이면 전체 배열을 세 번째 인수로 전달하세요: `cloneElement(element, null, listItems)`. 이렇게 하면 React가 동적 목록에 대해 [누락된 `key`에 대해 경고합니다](/learn/rendering-lists#keeping-list-items-in-order-with-key). 정적 목록의 경우 재정렬되지 않기 때문에 필요하지 않습니다.
 
-* `cloneElement` makes it harder to trace the data flow, so **try the [alternatives](#alternatives) instead.**
+* `cloneElement`는 데이터 흐름을 추적하기 어렵게 만드므로 **[대안](#alternatives)을 시도하세요.**
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Overriding props of an element {/*overriding-props-of-an-element*/}
+### 요소의 props 재정의 {/*overriding-props-of-an-element*/}
 
-To override the props of some <CodeStep step={1}>React element</CodeStep>, pass it to `cloneElement` with the <CodeStep step={2}>props you want to override</CodeStep>:
+일부 <CodeStep step={1}>React 요소</CodeStep>의 props를 재정의하려면 `cloneElement`에 <CodeStep step={2}>재정의하려는 props</CodeStep>와 함께 전달하세요:
 
 ```js [[1, 5, "<Row title=\\"Cabbage\\" />"], [2, 6, "{ isHighlighted: true }"], [3, 4, "clonedElement"]]
 import { cloneElement } from 'react';
@@ -90,11 +90,11 @@ const clonedElement = cloneElement(
 );
 ```
 
-Here, the resulting <CodeStep step={3}>cloned element</CodeStep> will be `<Row title="Cabbage" isHighlighted={true} />`.
+여기서, 결과 <CodeStep step={3}>복제된 요소</CodeStep>는 `<Row title="Cabbage" isHighlighted={true} />`가 됩니다.
 
-**Let's walk through an example to see when it's useful.**
+**언제 유용한지 예제를 통해 살펴보겠습니다.**
 
-Imagine a `List` component that renders its [`children`](/learn/passing-props-to-a-component#passing-jsx-as-children) as a list of selectable rows with a "Next" button that changes which row is selected. The `List` component needs to render the selected `Row` differently, so it clones every `<Row>` child that it has received, and adds an extra `isHighlighted: true` or `isHighlighted: false` prop:
+`List` 컴포넌트가 [`children`](/learn/passing-props-to-a-component#passing-jsx-as-children)을 선택 가능한 행 목록으로 렌더링하고, 선택된 행을 변경하는 "Next" 버튼을 가진다고 가정해보겠습니다. `List` 컴포넌트는 선택된 `Row`를 다르게 렌더링해야 하므로, 받은 모든 `<Row>` 자식을 복제하고 추가 `isHighlighted: true` 또는 `isHighlighted: false` prop을 추가합니다:
 
 ```js {6-8}
 export default function List({ children }) {
@@ -108,7 +108,7 @@ export default function List({ children }) {
       )}
 ```
 
-Let's say the original JSX received by `List` looks like this:
+`List`가 받은 원래 JSX가 다음과 같다고 가정해보겠습니다:
 
 ```js {2-4}
 <List>
@@ -118,7 +118,7 @@ Let's say the original JSX received by `List` looks like this:
 </List>
 ```
 
-By cloning its children, the `List` can pass extra information to every `Row` inside. The result looks like this:
+자식을 복제함으로써 `List`는 내부의 모든 `Row`에 추가 정보를 전달할 수 있습니다. 결과는 다음과 같습니다:
 
 ```js {4,8,12}
 <List>
@@ -137,7 +137,7 @@ By cloning its children, the `List` can pass extra information to every `Row` in
 </List>
 ```
 
-Notice how pressing "Next" updates the state of the `List`, and highlights a different row:
+"Next" 버튼을 누르면 `List`의 상태가 업데이트되고 다른 행이 강조 표시되는 것을 확인하세요:
 
 <Sandpack>
 
@@ -232,21 +232,21 @@ button {
 
 </Sandpack>
 
-To summarize, the `List` cloned the `<Row />` elements it received and added an extra prop to them.
+요약하자면, `List`는 받은 `<Row />` 요소를 복제하고 추가 prop을 추가했습니다.
 
 <Pitfall>
 
-Cloning children makes it hard to tell how the data flows through your app. Try one of the [alternatives.](#alternatives)
+자식을 복제하면 앱의 데이터 흐름을 파악하기 어렵습니다. [대안](#alternatives)을 시도해보세요.
 
 </Pitfall>
 
 ---
 
-## Alternatives {/*alternatives*/}
+## 대안 {/*alternatives*/}
 
-### Passing data with a render prop {/*passing-data-with-a-render-prop*/}
+### 렌더 prop으로 데이터 전달 {/*passing-data-with-a-render-prop*/}
 
-Instead of using `cloneElement`, consider accepting a *render prop* like `renderItem`. Here, `List` receives `renderItem` as a prop. `List` calls `renderItem` for every item and passes `isHighlighted` as an argument: 
+`cloneElement` 대신 *렌더 prop*인 `renderItem`을 수락하는 것을 고려해보세요. 여기서 `List`는 prop으로 `renderItem`을 받습니다. `List`는 각 항목에 대해 `renderItem`을 호출하고 `isHighlighted`를 인수로 전달합니다:
 
 ```js {1,7}
 export default function List({ items, renderItem }) {
@@ -259,7 +259,7 @@ export default function List({ items, renderItem }) {
       })}
 ```
 
-The `renderItem` prop is called a "render prop" because it's a prop that specifies how to render something. For example, you can pass a `renderItem` implementation that renders a `<Row>` with the given `isHighlighted` value:
+`renderItem` prop은 "렌더 prop"이라고 불리는데, 이는 무언가를 렌더링하는 방법을 지정하는 prop이기 때문입니다. 예를 들어, 주어진 `isHighlighted` 값을 가진 `<Row>`를 렌더링하는 `renderItem` 구현을 전달할 수 있습니다:
 
 ```js {3,7}
 <List
@@ -274,7 +274,7 @@ The `renderItem` prop is called a "render prop" because it's a prop that specifi
 />
 ```
 
-The end result is the same as with `cloneElement`:
+결과는 `cloneElement`와 동일합니다:
 
 ```js {4,8,12}
 <List>
@@ -293,7 +293,7 @@ The end result is the same as with `cloneElement`:
 </List>
 ```
 
-However, you can clearly trace where the `isHighlighted` value is coming from.
+그러나 `isHighlighted` 값이 어디에서 오는지 명확하게 추적할 수 있습니다.
 
 <Sandpack>
 
@@ -389,22 +389,21 @@ button {
 
 </Sandpack>
 
-This pattern is preferred to `cloneElement` because it is more explicit.
+이 패턴은 `cloneElement`보다 더 명확하기 때문에 선호됩니다.
 
 ---
 
-### Passing data through context {/*passing-data-through-context*/}
+### 컨텍스트를 통해 데이터 전달 {/*passing-data-through-context*/}
 
-Another alternative to `cloneElement` is to [pass data through context.](/learn/passing-data-deeply-with-context)
+`cloneElement`의 또 다른 대안은 [컨텍스트를 통해 데이터를 전달하는 것입니다.](/learn/passing-data-deeply-with-context)
 
-
-For example, you can call [`createContext`](/reference/react/createContext) to define a `HighlightContext`:
+예를 들어, [`createContext`](/reference/react/createContext)를 호출하여 `HighlightContext`를 정의할 수 있습니다:
 
 ```js
 export const HighlightContext = createContext(false);
 ```
 
-Your `List` component can wrap every item it renders into a `HighlightContext` provider:
+`List` 컴포넌트는 렌더링하는 각 항목을 `HighlightContext` 제공자로 감쌀 수 있습니다:
 
 ```js {8,10}
 export default function List({ items, renderItem }) {
@@ -421,7 +420,7 @@ export default function List({ items, renderItem }) {
       })}
 ```
 
-With this approach, `Row` does not need to receive an `isHighlighted` prop at all. Instead, it reads the context:
+이 접근 방식에서는 `Row`가 `isHighlighted` prop을 받을 필요가 없습니다. 대신, 컨텍스트를 읽습니다:
 
 ```js src/Row.js {2}
 export default function Row({ title }) {
@@ -429,7 +428,7 @@ export default function Row({ title }) {
   // ...
 ```
 
-This allows the calling component to not know or worry about passing `isHighlighted` to `<Row>`:
+이렇게 하면 호출하는 컴포넌트가 `<Row>`에 `isHighlighted`를 전달할 필요가 없습니다:
 
 ```js {4}
 <List
@@ -440,7 +439,7 @@ This allows the calling component to not know or worry about passing `isHighligh
 />
 ```
 
-Instead, `List` and `Row` coordinate the highlighting logic through context.
+대신, `List`와 `Row`는 컨텍스트를 통해 강조 표시 로직을 조정합니다.
 
 <Sandpack>
 
@@ -550,13 +549,13 @@ button {
 
 </Sandpack>
 
-[Learn more about passing data through context.](/reference/react/useContext#passing-data-deeply-into-the-tree)
+[컨텍스트를 통해 데이터 전달에 대해 자세히 알아보세요.](/reference/react/useContext#passing-data-deeply-into-the-tree)
 
 ---
 
-### Extracting logic into a custom Hook {/*extracting-logic-into-a-custom-hook*/}
+### 커스텀 Hook으로 로직 추출 {/*extracting-logic-into-a-custom-hook*/}
 
-Another approach you can try is to extract the "non-visual" logic into your own Hook, and use the information returned by your Hook to decide what to render. For example, you could write a `useList` custom Hook like this:
+시도해볼 수 있는 또 다른 접근 방식은 "비시각적" 로직을 자체 Hook으로 추출하고, Hook에서 반환된 정보를 사용하여 무엇을 렌더링할지 결정하는 것입니다. 예를 들어, 다음과 같은 `useList` 커스텀 Hook을 작성할 수 있습니다:
 
 ```js
 import { useState } from 'react';
@@ -575,7 +574,7 @@ export default function useList(items) {
 }
 ```
 
-Then you could use it like this:
+그런 다음 다음과 같이 사용할 수 있습니다:
 
 ```js {2,9,13}
 export default function App() {
@@ -598,7 +597,7 @@ export default function App() {
 }
 ```
 
-The data flow is explicit, but the state is inside the `useList` custom Hook that you can use from any component:
+데이터 흐름은 명확하지만 상태는 `useList` 커스텀 Hook 내부에 있으며, 이를 통해 어떤 컴포넌트에서도 사용할 수 있습니다:
 
 <Sandpack>
 
@@ -614,8 +613,7 @@ export default function App() {
       {products.map(product =>
         <Row
           key={product.id}
-          title={product.title}
-          isHighlighted={selected === product}
+          title={product.title          isHighlighted={selected === product}
         />
       )}
       <hr />
@@ -691,4 +689,4 @@ button {
 
 </Sandpack>
 
-This approach is particularly useful if you want to reuse this logic between different components.
+이 접근 방식은 특히 다른 컴포넌트 간에 이 로직을 재사용하려는 경우 유용합니다.

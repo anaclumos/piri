@@ -5,19 +5,19 @@ canary: true
 
 <Canary>
 
-The `preload` function is currently only available in React's Canary and experimental channels. Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+`preload`関数は現在、ReactのCanaryおよび実験的なチャンネルでのみ利用可能です。[Reactのリリースチャンネルについてはこちら](/community/versioning-policy#all-release-channels)をご覧ください。
 
 </Canary>
 
 <Note>
 
-[React-based frameworks](/learn/start-a-new-react-project) frequently handle resource loading for you, so you might not have to call this API yourself. Consult your framework's documentation for details.
+[Reactベースのフレームワーク](/learn/start-a-new-react-project)は、リソースの読み込みを自動的に処理することが多いため、このAPIを自分で呼び出す必要がないかもしれません。詳細はフレームワークのドキュメントを参照してください。
 
 </Note>
 
 <Intro>
 
-`preload` lets you eagerly fetch a resource such as a stylesheet, font, or external script that you expect to use.
+`preload`を使用すると、スタイルシート、フォント、外部スクリプトなどのリソースを事前に取得することができます。
 
 ```js
 preload("https://example.com/font.woff2", {as: "font"});
@@ -29,11 +29,11 @@ preload("https://example.com/font.woff2", {as: "font"});
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `preload(href, options)` {/*preload*/}
 
-To preload a resource, call the `preload` function from `react-dom`.
+リソースを事前に読み込むには、`react-dom`から`preload`関数を呼び出します。
 
 ```js
 import { preload } from 'react-dom';
@@ -45,47 +45,47 @@ function AppRoot() {
 
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-The `preload` function provides the browser with a hint that it should start downloading the given resource, which can save time.
+`preload`関数は、指定されたリソースのダウンロードを開始するようにブラウザにヒントを提供し、時間を節約することができます。
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `href`: a string. The URL of the resource you want to download.
-* `options`: an object. It contains the following properties:
-  *  `as`: a required string. The type of resource. Its [possible values](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#as) are `audio`, `document`, `embed`, `fetch`, `font`, `image`, `object`, `script`, `style`, `track`, `video`, `worker`.
-  *  `crossOrigin`: a string. The [CORS policy](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin) to use. Its possible values are `anonymous` and `use-credentials`. It is required when `as` is set to `"fetch"`.
-  *  `referrerPolicy`: a string. The [Referrer header](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#referrerpolicy) to send when fetching. Its possible values are `no-referrer-when-downgrade` (the default), `no-referrer`, `origin`, `origin-when-cross-origin`, and `unsafe-url`.
-  *  `integrity`: a string. A cryptographic hash of the resource, to [verify its authenticity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).
-  *  `type`: a string. The MIME type of the resource.
-  *  `nonce`: a string. A cryptographic [nonce to allow the resource](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) when using a strict Content Security Policy. 
-  *  `fetchPriority`: a string. Suggests a relative priority for fetching the resource. The possible values are `auto` (the default), `high`, and `low`.
-  *  `imageSrcSet`: a string. For use only with `as: "image"`. Specifies the [source set of the image](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
-  *  `imageSizes`: a string. For use only with `as: "image"`. Specifies the [sizes of the image](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
+* `href`: 文字列。ダウンロードしたいリソースのURL。
+* `options`: オブジェクト。以下のプロパティを含みます:
+  *  `as`: 必須の文字列。リソースの種類。[可能な値](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#as)は`audio`、`document`、`embed`、`fetch`、`font`、`image`、`object`、`script`、`style`、`track`、`video`、`worker`。
+  *  `crossOrigin`: 文字列。[CORSポリシー](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin)を使用します。可能な値は`anonymous`と`use-credentials`です。`as`が`"fetch"`に設定されている場合に必要です。
+  *  `referrerPolicy`: 文字列。取得時に送信する[Referrerヘッダー](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#referrerpolicy)。可能な値は`no-referrer-when-downgrade`（デフォルト）、`no-referrer`、`origin`、`origin-when-cross-origin`、`unsafe-url`。
+  *  `integrity`: 文字列。リソースの暗号学的ハッシュで、[その真正性を確認](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)します。
+  *  `type`: 文字列。リソースのMIMEタイプ。
+  *  `nonce`: 文字列。厳格なコンテンツセキュリティポリシーを使用する際にリソースを許可するための暗号学的[nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)。
+  *  `fetchPriority`: 文字列。リソースの取得に対する相対的な優先度を示唆します。可能な値は`auto`（デフォルト）、`high`、`low`。
+  *  `imageSrcSet`: 文字列。`as: "image"`の場合のみ使用します。画像の[ソースセット](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)を指定します。
+  *  `imageSizes`: 文字列。`as: "image"`の場合のみ使用します。画像の[サイズ](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)を指定します。
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`preload` returns nothing.
+`preload`は何も返しません。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* Multiple equivalent calls to `preload` have the same effect as a single call. Calls to `preload` are considered equivalent according to the following rules:
-  * Two calls are equivalent if they have the same `href`, except:
-  * If `as` is set to `image`, two calls are equivalent if they have the same `href`, `imageSrcSet`, and `imageSizes`.
-* In the browser, you can call `preload` in any situation: while rendering a component, in an Effect, in an event handler, and so on.
-* In server-side rendering or when rendering Server Components, `preload` only has an effect if you call it while rendering a component or in an async context originating from rendering a component. Any other calls will be ignored.
+* `preload`の複数の同等の呼び出しは、単一の呼び出しと同じ効果を持ちます。`preload`の呼び出しは、以下のルールに従って同等と見なされます:
+  * `href`が同じ場合、2つの呼び出しは同等です。ただし:
+  * `as`が`image`に設定されている場合、`href`、`imageSrcSet`、および`imageSizes`が同じであれば、2つの呼び出しは同等です。
+* ブラウザでは、コンポーネントのレンダリング中、Effect内、イベントハンドラ内など、どの状況でも`preload`を呼び出すことができます。
+* サーバーサイドレンダリングやServer Componentsのレンダリング時には、コンポーネントのレンダリング中またはコンポーネントのレンダリングから始まる非同期コンテキスト内で呼び出した場合にのみ`preload`が効果を持ちます。それ以外の呼び出しは無視されます。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Preloading when rendering {/*preloading-when-rendering*/}
+### レンダリング時の事前読み込み {/*preloading-when-rendering*/}
 
-Call `preload` when rendering a component if you know that it or its children will use a specific resource.
+特定のリソースを使用することがわかっている場合、コンポーネントのレンダリング時に`preload`を呼び出します。
 
-<Recipes titleText="Examples of preloading">
+<Recipes titleText="事前読み込みの例">
 
-#### Preloading an external script {/*preloading-an-external-script*/}
+#### 外部スクリプトの事前読み込み {/*preloading-an-external-script*/}
 
 ```js
 import { preload } from 'react-dom';
@@ -96,11 +96,11 @@ function AppRoot() {
 }
 ```
 
-If you want the browser to start executing the script immediately (rather than just downloading it), use [`preinit`](/reference/react-dom/preinit) instead. If you want to load an ESM module, use [`preloadModule`](/reference/react-dom/preloadModule).
+ブラウザがスクリプトをすぐに実行し始めることを望む場合（ダウンロードだけでなく）、代わりに[`preinit`](/reference/react-dom/preinit)を使用してください。ESMモジュールを読み込みたい場合は、[`preloadModule`](/reference/react-dom/preloadModule)を使用してください。
 
 <Solution />
 
-#### Preloading a stylesheet {/*preloading-a-stylesheet*/}
+#### スタイルシートの事前読み込み {/*preloading-a-stylesheet*/}
 
 ```js
 import { preload } from 'react-dom';
@@ -111,11 +111,11 @@ function AppRoot() {
 }
 ```
 
-If you want the stylesheet to be inserted into the document immediately (which means the browser will start parsing it immediately rather than just downloading it), use [`preinit`](/reference/react-dom/preinit) instead.
+スタイルシートをすぐにドキュメントに挿入したい場合（つまり、ブラウザがダウンロードだけでなくすぐに解析を開始することを意味します）、代わりに[`preinit`](/reference/react-dom/preinit)を使用してください。
 
 <Solution />
 
-#### Preloading a font {/*preloading-a-font*/}
+#### フォントの事前読み込み {/*preloading-a-font*/}
 
 ```js
 import { preload } from 'react-dom';
@@ -127,11 +127,11 @@ function AppRoot() {
 }
 ```
 
-If you preload a stylesheet, it's smart to also preload any fonts that the stylesheet refers to. That way, the browser can start downloading the font before it's downloaded and parsed the stylesheet.
+スタイルシートを事前に読み込む場合、そのスタイルシートが参照するフォントも事前に読み込むのが賢明です。そうすることで、ブラウザはスタイルシートをダウンロードして解析する前にフォントのダウンロードを開始できます。
 
 <Solution />
 
-#### Preloading an image {/*preloading-an-image*/}
+#### 画像の事前読み込み {/*preloading-an-image*/}
 
 ```js
 import { preload } from 'react-dom';
@@ -146,15 +146,15 @@ function AppRoot() {
 }
 ```
 
-When preloading an image, the `imageSrcSet` and `imageSizes` options help the browser [fetch the correctly sized image for the size of the screen](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
+画像を事前に読み込む場合、`imageSrcSet`および`imageSizes`オプションは、ブラウザが[画面のサイズに適した画像を取得する](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)のに役立ちます。
 
 <Solution />
 
 </Recipes>
 
-### Preloading in an event handler {/*preloading-in-an-event-handler*/}
+### イベントハンドラでの事前読み込み {/*preloading-in-an-event-handler*/}
 
-Call `preload` in an event handler before transitioning to a page or state where external resources will be needed. This gets the process started earlier than if you call it during the rendering of the new page or state.
+外部リソースが必要になるページや状態に遷移する前に、イベントハンドラで`preload`を呼び出します。これにより、新しいページや状態のレンダリング中に呼び出すよりも早くプロセスが開始されます。
 
 ```js
 import { preload } from 'react-dom';
@@ -165,7 +165,7 @@ function CallToAction() {
     startWizard();
   }
   return (
-    <button onClick={onClick}>Start Wizard</button>
+    <button onClick={onClick}>ウィザードを開始</button>
   );
 }
 ```

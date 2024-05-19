@@ -4,13 +4,13 @@ title: flushSync
 
 <Pitfall>
 
-Using `flushSync` is uncommon and can hurt the performance of your app.
+`flushSync`を使用することは稀であり、アプリのパフォーマンスに悪影響を与える可能性があります。
 
 </Pitfall>
 
 <Intro>
 
-`flushSync` lets you force React to flush any updates inside the provided callback synchronously. This ensures that the DOM is updated immediately.
+`flushSync`を使用すると、提供されたコールバック内の更新を同期的に強制的にフラッシュすることができます。これにより、DOMが即座に更新されることが保証されます。
 
 ```js
 flushSync(callback)
@@ -22,11 +22,11 @@ flushSync(callback)
 
 ---
 
-## Reference {/*reference*/}
+## 参考 {/*reference*/}
 
 ### `flushSync(callback)` {/*flushsync*/}
 
-Call `flushSync` to force React to flush any pending work and update the DOM synchronously.
+`flushSync`を呼び出して、Reactに保留中の作業をフラッシュし、DOMを同期的に更新させます。
 
 ```js
 import { flushSync } from 'react-dom';
@@ -36,50 +36,49 @@ flushSync(() => {
 });
 ```
 
-Most of the time, `flushSync` can be avoided. Use `flushSync` as last resort.
+ほとんどの場合、`flushSync`は避けることができます。`flushSync`は最後の手段として使用してください。
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
+* `callback`: 関数。Reactはこのコールバックを即座に呼び出し、その中に含まれる更新を同期的にフラッシュします。また、保留中の更新やエフェクト、エフェクト内の更新もフラッシュする可能性があります。この`flushSync`呼び出しの結果として更新がサスペンドされた場合、フォールバックが再表示されることがあります。
 
-* `callback`: A function. React will immediately call this callback and flush any updates it contains synchronously. It may also flush any pending updates, or Effects, or updates inside of Effects. If an update suspends as a result of this `flushSync` call, the fallbacks may be re-shown.
+#### 戻り値 {/*returns*/}
 
-#### Returns {/*returns*/}
+`flushSync`は`undefined`を返します。
 
-`flushSync` returns `undefined`.
+#### 注意点 {/*caveats*/}
 
-#### Caveats {/*caveats*/}
-
-* `flushSync` can significantly hurt performance. Use sparingly.
-* `flushSync` may force pending Suspense boundaries to show their `fallback` state.
-* `flushSync` may run pending Effects and synchronously apply any updates they contain before returning.
-* `flushSync` may flush updates outside the callback when necessary to flush the updates inside the callback. For example, if there are pending updates from a click, React may flush those before flushing the updates inside the callback.
+* `flushSync`はパフォーマンスに大きな悪影響を与える可能性があります。慎重に使用してください。
+* `flushSync`は保留中のSuspense境界を強制的に`fallback`状態にする可能性があります。
+* `flushSync`は保留中のエフェクトを実行し、それらに含まれる更新を同期的に適用することがあります。
+* `flushSync`は、コールバック内の更新をフラッシュするために必要な場合、コールバック外の更新もフラッシュすることがあります。例えば、クリックからの保留中の更新がある場合、Reactはコールバック内の更新をフラッシュする前にそれらをフラッシュすることがあります。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Flushing updates for third-party integrations {/*flushing-updates-for-third-party-integrations*/}
+### サードパーティ統合のための更新のフラッシュ {/*flushing-updates-for-third-party-integrations*/}
 
-When integrating with third-party code such as browser APIs or UI libraries, it may be necessary to force React to flush updates. Use `flushSync` to force React to flush any <CodeStep step={1}>state updates</CodeStep> inside the callback synchronously:
+ブラウザAPIやUIライブラリなどのサードパーティコードと統合する際には、Reactに更新をフラッシュさせる必要がある場合があります。`flushSync`を使用して、コールバック内の<CodeStep step={1}>状態更新</CodeStep>を同期的にフラッシュさせます：
 
 ```js [[1, 2, "setSomething(123)"]]
 flushSync(() => {
   setSomething(123);
 });
-// By this line, the DOM is updated.
+// この行までに、DOMが更新されます。
 ```
 
-This ensures that, by the time the next line of code runs, React has already updated the DOM.
+これにより、次のコード行が実行される時点で、Reactが既にDOMを更新していることが保証されます。
 
-**Using `flushSync` is uncommon, and using it often can significantly hurt the performance of your app.** If your app only uses React APIs, and does not integrate with third-party libraries, `flushSync` should be unnecessary.
+**`flushSync`を使用することは稀であり、頻繁に使用するとアプリのパフォーマンスに大きな悪影響を与える可能性があります。** アプリがReact APIのみを使用し、サードパーティライブラリと統合しない場合、`flushSync`は不要です。
 
-However, it can be helpful for integrating with third-party code like browser APIs.
+しかし、ブラウザAPIのようなサードパーティコードと統合する場合には役立つことがあります。
 
-Some browser APIs expect results inside of callbacks to be written to the DOM synchronously, by the end of the callback, so the browser can do something with the rendered DOM. In most cases, React handles this for you automatically. But in some cases it may be necessary to force a synchronous update.
+一部のブラウザAPIは、コールバック内の結果がコールバックの終了時までに同期的にDOMに書き込まれることを期待しています。ほとんどの場合、Reactはこれを自動的に処理しますが、場合によっては同期的な更新を強制する必要があります。
 
-For example, the browser `onbeforeprint` API allows you to change the page immediately before the print dialog opens. This is useful for applying custom print styles that allow the document to display better for printing. In the example below, you use `flushSync` inside of the `onbeforeprint` callback to immediately "flush" the React state to the DOM. Then, by the time the print dialog opens, `isPrinting` displays "yes":
+例えば、ブラウザの`onbeforeprint` APIは、印刷ダイアログが開く直前にページを変更することを許可します。これは、印刷用にドキュメントをより良く表示するためのカスタム印刷スタイルを適用するのに役立ちます。以下の例では、`onbeforeprint`コールバック内で`flushSync`を使用して、Reactの状態を即座にDOMに「フラッシュ」します。これにより、印刷ダイアログが開く時点で`isPrinting`が「yes」と表示されます：
 
 <Sandpack>
 
@@ -122,12 +121,12 @@ export default function PrintApp() {
 
 </Sandpack>
 
-Without `flushSync`, the print dialog will display `isPrinting` as "no". This is because React batches the updates asynchronously and the print dialog is displayed before the state is updated.
+`flushSync`を使用しない場合、印刷ダイアログは`isPrinting`を「no」と表示します。これは、Reactが更新を非同期的にバッチ処理し、印刷ダイアログが状態が更新される前に表示されるためです。
 
 <Pitfall>
 
-`flushSync` can significantly hurt performance, and may unexpectedly force pending Suspense boundaries to show their fallback state.
+`flushSync`はパフォーマンスに大きな悪影響を与える可能性があり、保留中のSuspense境界を予期せずフォールバック状態にすることがあります。
 
-Most of the time, `flushSync` can be avoided, so use `flushSync` as a last resort.
+ほとんどの場合、`flushSync`は避けることができるため、最後の手段として使用してください。
 
 </Pitfall>

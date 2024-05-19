@@ -1,23 +1,23 @@
 ---
-title: "Directives"
+title: Directives
 canary: true
 ---
 
 <Canary>
 
-These directives are needed only if you're [using React Server Components](/learn/start-a-new-react-project#bleeding-edge-react-frameworks) or building a library compatible with them.
+これらの指示は、[React Server Componentsを使用している](/learn/start-a-new-react-project#bleeding-edge-react-frameworks)場合や、それらに対応するライブラリを構築している場合にのみ必要です。
 
 </Canary>
 
 <Intro>
 
-Directives provide instructions to [bundlers compatible with React Server Components](/learn/start-a-new-react-project#bleeding-edge-react-frameworks).
+指示は、[React Server Componentsに対応するバンドラー](/learn/start-a-new-react-project#bleeding-edge-react-frameworks)に指示を提供します。
 
 </Intro>
 
 ---
 
-## Source code directives {/*source-code-directives*/}
+## ソースコードの指示 {/*source-code-directives*/}
 
-* [`'use client'`](/reference/rsc/use-client) lets you mark what code runs on the client.
-* [`'use server'`](/reference/rsc/use-server) marks server-side functions that can be called from client-side code.
+* [`'use client'`](/reference/rsc/use-client) は、クライアントで実行されるコードをマークします。
+* [`'use server'`](/reference/rsc/use-server) は、クライアント側のコードから呼び出すことができるサーバー側の関数をマークします。

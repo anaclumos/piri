@@ -1,41 +1,41 @@
 ---
-title: Keeping Components Pure
+title: コンポーネントを純粋に保つ
 ---
 
 <Intro>
 
-Some JavaScript functions are *pure.* Pure functions only perform a calculation and nothing more. By strictly only writing your components as pure functions, you can avoid an entire class of baffling bugs and unpredictable behavior as your codebase grows. To get these benefits, though, there are a few rules you must follow.
+いくつかのJavaScript関数は*純粋*です。純粋な関数は計算のみを行い、それ以外のことはしません。コンポーネントを純粋な関数としてのみ記述することで、コードベースが成長するにつれて発生する不可解なバグや予測不可能な動作を回避できます。しかし、これらの利点を得るためには、いくつかのルールに従う必要があります。
 
 </Intro>
 
 <YouWillLearn>
 
-* What purity is and how it helps you avoid bugs
-* How to keep components pure by keeping changes out of the render phase
-* How to use Strict Mode to find mistakes in your components
+* 純粋性とは何か、そしてそれがバグを回避するのにどのように役立つか
+* レンダーフェーズでの変更を避けることでコンポーネントを純粋に保つ方法
+* Strict Modeを使用してコンポーネントのミスを見つける方法
 
 </YouWillLearn>
 
-## Purity: Components as formulas {/*purity-components-as-formulas*/}
+## 純粋性: 数式としてのコンポーネント {/*purity-components-as-formulas*/}
 
-In computer science (and especially the world of functional programming), [a pure function](https://wikipedia.org/wiki/Pure_function) is a function with the following characteristics:
+コンピュータサイエンス（特に関数型プログラミングの世界）では、[純粋関数](https://wikipedia.org/wiki/Pure_function)は次の特徴を持つ関数です：
 
-* **It minds its own business.** It does not change any objects or variables that existed before it was called.
-* **Same inputs, same output.** Given the same inputs, a pure function should always return the same result.
+* **自分の仕事に専念する。** 呼び出される前に存在していたオブジェクトや変数を変更しません。
+* **同じ入力、同じ出力。** 同じ入力を与えられた場合、純粋関数は常に同じ結果を返すべきです。
 
-You might already be familiar with one example of pure functions: formulas in math.
+数学の公式は純粋関数の一例として既に馴染みがあるかもしれません。
 
-Consider this math formula: <Math><MathI>y</MathI> = 2<MathI>x</MathI></Math>.
+この数学の公式を考えてみましょう：<Math><MathI>y</MathI> = 2<MathI>x</MathI></Math>。
 
-If <Math><MathI>x</MathI> = 2</Math> then <Math><MathI>y</MathI> = 4</Math>. Always. 
+もし <Math><MathI>x</MathI> = 2</Math> なら、<Math><MathI>y</MathI> = 4</Math>。常に。
 
-If <Math><MathI>x</MathI> = 3</Math> then <Math><MathI>y</MathI> = 6</Math>. Always. 
+もし <Math><MathI>x</MathI> = 3</Math> なら、<Math><MathI>y</MathI> = 6</Math>。常に。
 
-If <Math><MathI>x</MathI> = 3</Math>, <MathI>y</MathI> won't sometimes be <Math>9</Math> or <Math>–1</Math> or <Math>2.5</Math> depending on the time of day or the state of the stock market. 
+もし <Math><MathI>x</MathI> = 3</Math> なら、<MathI>y</MathI> は <Math>9</Math> や <Math>–1</Math> や <Math>2.5</Math> にはなりません。時間帯や株式市場の状態に関係なく。
 
-If <Math><MathI>y</MathI> = 2<MathI>x</MathI></Math> and <Math><MathI>x</MathI> = 3</Math>, <MathI>y</MathI> will _always_ be <Math>6</Math>. 
+もし <Math><MathI>y</MathI> = 2<MathI>x</MathI></Math> で <Math><MathI>x</MathI> = 3</Math> なら、<MathI>y</MathI> は _常に_ <Math>6</Math> です。
 
-If we made this into a JavaScript function, it would look like this:
+これをJavaScript関数にすると、次のようになります：
 
 ```js
 function double(number) {
@@ -43,9 +43,9 @@ function double(number) {
 }
 ```
 
-In the above example, `double` is a **pure function.** If you pass it `3`, it will return `6`. Always.
+上記の例では、`double` は **純粋関数** です。`3` を渡すと、`6` を返します。常に。
 
-React is designed around this concept. **React assumes that every component you write is a pure function.** This means that React components you write must always return the same JSX given the same inputs:
+Reactはこの概念に基づいて設計されています。**Reactは、あなたが書くすべてのコンポーネントが純粋関数であると仮定しています。** これは、Reactコンポーネントが同じ入力を与えられた場合、常に同じJSXを返す必要があることを意味します：
 
 <Sandpack>
 
@@ -53,9 +53,9 @@ React is designed around this concept. **React assumes that every component you 
 function Recipe({ drinkers }) {
   return (
     <ol>    
-      <li>Boil {drinkers} cups of water.</li>
-      <li>Add {drinkers} spoons of tea and {0.5 * drinkers} spoons of spice.</li>
-      <li>Add {0.5 * drinkers} cups of milk to boil and sugar to taste.</li>
+      <li>{drinkers}カップの水を沸かします。</li>
+      <li>{drinkers}スプーンの茶葉と{0.5 * drinkers}スプーンのスパイスを加えます。</li>
+      <li>{0.5 * drinkers}カップのミルクを沸かし、砂糖をお好みで加えます。</li>
     </ol>
   );
 }
@@ -63,10 +63,10 @@ function Recipe({ drinkers }) {
 export default function App() {
   return (
     <section>
-      <h1>Spiced Chai Recipe</h1>
-      <h2>For two</h2>
+      <h1>スパイスチャイのレシピ</h1>
+      <h2>2人分</h2>
       <Recipe drinkers={2} />
-      <h2>For a gathering</h2>
+      <h2>集まり用</h2>
       <Recipe drinkers={4} />
     </section>
   );
@@ -75,21 +75,21 @@ export default function App() {
 
 </Sandpack>
 
-When you pass `drinkers={2}` to `Recipe`, it will return JSX containing `2 cups of water`. Always. 
+`drinkers={2}` を `Recipe` に渡すと、`2カップの水` を含むJSXを返します。常に。
 
-If you pass `drinkers={4}`, it will return JSX containing `4 cups of water`. Always.
+`drinkers={4}` を渡すと、`4カップの水` を含むJSXを返します。常に。
 
-Just like a math formula. 
+まるで数学の公式のように。
 
-You could think of your components as recipes: if you follow them and don't introduce new ingredients during the cooking process, you will get the same dish every time. That "dish" is the JSX that the component serves to React to [render.](/learn/render-and-commit)
+コンポーネントをレシピのように考えることができます：それらをフォローし、調理プロセス中に新しい材料を追加しなければ、毎回同じ料理が得られます。その「料理」は、コンポーネントがReactに提供するJSXです。[レンダリングするために。](/learn/render-and-commit)
 
-<Illustration src="/images/docs/illustrations/i_puritea-recipe.png" alt="A tea recipe for x people: take x cups of water, add x spoons of tea and 0.5x spoons of spices, and 0.5x cups of milk" />
+<Illustration src="/images/docs/illustrations/i_puritea-recipe.png" alt="x人分の紅茶のレシピ：xカップの水を取り、xスプーンの茶葉と0.5xスプーンのスパイスを加え、0.5xカップのミルクを加える" />
 
-## Side Effects: (un)intended consequences {/*side-effects-unintended-consequences*/}
+## 副作用: 意図しない結果 {/*side-effects-unintended-consequences*/}
 
-React's rendering process must always be pure. Components should only *return* their JSX, and not *change* any objects or variables that existed before rendering—that would make them impure!
+Reactのレンダリングプロセスは常に純粋でなければなりません。コンポーネントはJSXを*返す*だけで、レンダリング前に存在していたオブジェクトや変数を*変更*してはいけません—それは不純にしてしまいます！
 
-Here is a component that breaks this rule:
+ここにこのルールを破るコンポーネントがあります：
 
 <Sandpack>
 
@@ -97,9 +97,9 @@ Here is a component that breaks this rule:
 let guest = 0;
 
 function Cup() {
-  // Bad: changing a preexisting variable!
+  // 悪い例: 既存の変数を変更しています！
   guest = guest + 1;
-  return <h2>Tea cup for guest #{guest}</h2>;
+  return <h2>ゲスト#{guest}のためのティーカップ</h2>;
 }
 
 export default function TeaSet() {
@@ -115,17 +115,17 @@ export default function TeaSet() {
 
 </Sandpack>
 
-This component is reading and writing a `guest` variable declared outside of it. This means that **calling this component multiple times will produce different JSX!** And what's more, if _other_ components read `guest`, they will produce different JSX, too, depending on when they were rendered! That's not predictable.
+このコンポーネントは、外部で宣言された`guest`変数を読み書きしています。これは、**このコンポーネントを複数回呼び出すと異なるJSXが生成されることを意味します！** さらに、_他の_コンポーネントが`guest`を読み取ると、レンダリングされたタイミングによって異なるJSXが生成されます！これは予測不可能です。
 
-Going back to our formula <Math><MathI>y</MathI> = 2<MathI>x</MathI></Math>, now even if <Math><MathI>x</MathI> = 2</Math>, we cannot trust that <Math><MathI>y</MathI> = 4</Math>. Our tests could fail, our users would be baffled, planes would fall out of the sky—you can see how this would lead to confusing bugs!
+数式に戻ると、<Math><MathI>y</MathI> = 2<MathI>x</MathI></Math>、今や <Math><MathI>x</MathI> = 2</Math> でも、<Math><MathI>y</MathI> = 4</Math> を信頼できません。テストが失敗し、ユーザーが困惑し、飛行機が空から落ちる—このようにして混乱を招くバグが発生することがわかります！
 
-You can fix this component by [passing `guest` as a prop instead](/learn/passing-props-to-a-component):
+このコンポーネントを修正するには、[`guest`をプロップとして渡す](/learn/passing-props-to-a-component)必要があります：
 
 <Sandpack>
 
 ```js
 function Cup({ guest }) {
-  return <h2>Tea cup for guest #{guest}</h2>;
+  return <h2>ゲスト#{guest}のためのティーカップ</h2>;
 }
 
 export default function TeaSet() {
@@ -141,37 +141,37 @@ export default function TeaSet() {
 
 </Sandpack>
 
-Now your component is pure, as the JSX it returns only depends on the `guest` prop.
+これでコンポーネントは純粋になり、返されるJSXは`guest`プロップにのみ依存します。
 
-In general, you should not expect your components to be rendered in any particular order. It doesn't matter if you call <Math><MathI>y</MathI> = 2<MathI>x</MathI></Math> before or after <Math><MathI>y</MathI> = 5<MathI>x</MathI></Math>: both formulas will resolve independently of each other. In the same way, each component should only "think for itself", and not attempt to coordinate with or depend upon others during rendering. Rendering is like a school exam: each component should calculate JSX on their own!
+一般的に、コンポーネントが特定の順序でレンダリングされることを期待すべきではありません。<Math><MathI>y</MathI> = 2<MathI>x</MathI></Math>を<Math><MathI>y</MathI> = 5<MathI>x</MathI></Math>の前後どちらで呼び出しても関係ありません：両方の数式は互いに独立して解決されます。同様に、各コンポーネントは「自分自身のことだけを考え」、レンダリング中に他のコンポーネントと調整したり依存したりしないようにする必要があります。レンダリングは学校の試験のようなもので、各コンポーネントは自分自身でJSXを計算する必要があります！
 
 <DeepDive>
 
-#### Detecting impure calculations with StrictMode {/*detecting-impure-calculations-with-strict-mode*/}
+#### StrictModeで不純な計算を検出する {/*detecting-impure-calculations-with-strict-mode*/}
 
-Although you might not have used them all yet, in React there are three kinds of inputs that you can read while rendering: [props](/learn/passing-props-to-a-component), [state](/learn/state-a-components-memory), and [context.](/learn/passing-data-deeply-with-context) You should always treat these inputs as read-only.
+まだすべてを使用していないかもしれませんが、Reactにはレンダリング中に読み取ることができる3種類の入力があります：[props](/learn/passing-props-to-a-component)、[state](/learn/state-a-components-memory)、および[context](/learn/passing-data-deeply-with-context)。これらの入力は常に読み取り専用として扱うべきです。
 
-When you want to *change* something in response to user input, you should [set state](/learn/state-a-components-memory) instead of writing to a variable. You should never change preexisting variables or objects while your component is rendering.
+ユーザー入力に応じて何かを*変更*したい場合は、変数に書き込むのではなく、[stateを設定](/learn/state-a-components-memory)する必要があります。コンポーネントがレンダリングされている間に既存の変数やオブジェクトを変更してはいけません。
 
-React offers a "Strict Mode" in which it calls each component's function twice during development. **By calling the component functions twice, Strict Mode helps find components that break these rules.**
+Reactは開発中に各コンポーネントの関数を2回呼び出す「Strict Mode」を提供しています。**Strict Modeはコンポーネント関数を2回呼び出すことで、これらのルールを破るコンポーネントを見つけるのに役立ちます。**
 
-Notice how the original example displayed "Guest #2", "Guest #4", and "Guest #6" instead of "Guest #1", "Guest #2", and "Guest #3". The original function was impure, so calling it twice broke it. But the fixed pure version works even if the function is called twice every time. **Pure functions only calculate, so calling them twice won't change anything**--just like calling `double(2)` twice doesn't change what's returned, and solving <Math><MathI>y</MathI> = 2<MathI>x</MathI></Math> twice doesn't change what <MathI>y</MathI> is. Same inputs, same outputs. Always.
+元の例が「ゲスト#2」、「ゲスト#4」、「ゲスト#6」と表示され、「ゲスト#1」、「ゲスト#2」、「ゲスト#3」と表示されなかったことに注意してください。元の関数は不純であったため、2回呼び出すと壊れました。しかし、修正された純粋なバージョンは、関数が毎回2回呼び出されても機能します。**純粋関数は計算のみを行うため、2回呼び出しても何も変わりません**—`double(2)`を2回呼び出しても返されるものは変わらず、<Math><MathI>y</MathI> = 2<MathI>x</MathI></Math>を2回解いても<MathI>y</MathI>が変わることはありません。同じ入力、同じ出力。常に。
 
-Strict Mode has no effect in production, so it won't slow down the app for your users. To opt into Strict Mode, you can wrap your root component into `<React.StrictMode>`. Some frameworks do this by default.
+Strict Modeは本番環境では効果がないため、ユーザーのアプリの速度を低下させることはありません。Strict Modeにオプトインするには、ルートコンポーネントを`<React.StrictMode>`でラップします。一部のフレームワークではこれがデフォルトで行われます。
 
 </DeepDive>
 
-### Local mutation: Your component's little secret {/*local-mutation-your-components-little-secret*/}
+### ローカルミューテーション: コンポーネントの小さな秘密 {/*local-mutation-your-components-little-secret*/}
 
-In the above example, the problem was that the component changed a *preexisting* variable while rendering. This is often called a **"mutation"** to make it sound a bit scarier. Pure functions don't mutate variables outside of the function's scope or objects that were created before the call—that makes them impure!
+上記の例では、問題はコンポーネントがレンダリング中に*既存の*変数を変更したことでした。これはしばしば**「ミューテーション」**と呼ばれ、少し怖く聞こえます。純粋関数は関数のスコープ外の変数や呼び出し前に作成されたオブジェクトを変更しません—それが不純にするのです！
 
-However, **it's completely fine to change variables and objects that you've *just* created while rendering.** In this example, you create an `[]` array, assign it to a `cups` variable, and then `push` a dozen cups into it:
+しかし、**レンダリング中に*新しく*作成した変数やオブジェクトを変更することは完全に問題ありません。** この例では、`[]`配列を作成し、それを`cups`変数に割り当て、次に12個のカップを`push`します：
 
 <Sandpack>
 
 ```js
 function Cup({ guest }) {
-  return <h2>Tea cup for guest #{guest}</h2>;
+  return <h2>ゲスト#{guest}のためのティーカップ</h2>;
 }
 
 export default function TeaGathering() {
@@ -185,59 +185,55 @@ export default function TeaGathering() {
 
 </Sandpack>
 
-If the `cups` variable or the `[]` array were created outside the `TeaGathering` function, this would be a huge problem! You would be changing a *preexisting* object by pushing items into that array.
+もし`cups`変数や`[]`配列が`TeaGathering`関数の外部で作成されていたら、これは大問題です！その配列にアイテムを追加することで*既存の*オブジェクトを変更していることになります。
 
-However, it's fine because you've created them *during the same render*, inside `TeaGathering`. No code outside of `TeaGathering` will ever know that this happened. This is called **"local mutation"**—it's like your component's little secret.
+しかし、`TeaGathering`内で*同じレンダリング中に*それらを作成したため、問題ありません。`TeaGathering`の外部のコードはこれが起こったことを知ることはありません。これは**「ローカルミューテーション」**と呼ばれ、コンポーネントの小さな秘密のようなものです。
 
-## Where you _can_ cause side effects {/*where-you-_can_-cause-side-effects*/}
+## 副作用を引き起こす場所 {/*where-you-_can_-cause-side-effects*/}
 
-While functional programming relies heavily on purity, at some point, somewhere, _something_ has to change. That's kind of the point of programming! These changes—updating the screen, starting an animation, changing the data—are called **side effects.** They're things that happen _"on the side"_, not during rendering.
+関数型プログラミングは純粋性に大きく依存していますが、どこかで_何か_が変わらなければなりません。それがプログラミングのポイントです！これらの変更—画面の更新、アニメーションの開始、データの変更—は**副作用**と呼ばれます。それらはレンダリング中ではなく、_「副次的に」_発生するものです。
 
-In React, **side effects usually belong inside [event handlers.](/learn/responding-to-events)** Event handlers are functions that React runs when you perform some action—for example, when you click a button. Even though event handlers are defined *inside* your component, they don't run *during* rendering! **So event handlers don't need to be pure.**
+Reactでは、**副作用は通常[イベントハンドラ](/learn/responding-to-events)内に属します。** イベントハンドラは、ボタンをクリックするなどのアクションを実行したときにReactが実行する関数です。イベントハンドラはコンポーネント*内*で定義されているにもかかわらず、*レンダリング中には*実行されません！ **したがって、イベントハンドラは純粋である必要はありません。**
 
-If you've exhausted all other options and can't find the right event handler for your side effect, you can still attach it to your returned JSX with a [`useEffect`](/reference/react/useEffect) call in your component. This tells React to execute it later, after rendering, when side effects are allowed. **However, this approach should be your last resort.**
+他のすべてのオプションを使い果たし、副作用に適したイベントハンドラが見つからない場合は、コンポーネント内で[`useEffect`](/reference/react/useEffect)呼び出しを使用して返されたJSXに副作用を添付することができます。これにより、Reactはレンダリング後に副作用が許可されるときにそれを実行するように指示します。**ただし、このアプローチは最後の手段とすべきです。**
 
-When possible, try to express your logic with rendering alone. You'll be surprised how far this can take you!
+可能な限り、レンダリングだけでロジックを表現するようにしてください。これがどれだけ役立つかに驚くことでしょう！
 
 <DeepDive>
 
-#### Why does React care about purity? {/*why-does-react-care-about-purity*/}
+#### Reactが純粋性を気にする理由 {/*why-does-react-care-about-purity*/}
 
-Writing pure functions takes some habit and discipline. But it also unlocks marvelous opportunities:
+純粋な関数を書くには習慣と規律が必要です。しかし、それはまた素晴らしい機会を解放します：
 
-* Your components could run in a different environment—for example, on the server! Since they return the same result for the same inputs, one component can serve many user requests.
-* You can improve performance by [skipping rendering](/reference/react/memo) components whose inputs have not changed. This is safe because pure functions always return the same results, so they are safe to cache.
-* If some data changes in the middle of rendering a deep component tree, React can restart rendering without wasting time to finish the outdated render. Purity makes it safe to stop calculating at any time.
+* コンポーネントは異なる環境で実行される可能性があります—例えば、サーバー上で！同じ入力に対して同じ結果を返すため、1つのコンポーネントが多くのユーザーリクエストに対応できます。
+* 入力が変更されていないコンポーネントのレンダリングを[スキップする](/reference/react/memo)ことでパフォーマンスを向上させることができます。これは純粋関数が常に同じ結果を返すため、安全にキャッシュできるからです。
+* 深いコンポーネントツリーのレンダリング中にデータが変更された場合、Reactは古いレンダリングを完了する時間を無駄にせずにレンダリングを再開できます。純粋性はいつでも計算を停止することを安全にします。
 
-Every new React feature we're building takes advantage of purity. From data fetching to animations to performance, keeping components pure unlocks the power of the React paradigm.
+私たちが構築しているすべての新しいReact機能は純粋性を活用しています。データフェッチングからアニメーション、パフォーマンスまで、コンポーネントを純粋に保つことはReactのパラダイムの力を解放します。
 
 </DeepDive>
 
 <Recap>
 
-* A component must be pure, meaning:
-  * **It minds its own business.** It should not change any objects or variables that existed before rendering.
-  * **Same inputs, same output.** Given the same inputs, a component should always return the same JSX. 
-* Rendering can happen at any time, so components should not depend on each others' rendering sequence.
-* You should not mutate any of the inputs that your components use for rendering. That includes props, state, and context. To update the screen, ["set" state](/learn/state-a-components-memory) instead of mutating preexisting objects.
-* Strive to express your component's logic in the JSX you return. When you need to "change things", you'll usually want to do it in an event handler. As a last resort, you can `useEffect`.
-* Writing pure functions takes a bit of practice, but it unlocks the power of React's paradigm.
+* コンポーネントは純粋でなければならず、つまり：
+  * **自分の仕事に専念する。** レンダリング前に存在していたオブジェクトや変数を変更してはいけません。
+  * **同じ入力、同じ出力。** 同じ入力を与えられた場合、コンポーネントは常に同じJSXを返すべきです。
+* レンダリングはいつでも発生する可能性があるため、コンポーネントは他のコンポーネントのレンダリング順序に依存してはいけません。
+* コンポーネントがレンダリングに使用する入力（props、state、context）を変更してはいけません。画面を更新するには、既存のオブジェクトを変更するのではなく、["stateを設定"](/learn/state-a-components-memory)します。
+* コンポーネントのロジックを返すJSXで表現するように努めてください。何かを「変更」する必要がある場合は、通常、イベントハンドラで行うことをお勧めします。最後の手段として、`useEffect`を使用できます。
+* 純粋な関数を書くには少し練習が必要ですが、それはReactのパラダイムの力を解放します</Recap>
 
-</Recap>
-
-
-  
 <Challenges>
 
-#### Fix a broken clock {/*fix-a-broken-clock*/}
+#### 壊れた時計を修正する {/*fix-a-broken-clock*/}
 
-This component tries to set the `<h1>`'s CSS class to `"night"` during the time from midnight to six hours in the morning, and `"day"` at all other times. However, it doesn't work. Can you fix this component?
+このコンポーネントは、午前0時から午前6時までの間に`<h1>`のCSSクラスを`"night"`に設定し、それ以外の時間帯では`"day"`に設定しようとしています。しかし、うまく機能していません。このコンポーネントを修正できますか？
 
-You can verify whether your solution works by temporarily changing the computer's timezone. When the current time is between midnight and six in the morning, the clock should have inverted colors!
+コンピュータのタイムゾーンを一時的に変更して、解決策が機能するかどうかを確認できます。現在の時間が午前0時から午前6時の間である場合、時計は反転した色を持つべきです！
 
 <Hint>
 
-Rendering is a *calculation*, it shouldn't try to "do" things. Can you express the same idea differently?
+レンダリングは*計算*であり、何かを「行う」ことを試みるべきではありません。同じアイデアを別の方法で表現できますか？
 
 </Hint>
 
@@ -301,7 +297,7 @@ body > * {
 
 <Solution>
 
-You can fix this component by calculating the `className` and including it in the render output:
+このコンポーネントを修正するには、`className`を計算し、それをレンダリング出力に含める必要があります：
 
 <Sandpack>
 
@@ -362,19 +358,19 @@ body > * {
 
 </Sandpack>
 
-In this example, the side effect (modifying the DOM) was not necessary at all. You only needed to return JSX.
+この例では、副作用（DOMの変更）はまったく必要ありませんでした。JSXを返すだけで十分でした。
 
 </Solution>
 
-#### Fix a broken profile {/*fix-a-broken-profile*/}
+#### 壊れたプロフィールを修正する {/*fix-a-broken-profile*/}
 
-Two `Profile` components are rendered side by side with different data. Press "Collapse" on the first profile, and then "Expand" it. You'll notice that both profiles now show the same person. This is a bug.
+2つの`Profile`コンポーネントが異なるデータで並べてレンダリングされています。最初のプロフィールで「Collapse」を押してから「Expand」します。すると、両方のプロフィールが同じ人物を表示することに気づくでしょう。これはバグです。
 
-Find the cause of the bug and fix it.
+バグの原因を見つけて修正してください。
 
 <Hint>
 
-The buggy code is in `Profile.js`. Make sure you read it all from top to bottom!
+バグのあるコードは`Profile.js`にあります。上から下までしっかり読んでください！
 
 </Hint>
 
@@ -475,9 +471,9 @@ h1 { margin: 5px; font-size: 18px; }
 
 <Solution>
 
-The problem is that the `Profile` component writes to a preexisting variable called `currentPerson`, and the `Header` and `Avatar` components read from it. This makes *all three of them* impure and difficult to predict.
+問題は、`Profile`コンポーネントが`currentPerson`という既存の変数に書き込み、`Header`と`Avatar`コンポーネントがそれを読み取ることです。これにより、*3つすべて*が不純で予測が難しくなります。
 
-To fix the bug, remove the `currentPerson` variable. Instead, pass all information from `Profile` to `Header` and `Avatar` via props. You'll need to add a `person` prop to both components and pass it all the way down.
+バグを修正するには、`currentPerson`変数を削除します。代わりに、すべての情報を`Profile`から`Header`と`Avatar`にプロップとして渡します。`person`プロップを両方のコンポーネントに追加し、それをすべて渡す必要があります。
 
 <Sandpack>
 
@@ -571,15 +567,15 @@ h1 { margin: 5px; font-size: 18px; }
 
 </Sandpack>
 
-Remember that React does not guarantee that component functions will execute in any particular order, so you can't communicate between them by setting variables. All communication must happen through props.
+Reactはコンポーネント関数が特定の順序で実行されることを保証しないため、変数を設定してそれらの間で通信することはできません。すべての通信はプロップを通じて行う必要があります。
 
 </Solution>
 
-#### Fix a broken story tray {/*fix-a-broken-story-tray*/}
+#### 壊れたストーリートレイを修正する {/*fix-a-broken-story-tray*/}
 
-The CEO of your company is asking you to add "stories" to your online clock app, and you can't say no. You've written a `StoryTray` component that accepts a list of `stories`, followed by a "Create Story" placeholder.
+あなたの会社のCEOがオンライン時計アプリに「ストーリー」を追加するように頼んできました。断ることはできません。`StoryTray`コンポーネントを作成し、`stories`のリストを受け取り、その後に「Create Story」プレースホルダーを追加しました。
 
-You implemented the "Create Story" placeholder by pushing one more fake story at the end of the `stories` array that you receive as a prop. But for some reason, "Create Story" appears more than once. Fix the issue.
+「Create Story」プレースホルダーを実装するために、受け取った`stories`配列の最後にもう1つのフェイクストーリーを追加しました。しかし、なぜか「Create Story」が複数回表示されます。問題を修正してください。
 
 <Sandpack>
 
@@ -629,7 +625,7 @@ export default function App() {
         textAlign: 'center',
       }}
     >
-      <h2>It is {time.toLocaleTimeString()} now.</h2>
+      <h2>現在の時刻は{time.toLocaleTimeString()}です。</h2>
       <StoryTray stories={stories} />
     </div>
   );
@@ -675,11 +671,11 @@ li {
 
 <Solution>
 
-Notice how whenever the clock updates, "Create Story" is added *twice*. This serves as a hint that we have a mutation during rendering--Strict Mode calls components twice to make these issues more noticeable.
+時計が更新されるたびに「Create Story」が*2回*追加されることに気づきましたか？これは、レンダリング中にミューテーションが発生していることを示しています—Strict Modeはこれらの問題をより目立たせるためにコンポーネントを2回呼び出します。
 
-`StoryTray` function is not pure. By calling `push` on the received `stories` array (a prop!), it is mutating an object that was created *before* `StoryTray` started rendering. This makes it buggy and very difficult to predict.
+`StoryTray`関数は純粋ではありません。受け取った`stories`配列（プロップ！）に`push`を呼び出すことで、`StoryTray`がレンダリングを開始する*前に*作成されたオブジェクトを変更しています。これにより、バグが発生し、予測が非常に難しくなります。
 
-The simplest fix is to not touch the array at all, and render "Create Story" separately:
+最も簡単な修正は、配列に触れずに「Create Story」を別々にレンダリングすることです：
 
 <Sandpack>
 
@@ -725,7 +721,7 @@ export default function App() {
         textAlign: 'center',
       }}
     >
-      <h2>It is {time.toLocaleTimeString()} now.</h2>
+      <h2>現在の時刻は{time.toLocaleTimeString()}です。</h2>
       <StoryTray stories={stories} />
     </div>
   );
@@ -763,16 +759,16 @@ li {
 
 </Sandpack>
 
-Alternatively, you could create a _new_ array (by copying the existing one) before you push an item into it:
+または、アイテムを追加する前に*新しい*配列を作成する（既存の配列をコピーする）こともできます：
 
 <Sandpack>
 
 ```js src/StoryTray.js active
 export default function StoryTray({ stories }) {
-  // Copy the array!
+  // 配列をコピー！
   let storiesToDisplay = stories.slice();
 
-  // Does not affect the original array:
+  // 元の配列には影響しません：
   storiesToDisplay.push({
     id: 'create',
     label: 'Create Story'
@@ -817,7 +813,7 @@ export default function App() {
         textAlign: 'center',
       }}
     >
-      <h2>It is {time.toLocaleTimeString()} now.</h2>
+      <h2>現在の時刻は{time.toLocaleTimeString()}です。</h2>
       <StoryTray stories={stories} />
     </div>
   );
@@ -855,9 +851,9 @@ li {
 
 </Sandpack>
 
-This keeps your mutation local and your rendering function pure. However, you still need to be careful: for example, if you tried to change any of the array's existing items, you'd have to clone those items too.
+これにより、ミューテーションがローカルに保たれ、レンダリング関数が純粋になります。ただし、注意が必要です：例えば、配列の既存のアイテムを変更しようとした場合、それらのアイテムもクローンする必要があります。
 
-It is useful to remember which operations on arrays mutate them, and which don't. For example, `push`, `pop`, `reverse`, and `sort` will mutate the original array, but `slice`, `filter`, and `map` will create a new one.
+配列に対する操作がそれをミューテートするかどうかを覚えておくと便利です。例えば、`push`、`pop`、`reverse`、`sort`は元の配列をミューテートしますが、`slice`、`filter`、`map`は新しい配列を作成します。
 
 </Solution>
 

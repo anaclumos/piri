@@ -1,17 +1,17 @@
 ---
-style: "<style>"
+style: <style>
 canary: true
 ---
 
 <Canary>
 
-React's extensions to `<style>` are currently only available in React's canary and experimental channels. In stable releases of React `<style>` works only as a [built-in browser HTML component](https://react.dev/reference/react-dom/components#all-html-components). Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+Reactの`<style>`への拡張は現在、Reactのカナリアおよび実験的なチャンネルでのみ利用可能です。Reactの安定版リリースでは、`<style>`は[組み込みのブラウザHTMLコンポーネント](https://react.dev/reference/react-dom/components#all-html-components)としてのみ機能します。[Reactのリリースチャンネルについてはこちら](https://react.dev/community/versioning-policy#all-release-channels)をご覧ください。
 
 </Canary>
 
 <Intro>
 
-The [built-in browser `<style>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style) lets you add inline CSS stylesheets to your document.
+[組み込みのブラウザ`<style>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style)を使用すると、ドキュメントにインラインCSSスタイルシートを追加できます。
 
 ```js
 <style>{` p { color: red; } `}</style>
@@ -23,53 +23,53 @@ The [built-in browser `<style>` component](https://developer.mozilla.org/en-US/d
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `<style>` {/*style*/}
 
-To add inline styles to your document, render the [built-in browser `<style>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style). You can render `<style>` from any component and React will [in certain cases](#special-rendering-behavior) place the corresponding DOM element in the document head and de-duplicate identical styles.
+ドキュメントにインラインスタイルを追加するには、[組み込みのブラウザ`<style>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style)をレンダリングします。任意のコンポーネントから`<style>`をレンダリングでき、Reactは[特定のケース](#special-rendering-behavior)で対応するDOM要素をドキュメントのヘッドに配置し、同一のスタイルを重複排除します。
 
 ```js
 <style>{` p { color: red; } `}</style>
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
 #### Props {/*props*/}
 
-`<style>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<style>`はすべての[共通要素のプロパティ](/reference/react-dom/components/common#props)をサポートします。
 
-* `children`: a string, required. The contents of the stylesheet.
-* `precedence`: a string. Tells React where to rank the `<style>` DOM node relative to others in the document `<head>`, which determines which stylesheet can override the other. Its value can be (in order of precedence) `"reset"`, `"low"`, `"medium"`, `"high"`. Stylesheets with the same precedence go together whether they are `<link>` or inline `<style>` tags or loaded using the [`preload`](/reference/react-dom/preload) or [`preinit`](/reference/react-dom/preinit) functions.
-* `href`: a string. Allows React to [de-duplicate styles](#special-rendering-behavior) that have the same `href`.
-* `media`: a string. Restricts the stylesheet to a certain [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries).
-* `nonce`: a string. A cryptographic [nonce to allow the resource](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) when using a strict Content Security Policy.
-* `title`: a string. Specifies the name of an [alternative stylesheet](https://developer.mozilla.org/en-US/docs/Web/CSS/Alternative_style_sheets).
+* `children`: 文字列、必須。スタイルシートの内容。
+* `precedence`: 文字列。ドキュメントの`<head>`内で他の`<style>`DOMノードに対する優先順位をReactに指示し、どのスタイルシートが他を上書きできるかを決定します。値は（優先順位の順に）`"reset"`、`"low"`、`"medium"`、`"high"`のいずれかです。同じ優先順位のスタイルシートは、`<link>`タグやインライン`<style>`タグ、または[`preload`](/reference/react-dom/preload)や[`preinit`](/reference/react-dom/preinit)関数を使用して読み込まれたものであっても一緒に配置されます。
+* `href`: 文字列。同じ`href`を持つスタイルを[重複排除](#special-rendering-behavior)するためにReactが使用します。
+* `media`: 文字列。スタイルシートを特定の[メディアクエリ](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries)に制限します。
+* `nonce`: 文字列。厳格なコンテンツセキュリティポリシーを使用する際にリソースを許可するための暗号化[nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)。
+* `title`: 文字列。[代替スタイルシート](https://developer.mozilla.org/en-US/docs/Web/CSS/Alternative_style_sheets)の名前を指定します。
 
-Props that are **not recommended** for use with React:
+Reactでの使用が**推奨されない**プロパティ：
 
-* `blocking`: a string. If set to `"render"`, instructs the browser not to render the page until the stylesheet is loaded. React provides more fine-grained control using Suspense.
+* `blocking`: 文字列。`"render"`に設定すると、スタイルシートが読み込まれるまでブラウザにページをレンダリングしないよう指示します。ReactはSuspenseを使用してより細かい制御を提供します。
 
-#### Special rendering behavior {/*special-rendering-behavior*/}
+#### 特殊なレンダリング動作 {/*special-rendering-behavior*/}
 
-React can move `<style>` components to the document's `<head>`, de-duplicate identical stylesheets, and [suspend](/reference/react/Suspense) while the stylesheet is loading.
+Reactは`<style>`コンポーネントをドキュメントの`<head>`に移動し、同一のスタイルシートを重複排除し、スタイルシートの読み込み中に[サスペンド](/reference/react/Suspense)することができます。
 
-To opt into this behavior, provide the `href` and `precedence` props. React will de-duplicate styles if they have the same `href`. The precedence prop tells React where to rank the `<style>` DOM node relative to others in the document `<head>`, which determines which stylesheet can override the other.
+この動作を有効にするには、`href`および`precedence`プロパティを提供します。Reactは同じ`href`を持つスタイルを重複排除します。`precedence`プロパティは、ドキュメントの`<head>`内で他の`<style>`DOMノードに対する優先順位をReactに指示し、どのスタイルシートが他を上書きできるかを決定します。
 
-This special treatment comes with two caveats:
+この特殊な処理には2つの注意点があります：
 
-* React will ignore changes to props after the style has been rendered. (React will issue a warning in development if this happens.)
-* React may leave the style in the DOM even after the component that rendered it has been unmounted.
+* スタイルがレンダリングされた後にプロパティの変更があっても、Reactはそれを無視します。（開発中にこれが発生すると、Reactは警告を発します。）
+* スタイルをレンダリングしたコンポーネントがアンマウントされた後でも、ReactはスタイルをDOMに残す場合があります。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Rendering an inline CSS stylesheet {/*rendering-an-inline-css-stylesheet*/}
+### インラインCSSスタイルシートのレンダリング {/*rendering-an-inline-css-stylesheet*/}
 
-If a component depends on certain CSS styles in order to be displayed correctly, you can render an inline stylesheet within the component.
+コンポーネントが正しく表示されるために特定のCSSスタイルに依存している場合、コンポーネント内でインラインスタイルシートをレンダリングできます。
 
-If you supply an `href` and `precedence` prop, your component will suspend while the stylesheet is loading. (Even with inline stylesheets, there may be a loading time due to fonts and images that the stylesheet refers to.) The `href` prop should uniquely identify the stylesheet, because React will de-duplicate stylesheets that have the same `href`.
+`href`および`precedence`プロパティを指定すると、スタイルシートの読み込み中にコンポーネントがサスペンドされます。（インラインスタイルシートでも、スタイルシートが参照するフォントや画像の読み込み時間がかかる場合があります。）`href`プロパティはスタイルシートを一意に識別する必要があります。Reactは同じ`href`を持つスタイルシートを重複排除します。
 
 <SandpackWithHTMLOutput>
 

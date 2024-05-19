@@ -1,33 +1,33 @@
 ---
-title: React Developer Tools
+title: React デベロッパーツール
 ---
 
 <Intro>
 
-Use React Developer Tools to inspect React [components](/learn/your-first-component), edit [props](/learn/passing-props-to-a-component) and [state](/learn/state-a-components-memory), and identify performance problems.
+React Developer Toolsを使用して、React [コンポーネント](/learn/your-first-component)を検査し、[props](/learn/passing-props-to-a-component)や[状態](/learn/state-a-components-memory)を編集し、パフォーマンスの問題を特定します。
 
 </Intro>
 
 <YouWillLearn>
 
-* How to install React Developer Tools
+* React Developer Toolsのインストール方法
 
 </YouWillLearn>
 
-## Browser extension {/*browser-extension*/}
+## ブラウザー拡張 {/*browser-extension*/}
 
-The easiest way to debug websites built with React is to install the React Developer Tools browser extension. It is available for several popular browsers:
+Reactで構築されたウェブサイトをデバッグする最も簡単な方法は、React Developer Toolsブラウザー拡張をインストールすることです。これはいくつかの人気のあるブラウザーで利用可能です：
 
-* [Install for **Chrome**](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
-* [Install for **Firefox**](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
-* [Install for **Edge**](https://microsoftedge.microsoft.com/addons/detail/react-developer-tools/gpphkfbcpidddadnkolkpfckpihlkkil)
+* [**Chrome**にインストール](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+* [**Firefox**にインストール](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
+* [**Edge**にインストール](https://microsoftedge.microsoft.com/addons/detail/react-developer-tools/gpphkfbcpidddadnkolkpfckpihlkkil)
 
-Now, if you visit a website **built with React,** you will see the _Components_ and _Profiler_ panels.
+今、**Reactで構築された**ウェブサイトを訪れると、_Components_と_Profiler_パネルが表示されます。
 
 ![React Developer Tools extension](/images/docs/react-devtools-extension.png)
 
-### Safari and other browsers {/*safari-and-other-browsers*/}
-For other browsers (for example, Safari), install the [`react-devtools`](https://www.npmjs.com/package/react-devtools) npm package:
+### Safariおよびその他のブラウザー {/*safari-and-other-browsers*/}
+他のブラウザー（例えば、Safari）の場合は、[`react-devtools`](https://www.npmjs.com/package/react-devtools) npmパッケージをインストールします：
 ```bash
 # Yarn
 yarn global add react-devtools
@@ -36,26 +36,26 @@ yarn global add react-devtools
 npm install -g react-devtools
 ```
 
-Next open the developer tools from the terminal:
+次に、ターミナルから開発者ツールを開きます：
 ```bash
 react-devtools
 ```
 
-Then connect your website by adding the following `<script>` tag to the beginning of your website's `<head>`:
+次に、ウェブサイトの`<head>`の先頭に次の`<script>`タグを追加して接続します：
 ```html {3}
 <html>
   <head>
     <script src="http://localhost:8097"></script>
 ```
 
-Reload your website in the browser now to view it in developer tools.
+ブラウザーでウェブサイトをリロードして、開発者ツールで表示します。
 
 ![React Developer Tools standalone](/images/docs/react-devtools-standalone.png)
 
-## Mobile (React Native) {/*mobile-react-native*/}
-React Developer Tools can be used to inspect apps built with [React Native](https://reactnative.dev/) as well.
+## モバイル（React Native） {/*mobile-react-native*/}
+React Developer Toolsは、[React Native](https://reactnative.dev/)で構築されたアプリを検査するためにも使用できます。
 
-The easiest way to use React Developer Tools is to install it globally:
+React Developer Toolsを使用する最も簡単な方法は、グローバルにインストールすることです：
 ```bash
 # Yarn
 yarn global add react-devtools
@@ -64,13 +64,13 @@ yarn global add react-devtools
 npm install -g react-devtools
 ```
 
-Next open the developer tools from the terminal.
+次に、ターミナルから開発者ツールを開きます。
 ```bash
 react-devtools
 ```
 
-It should connect to any local React Native app that's running.
+ローカルで実行中の任意のReact Nativeアプリに接続するはずです。
 
-> Try reloading the app if developer tools doesn't connect after a few seconds.
+> 数秒後に開発者ツールが接続しない場合は、アプリをリロードしてみてください。
 
-[Learn more about debugging React Native.](https://reactnative.dev/docs/debugging)
+[React Nativeのデバッグについてさらに学ぶ。](https://reactnative.dev/docs/debugging)

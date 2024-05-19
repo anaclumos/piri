@@ -1,24 +1,24 @@
 ---
-title: Conditional Rendering
+title: 조건부 렌더링
 ---
 
 <Intro>
 
-Your components will often need to display different things depending on different conditions. In React, you can conditionally render JSX using JavaScript syntax like `if` statements, `&&`, and `? :` operators.
+컴포넌트는 종종 다양한 조건에 따라 다른 것을 표시해야 합니다. React에서는 `if` 문, `&&`, `? :` 연산자와 같은 JavaScript 구문을 사용하여 조건부로 JSX를 렌더링할 수 있습니다.
 
 </Intro>
 
 <YouWillLearn>
 
-* How to return different JSX depending on a condition
-* How to conditionally include or exclude a piece of JSX
-* Common conditional syntax shortcuts you’ll encounter in React codebases
+* 조건에 따라 다른 JSX를 반환하는 방법
+* JSX의 일부를 조건부로 포함하거나 제외하는 방법
+* React 코드베이스에서 자주 접하게 될 조건부 구문 단축키
 
 </YouWillLearn>
 
-## Conditionally returning JSX {/*conditionally-returning-jsx*/}
+## 조건부로 JSX 반환하기 {/*conditionally-returning-jsx*/}
 
-Let’s say you have a `PackingList` component rendering several `Item`s, which can be marked as packed or not:
+여러 `Item`을 렌더링하는 `PackingList` 컴포넌트가 있고, 이 `Item`들은 포장되었는지 여부를 표시할 수 있다고 가정해 봅시다:
 
 <Sandpack>
 
@@ -52,9 +52,9 @@ export default function PackingList() {
 
 </Sandpack>
 
-Notice that some of the `Item` components have their `isPacked` prop set to `true` instead of `false`. You want to add a checkmark (✔) to packed items if `isPacked={true}`.
+일부 `Item` 컴포넌트의 `isPacked` prop이 `false` 대신 `true`로 설정된 것을 확인할 수 있습니다. `isPacked={true}`인 경우 포장된 항목에 체크 표시(✔)를 추가하고 싶습니다.
 
-You can write this as an [`if`/`else` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else) like so:
+이를 [`if`/`else` 문](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else)으로 다음과 같이 작성할 수 있습니다:
 
 ```js
 if (isPacked) {
@@ -63,7 +63,7 @@ if (isPacked) {
 return <li className="item">{name}</li>;
 ```
 
-If the `isPacked` prop is `true`, this code **returns a different JSX tree.** With this change, some of the items get a checkmark at the end:
+`isPacked` prop이 `true`인 경우 이 코드는 **다른 JSX 트리를 반환합니다.** 이 변경으로 인해 일부 항목에 끝에 체크 표시가 추가됩니다:
 
 <Sandpack>
 
@@ -100,13 +100,13 @@ export default function PackingList() {
 
 </Sandpack>
 
-Try editing what gets returned in either case, and see how the result changes!
+각 경우에 반환되는 내용을 편집해 보고 결과가 어떻게 변하는지 확인해 보세요!
 
-Notice how you're creating branching logic with JavaScript's `if` and `return` statements. In React, control flow (like conditions) is handled by JavaScript.
+JavaScript의 `if` 및 `return` 문을 사용하여 분기 로직을 생성하는 방법을 주목하세요. React에서는 제어 흐름(조건 등)이 JavaScript에 의해 처리됩니다.
 
-### Conditionally returning nothing with `null` {/*conditionally-returning-nothing-with-null*/}
+### `null`로 아무것도 반환하지 않기 {/*conditionally-returning-nothing-with-null*/}
 
-In some situations, you won't want to render anything at all. For example, say you don't want to show packed items at all. A component must return something. In this case, you can return `null`:
+어떤 상황에서는 아무것도 렌더링하지 않기를 원할 수 있습니다. 예를 들어, 포장된 항목을 전혀 표시하지 않으려는 경우가 있습니다. 컴포넌트는 반드시 무언가를 반환해야 합니다. 이 경우 `null`을 반환할 수 있습니다:
 
 ```js
 if (isPacked) {
@@ -115,7 +115,7 @@ if (isPacked) {
 return <li className="item">{name}</li>;
 ```
 
-If `isPacked` is true, the component will return nothing, `null`. Otherwise, it will return JSX to render.
+`isPacked`가 true인 경우, 컴포넌트는 아무것도 반환하지 않고, `null`을 반환합니다. 그렇지 않으면 렌더링할 JSX를 반환합니다.
 
 <Sandpack>
 
@@ -152,23 +152,25 @@ export default function PackingList() {
 
 </Sandpack>
 
-In practice, returning `null` from a component isn't common because it might surprise a developer trying to render it. More often, you would conditionally include or exclude the component in the parent component's JSX. Here's how to do that!
+실제로 컴포넌트에서 `null`을 반환하는 것은 일반적이지 않습니다. 이는 렌더링하려는 개발자를 놀라게 할 수 있기 때문입니다. 더 자주, 부모 컴포넌트의 JSX에서 컴포넌트를 조건부로 포함하거나 제외합니다. 이렇게 하는 방법을 알아봅시다!
 
-## Conditionally including JSX {/*conditionally-including-jsx*/}
+## 조건부로 JSX 포함하기 {/*conditionally-including-jsx*/}
 
-In the previous example, you controlled which (if any!) JSX tree would be returned by the component. You may already have noticed some duplication in the render output:
+이전 예제에서는 컴포넌트가 반환할 JSX 트리를 제어했습니다. 렌더링 출력에서 일부 중복을 이미 눈치챘을 것입니다:
 
 ```js
 <li className="item">{name} ✔</li>
 ```
 
-is very similar to
+는
 
 ```js
 <li className="item">{name}</li>
 ```
 
-Both of the conditional branches return `<li className="item">...</li>`:
+와 매우 유사합니다.
+
+두 조건부 분기는 `<li className="item">...</li>`를 반환합니다:
 
 ```js
 if (isPacked) {
@@ -177,13 +179,13 @@ if (isPacked) {
 return <li className="item">{name}</li>;
 ```
 
-While this duplication isn't harmful, it could make your code harder to maintain. What if you want to change the `className`? You'd have to do it in two places in your code! In such a situation, you could conditionally include a little JSX to make your code more [DRY.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+이 중복은 해롭지 않지만, 코드 유지보수를 어렵게 만들 수 있습니다. `className`을 변경하고 싶다면 코드의 두 곳에서 변경해야 합니다! 이런 상황에서는 코드를 더 [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)하게 만들기 위해 약간의 JSX를 조건부로 포함할 수 있습니다.
 
-### Conditional (ternary) operator (`? :`) {/*conditional-ternary-operator--*/}
+### 조건부 (삼항) 연산자 (`? :`) {/*conditional-ternary-operator--*/}
 
-JavaScript has a compact syntax for writing a conditional expression -- the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator) or "ternary operator".
+JavaScript에는 조건부 표현식을 작성하기 위한 간결한 구문이 있습니다 -- [조건부 연산자](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator) 또는 "삼항 연산자".
 
-Instead of this:
+이렇게 하는 대신:
 
 ```js
 if (isPacked) {
@@ -192,7 +194,7 @@ if (isPacked) {
 return <li className="item">{name}</li>;
 ```
 
-You can write this:
+이렇게 작성할 수 있습니다:
 
 ```js
 return (
@@ -202,17 +204,17 @@ return (
 );
 ```
 
-You can read it as *"if `isPacked` is true, then (`?`) render `name + ' ✔'`, otherwise (`:`) render `name`"*.
+이를 *"만약 `isPacked`가 true라면 (`?`) `name + ' ✔'`을 렌더링하고, 그렇지 않으면 (`:`) `name`을 렌더링한다"*라고 읽을 수 있습니다.
 
 <DeepDive>
 
-#### Are these two examples fully equivalent? {/*are-these-two-examples-fully-equivalent*/}
+#### 이 두 예제는 완전히 동일한가요? {/*are-these-two-examples-fully-equivalent*/}
 
-If you're coming from an object-oriented programming background, you might assume that the two examples above are subtly different because one of them may create two different "instances" of `<li>`. But JSX elements aren't "instances" because they don't hold any internal state and aren't real DOM nodes. They're lightweight descriptions, like blueprints. So these two examples, in fact, *are* completely equivalent. [Preserving and Resetting State](/learn/preserving-and-resetting-state) goes into detail about how this works.
+객체 지향 프로그래밍 배경을 가지고 있다면, 위의 두 예제가 미묘하게 다를 수 있다고 가정할 수 있습니다. 하나는 `<li>`의 두 가지 다른 "인스턴스"를 생성할 수 있기 때문입니다. 그러나 JSX 요소는 "인스턴스"가 아닙니다. 내부 상태를 가지지 않으며 실제 DOM 노드도 아닙니다. 그들은 가벼운 설명, 즉 청사진과 같습니다. 따라서 이 두 예제는 실제로 *완전히 동일합니다.* [상태 유지 및 재설정](/learn/preserving-and-resetting-state)은 이것이 어떻게 작동하는지 자세히 설명합니다.
 
 </DeepDive>
 
-Now let's say you want to wrap the completed item's text into another HTML tag, like `<del>` to strike it out. You can add even more newlines and parentheses so that it's easier to nest more JSX in each of the cases:
+이제 완료된 항목의 텍스트를 `<del>`과 같은 다른 HTML 태그로 감싸서 취소선을 추가하고 싶다고 가정해 봅시다. 각 경우에 더 많은 줄 바꿈과 괄호를 추가하여 더 많은 JSX를 중첩하기 쉽게 만들 수 있습니다:
 
 <Sandpack>
 
@@ -256,11 +258,11 @@ export default function PackingList() {
 
 </Sandpack>
 
-This style works well for simple conditions, but use it in moderation. If your components get messy with too much nested conditional markup, consider extracting child components to clean things up. In React, markup is a part of your code, so you can use tools like variables and functions to tidy up complex expressions.
+이 스타일은 간단한 조건에 잘 작동하지만, 적당히 사용하세요. 너무 많은 중첩된 조건부 마크업으로 인해 컴포넌트가 지저분해지면, 자식 컴포넌트를 추출하여 정리하는 것을 고려하세요. React에서는 마크업이 코드의 일부이므로 변수와 함수와 같은 도구를 사용하여 복잡한 표현식을 정리할 수 있습니다.
 
-### Logical AND operator (`&&`) {/*logical-and-operator-*/}
+### 논리 AND 연산자 (`&&`) {/*logical-and-operator-*/}
 
-Another common shortcut you'll encounter is the [JavaScript logical AND (`&&`) operator.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND#:~:text=The%20logical%20AND%20(%20%26%26%20)%20operator,it%20returns%20a%20Boolean%20value.) Inside React components, it often comes up when you want to render some JSX when the condition is true, **or render nothing otherwise.** With `&&`, you could conditionally render the checkmark only if `isPacked` is `true`:
+또 다른 일반적인 단축키는 [JavaScript 논리 AND (`&&`) 연산자](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND#:~:text=The%20logical%20AND%20(%20%26%26%20)%20operator,it%20returns%20a%20Boolean%20value.)입니다. React 컴포넌트 내부에서, 조건이 true일 때 일부 JSX를 렌더링하고, **그렇지 않으면 아무것도 렌더링하지 않으려는 경우** 자주 사용됩니다. `&&`를 사용하여 `isPacked`가 `true`인 경우에만 체크 표시를 조건부로 렌더링할 수 있습니다:
 
 ```js
 return (
@@ -270,9 +272,9 @@ return (
 );
 ```
 
-You can read this as *"if `isPacked`, then (`&&`) render the checkmark, otherwise, render nothing"*.
+이를 *"만약 `isPacked`라면 (`&&`) 체크 표시를 렌더링하고, 그렇지 않으면 아무것도 렌더링하지 않는다"*라고 읽을 수 있습니다.
 
-Here it is in action:
+다음은 실제 예입니다:
 
 <Sandpack>
 
@@ -310,30 +312,29 @@ export default function PackingList() {
 
 </Sandpack>
 
-A [JavaScript && expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND) returns the value of its right side (in our case, the checkmark) if the left side (our condition) is `true`. But if the condition is `false`, the whole expression becomes `false`. React considers `false` as a "hole" in the JSX tree, just like `null` or `undefined`, and doesn't render anything in its place.
-
+[JavaScript && 표현식](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND)은 왼쪽이 `true`인 경우 오른쪽 값(우리의 경우 체크 표시)을 반환합니다. 그러나 조건이 `false`인 경우 전체 표현식은 `false`가 됩니다. React는 `false`를 `null`이나 `undefined`와 마찬가지로 JSX 트리에서 "구멍"으로 간주하고, 그 자리에 아무것도 렌더링하지 않습니다.
 
 <Pitfall>
 
-**Don't put numbers on the left side of `&&`.**
+**`&&`의 왼쪽에 숫자를 두지 마세요.**
 
-To test the condition, JavaScript converts the left side to a boolean automatically. However, if the left side is `0`, then the whole expression gets that value (`0`), and React will happily render `0` rather than nothing.
+조건을 테스트하기 위해 JavaScript는 왼쪽을 자동으로 boolean으로 변환합니다. 그러나 왼쪽이 `0`인 경우 전체 표현식은 그 값(`0`)을 가지며, React는 아무것도 렌더링하지 않는 대신 `0`을 렌더링합니다.
 
-For example, a common mistake is to write code like `messageCount && <p>New messages</p>`. It's easy to assume that it renders nothing when `messageCount` is `0`, but it really renders the `0` itself!
+예를 들어, `messageCount && <p>New messages</p>`와 같은 코드를 작성하는 것은 흔한 실수입니다. `messageCount`가 `0`일 때 아무것도 렌더링하지 않는다고 가정하기 쉽지만, 실제로는 `0` 자체를 렌더링합니다!
 
-To fix it, make the left side a boolean: `messageCount > 0 && <p>New messages</p>`.
+이를 수정하려면 왼쪽을 boolean으로 만드세요: `messageCount > 0 && <p>New messages</p>`.
 
 </Pitfall>
 
-### Conditionally assigning JSX to a variable {/*conditionally-assigning-jsx-to-a-variable*/}
+### JSX를 변수에 조건부로 할당하기 {/*conditionally-assigning-jsx-to-a-variable*/}
 
-When the shortcuts get in the way of writing plain code, try using an `if` statement and a variable. You can reassign variables defined with [`let`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let), so start by providing the default content you want to display, the name:
+단축키가 일반 코드를 작성하는 데 방해가 될 때는 `if` 문과 변수를 사용해 보세요. [`let`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let)로 정의된 변수를 재할당할 수 있으므로, 표시하려는 기본 내용을 이름으로 시작하세요:
 
 ```js
 let itemContent = name;
 ```
 
-Use an `if` statement to reassign a JSX expression to `itemContent` if `isPacked` is `true`:
+`isPacked`가 `true`인 경우 `itemContent`에 JSX 표현식을 재할당하기 위해 `if` 문을 사용하세요:
 
 ```js
 if (isPacked) {
@@ -341,7 +342,7 @@ if (isPacked) {
 }
 ```
 
-[Curly braces open the "window into JavaScript".](/learn/javascript-in-jsx-with-curly-braces#using-curly-braces-a-window-into-the-javascript-world) Embed the variable with curly braces in the returned JSX tree, nesting the previously calculated expression inside of JSX:
+[중괄호는 "JavaScript로의 창"을 엽니다.](/learn/javascript-in-jsx-with-curly-braces#using-curly-braces-a-window-into-the-javascript-world) 중괄호를 사용하여 변수에 저장된 표현식을 JSX 트리 내에 중첩하여 포함하세요:
 
 ```js
 <li className="item">
@@ -349,7 +350,7 @@ if (isPacked) {
 </li>
 ```
 
-This style is the most verbose, but it's also the most flexible. Here it is in action:
+이 스타일은 가장 장황하지만, 가장 유연합니다. 다음은 실제 예입니다:
 
 <Sandpack>
 
@@ -391,7 +392,7 @@ export default function PackingList() {
 
 </Sandpack>
 
-Like before, this works not only for text, but for arbitrary JSX too:
+이전과 마찬가지로, 이는 텍스트뿐만 아니라 임의의 JSX에도 적용됩니다:
 
 <Sandpack>
 
@@ -437,26 +438,24 @@ export default function PackingList() {
 
 </Sandpack>
 
-If you're not familiar with JavaScript, this variety of styles might seem overwhelming at first. However, learning them will help you read and write any JavaScript code -- and not just React components! Pick the one you prefer for a start, and then consult this reference again if you forget how the other ones work.
+JavaScript에 익숙하지 않다면, 이러한 다양한 스타일이 처음에는 압도적으로 느껴질 수 있습니다. 그러나 이를 배우면 모든 JavaScript 코드를 읽고 쓸 수 있게 될 것입니다 -- React 컴포넌트뿐만 아니라! 시작할 때는 선호하는 스타일을 선택하고, 다른 스타일이 어떻게 작동하는지 잊어버리면 이 참조를 다시 참조하세요.
 
 <Recap>
 
-* In React, you control branching logic with JavaScript.
-* You can return a JSX expression conditionally with an `if` statement.
-* You can conditionally save some JSX to a variable and then include it inside other JSX by using the curly braces.
-* In JSX, `{cond ? <A /> : <B />}` means *"if `cond`, render `<A />`, otherwise `<B />`"*.
-* In JSX, `{cond && <A />}` means *"if `cond`, render `<A />`, otherwise nothing"*.
-* The shortcuts are common, but you don't have to use them if you prefer plain `if`.
+* React에서는 JavaScript로 분기 로직을 제어합니다.
+* `if` 문을 사용하여 조건부로 JSX 표현식을 반환할 수 있습니다.
+* 변수를 사용하여 조건부로 일부 JSX를 저장한 다음 중괄호를 사용하여 다른 JSX 내부에 포함할 수 있습니다.
+* JSX에서 `{cond ? <A /> : <B />}`는 *"만약 `cond`라면 `<A />`를 렌더링하고, 그렇지 않으면 `<B />`를 렌더링한다"*를 의미합니다.
+* JSX에서 `{cond && <A />}`는 *"만약 `cond`라면 `<A />`를 렌더링하고, 그렇지 않으면 아무것도 렌더링하지 않는다"*를 의미합니다.
+* 단축키는 일반적이지만, 일반 `if`를 선호하는 경우 사용하지 않아도 됩니다.
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Show an icon for incomplete items with `? :` {/*show-an-icon-for-incomplete-items-with--*/}
+#### `? :`로 불완전한 항목에 아이콘 표시하기 {/*show-an-icon-for-incomplete-items-with--*/}
 
-Use the conditional operator (`cond ? a : b`) to render a ❌ if `isPacked` isn’t `true`.
+조건부 연산자 (`cond ? a : b`)를 사용하여 `isPacked`가 `true`가 아닌 경우 ❌를 렌더링하세요.
 
 <Sandpack>
 
@@ -518,7 +517,7 @@ export default function PackingList() {
         />
         <Item 
           isPacked={true} 
-          name="Helmet with a golden leaf" 
+          name="Helmet with agolden leaf" 
         />
         <Item 
           isPacked={false} 
@@ -534,15 +533,15 @@ export default function PackingList() {
 
 </Solution>
 
-#### Show the item importance with `&&` {/*show-the-item-importance-with-*/}
+#### `&&`로 항목 중요도 표시하기 {/*show-the-item-importance-with-*/}
 
-In this example, each `Item` receives a numerical `importance` prop. Use the `&&` operator to render "_(Importance: X)_" in italics, but only for items that have non-zero importance. Your item list should end up looking like this:
+이 예제에서는 각 `Item`이 숫자 `importance` prop을 받습니다. `&&` 연산자를 사용하여 중요도가 0이 아닌 항목에 대해 이탤릭체로 "_(Importance: X)_"를 렌더링하세요. 항목 목록은 다음과 같이 보여야 합니다:
 
 * Space suit _(Importance: 9)_
 * Helmet with a golden leaf
 * Photo of Tam _(Importance: 6)_
 
-Don't forget to add a space between the two labels!
+두 레이블 사이에 공백을 추가하는 것을 잊지 마세요!
 
 <Sandpack>
 
@@ -582,7 +581,7 @@ export default function PackingList() {
 
 <Solution>
 
-This should do the trick:
+이렇게 하면 됩니다:
 
 <Sandpack>
 
@@ -624,15 +623,15 @@ export default function PackingList() {
 
 </Sandpack>
 
-Note that you must write `importance > 0 && ...` rather than `importance && ...` so that if the `importance` is `0`, `0` isn't rendered as the result!
+`importance > 0 && ...` 대신 `importance && ...`를 사용하지 않도록 주의하세요. `importance`가 `0`인 경우 `0`이 결과로 렌더링되지 않도록 해야 합니다!
 
-In this solution, two separate conditions are used to insert a space between the name and the importance label. Alternatively, you could use a Fragment with a leading space: `importance > 0 && <> <i>...</i></>` or add a space immediately inside the `<i>`:  `importance > 0 && <i> ...</i>`.
+이 솔루션에서는 이름과 중요도 레이블 사이에 공백을 삽입하기 위해 두 개의 별도 조건을 사용합니다. 대안으로는 공백이 포함된 Fragment를 사용할 수 있습니다: `importance > 0 && <> <i>...</i></>` 또는 `<i>` 내부에 공백을 추가할 수 있습니다: `importance > 0 && <i> ...</i>`.
 
 </Solution>
 
-#### Refactor a series of `? :` to `if` and variables {/*refactor-a-series-of---to-if-and-variables*/}
+#### 일련의 `? :`를 `if`와 변수로 리팩터링하기 {/*refactor-a-series-of---to-if-and-variables*/}
 
-This `Drink` component uses a series of `? :` conditions to show different information depending on whether the `name` prop is `"tea"` or `"coffee"`. The problem is that the information about each drink is spread across multiple conditions. Refactor this code to use a single `if` statement instead of three `? :` conditions.
+이 `Drink` 컴포넌트는 `name` prop이 `"tea"`인지 `"coffee"`인지에 따라 다른 정보를 표시하기 위해 일련의 `? :` 조건을 사용합니다. 문제는 각 음료에 대한 정보가 여러 조건에 걸쳐 분산되어 있다는 것입니다. 이 코드를 세 개의 `? :` 조건 대신 단일 `if` 문을 사용하도록 리팩터링하세요.
 
 <Sandpack>
 
@@ -665,11 +664,11 @@ export default function DrinkList() {
 
 </Sandpack>
 
-Once you've refactored the code to use `if`, do you have further ideas on how to simplify it?
+코드를 `if`로 리팩터링한 후, 더 간단하게 만들 수 있는 방법이 있는지 생각해 보세요.
 
 <Solution>
 
-There are multiple ways you could go about this, but here is one starting point:
+여러 가지 방법이 있을 수 있지만, 다음은 하나의 시작점입니다:
 
 <Sandpack>
 
@@ -712,9 +711,9 @@ export default function DrinkList() {
 
 </Sandpack>
 
-Here the information about each drink is grouped together instead of being spread across multiple conditions. This makes it easier to add more drinks in the future.
+여기서는 각 음료에 대한 정보가 여러 조건에 분산되지 않고 함께 그룹화되어 있습니다. 이는 나중에 더 많은 음료를 추가하기 쉽게 만듭니다.
 
-Another solution would be to remove the condition altogether by moving the information into objects:
+또 다른 솔루션은 조건을 제거하고 정보를 객체로 이동하는 것입니다:
 
 <Sandpack>
 

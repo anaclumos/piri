@@ -1,49 +1,49 @@
 ---
-title: Server React DOM APIs
+title: 서버 React DOM API
 ---
 
 <Intro>
 
-The `react-dom/server` APIs let you render React components to HTML on the server. These APIs are only used on the server at the top level of your app to generate the initial HTML. A [framework](/learn/start-a-new-react-project#production-grade-react-frameworks) may call them for you. Most of your components don't need to import or use them.
+`react-dom/server` API는 서버에서 React 컴포넌트를 HTML로 렌더링할 수 있게 해줍니다. 이 API는 앱의 최상위 레벨에서 초기 HTML을 생성하기 위해서만 서버에서 사용됩니다. [프레임워크](/learn/start-a-new-react-project#production-grade-react-frameworks)가 이를 대신 호출할 수 있습니다. 대부분의 컴포넌트는 이를 가져오거나 사용할 필요가 없습니다.
 
 </Intro>
 
 ---
 
-## Server APIs for Node.js Streams {/*server-apis-for-nodejs-streams*/}
+## Node.js 스트림을 위한 서버 API {/*server-apis-for-nodejs-streams*/}
 
-These methods are only available in the environments with [Node.js Streams:](https://nodejs.org/api/stream.html)
+이 메서드는 [Node.js 스트림:](https://nodejs.org/api/stream.html) 환경에서만 사용할 수 있습니다:
 
-* [`renderToPipeableStream`](/reference/react-dom/server/renderToPipeableStream) renders a React tree to a pipeable [Node.js Stream.](https://nodejs.org/api/stream.html)
-* [`renderToStaticNodeStream`](/reference/react-dom/server/renderToStaticNodeStream) renders a non-interactive React tree to a [Node.js Readable Stream.](https://nodejs.org/api/stream.html#readable-streams)
-
----
-
-## Server APIs for Web Streams {/*server-apis-for-web-streams*/}
-
-These methods are only available in the environments with [Web Streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API), which includes browsers, Deno, and some modern edge runtimes:
-
-* [`renderToReadableStream`](/reference/react-dom/server/renderToReadableStream) renders a React tree to a [Readable Web Stream.](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
+* [`renderToPipeableStream`](/reference/react-dom/server/renderToPipeableStream)은 React 트리를 파이프 가능한 [Node.js 스트림](https://nodejs.org/api/stream.html)으로 렌더링합니다.
+* [`renderToStaticNodeStream`](/reference/react-dom/server/renderToStaticNodeStream)은 상호작용이 없는 React 트리를 [Node.js 읽기 가능한 스트림](https://nodejs.org/api/stream.html#readable-streams)으로 렌더링합니다.
 
 ---
 
-## Server APIs for non-streaming environments {/*server-apis-for-non-streaming-environments*/}
+## 웹 스트림을 위한 서버 API {/*server-apis-for-web-streams*/}
 
-These methods can be used in the environments that don't support streams:
+이 메서드는 브라우저, Deno, 일부 최신 엣지 런타임을 포함한 [웹 스트림](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API) 환경에서만 사용할 수 있습니다:
 
-* [`renderToString`](/reference/react-dom/server/renderToString) renders a React tree to a string.
-* [`renderToStaticMarkup`](/reference/react-dom/server/renderToStaticMarkup) renders a non-interactive React tree to a string.
-
-They have limited functionality compared to the streaming APIs.
+* [`renderToReadableStream`](/reference/react-dom/server/renderToReadableStream)은 React 트리를 [읽기 가능한 웹 스트림](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)으로 렌더링합니다.
 
 ---
 
-## Deprecated server APIs {/*deprecated-server-apis*/}
+## 스트리밍을 지원하지 않는 환경을 위한 서버 API {/*server-apis-for-non-streaming-environments*/}
+
+이 메서드는 스트림을 지원하지 않는 환경에서 사용할 수 있습니다:
+
+* [`renderToString`](/reference/react-dom/server/renderToString)은 React 트리를 문자열로 렌더링합니다.
+* [`renderToStaticMarkup`](/reference/react-dom/server/renderToStaticMarkup)은 상호작용이 없는 React 트리를 문자열로 렌더링합니다.
+
+이들은 스트리밍 API에 비해 기능이 제한적입니다.
+
+---
+
+## 사용 중단된 서버 API {/*deprecated-server-apis*/}
 
 <Deprecated>
 
-These APIs will be removed in a future major version of React.
+이 API는 향후 React의 주요 버전에서 제거될 예정입니다.
 
 </Deprecated>
 
-* [`renderToNodeStream`](/reference/react-dom/server/renderToNodeStream) renders a React tree to a [Node.js Readable stream.](https://nodejs.org/api/stream.html#readable-streams) (Deprecated.)
+* [`renderToNodeStream`](/reference/react-dom/server/renderToNodeStream)은 React 트리를 [Node.js 읽기 가능한 스트림](https://nodejs.org/api/stream.html#readable-streams)으로 렌더링합니다. (사용 중단됨.)

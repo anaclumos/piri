@@ -1,10 +1,10 @@
 ---
-title: "<select>"
+title: <select>
 ---
 
 <Intro>
 
-The [built-in browser `<select>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) lets you render a select box with options.
+[組み込みブラウザの`<select>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select)を使用すると、オプション付きのセレクトボックスをレンダリングできます。
 
 ```js
 <select>
@@ -19,11 +19,11 @@ The [built-in browser `<select>` component](https://developer.mozilla.org/en-US/
 
 ---
 
-## Reference {/*reference*/}
+## 参照 {/*reference*/}
 
 ### `<select>` {/*select*/}
 
-To display a select box, render the [built-in browser `<select>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) component.
+セレクトボックスを表示するには、[組み込みブラウザの`<select>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select)コンポーネントをレンダリングします。
 
 ```js
 <select>
@@ -32,55 +32,55 @@ To display a select box, render the [built-in browser `<select>`](https://develo
 </select>
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
 #### Props {/*props*/}
 
-`<select>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<select>`はすべての[共通要素のprops](/reference/react-dom/components/common#props)をサポートします。
 
-You can [make a select box controlled](#controlling-a-select-box-with-a-state-variable) by passing a `value` prop:
+`value`プロップを渡すことで、[セレクトボックスを制御](#controlling-a-select-box-with-a-state-variable)できます。
 
-* `value`: A string (or an array of strings for [`multiple={true}`](#enabling-multiple-selection)). Controls which option is selected. Every value string match the `value` of some `<option>` nested inside the `<select>`.
+* `value`: 文字列（または[`multiple={true}`](#enabling-multiple-selection)の場合は文字列の配列）。選択されているオプションを制御します。すべての値文字列は、`<select>`内にネストされた`<option>`の`value`と一致します。
 
-When you pass `value`, you must also pass an `onChange` handler that updates the passed value.
+`value`を渡す場合は、渡された値を更新する`onChange`ハンドラも渡す必要があります。
 
-If your `<select>` is uncontrolled, you may pass the `defaultValue` prop instead:
+`<select>`が非制御の場合は、代わりに`defaultValue`プロップを渡すことができます。
 
-* `defaultValue`: A string (or an array of strings for [`multiple={true}`](#enabling-multiple-selection)). Specifies [the initially selected option.](#providing-an-initially-selected-option)
+* `defaultValue`: 文字列（または[`multiple={true}`](#enabling-multiple-selection)の場合は文字列の配列）。[最初に選択されるオプション](#providing-an-initially-selected-option)を指定します。
 
-These `<select>` props are relevant both for uncontrolled and controlled select boxes:
+これらの`<select>`プロップは、非制御および制御セレクトボックスの両方に関連します。
 
-* [`autoComplete`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#autocomplete): A string. Specifies one of the possible [autocomplete behaviors.](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#values)
-* [`autoFocus`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#autofocus): A boolean. If `true`, React will focus the element on mount.
-* `children`: `<select>` accepts [`<option>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/option), [`<optgroup>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/optgroup), and [`<datalist>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) components as children. You can also pass your own components as long as they eventually render one of the allowed components. If you pass your own components that eventually render `<option>` tags, each `<option>` you render must have a `value`.
-* [`disabled`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#disabled): A boolean. If `true`, the select box will not be interactive and will appear dimmed.
-* [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#form): A string. Specifies the `id` of the `<form>` this select box belongs to. If omitted, it's the closest parent form.
-* [`multiple`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#multiple): A boolean. If `true`, the browser allows [multiple selection.](#enabling-multiple-selection)
-* [`name`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#name): A string. Specifies the name for this select box that's [submitted with the form.](#reading-the-select-box-value-when-submitting-a-form)
-* `onChange`: An [`Event` handler](/reference/react-dom/components/common#event-handler) function. Required for [controlled select boxes.](#controlling-a-select-box-with-a-state-variable) Fires immediately when the user picks a different option. Behaves like the browser [`input` event.](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event)
-* `onChangeCapture`: A version of `onChange` that fires in the [capture phase.](/learn/responding-to-events#capture-phase-events)
-* [`onInput`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event): An [`Event` handler](/reference/react-dom/components/common#event-handler) function. Fires immediately when the value is changed by the user. For historical reasons, in React it is idiomatic to use `onChange` instead which works similarly.
-* `onInputCapture`: A version of `onInput` that fires in the [capture phase.](/learn/responding-to-events#capture-phase-events)
-* [`onInvalid`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/invalid_event): An [`Event` handler](/reference/react-dom/components/common#event-handler) function. Fires if an input fails validation on form submit. Unlike the built-in `invalid` event, the React `onInvalid` event bubbles.
-* `onInvalidCapture`: A version of `onInvalid` that fires in the [capture phase.](/learn/responding-to-events#capture-phase-events)
-* [`required`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#required): A boolean. If `true`, the value must be provided for the form to submit.
-* [`size`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#size): A number. For `multiple={true}` selects, specifies the preferred number of initially visible items.
+* [`autoComplete`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#autocomplete): 文字列。可能な[オートコンプリート動作](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#values)の1つを指定します。
+* [`autoFocus`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#autofocus): ブール値。`true`の場合、Reactはマウント時に要素にフォーカスします。
+* `children`: `<select>`は[`<option>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/option)、[`<optgroup>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/optgroup)、および[`<datalist>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist)コンポーネントを子要素として受け入れます。許可されたコンポーネントの1つを最終的にレンダリングする限り、独自のコンポーネントを渡すこともできます。独自のコンポーネントを渡して最終的に`<option>`タグをレンダリングする場合、レンダリングする各`<option>`には`value`が必要です。
+* [`disabled`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#disabled): ブール値。`true`の場合、セレクトボックスはインタラクティブではなくなり、薄暗く表示されます。
+* [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#form): 文字列。このセレクトボックスが属する`<form>`の`id`を指定します。省略した場合、最も近い親フォームになります。
+* [`multiple`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#multiple): ブール値。`true`の場合、ブラウザは[複数選択](#enabling-multiple-selection)を許可します。
+* [`name`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#name): 文字列。フォームと共に[送信される](#reading-the-select-box-value-when-submitting-a-form)このセレクトボックスの名前を指定します。
+* `onChange`: [`Event`ハンドラ](/reference/react-dom/components/common#event-handler)関数。[制御されたセレクトボックス](#controlling-a-select-box-with-a-state-variable)に必要です。ユーザーが異なるオプションを選択するとすぐに発火します。ブラウザの[`input`イベント](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event)のように動作します。
+* `onChangeCapture`: [キャプチャフェーズ](#capture-phase-events)で発火する`onChange`のバージョン。
+* [`onInput`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event): [`Event`ハンドラ](/reference/react-dom/components/common#event-handler)関数。ユーザーによって値が変更されるとすぐに発火します。歴史的な理由から、Reactでは`onChange`を使用するのが慣例であり、同様に動作します。
+* `onInputCapture`: [キャプチャフェーズ](#capture-phase-events)で発火する`onInput`のバージョン。
+* [`onInvalid`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/invalid_event): [`Event`ハンドラ](/reference/react-dom/components/common#event-handler)関数。フォーム送信時に入力が検証に失敗した場合に発火します。組み込みの`invalid`イベントとは異なり、Reactの`onInvalid`イベントはバブルします。
+* `onInvalidCapture`: [キャプチャフェーズ](#capture-phase-events)で発火する`onInvalid`のバージョン。
+* [`required`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#required): ブール値。`true`の場合、フォームを送信するために値が必要です。
+* [`size`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#size): 数値。`multiple={true}`セレクトの場合、最初に表示される項目の推奨数を指定します。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-- Unlike in HTML, passing a `selected` attribute to `<option>` is not supported. Instead, use [`<select defaultValue>`](#providing-an-initially-selected-option) for uncontrolled select boxes and [`<select value>`](#controlling-a-select-box-with-a-state-variable) for controlled select boxes.
-- If a select box receives a `value` prop, it will be [treated as controlled.](#controlling-a-select-box-with-a-state-variable)
-- A select box can't be both controlled and uncontrolled at the same time.
-- A select box cannot switch between being controlled or uncontrolled over its lifetime.
-- Every controlled select box needs an `onChange` event handler that synchronously updates its backing value.
+- HTMLとは異なり、`<option>`に`selected`属性を渡すことはサポートされていません。代わりに、非制御セレクトボックスには[`<select defaultValue>`](#providing-an-initially-selected-option)を、制御セレクトボックスには[`<select value>`](#controlling-a-select-box-with-a-state-variable)を使用してください。
+- セレクトボックスが`value`プロップを受け取ると、それは[制御されたものとして扱われます](#controlling-a-select-box-with-a-state-variable)。
+- セレクトボックスは同時に制御および非制御にはできません。
+- セレクトボックスはそのライフタイム中に制御と非制御を切り替えることはできません。
+- すべての制御されたセレクトボックスには、そのバックアップ値を同期的に更新する`onChange`イベントハンドラが必要です。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Displaying a select box with options {/*displaying-a-select-box-with-options*/}
+### オプション付きのセレクトボックスを表示する {/*displaying-a-select-box-with-options*/}
 
-Render a `<select>` with a list of `<option>` components inside to display a select box. Give each `<option>` a `value` representing the data to be submitted with the form.
+セレクトボックスを表示するには、リスト内の`<option>`コンポーネントを含む`<select>`をレンダリングします。各`<option>`に、フォームと共に送信されるデータを表す`value`を与えます。
 
 <Sandpack>
 
@@ -107,11 +107,11 @@ select { margin: 5px; }
 
 ---
 
-### Providing a label for a select box {/*providing-a-label-for-a-select-box*/}
+### セレクトボックスにラベルを提供する {/*providing-a-label-for-a-select-box*/}
 
-Typically, you will place every `<select>` inside a [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) tag. This tells the browser that this label is associated with that select box. When the user clicks the label, the browser will automatically focus the select box. It's also essential for accessibility: a screen reader will announce the label caption when the user focuses the select box.
+通常、すべての`<select>`を[`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label)タグ内に配置します。これにより、ブラウザはこのラベルがそのセレクトボックスに関連していることを認識します。ユーザーがラベルをクリックすると、ブラウザは自動的にセレクトボックスにフォーカスします。これはアクセシビリティのためにも重要です。スクリーンリーダーは、ユーザーがセレクトボックスにフォーカスしたときにラベルのキャプションを読み上げます。
 
-If you can't nest `<select>` into a `<label>`, associate them by passing the same ID to `<select id>` and [`<label htmlFor>`.](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/htmlFor) To avoid conflicts between multiple instances of one component, generate such an ID with [`useId`.](/reference/react/useId)
+`<select>`を`<label>`にネストできない場合は、同じIDを`<select id>`と[`<label htmlFor>`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/htmlFor)に渡して関連付けます。複数のコンポーネントインスタンス間での競合を避けるために、[`useId`](/reference/react/useId)を使用してそのようなIDを生成します。
 
 <Sandpack>
 
@@ -153,9 +153,9 @@ select { margin: 5px; }
 
 ---
 
-### Providing an initially selected option {/*providing-an-initially-selected-option*/}
+### 最初に選択されるオプションを提供する {/*providing-an-initially-selected-option*/}
 
-By default, the browser will select the first `<option>` in the list. To select a different option by default, pass that `<option>`'s `value` as the `defaultValue` to the `<select>` element.
+デフォルトでは、ブラウザはリスト内の最初の`<option>`を選択します。デフォルトで異なるオプションを選択するには、その`<option>`の`value`を`defaultValue`として`<select>`要素に渡します。
 
 <Sandpack>
 
@@ -182,15 +182,15 @@ select { margin: 5px; }
 
 <Pitfall>
 
-Unlike in HTML, passing a `selected` attribute to an individual `<option>` is not supported.
+HTMLとは異なり、個々の`<option>`に`selected`属性を渡すことはサポートされていません。
 
 </Pitfall>
 
 ---
 
-### Enabling multiple selection {/*enabling-multiple-selection*/}
+### 複数選択を有効にする {/*enabling-multiple-selection*/}
 
-Pass `multiple={true}` to the `<select>` to let the user select multiple options. In that case, if you also specify `defaultValue` to choose the initially selected options, it must be an array.
+ユーザーが複数のオプションを選択できるようにするには、`<select>`に`multiple={true}`を渡します。その場合、最初に選択されるオプションを指定するために`defaultValue`を指定する場合、それは配列でなければなりません。
 
 <Sandpack>
 
@@ -221,27 +221,27 @@ select { display: block; margin-top: 10px; width: 200px; }
 
 ---
 
-### Reading the select box value when submitting a form {/*reading-the-select-box-value-when-submitting-a-form*/}
+### フォーム送信時にセレクトボックスの値を読み取る {/*reading-the-select-box-value-when-submitting-a-form*/}
 
-Add a [`<form>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) around your select box with a [`<button type="submit">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) inside. It will call your `<form onSubmit>` event handler. By default, the browser will send the form data to the current URL and refresh the page. You can override that behavior by calling `e.preventDefault()`. Read the form data with [`new FormData(e.target)`](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
+セレクトボックスの周りに[`<form>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)を追加し、内部に[`<button type="submit">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)を配置します。これにより、`<form onSubmit>`イベントハンドラが呼び出されます。デフォルトでは、ブラウザはフォームデータを現在のURLに送信し、ページをリフレッシュします。この動作を上書きするには、`e.preventDefault()`を呼び出します。[`new FormData(e.target)`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)を使用してフォームデータを読み取ります。
 <Sandpack>
 
 ```js
 export default function EditPost() {
   function handleSubmit(e) {
-    // Prevent the browser from reloading the page
+    // ブラウザがページをリロードするのを防ぐ
     e.preventDefault();
-    // Read the form data
+    // フォームデータを読み取る
     const form = e.target;
     const formData = new FormData(form);
-    // You can pass formData as a fetch body directly:
+    // フォームデータをfetchのボディとして直接渡すことができます:
     fetch('/some-api', { method: form.method, body: formData });
-    // You can generate a URL out of it, as the browser does by default:
+    // ブラウザがデフォルトで行うように、URLを生成することができます:
     console.log(new URLSearchParams(formData).toString());
-    // You can work with it as a plain object.
+    // プレーンオブジェクトとして操作することができます。
     const formJson = Object.fromEntries(formData.entries());
-    console.log(formJson); // (!) This doesn't include multiple select values
-    // Or you can get an array of name-value pairs.
+    console.log(formJson); // (!) これは複数のセレクト値を含みません
+    // または、名前と値のペアの配列を取得することができます。
     console.log([...formData.entries()]);
   }
 
@@ -284,44 +284,43 @@ label { margin-bottom: 20px; }
 
 <Note>
 
-Give a `name` to your `<select>`, for example `<select name="selectedFruit" />`. The `name` you specified will be used as a key in the form data, for example `{ selectedFruit: "orange" }`.
+`<select>`に`name`を付けます。例えば、`<select name="selectedFruit" />`です。指定した`name`はフォームデータのキーとして使用されます。例えば、`{ selectedFruit: "orange" }`のようになります。
 
-If you use `<select multiple={true}>`, the [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) you'll read from the form will include each selected value as a separate name-value pair. Look closely at the console logs in the example above.
+`<select multiple={true}>`を使用する場合、フォームから読み取る[`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)には、各選択された値が個別の名前と値のペアとして含まれます。上記の例のコンソールログをよく見てください。
 
 </Note>
 
 <Pitfall>
 
-By default, *any* `<button>` inside a `<form>` will submit it. This can be surprising! If you have your own custom `Button` React component, consider returning [`<button type="button">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/button) instead of `<button>`. Then, to be explicit, use `<button type="submit">` for buttons that *are* supposed to submit the form.
+デフォルトでは、*任意の*`<button>`が`<form>`内にあると、それがフォームを送信します。これは驚くかもしれません！独自のカスタム`Button` Reactコンポーネントがある場合、`<button>`の代わりに[`<button type="button">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/button)を返すことを検討してください。そして、フォームを送信するためのボタンには明示的に`<button type="submit">`を使用します。
 
 </Pitfall>
 
 ---
 
-### Controlling a select box with a state variable {/*controlling-a-select-box-with-a-state-variable*/}
+### 状態変数でセレクトボックスを制御する {/*controlling-a-select-box-with-a-state-variable*/}
 
-A select box like `<select />` is *uncontrolled.* Even if you [pass an initially selected value](#providing-an-initially-selected-option) like `<select defaultValue="orange" />`, your JSX only specifies the initial value, not the value right now.
+`<select />`のようなセレクトボックスは*非制御*です。たとえ[最初に選択される値](#providing-an-initially-selected-option)を`<select defaultValue="orange" />`のように渡しても、JSXは初期値のみを指定し、現在の値を指定するわけではありません。
 
-**To render a _controlled_ select box, pass the `value` prop to it.** React will force the select box to always have the `value` you passed. Typically, you will control a select box by declaring a [state variable:](/reference/react/useState)
+**_制御された_セレクトボックスをレンダリングするには、`value`プロップを渡します。** Reactは渡された`value`を常に持つようにセレクトボックスを強制します。通常、セレクトボックスを制御するには、[状態変数](/reference/react/useState)を宣言します。
 
 ```js {2,6,7}
 function FruitPicker() {
-  const [selectedFruit, setSelectedFruit] = useState('orange'); // Declare a state variable...
+  const [selectedFruit, setSelectedFruit] = useState('orange'); // 状態変数を宣言...
   // ...
   return (
     <select
-      value={selectedFruit} // ...force the select's value to match the state variable...
-      onChange={e => setSelectedFruit(e.target.value)} // ... and update the state variable on any change!
+      value={selectedFruit} // ...セレクトの値を状態変数に一致させるように強制...
+      onChange={e => setSelectedFruit(e.target.value)} // ...そして変更があるたびに状態変数を更新！
     >
       <option value="apple">Apple</option>
       <option value="banana">Banana</option>
       <option value="orange">Orange</option>
-    </select>
-  );
+    </select  );
 }
 ```
 
-This is useful if you want to re-render some part of the UI in response to every selection.
+これは、各選択に応じてUIの一部を再レンダリングしたい場合に便利です。
 
 <Sandpack>
 
@@ -377,8 +376,8 @@ select { margin-bottom: 10px; display: block; }
 
 <Pitfall>
 
-**If you pass `value` without `onChange`, it will be impossible to select an option.** When you control a select box by passing some `value` to it, you *force* it to always have the value you passed. So if you pass a state variable as a `value` but forget to update that state variable synchronously during the `onChange` event handler, React will revert the select box after every keystroke back to the `value` that you specified.
+**`value`を`onChange`なしで渡すと、オプションを選択することが不可能になります。** `value`を渡してセレクトボックスを制御する場合、渡した値を常に持つように強制します。そのため、`value`として状態変数を渡しても、`onChange`イベントハンドラでその状態変数を同期的に更新しないと、Reactは各キー入力後にセレクトボックスを指定した`value`に戻します。
 
-Unlike in HTML, passing a `selected` attribute to an individual `<option>` is not supported.
+HTMLとは異なり、個々の`<option>`に`selected`属性を渡すことはサポートされていません。
 
 </Pitfall>

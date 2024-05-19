@@ -1,55 +1,55 @@
 ---
-title: "How to Upgrade to React 18"
+title: React 18へのアップグレード方法
 author: Rick Hanlon
 date: 2022/03/08
-description: As we shared in the release post, React 18 introduces features powered by our new concurrent renderer, with a gradual adoption strategy for existing applications. In this post, we will guide you through the steps for upgrading to React 18.
+description: リリース投稿で共有したように、React 18は新しいコンカレントレンダラーによって強化された機能を導入し、既存のアプリケーションに対して段階的な採用戦略を取っています。この投稿では、React 18へのアップグレード手順を案内します。
 ---
 
-March 08, 2022 by [Rick Hanlon](https://twitter.com/rickhanlonii)
+2022年3月8日 [Rick Hanlon](https://twitter.com/rickhanlonii)
 
 ---
 
 <Intro>
 
-As we shared in the [release post](/blog/2022/03/29/react-v18), React 18 introduces features powered by our new concurrent renderer, with a gradual adoption strategy for existing applications. In this post, we will guide you through the steps for upgrading to React 18.
+[リリース投稿](/blog/2022/03/29/react-v18)で共有したように、React 18は新しい並行レンダラーによって強化された機能を導入し、既存のアプリケーションに対して段階的な採用戦略を取っています。この投稿では、React 18へのアップグレード手順を案内します。
 
-Please [report any issues](https://github.com/facebook/react/issues/new/choose) you encounter while upgrading to React 18.
+React 18へのアップグレード中に発生した問題を[報告してください](https://github.com/facebook/react/issues/new/choose)。
 
 </Intro>
 
 <Note>
 
-For React Native users, React 18 will ship in a future version of React Native. This is because React 18 relies on the New React Native Architecture to benefit from the new capabilities presented in this blogpost. For more information, see the [React Conf keynote here](https://www.youtube.com/watch?v=FZ0cG47msEk&t=1530s).
+React Nativeユーザー向けに、React 18は将来のReact Nativeバージョンで提供されます。これは、React 18がこのブログ投稿で紹介された新機能を活用するために新しいReact Nativeアーキテクチャに依存しているためです。詳細については、[React Conf基調講演](https://www.youtube.com/watch?v=FZ0cG47msEk&t=1530s)をご覧ください。
 
 </Note>
 
 ---
 
-## Installing {/*installing*/}
+## インストール {/*installing*/}
 
-To install the latest version of React:
+最新バージョンのReactをインストールするには:
 
 ```bash
 npm install react react-dom
 ```
 
-Or if you’re using yarn:
+または、yarnを使用している場合:
 
 ```bash
 yarn add react react-dom
 ```
 
-## Updates to Client Rendering APIs {/*updates-to-client-rendering-apis*/}
+## クライアントレンダリングAPIの更新 {/*updates-to-client-rendering-apis*/}
 
-When you first install React 18, you will see a warning in the console:
+React 18を最初にインストールすると、コンソールに警告が表示されます:
 
 <ConsoleBlock level="error">
 
-ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot
+ReactDOM.renderはReact 18ではサポートされていません。代わりにcreateRootを使用してください。新しいAPIに切り替えるまで、アプリはReact 17を実行しているかのように動作します。詳細はこちら: https://reactjs.org/link/switch-to-createroot
 
 </ConsoleBlock>
 
-React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features.
+React 18は、ルートを管理するためのより良いエルゴノミクスを提供する新しいルートAPIを導入します。新しいルートAPIは、新しい並行レンダラーも有効にし、並行機能をオプトインすることができます。
 
 ```js
 // Before
@@ -64,7 +64,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(<App tab="home" />);
 ```
 
-We’ve also changed `unmountComponentAtNode` to `root.unmount`:
+`unmountComponentAtNode`も`root.unmount`に変更しました:
 
 ```js
 // Before
@@ -74,7 +74,7 @@ unmountComponentAtNode(container);
 root.unmount();
 ```
 
-We've also removed the callback from render, since it usually does not have the expected result when using Suspense:
+また、renderのコールバックも削除しました。これは、通常、Suspenseを使用する場合に期待される結果をもたらさないためです:
 
 ```js
 // Before
@@ -99,11 +99,11 @@ root.render(<AppWithCallbackAfterRender />);
 
 <Note>
 
-There is no one-to-one replacement for the old render callback API — it depends on your use case. See the working group post for [Replacing render with createRoot](https://github.com/reactwg/react-18/discussions/5) for more information.
+古いrenderコールバックAPIの一対一の置き換えはありません。使用ケースによります。詳細については、[createRootでrenderを置き換える](https://github.com/reactwg/react-18/discussions/5)作業グループの投稿をご覧ください。
 
 </Note>
 
-Finally, if your app uses server-side rendering with hydration, upgrade `hydrate` to `hydrateRoot`:
+最後に、アプリがサーバーサイドレンダリングとハイドレーションを使用している場合、`hydrate`を`hydrateRoot`にアップグレードしてください:
 
 ```js
 // Before
@@ -118,40 +118,40 @@ const root = hydrateRoot(container, <App tab="home" />);
 // Unlike with createRoot, you don't need a separate root.render() call here.
 ```
 
-For more information, see the [working group discussion here](https://github.com/reactwg/react-18/discussions/5).
+詳細については、[こちらの作業グループのディスカッション](https://github.com/reactwg/react-18/discussions/5)をご覧ください。
 
 <Note>
 
-**If your app doesn't work after upgrading, check whether it's wrapped in `<StrictMode>`.** [Strict Mode has gotten stricter in React 18](#updates-to-strict-mode), and not all your components may be resilient to the new checks it adds in development mode. If removing Strict Mode fixes your app, you can remove it during the upgrade, and then add it back (either at the top or for a part of the tree) after you fix the issues that it's pointing out.
+**アップグレード後にアプリが動作しない場合は、`<StrictMode>`でラップされているかどうかを確認してください。** [Strict ModeはReact 18でより厳格になりました](#updates-to-strict-mode)、開発モードで追加された新しいチェックに対してすべてのコンポーネントが耐性があるわけではありません。Strict Modeを削除するとアプリが修正される場合は、アップグレード中に削除し、問題を修正した後に（ツリーの一部または全体で）再度追加することができます。
 
 </Note>
 
-## Updates to Server Rendering APIs {/*updates-to-server-rendering-apis*/}
+## サーバーレンダリングAPIの更新 {/*updates-to-server-rendering-apis*/}
 
-In this release, we’re revamping our `react-dom/server` APIs to fully support Suspense on the server and Streaming SSR. As part of these changes, we're deprecating the old Node streaming API, which does not support incremental Suspense streaming on the server.
+このリリースでは、`react-dom/server` APIを刷新し、サーバー上でのSuspenseとストリーミングSSRを完全にサポートします。これらの変更の一環として、サーバー上でのインクリメンタルSuspenseストリーミングをサポートしない古いNodeストリーミングAPIを非推奨にします。
 
-Using this API will now warn:
+このAPIを使用すると、次の警告が表示されます:
 
-* `renderToNodeStream`: **Deprecated ⛔️️**
+* `renderToNodeStream`: **非推奨 ⛔️️**
 
-Instead, for streaming in Node environments, use:
-* `renderToPipeableStream`: **New ✨**
+代わりに、Node環境でのストリーミングには次を使用してください:
+* `renderToPipeableStream`: **新しい ✨**
 
-We're also introducing a new API to support streaming SSR with Suspense for modern edge runtime environments, such as Deno and Cloudflare workers:
-* `renderToReadableStream`: **New ✨**
+また、DenoやCloudflare workersなどの最新のエッジランタイム環境でSuspenseを使用したストリーミングSSRをサポートする新しいAPIも導入しています:
+* `renderToReadableStream`: **新しい ✨**
 
-The following APIs will continue working, but with limited support for Suspense:
-* `renderToString`: **Limited** ⚠️
-* `renderToStaticMarkup`: **Limited** ⚠️
+次のAPIは引き続き動作しますが、Suspenseのサポートは限定的です:
+* `renderToString`: **限定的** ⚠️
+* `renderToStaticMarkup`: **限定的** ⚠️
 
-Finally, this API will continue to work for rendering e-mails:
+最後に、このAPIはメールのレンダリングに引き続き使用できます:
 * `renderToStaticNodeStream`
 
-For more information on the changes to server rendering APIs, see the working group post on [Upgrading to React 18 on the server](https://github.com/reactwg/react-18/discussions/22), a [deep dive on the new Suspense SSR Architecture](https://github.com/reactwg/react-18/discussions/37), and [Shaundai Person’s](https://twitter.com/shaundai) talk on [Streaming Server Rendering with Suspense](https://www.youtube.com/watch?v=pj5N-Khihgc) at React Conf 2021.
+サーバーレンダリングAPIの変更についての詳細は、[サーバーでのReact 18へのアップグレード](https://github.com/reactwg/react-18/discussions/22)作業グループの投稿、[新しいSuspense SSRアーキテクチャの詳細](https://github.com/reactwg/react-18/discussions/37)、および[Shaundai Person](https://twitter.com/shaundai)の[React Conf 2021でのストリーミングサーバーレンダリングに関する講演](https://www.youtube.com/watch?v=pj5N-Khihgc)をご覧ください。
 
-## Updates to TypeScript definitions {/*updates-to-typescript-definitions*/}
+## TypeScript定義の更新 {/*updates-to-typescript-definitions*/}
 
-If your project uses TypeScript, you will need to update your `@types/react` and `@types/react-dom` dependencies to the latest versions. The new types are safer and catch issues that used to be ignored by the type checker. The most notable change is that the `children` prop now needs to be listed explicitly when defining props, for example:
+プロジェクトでTypeScriptを使用している場合、`@types/react`および`@types/react-dom`の依存関係を最新バージョンに更新する必要があります。新しい型はより安全で、以前は型チェッカーによって無視されていた問題を検出します。最も顕著な変更は、`children`プロップがプロップを定義する際に明示的にリストされる必要があることです。例えば:
 
 ```typescript{3}
 interface MyButtonProps {
@@ -160,51 +160,50 @@ interface MyButtonProps {
 }
 ```
 
-See the [React 18 typings pull request](https://github.com/DefinitelyTyped/DefinitelyTyped/pull/56210) for a full list of type-only changes. It links to example fixes in library types so you can see how to adjust your code. You can use the [automated migration script](https://github.com/eps1lon/types-react-codemod) to help port your application code to the new and safer typings faster.
+型のみの変更の完全なリストについては、[React 18 typings pull request](https://github.com/DefinitelyTyped/DefinitelyTyped/pull/56210)をご覧ください。ライブラリの型での修正例へのリンクがあり、コードをどのように調整するかを見ることができます。新しいより安全な型にアプリケーションコードを迅速に移行するために、[自動移行スクリプト](https://github.com/eps1lon/types-react-codemod)を使用することができます。
 
-If you find a bug in the typings, please [file an issue](https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/new?category=issues-with-a-types-package) in the DefinitelyTyped repo.
+型にバグを見つけた場合は、DefinitelyTypedリポジトリで[問題を報告してください](https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/new?category=issues-with-a-types-package)。
 
-## Automatic Batching {/*automatic-batching*/}
+## 自動バッチ処理 {/*automatic-batching*/}
 
-React 18 adds out-of-the-box performance improvements by doing more batching by default. Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default:
+React 18は、デフォルトでより多くのバッチ処理を行うことで、パフォーマンスの向上を提供します。バッチ処理とは、複数の状態更新を1つの再レンダリングにグループ化してパフォーマンスを向上させることです。React 18以前では、Reactイベントハンドラ内でのみ更新がバッチ処理されていました。Promise、setTimeout、ネイティブイベントハンドラ、またはその他のイベント内の更新は、デフォルトでReactではバッチ処理されませんでした:
 
 ```js
-// Before React 18 only React events were batched
+// React 18以前では、Reactイベントのみがバッチ処理されていました
 
 function handleClick() {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // React will only re-render once at the end (that's batching!)
+  // Reactは最後に一度だけ再レンダリングします（これがバッチ処理です！）
 }
 
 setTimeout(() => {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // React will render twice, once for each state update (no batching)
+  // Reactは2回レンダリングします。各状態更新ごとに1回（バッチ処理なし）
 }, 1000);
 ```
 
-
-Starting in React 18 with `createRoot`, all updates will be automatically batched, no matter where they originate from. This means that updates inside of timeouts, promises, native event handlers or any other event will batch the same way as updates inside of React events:
+React 18の`createRoot`を使用すると、すべての更新が自動的にバッチ処理されるようになります。これにより、タイムアウト、Promise、ネイティブイベントハンドラ、またはその他のイベント内の更新が、Reactイベント内の更新と同じようにバッチ処理されます:
 
 ```js
-// After React 18 updates inside of timeouts, promises,
-// native event handlers or any other event are batched.
+// React 18以降では、タイムアウト、Promise、
+// ネイティブイベントハンドラ、またはその他のイベント内の更新がバッチ処理されます。
 
 function handleClick() {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // React will only re-render once at the end (that's batching!)
+  // Reactは最後に一度だけ再レンダリングします（これがバッチ処理です！）
 }
 
 setTimeout(() => {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // React will only re-render once at the end (that's batching!)
+  // Reactは最後に一度だけ再レンダリングします（これがバッチ処理です！）
 }, 1000);
 ```
 
-This is a breaking change, but we expect this to result in less work rendering, and therefore better performance in your applications. To opt-out of automatic batching, you can use `flushSync`:
+これは破壊的な変更ですが、レンダリングの作業が減り、アプリケーションのパフォーマンスが向上すると期待しています。自動バッチ処理をオプトアウトするには、`flushSync`を使用できます:
 
 ```js
 import { flushSync } from 'react-dom';
@@ -213,119 +212,119 @@ function handleClick() {
   flushSync(() => {
     setCounter(c => c + 1);
   });
-  // React has updated the DOM by now
+  // Reactはこの時点でDOMを更新しました
   flushSync(() => {
     setFlag(f => !f);
   });
-  // React has updated the DOM by now
+  // Reactはこの時点でDOMを更新しました
 }
 ```
 
-For more information, see the [Automatic batching deep dive](https://github.com/reactwg/react-18/discussions/21).
+詳細については、[自動バッチ処理の詳細](https://github.com/reactwg/react-18/discussions/21)をご覧ください。
 
-## New APIs for Libraries {/*new-apis-for-libraries*/}
+## ライブラリ向けの新しいAPI {/*new-apis-for-libraries*/}
 
-In the React 18 Working Group we worked with library maintainers to create new APIs needed to support concurrent rendering for use cases specific to their use case in areas like styles, and external stores. To support React 18, some libraries may need to switch to one of the following APIs:
+React 18作業グループでは、ライブラリメンテナと協力して、スタイルや外部ストアなどの特定の使用ケースに対応するために、並行レンダリングをサポートするために必要な新しいAPIを作成しました。React 18をサポートするために、いくつかのライブラリは次のAPIのいずれかに切り替える必要があるかもしれません:
 
-* `useSyncExternalStore` is a new Hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. This new API is recommended for any library that integrates with state external to React. For more information, see the [useSyncExternalStore overview post](https://github.com/reactwg/react-18/discussions/70) and [useSyncExternalStore API details](https://github.com/reactwg/react-18/discussions/86).
-* `useInsertionEffect` is a new Hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you've already built a CSS-in-JS library we don't expect you to ever use this. This Hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout. For more information, see the [Library Upgrade Guide for `<style>`](https://github.com/reactwg/react-18/discussions/110).
+* `useSyncExternalStore`は、外部ストアが更新を同期的に強制することで並行読み取りをサポートする新しいフックです。この新しいAPIは、React外部の状態と統合するライブラリに推奨されます。詳細については、[useSyncExternalStore概要投稿](https://github.com/reactwg/react-18/discussions/70)および[useSyncExternalStore APIの詳細](https://github.com/reactwg/react-18/discussions/86)をご覧ください。
+* `useInsertionEffect`は、CSS-in-JSライブラリがレンダリング中にスタイルを挿入するパフォーマンス問題に対処するための新しいフックです。すでにCSS-in-JSライブラリを構築していない限り、これを使用することはないと予想しています。このフックは、DOMが変更された後、レイアウト効果が新しいレイアウトを読み取る前に実行されます。これはReact 17およびそれ以前のバージョンですでに存在する問題を解決しますが、React 18では並行レンダリング中にReactがブラウザに譲歩し、レイアウトを再計算する機会を与えるため、さらに重要です。詳細については、[ライブラリアップグレードガイド `<style>`](https://github.com/reactwg/react-18/discussions/110)をご覧ください。
 
-React 18 also introduces new APIs for concurrent rendering such as `startTransition`, `useDeferredValue` and `useId`, which we share more about in the [release post](/blog/2022/03/29/react-v18).
+React 18はまた、`startTransition`、`useDeferredValue`、`useId`などの並行レンダリング用の新しいAPIも導入しており、[リリース投稿](/blog/2022/03/29/react-v18)で詳しく紹介しています。
 
-## Updates to Strict Mode {/*updates-to-strict-mode*/}
+## Strict Modeの更新 {/*updates-to-strict-mode*/}
 
-In the future, we'd like to add a feature that allows React to add and remove sections of the UI while preserving state. For example, when a user tabs away from a screen and back, React should be able to immediately show the previous screen. To do this, React would unmount and remount trees using the same component state as before.
+将来的には、Reactが状態を保持しながらUIのセクションを追加および削除できる機能を追加したいと考えています。例えば、ユーザーが画面からタブを外して戻ったときに、Reactはすぐに前の画面を表示できるようにする必要があります。これを行うために、Reactは以前と同じコンポーネント状態を使用してツリーをアンマウントおよびリマウントします。
 
-This feature will give React better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. Most effects will work without any changes, but some effects assume they are only mounted or destroyed once.
+この機能は、Reactにデフォルトでより良いパフォーマンスを提供しますが、エフェクトが複数回マウントおよび破棄されることに耐性があるコンポーネントが必要です。ほとんどのエフェクトは変更なしで動作しますが、一部のエフェクトは一度だけマウントまたは破棄されることを前提としています。
 
-To help surface these issues, React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount.
+これらの問題を表面化させるために、React 18はStrict Modeに新しい開発専用チェックを導入します。この新しいチェックは、コンポーネントが初めてマウントされるたびに、すべてのコンポーネントを自動的にアンマウントおよびリマウントし、2回目のマウント時に以前の状態を復元します。
 
-Before this change, React would mount the component and create the effects:
-
-```
-* React mounts the component.
-    * Layout effects are created.
-    * Effect effects are created.
-```
-
-With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode:
+この変更前は、Reactはコンポーネントをマウントし、エフェクトを作成していました:
 
 ```
-* React mounts the component.
-    * Layout effects are created.
-    * Effect effects are created.
-* React simulates unmounting the component.
-    * Layout effects are destroyed.
-    * Effects are destroyed.
-* React simulates mounting the component with the previous state.
-    * Layout effect setup code runs
-    * Effect setup code runs
+* Reactはコンポーネントをマウントします。
+    * レイアウトエフェクトが作成されます。
+    * エフェクトが作成されます。
 ```
 
-For more information, see the Working Group posts for [Adding Reusable State to StrictMode](https://github.com/reactwg/react-18/discussions/19) and [How to support Reusable State in Effects](https://github.com/reactwg/react-18/discussions/18).
+React 18のStrict Modeでは、Reactは開発モードでコンポーネントのアンマウントとリマウントをシミュレートします:
 
-## Configuring Your Testing Environment {/*configuring-your-testing-environment*/}
+```
+* Reactはコンポーネントをマウントします。
+    * レイアウトエフェクトが作成されます。
+    * エフェクトが作成されます。
+* Reactはコンポーネントのアンマウントをシミュレートします。
+    * レイアウトエフェクトが破棄されます。
+    * エフェクトが破棄されます。
+* Reactは以前の状態でコンポーネントのマウントをシミュレートします。
+    * レイアウトエフェクトのセットアップコードが実行されます。
+    * エフェクトのセットアップコードが実行されます。
+```
 
-When you first update your tests to use `createRoot`, you may see this warning in your test console:
+詳細については、[StrictModeに再利用可能な状態を追加する](https://github.com/reactwg/react-18/discussions/19)および[エフェクトで再利用可能な状態をサポートする方法](https://github.com/reactwg/react-18/discussions/18)作業グループの投稿をご覧ください。
+
+## テスト環境の設定 {/*configuring-your-testing-environment*/}
+
+テストを`createRoot`を使用するように最初に更新すると、テストコンソールに次の警告が表示される場合があります:
 
 <ConsoleBlock level="error">
 
-The current testing environment is not configured to support act(...)
+現在のテスト環境はact(...)をサポートするように設定されていません
 
 </ConsoleBlock>
 
-To fix this, set `globalThis.IS_REACT_ACT_ENVIRONMENT` to `true` before running your test:
+これを修正するには、テストを実行する前に`globalThis.IS_REACT_ACT_ENVIRONMENT`を`true`に設定します:
 
 ```js
-// In your test setup file
+// テストセットアップファイルで
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 ```
 
-The purpose of the flag is to tell React that it's running in a unit test-like environment. React will log helpful warnings if you forget to wrap an update with `act`.
+このフラグの目的は、Reactがユニットテストのような環境で実行されていることを知らせることです。`act`で更新をラップするのを忘れた場合、Reactは役立つ警告をログに記録します。
 
-You can also set the flag to `false` to tell React that `act` isn't needed. This can be useful for end-to-end tests that simulate a full browser environment.
+また、フラグを`false`に設定して、`act`が不要であることをReactに知らせることもできます。これは、完全なブラウザ環境をシミュレートするエンドツーエンドテストに役立ちます。
 
-Eventually, we expect testing libraries will configure this for you automatically. For example, the [next version of React Testing Library has built-in support for React 18](https://github.com/testing-library/react-testing-library/issues/509#issuecomment-917989936) without any additional configuration.
+最終的には、テストライブラリが自動的にこれを設定することを期待しています。例えば、[次のバージョンのReact Testing LibraryはReact 18をサポートしています](https://github.com/testing-library/react-testing-library/issues/509#issuecomment-917989936)追加の設定なしで。
 
-[More background on the `act` testing API and related changes](https://github.com/reactwg/react-18/discussions/102) is available in the working group.
+[actテストAPIおよび関連する変更に関する詳細](https://github.com/reactwg/react-18/discussions/102)は、作業グループで利用可能です。
 
-## Dropping Support for Internet Explorer {/*dropping-support-for-internet-explorer*/}
+## Internet Explorerのサポート終了 {/*dropping-support-for-internet-explorer*/}
 
-In this release, React is dropping support for Internet Explorer, which is [going out of support on June 15, 2022](https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge). We’re making this change now because new features introduced in React 18 are built using modern browser features such as microtasks which cannot be adequately polyfilled in IE.
+このリリースでは、ReactはInternet Explorerのサポートを終了します。これは、[2022年6月15日にサポートが終了する](https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge)ためです。React 18で導入された新機能は、IEでは適切にポリフィルできないマイクロタスクなどの最新のブラウザ機能を使用して構築されています。
 
-If you need to support Internet Explorer we recommend you stay with React 17.
+Internet Explorerをサポートする必要がある場合は、React 17を使用することをお勧めします。
 
-## Deprecations {/*deprecations*/}
+## 非推奨 {/*deprecations*/}
 
-* `react-dom`: `ReactDOM.render` has been deprecated. Using it will warn and run your app in React 17 mode.
-* `react-dom`: `ReactDOM.hydrate` has been deprecated. Using it will warn and run your app in React 17 mode.
-* `react-dom`: `ReactDOM.unmountComponentAtNode` has been deprecated.
-* `react-dom`: `ReactDOM.renderSubtreeIntoContainer` has been deprecated.
-* `react-dom/server`: `ReactDOMServer.renderToNodeStream` has been deprecated.
+* `react-dom`: `ReactDOM.render`は非推奨です。使用すると警告が表示され、アプリはReact 17モードで実行されます。
+* `react-dom`: `ReactDOM.hydrate`は非推奨です。使用すると警告が表示され、アプリはReact 17モードで実行されます。
+* `react-dom`: `ReactDOM.unmountComponentAtNode`は非推奨です。
+* `react-dom`: `ReactDOM.renderSubtreeIntoContainer`は非推奨です。
+* `react-dom/server`: `ReactDOMServer.renderToNodeStream`は非推奨です。
 
-## Other Breaking Changes {/*other-breaking-changes*/}
+## その他の破壊的変更 {/*other-breaking-changes*/}
 
-* **Consistent useEffect timing**: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event. Previously, the behavior wasn't always predictable or consistent.
-* **Stricter hydration errors**: Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings. React will no longer attempt to "patch up" individual nodes by inserting or deleting a node on the client in an attempt to match the server markup, and will revert to client rendering up to the closest `<Suspense>` boundary in the tree. This ensures the hydrated tree is consistent and avoids potential privacy and security holes that can be caused by hydration mismatches.
-* **Suspense trees are always consistent:** If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects. Instead, React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch. React will render the retry attempt concurrently, and without blocking the browser.
-* **Layout Effects with Suspense**: When a tree re-suspends and reverts to a fallback, React will now clean up layout effects, and then re-create them when the content inside the boundary is shown again. This fixes an issue which prevented component libraries from correctly measuring layout when used with Suspense.
-* **New JS Environment Requirements**: React now depends on modern browsers features including `Promise`, `Symbol`, and `Object.assign`. If you support older browsers and devices such as Internet Explorer which do not provide modern browser features natively or have non-compliant implementations, consider including a global polyfill in your bundled application.
+* **一貫したuseEffectのタイミング**: Reactは、クリックやキー押下イベントなどの離散的なユーザー入力イベント中にトリガーされた更新の場合、常に同期的にエフェクト関数をフラッシュします。以前は、この動作は常に予測可能または一貫していませんでした。
+* **厳格なハイドレーションエラー**: 欠落または余分なテキストコンテンツによるハイドレーションの不一致は、警告ではなくエラーとして扱われるようになりました。Reactは、サーバーマークアップに一致させるためにクライアントでノードを挿入または削除して「修正」しようとすることはなく、ツリー内の最も近い`<Suspense>`境界までクライアントレンダリングに戻ります。これにより、ハイドレートされたツリーが一貫性を保ち、ハイドレーションの不一致によって引き起こされる可能性のあるプライバシーおよびセキュリティの問題を回避します。
+* **Suspenseツリーは常に一貫しています**: コンポーネントがツリーに完全に追加される前にサスペンドすると、Reactはコンポーネントを不完全な状態でツリーに追加したり、そのエフェクトを発火させたりしません。代わりに、Reactは新しいツリーを完全に破棄し、非同期操作が完了するのを待ってから、最初から再度レンダリングを試みます。Reactは再試行を並行してレンダリングし、ブラウザをブロックしません。
+* **Suspenseを使用したレイアウトエフェクト**: ツリーが再サスペンドしてフォールバックに戻ると、Reactはレイアウトエフェクトをクリーンアップし、境界内のコンテンツが再表示されると再作成します。これにより、Suspenseを使用する際にコンポーネントライブラリがレイアウトを正しく測定できない問題が修正されます。
+* **新しいJS環境要件**: Reactは、`Promise`、`Symbol`、および`Object.assign`などの最新のブラウザ機能に依存するようになりました。Internet Explorerなどの古いブラウザやデバイスをサポートする場合、これらの機能をネイティブに提供しないか、非準拠の実装を持つ場合は、バンドルされたアプリケーションにグローバルポリフィルを含めることを検討してください。
 
-## Other Notable Changes {/*other-notable-changes*/}
+## その他の注目すべき変更 {/*other-notable-changes*/}
 
 ### React {/*react*/}
 
-* **Components can now render `undefined`:** React no longer warns if you return `undefined` from a component. This makes the allowed component return values consistent with values that are allowed in the middle of a component tree. We suggest to use a linter to prevent mistakes like forgetting a `return` statement before JSX.
-* **In tests, `act` warnings are now opt-in:** If you're running end-to-end tests, the `act` warnings are unnecessary. We've introduced an [opt-in](https://github.com/reactwg/react-18/discussions/102) mechanism so you can enable them only for unit tests where they are useful and beneficial.
-* **No warning about `setState` on unmounted components:** Previously, React warned about memory leaks when you call `setState` on an unmounted component. This warning was added for subscriptions, but people primarily run into it in scenarios where setting state is fine, and workarounds make the code worse. We've [removed](https://github.com/facebook/react/pull/22114) this warning.
-* **No suppression of console logs:** When you use Strict Mode, React renders each component twice to help you find unexpected side effects. In React 17, we've suppressed console logs for one of the two renders to make the logs easier to read. In response to [community feedback](https://github.com/facebook/react/issues/21783) about this being confusing, we've removed the suppression. Instead, if you have React DevTools installed, the second log's renders will be displayed in grey, and there will be an option (off by default) to suppress them completely.
-* **Improved memory usage:** React now cleans up more internal fields on unmount, making the impact from unfixed memory leaks that may exist in your application code less severe.
+* **コンポーネントは`undefined`をレンダリングできます**: コンポーネントから`undefined`を返すと警告が表示されなくなりました。これにより、コンポーネントツリーの途中で許可される値と一貫性が保たれます。JSXの前に`return`文を忘れるなどのミスを防ぐためにリンターを使用することをお勧めします。
+* **テストで`act`警告がオプトインになりました**: エンドツーエンドテストを実行している場合、`act`警告は不要です。ユニットテストでのみ有用で有益なため、[オプトイン](https://github.com/reactwg/react-18/discussions/102)メカニズムを導入しました。
+* **アンマウントされたコンポーネントでの`setState`に関する警告がなくなりました**: 以前は、アンマウントされたコンポーネントで`setState`を呼び出すとメモリリークの警告が表示されていました。この警告はサブスクリプションのために追加されましたが、主に状態設定が問題ないシナリオで発生し、回避策がコードを悪化させることが多かったです。この警告を[削除しました](https://github.com/facebook/react/pull/22114)。
+* **コンソールログの抑制がなくなりました**: Strict Modeを使用すると、Reactは予期しない副作用を見つけるために各コンポーネントを2回レンダリングします。React 17では、ログを読みやすくするために2回目のレンダリングのコンソールログを抑制していました。この抑制が混乱を招くという[コミュニティのフィードバック](https://github.com/facebook/react/issues/21783)に応じて、抑制を削除しました。代わりに、React DevToolsがインストールされている場合、2回目のログのレンダリングは灰色で表示され、完全に抑制するオプション（デフォルトではオフ）が表示されます。
+* **メモリ使用量の改善**: Reactはアンマウント時により多くの内部フィールドをクリーンアップし、アプリケーションコードに存在する可能性のある未修正のメモリリークの影響を軽減します。
 
 ### React DOM Server {/*react-dom-server*/}
 
-* **`renderToString`:** Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest `<Suspense>` boundary and then retry rendering the same content on the client. It is still recommended that you switch to a streaming API like `renderToPipeableStream` or `renderToReadableStream` instead.
-* **`renderToStaticMarkup`:** Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest `<Suspense>` boundary.
+* **`renderToString`**: サーバーでサスペンドするとエラーが発生しなくなります。代わりに、最も近い`<Suspense>`境界のフォールバックHTMLを出力し、クライアントで同じコンテンツのレンダリングを再試行します。それでも、`renderToPipeableStream`や`renderToReadableStream`などのストリーミングAPIに切り替えることをお勧めします。
+* **`renderToStaticMarkup`**: サーバーでサスペンドするとエラーが発生しなくなります。代わりに、最も近い`<Suspense>`境界のフォールバックHTMLを出力します。
 
-## Changelog {/*changelog*/}
+## 変更履歴 {/*changelog*/}
 
-You can view the [full changelog here](https://github.com/facebook/react/blob/main/CHANGELOG.md).
+[完全な変更履歴はこちら](https://github.com/facebook/react/blob/main/CHANGELOG.md)をご覧ください。

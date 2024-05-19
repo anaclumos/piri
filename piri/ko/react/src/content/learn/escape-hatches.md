@@ -1,35 +1,35 @@
 ---
-title: Escape Hatches
+title: 탈출구
 ---
 
 <Intro>
 
-Some of your components may need to control and synchronize with systems outside of React. For example, you might need to focus an input using the browser API, play and pause a video player implemented without React, or connect and listen to messages from a remote server. In this chapter, you'll learn the escape hatches that let you "step outside" React and connect to external systems. Most of your application logic and data flow should not rely on these features.
+일부 컴포넌트는 React 외부의 시스템을 제어하고 동기화해야 할 수도 있습니다. 예를 들어, 브라우저 API를 사용하여 입력에 포커스를 맞추거나, React 없이 구현된 비디오 플레이어를 재생 및 일시 정지하거나, 원격 서버에서 메시지를 수신하고 연결해야 할 수 있습니다. 이 장에서는 React를 "벗어나" 외부 시스템과 연결할 수 있는 탈출구를 배우게 됩니다. 대부분의 애플리케이션 로직과 데이터 흐름은 이러한 기능에 의존하지 않아야 합니다.
 
 </Intro>
 
 <YouWillLearn isChapter={true}>
 
-* [How to "remember" information without re-rendering](/learn/referencing-values-with-refs)
-* [How to access DOM elements managed by React](/learn/manipulating-the-dom-with-refs)
-* [How to synchronize components with external systems](/learn/synchronizing-with-effects)
-* [How to remove unnecessary Effects from your components](/learn/you-might-not-need-an-effect)
-* [How an Effect's lifecycle is different from a component's](/learn/lifecycle-of-reactive-effects)
-* [How to prevent some values from re-triggering Effects](/learn/separating-events-from-effects)
-* [How to make your Effect re-run less often](/learn/removing-effect-dependencies)
-* [How to share logic between components](/learn/reusing-logic-with-custom-hooks)
+* [새로 렌더링하지 않고 정보를 "기억"하는 방법](/learn/referencing-values-with-refs)
+* [React가 관리하는 DOM 요소에 접근하는 방법](/learn/manipulating-the-dom-with-refs)
+* [외부 시스템과 컴포넌트를 동기화하는 방법](/learn/synchronizing-with-effects)
+* [컴포넌트에서 불필요한 Effects를 제거하는 방법](/learn/you-might-not-need-an-effect)
+* [Effect의 생명주기가 컴포넌트의 생명주기와 다른 점](/learn/lifecycle-of-reactive-effects)
+* [일부 값이 Effects를 다시 트리거하지 않도록 하는 방법](/learn/separating-events-from-effects)
+* [Effect를 덜 자주 실행되게 하는 방법](/learn/removing-effect-dependencies)
+* [컴포넌트 간 로직을 공유하는 방법](/learn/reusing-logic-with-custom-hooks)
 
 </YouWillLearn>
 
-## Referencing values with refs {/*referencing-values-with-refs*/}
+## 참조를 사용하여 값 기억하기 {/*referencing-values-with-refs*/}
 
-When you want a component to "remember" some information, but you don't want that information to [trigger new renders](/learn/render-and-commit), you can use a *ref*:
+컴포넌트가 일부 정보를 "기억"하도록 하고 싶지만 그 정보가 [새로운 렌더링을 트리거](/learn/render-and-commit)하지 않기를 원할 때, *ref*를 사용할 수 있습니다:
 
 ```js
 const ref = useRef(0);
 ```
 
-Like state, refs are retained by React between re-renders. However, setting state re-renders a component. Changing a ref does not! You can access the current value of that ref through the `ref.current` property.
+상태와 마찬가지로, ref는 재렌더링 사이에 React에 의해 유지됩니다. 그러나 상태를 설정하면 컴포넌트가 다시 렌더링됩니다. ref를 변경해도 그렇지 않습니다! `ref.current` 속성을 통해 해당 ref의 현재 값을 액세스할 수 있습니다.
 
 <Sandpack>
 
@@ -54,17 +54,17 @@ export default function Counter() {
 
 </Sandpack>
 
-A ref is like a secret pocket of your component that React doesn't track. For example, you can use refs to store [timeout IDs](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#return_value), [DOM elements](https://developer.mozilla.org/en-US/docs/Web/API/Element), and other objects that don't impact the component's rendering output.
+ref는 React가 추적하지 않는 컴포넌트의 비밀 주머니와 같습니다. 예를 들어, ref를 사용하여 [타임아웃 ID](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#return_value), [DOM 요소](https://developer.mozilla.org/en-US/docs/Web/API/Element) 및 컴포넌트의 렌더링 출력에 영향을 미치지 않는 다른 객체를 저장할 수 있습니다.
 
 <LearnMore path="/learn/referencing-values-with-refs">
 
-Read **[Referencing Values with Refs](/learn/referencing-values-with-refs)** to learn how to use refs to remember information.
+**[참조를 사용하여 값 기억하기](/learn/referencing-values-with-refs)**를 읽고 ref를 사용하여 정보를 기억하는 방법을 배우세요.
 
 </LearnMore>
 
-## Manipulating the DOM with refs {/*manipulating-the-dom-with-refs*/}
+## 참조를 사용하여 DOM 조작하기 {/*manipulating-the-dom-with-refs*/}
 
-React automatically updates the DOM to match your render output, so your components won't often need to manipulate it. However, sometimes you might need access to the DOM elements managed by React—for example, to focus a node, scroll to it, or measure its size and position. There is no built-in way to do those things in React, so you will need a ref to the DOM node. For example, clicking the button will focus the input using a ref:
+React는 렌더링 출력을 반영하도록 DOM을 자동으로 업데이트하므로, 컴포넌트가 DOM을 조작할 필요는 거의 없습니다. 그러나 때로는 React가 관리하는 DOM 요소에 접근해야 할 때가 있습니다. 예를 들어, 노드에 포커스를 맞추거나, 스크롤하거나, 크기와 위치를 측정해야 할 수 있습니다. React에는 이러한 작업을 수행하는 내장 방법이 없으므로 DOM 노드에 대한 ref가 필요합니다. 예를 들어, 버튼을 클릭하면 ref를 사용하여 입력에 포커스를 맞춥니다:
 
 <Sandpack>
 
@@ -93,15 +93,15 @@ export default function Form() {
 
 <LearnMore path="/learn/manipulating-the-dom-with-refs">
 
-Read **[Manipulating the DOM with Refs](/learn/manipulating-the-dom-with-refs)** to learn how to access DOM elements managed by React.
+**[참조를 사용하여 DOM 조작하기](/learn/manipulating-the-dom-with-refs)**를 읽고 React가 관리하는 DOM 요소에 접근하는 방법을 배우세요.
 
 </LearnMore>
 
-## Synchronizing with Effects {/*synchronizing-with-effects*/}
+## Effects로 동기화하기 {/*synchronizing-with-effects*/}
 
-Some components need to synchronize with external systems. For example, you might want to control a non-React component based on the React state, set up a server connection, or send an analytics log when a component appears on the screen. Unlike event handlers, which let you handle particular events, *Effects* let you run some code after rendering. Use them to synchronize your component with a system outside of React.
+일부 컴포넌트는 외부 시스템과 동기화해야 합니다. 예를 들어, React 상태에 따라 비React 컴포넌트를 제어하거나, 서버 연결을 설정하거나, 컴포넌트가 화면에 나타날 때 분석 로그를 보내고 싶을 수 있습니다. 이벤트 핸들러와 달리, *Effects*는 렌더링 후에 코드를 실행할 수 있게 해줍니다. 이를 사용하여 컴포넌트를 React 외부의 시스템과 동기화하세요.
 
-Press Play/Pause a few times and see how the video player stays synchronized to the `isPlaying` prop value:
+재생/일시 정지를 몇 번 누르고 비디오 플레이어가 `isPlaying` prop 값에 맞게 동기화되는지 확인하세요:
 
 <Sandpack>
 
@@ -145,7 +145,7 @@ video { width: 250px; }
 
 </Sandpack>
 
-Many Effects also "clean up" after themselves. For example, an Effect that sets up a connection to a chat server should return a *cleanup function* that tells React how to disconnect your component from that server:
+많은 Effects는 또한 "정리" 작업을 수행합니다. 예를 들어, 채팅 서버에 연결을 설정하는 Effect는 React에 컴포넌트를 해당 서버에서 어떻게 연결 해제할지 알려주는 *정리 함수*를 반환해야 합니다:
 
 <Sandpack>
 
@@ -165,7 +165,7 @@ export default function ChatRoom() {
 
 ```js src/chat.js
 export function createConnection() {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 실제로 서버에 연결할 것입니다
   return {
     connect() {
       console.log('✅ Connecting...');
@@ -183,30 +183,30 @@ input { display: block; margin-bottom: 20px; }
 
 </Sandpack>
 
-In development, React will immediately run and clean up your Effect one extra time. This is why you see `"✅ Connecting..."` printed twice. This ensures that you don't forget to implement the cleanup function.
+개발 중에는 React가 Effect를 한 번 더 실행하고 정리합니다. 이로 인해 `"✅ Connecting..."`이 두 번 출력됩니다. 이는 정리 함수를 구현하는 것을 잊지 않도록 보장합니다.
 
 <LearnMore path="/learn/synchronizing-with-effects">
 
-Read **[Synchronizing with Effects](/learn/synchronizing-with-effects)** to learn how to synchronize components with external systems.
+**[Effects로 동기화하기](/learn/synchronizing-with-effects)**를 읽고 컴포넌트를 외부 시스템과 동기화하는 방법을 배우세요.
 
 </LearnMore>
 
-## You Might Not Need An Effect {/*you-might-not-need-an-effect*/}
+## Effect가 필요하지 않을 수도 있습니다 {/*you-might-not-need-an-effect*/}
 
-Effects are an escape hatch from the React paradigm. They let you "step outside" of React and synchronize your components with some external system. If there is no external system involved (for example, if you want to update a component's state when some props or state change), you shouldn't need an Effect. Removing unnecessary Effects will make your code easier to follow, faster to run, and less error-prone.
+Effects는 React 패러다임에서 벗어나는 탈출구입니다. 이를 통해 React 외부의 시스템과 컴포넌트를 동기화할 수 있습니다. 외부 시스템이 관련되지 않은 경우(예: 일부 props 또는 상태가 변경될 때 컴포넌트의 상태를 업데이트하려는 경우) Effect가 필요하지 않습니다. 불필요한 Effects를 제거하면 코드가 더 쉽게 이해되고, 실행 속도가 빨라지며, 오류가 줄어듭니다.
 
-There are two common cases in which you don't need Effects:
-- **You don't need Effects to transform data for rendering.**
-- **You don't need Effects to handle user events.**
+Effect가 필요하지 않은 두 가지 일반적인 경우가 있습니다:
+- **렌더링을 위해 데이터를 변환하는 데 Effects가 필요하지 않습니다.**
+- **사용자 이벤트를 처리하는 데 Effects가 필요하지 않습니다.**
 
-For example, you don't need an Effect to adjust some state based on other state:
+예를 들어, 다른 상태를 기반으로 일부 상태를 조정하려면 Effect가 필요하지 않습니다:
 
 ```js {5-9}
 function Form() {
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Swift');
 
-  // 🔴 Avoid: redundant state and unnecessary Effect
+  // 🔴 피해야 함: 중복 상태 및 불필요한 Effect
   const [fullName, setFullName] = useState('');
   useEffect(() => {
     setFullName(firstName + ' ' + lastName);
@@ -215,31 +215,31 @@ function Form() {
 }
 ```
 
-Instead, calculate as much as you can while rendering:
+대신 렌더링 중에 최대한 계산하세요:
 
 ```js {4-5}
 function Form() {
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Swift');
-  // ✅ Good: calculated during rendering
+  // ✅ 좋음: 렌더링 중에 계산됨
   const fullName = firstName + ' ' + lastName;
   // ...
 }
 ```
 
-However, you *do* need Effects to synchronize with external systems. 
+그러나 외부 시스템과 동기화하려면 Effects가 필요합니다.
 
 <LearnMore path="/learn/you-might-not-need-an-effect">
 
-Read **[You Might Not Need an Effect](/learn/you-might-not-need-an-effect)** to learn how to remove unnecessary Effects.
+**[Effect가 필요하지 않을 수도 있습니다](/learn/you-might-not-need-an-effect)**를 읽고 불필요한 Effects를 제거하는 방법을 배우세요.
 
 </LearnMore>
 
-## Lifecycle of reactive effects {/*lifecycle-of-reactive-effects*/}
+## 반응형 Effect의 생명주기 {/*lifecycle-of-reactive-effects*/}
 
-Effects have a different lifecycle from components. Components may mount, update, or unmount. An Effect can only do two things: to start synchronizing something, and later to stop synchronizing it. This cycle can happen multiple times if your Effect depends on props and state that change over time.
+Effects는 컴포넌트와 다른 생명주기를 가집니다. 컴포넌트는 마운트, 업데이트 또는 언마운트될 수 있습니다. Effect는 두 가지 작업만 수행할 수 있습니다: 무언가를 동기화 시작하고, 나중에 동기화를 중지합니다. 이 주기는 Effect가 시간에 따라 변경되는 props와 상태에 의존하는 경우 여러 번 발생할 수 있습니다.
 
-This Effect depends on the value of the `roomId` prop. Props are *reactive values,* which means they can change on a re-render. Notice that the Effect *re-synchronizes* (and re-connects to the server) if `roomId` changes:
+이 Effect는 `roomId` prop의 값에 의존합니다. Props는 *반응형 값*으로, 다시 렌더링할 때 변경될 수 있습니다. `roomId`가 변경되면 Effect가 *다시 동기화*되고 서버에 다시 연결되는 것을 확인하세요:
 
 <Sandpack>
 
@@ -283,7 +283,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 실제로 서버에 연결할 것입니다
   return {
     connect() {
       console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
@@ -302,25 +302,25 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-React provides a linter rule to check that you've specified your Effect's dependencies correctly. If you forget to specify `roomId` in the list of dependencies in the above example, the linter will find that bug automatically.
+React는 Effect의 종속성을 올바르게 지정했는지 확인하는 린터 규칙을 제공합니다. 위 예제에서 `roomId`를 종속성 목록에 지정하는 것을 잊으면 린터가 자동으로 해당 버그를 찾아냅니다.
 
 <LearnMore path="/learn/lifecycle-of-reactive-effects">
 
-Read **[Lifecycle of Reactive Events](/learn/lifecycle-of-reactive-effects)** to learn how an Effect's lifecycle is different from a component's.
+**[반응형 이벤트의 생명주기](/learn/lifecycle-of-reactive-effects)**를 읽고 Effect의 생명주기가 컴포넌트의 생명주기와 다른 점을 배우세요.
 
 </LearnMore>
 
-## Separating events from Effects {/*separating-events-from-effects*/}
+## 이벤트와 Effects 분리하기 {/*separating-events-from-effects*/}
 
 <Wip>
 
-This section describes an **experimental API that has not yet been released** in a stable version of React.
+이 섹션은 **아직 안정적인 버전의 React에서 릴리스되지 않은 실험적 API**를 설명합니다.
 
 </Wip>
 
-Event handlers only re-run when you perform the same interaction again. Unlike event handlers, Effects re-synchronize if any of the values they read, like props or state, are different than during last render. Sometimes, you want a mix of both behaviors: an Effect that re-runs in response to some values but not others.
+이벤트 핸들러는 동일한 상호작용을 다시 수행할 때만 다시 실행됩니다. 이벤트 핸들러와 달리, Effects는 읽은 값(예: props 또는 상태)이 마지막 렌더링 시와 다르면 다시 동기화됩니다. 때로는 두 가지 동작을 혼합한 것이 필요합니다: 일부 값에 반응하지만 다른 값에는 반응하지 않는 Effect.
 
-All code inside Effects is *reactive.* It will run again if some reactive value it reads has changed due to a re-render. For example, this Effect will re-connect to the chat if either `roomId` or `theme` have changed:
+Effects 내부의 모든 코드는 *반응형*입니다. 렌더링으로 인해 읽은 반응형 값이 변경되면 다시 실행됩니다. 예를 들어, 이 Effect는 `roomId` 또는 `theme`이 변경되면 다시 채팅에 연결됩니다:
 
 <Sandpack>
 
@@ -397,7 +397,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 실제로 서버에 연결할 것입니다
   let connectedCallback;
   let timeout;
   return {
@@ -448,7 +448,7 @@ label { display: block; margin-top: 10px; }
 
 </Sandpack>
 
-This is not ideal. You want to re-connect to the chat only if the `roomId` has changed. Switching the `theme` shouldn't re-connect to the chat! Move the code reading `theme` out of your Effect into an *Effect Event*:
+이것은 이상적이지 않습니다. `roomId`가 변경된 경우에만 채팅에 다시 연결하고 싶습니다. `theme`을 전환하는 것은 채팅에 다시 연결하지 않아야 합니다! `theme`을 읽는 코드를 Effect에서 *Effect Event*로 이동하세요:
 
 <Sandpack>
 
@@ -484,7 +484,7 @@ function ChatRoom({ roomId, theme }) {
 
   useEffect(() => {
     const connection = createConnection(serverUrl, roomId);
-    connection.on('connected', () => {
+       connection.on('connected', () => {
       onConnected();
     });
     connection.connect();
@@ -530,7 +530,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 실제로 서버에 연결할 것입니다
   let connectedCallback;
   let timeout;
   return {
@@ -581,19 +581,19 @@ label { display: block; margin-top: 10px; }
 
 </Sandpack>
 
-Code inside Effect Events isn't reactive, so changing the `theme` no longer makes your Effect re-connect.
+Effect Events 내부의 코드는 반응형이 아니므로 `theme`을 변경해도 Effect가 다시 연결되지 않습니다.
 
 <LearnMore path="/learn/separating-events-from-effects">
 
-Read **[Separating Events from Effects](/learn/separating-events-from-effects)** to learn how to prevent some values from re-triggering Effects.
+**[이벤트와 Effects 분리하기](/learn/separating-events-from-effects)**를 읽고 일부 값이 Effects를 다시 트리거하지 않도록 하는 방법을 배우세요.
 
 </LearnMore>
 
-## Removing Effect dependencies {/*removing-effect-dependencies*/}
+## Effect 종속성 제거하기 {/*removing-effect-dependencies*/}
 
-When you write an Effect, the linter will verify that you've included every reactive value (like props and state) that the Effect reads in the list of your Effect's dependencies. This ensures that your Effect remains synchronized with the latest props and state of your component. Unnecessary dependencies may cause your Effect to run too often, or even create an infinite loop. The way you remove them depends on the case.
+Effect를 작성할 때, 린터는 Effect가 읽는 모든 반응형 값(예: props와 상태)을 Effect의 종속성 목록에 포함했는지 확인합니다. 이는 Effect가 컴포넌트의 최신 props와 상태와 동기화된 상태를 유지하도록 보장합니다. 불필요한 종속성은 Effect가 너무 자주 실행되거나 무한 루프를 생성할 수 있습니다. 이를 제거하는 방법은 경우에 따라 다릅니다.
 
-For example, this Effect depends on the `options` object which gets re-created every time you edit the input:
+예를 들어, 이 Effect는 입력을 편집할 때마다 다시 생성되는 `options` 객체에 의존합니다:
 
 <Sandpack>
 
@@ -649,7 +649,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 실제로 서버에 연결할 것입니다
   return {
     connect() {
       console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
@@ -668,7 +668,7 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-You don't want the chat to re-connect every time you start typing a message in that chat. To fix this problem, move creation of the `options` object inside the Effect so that the Effect only depends on the `roomId` string:
+채팅 중 메시지를 입력할 때마다 다시 연결하고 싶지 않습니다. 이 문제를 해결하려면 `options` 객체 생성을 Effect 내부로 이동하여 Effect가 `roomId` 문자열에만 의존하도록 하세요:
 
 <Sandpack>
 
@@ -723,7 +723,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 실제로 서버에 연결할 것입니다
   return {
     connect() {
       console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
@@ -742,19 +742,19 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-Notice that you didn't start by editing the dependency list to remove the `options` dependency. That would be wrong. Instead, you changed the surrounding code so that the dependency became *unnecessary.* Think of the dependency list as a list of all the reactive values used by your Effect's code. You don't intentionally choose what to put on that list. The list describes your code. To change the dependency list, change the code.
+종속성 목록을 편집하여 `options` 종속성을 제거하는 것으로 시작하지 않았다는 점에 주목하세요. 그것은 잘못된 접근 방식입니다. 대신, 종속성이 *불필요*해지도록 주변 코드를 변경했습니다. 종속성 목록을 Effect 코드에서 사용하는 모든 반응형 값의 목록으로 생각하세요. 목록에 무엇을 넣을지 의도적으로 선택하지 않습니다. 목록은 코드를 설명합니다. 종속성 목록을 변경하려면 코드를 변경하세요.
 
 <LearnMore path="/learn/removing-effect-dependencies">
 
-Read **[Removing Effect Dependencies](/learn/removing-effect-dependencies)** to learn how to make your Effect re-run less often.
+**[Effect 종속성 제거하기](/learn/removing-effect-dependencies)**를 읽고 Effect를 덜 자주 실행되게 하는 방법을 배우세요.
 
 </LearnMore>
 
-## Reusing logic with custom Hooks {/*reusing-logic-with-custom-hooks*/}
+## 사용자 정의 Hooks로 로직 재사용하기 {/*reusing-logic-with-custom-hooks*/}
 
-React comes with built-in Hooks like `useState`, `useContext`, and `useEffect`. Sometimes, you’ll wish that there was a Hook for some more specific purpose: for example, to fetch data, to keep track of whether the user is online, or to connect to a chat room. To do this, you can create your own Hooks for your application's needs.
+React는 `useState`, `useContext`, `useEffect`와 같은 내장 Hooks를 제공합니다. 때로는 데이터 가져오기, 사용자가 온라인 상태인지 추적하기, 채팅방에 연결하기 등 특정 목적을 위한 Hook이 필요할 수 있습니다. 이를 위해 애플리케이션의 필요에 맞는 사용자 정의 Hooks를 만들 수 있습니다.
 
-In this example, the `usePointerPosition` custom Hook tracks the cursor position, while `useDelayedValue` custom Hook returns a value that's "lagging behind" the value you passed by a certain number of milliseconds. Move the cursor over the sandbox preview area to see a moving trail of dots following the cursor:
+이 예제에서 `usePointerPosition` 사용자 정의 Hook은 커서 위치를 추적하고, `useDelayedValue` 사용자 정의 Hook은 전달된 값보다 일정 시간 지연된 값을 반환합니다. 샌드박스 미리보기 영역 위로 커서를 이동하여 커서를 따라가는 점들의 움직이는 궤적을 확인하세요:
 
 <Sandpack>
 
@@ -835,14 +835,14 @@ body { min-height: 300px; }
 
 </Sandpack>
 
-You can create custom Hooks, compose them together, pass data between them, and reuse them between components. As your app grows, you will write fewer Effects by hand because you'll be able to reuse custom Hooks you already wrote. There are also many excellent custom Hooks maintained by the React community.
+사용자 정의 Hooks를 만들고, 이를 함께 구성하고, 데이터를 전달하고, 컴포넌트 간에 재사용할 수 있습니다. 애플리케이션이 성장함에 따라, 이미 작성한 사용자 정의 Hooks를 재사용할 수 있기 때문에 수작업으로 Effects를 작성하는 일이 줄어들 것입니다. React 커뮤니티에서 유지 관리하는 훌륭한 사용자 정의 Hooks도 많이 있습니다.
 
 <LearnMore path="/learn/reusing-logic-with-custom-hooks">
 
-Read **[Reusing Logic with Custom Hooks](/learn/reusing-logic-with-custom-hooks)** to learn how to share logic between components.
+**[사용자 정의 Hooks로 로직 재사용하기](/learn/reusing-logic-with-custom-hooks)**를 읽고 컴포넌트 간 로직을 공유하는 방법을 배우세요.
 
 </LearnMore>
 
-## What's next? {/*whats-next*/}
+## 다음은 무엇인가요? {/*whats-next*/}
 
-Head over to [Referencing Values with Refs](/learn/referencing-values-with-refs) to start reading this chapter page by page!
+[참조를 사용하여 값 기억하기](/learn/referencing-values-with-refs)로 이동하여 이 장을 페이지별로 읽기 시작하세요!

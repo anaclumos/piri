@@ -1,53 +1,53 @@
 ---
-title: Rules of Hooks
+title: Hooksのルール
 ---
 
 <Intro>
-Hooks are defined using JavaScript functions, but they represent a special type of reusable UI logic with restrictions on where they can be called.
+HooksはJavaScript関数を使用して定義されますが、呼び出せる場所に制限がある特別な種類の再利用可能なUIロジックを表します。
 </Intro>
 
 <InlineToc />
 
 ---
 
-##  Only call Hooks at the top level {/*only-call-hooks-at-the-top-level*/}
+##  Hooksはトップレベルでのみ呼び出す {/*only-call-hooks-at-the-top-level*/}
 
-Functions whose names start with `use` are called [*Hooks*](/reference/react) in React.
+名前が`use`で始まる関数はReactでは[*Hooks*](/reference/react)と呼ばれます。
 
-**Don’t call Hooks inside loops, conditions, nested functions, or `try`/`catch`/`finally` blocks.** Instead, always use Hooks at the top level of your React function, before any early returns. You can only call Hooks while React is rendering a function component:
+**Hooksをループ、条件、ネストされた関数、または`try`/`catch`/`finally`ブロック内で呼び出さないでください。** 代わりに、常にReact関数のトップレベルで、早期リターンの前にHooksを使用してください。HooksはReactが関数コンポーネントをレンダリングしている間にのみ呼び出すことができます：
 
-* ✅ Call them at the top level in the body of a [function component](/learn/your-first-component).
-* ✅ Call them at the top level in the body of a [custom Hook](/learn/reusing-logic-with-custom-hooks).
+* ✅ [関数コンポーネント](/learn/your-first-component)の本体のトップレベルで呼び出す。
+* ✅ [カスタムHook](/learn/reusing-logic-with-custom-hooks)の本体のトップレベルで呼び出す。
 
 ```js{2-3,8-9}
 function Counter() {
-  // ✅ Good: top-level in a function component
+  // ✅ 良い: 関数コンポーネントのトップレベル
   const [count, setCount] = useState(0);
   // ...
 }
 
 function useWindowWidth() {
-  // ✅ Good: top-level in a custom Hook
+  // ✅ 良い: カスタムHookのトップレベル
   const [width, setWidth] = useState(window.innerWidth);
   // ...
 }
 ```
 
-It’s **not** supported to call Hooks (functions starting with `use`) in any other cases, for example:
+他のケースでHooks（`use`で始まる関数）を呼び出すことは**サポートされていません**。例えば：
 
-* 🔴 Do not call Hooks inside conditions or loops.
-* 🔴 Do not call Hooks after a conditional `return` statement.
-* 🔴 Do not call Hooks in event handlers.
-* 🔴 Do not call Hooks in class components.
-* 🔴 Do not call Hooks inside functions passed to `useMemo`, `useReducer`, or `useEffect`.
-* 🔴 Do not call Hooks inside `try`/`catch`/`finally` blocks.
+* 🔴 条件やループ内でHooksを呼び出さないでください。
+* 🔴 条件付きの`return`文の後でHooksを呼び出さないでください。
+* 🔴 イベントハンドラ内でHooksを呼び出さないでください。
+* 🔴 クラスコンポーネント内でHooksを呼び出さないでください。
+* 🔴 `useMemo`、`useReducer`、または`useEffect`に渡された関数内でHooksを呼び出さないでください。
+* 🔴 `try`/`catch`/`finally`ブロック内でHooksを呼び出さないでください。
 
-If you break these rules, you might see this error.
+これらのルールを破ると、このエラーが表示されることがあります。
 
 ```js{3-4,11-12,20-21}
 function Bad({ cond }) {
   if (cond) {
-    // 🔴 Bad: inside a condition (to fix, move it outside!)
+    // 🔴 悪い: 条件内（修正するには、外に移動してください！）
     const theme = useContext(ThemeContext);
   }
   // ...
@@ -55,7 +55,7 @@ function Bad({ cond }) {
 
 function Bad() {
   for (let i = 0; i < 10; i++) {
-    // 🔴 Bad: inside a loop (to fix, move it outside!)
+    // 🔴 悪い: ループ内（修正するには、外に移動してください！）
     const theme = useContext(ThemeContext);
   }
   // ...
@@ -65,14 +65,14 @@ function Bad({ cond }) {
   if (cond) {
     return;
   }
-  // 🔴 Bad: after a conditional return (to fix, move it before the return!)
+  // 🔴 悪い: 条件付きのreturnの後（修正するには、returnの前に移動してください！）
   const theme = useContext(ThemeContext);
   // ...
 }
 
 function Bad() {
   function handleClick() {
-    // 🔴 Bad: inside an event handler (to fix, move it outside!)
+    // 🔴 悪い: イベントハンドラ内（修正するには、外に移動してください！）
     const theme = useContext(ThemeContext);
   }
   // ...
@@ -80,7 +80,7 @@ function Bad() {
 
 function Bad() {
   const style = useMemo(() => {
-    // 🔴 Bad: inside useMemo (to fix, move it outside!)
+    // 🔴 悪い: useMemo内（修正するには、外に移動してください！）
     const theme = useContext(ThemeContext);
     return createStyle(theme);
   });
@@ -89,7 +89,7 @@ function Bad() {
 
 class Bad extends React.Component {
   render() {
-    // 🔴 Bad: inside a class component (to fix, write a function component instead of a class!)
+    // 🔴 悪い: クラスコンポーネント内（修正するには、クラスの代わりに関数コンポーネントを書いてください！）
     useEffect(() => {})
     // ...
   }
@@ -97,7 +97,7 @@ class Bad extends React.Component {
 
 function Bad() {
   try {
-    // 🔴 Bad: inside try/catch/finally block (to fix, move it outside!)
+    // 🔴 悪い: try/catch/finallyブロック内（修正するには、外に移動してください！）
     const [x, setX] = useState(0);
   } catch {
     const [x, setX] = useState(1);
@@ -105,31 +105,31 @@ function Bad() {
 }
 ```
 
-You can use the [`eslint-plugin-react-hooks` plugin](https://www.npmjs.com/package/eslint-plugin-react-hooks) to catch these mistakes.
+これらのミスをキャッチするために[`eslint-plugin-react-hooks`プラグイン](https://www.npmjs.com/package/eslint-plugin-react-hooks)を使用できます。
 
 <Note>
 
-[Custom Hooks](/learn/reusing-logic-with-custom-hooks) *may* call other Hooks (that's their whole purpose). This works because custom Hooks are also supposed to only be called while a function component is rendering.
+[カスタムHooks](/learn/reusing-logic-with-custom-hooks)は他のHooksを呼び出す*ことができます*（それが彼らの目的です）。これは、カスタムHooksも関数コンポーネントがレンダリングされている間にのみ呼び出されることが前提だからです。
 
 </Note>
 
 ---
 
-## Only call Hooks from React functions {/*only-call-hooks-from-react-functions*/}
+## React関数からのみHooksを呼び出す {/*only-call-hooks-from-react-functions*/}
 
-Don’t call Hooks from regular JavaScript functions. Instead, you can:
+通常のJavaScript関数からHooksを呼び出さないでください。代わりに、次のようにします：
 
-✅ Call Hooks from React function components.
-✅ Call Hooks from [custom Hooks](/learn/reusing-logic-with-custom-hooks#extracting-your-own-custom-hook-from-a-component).
+✅ React関数コンポーネントからHooksを呼び出す。
+✅ [カスタムHooks](/learn/reusing-logic-with-custom-hooks#extracting-your-own-custom-hook-from-a-component)からHooksを呼び出す。
 
-By following this rule, you ensure that all stateful logic in a component is clearly visible from its source code.
+このルールに従うことで、コンポーネント内のすべての状態管理ロジックがソースコードから明確に見えるようになります。
 
 ```js {2,5}
 function FriendList() {
   const [onlineStatus, setOnlineStatus] = useOnlineStatus(); // ✅
 }
 
-function setOnlineStatus() { // ❌ Not a component or custom Hook!
+function setOnlineStatus() { // ❌ コンポーネントやカスタムHookではありません！
   const [onlineStatus, setOnlineStatus] = useOnlineStatus();
 }
 ```

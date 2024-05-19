@@ -1,10 +1,10 @@
 ---
-title: React DOM APIs
+title: React DOM API
 ---
 
 <Intro>
 
-The `react-dom` package contains methods that are only supported for the web applications (which run in the browser DOM environment). They are not supported for React Native.
+`react-dom` 패키지는 웹 애플리케이션(브라우저 DOM 환경에서 실행되는)에서만 지원되는 메서드를 포함하고 있습니다. React Native에서는 지원되지 않습니다.
 
 </Intro>
 
@@ -12,45 +12,44 @@ The `react-dom` package contains methods that are only supported for the web app
 
 ## APIs {/*apis*/}
 
-These APIs can be imported from your components. They are rarely used:
+이 API들은 컴포넌트에서 임포트할 수 있습니다. 이들은 거의 사용되지 않습니다:
 
-* [`createPortal`](/reference/react-dom/createPortal) lets you render child components in a different part of the DOM tree.
-* [`flushSync`](/reference/react-dom/flushSync) lets you force React to flush a state update and update the DOM synchronously.
+* [`createPortal`](/reference/react-dom/createPortal)은 자식 컴포넌트를 DOM 트리의 다른 부분에 렌더링할 수 있게 해줍니다.
+* [`flushSync`](/reference/react-dom/flushSync)은 React가 상태 업데이트를 플러시하고 DOM을 동기적으로 업데이트하도록 강제할 수 있게 해줍니다.
 
-## Resource Preloading APIs {/*resource-preloading-apis*/}
+## 리소스 프리로딩 APIs {/*resource-preloading-apis*/}
 
-These APIs can be used to make apps faster by pre-loading resources such as scripts, stylesheets, and fonts as soon as you know you need them, for example before navigating to another page where the resources will be used.
+이 API들은 스크립트, 스타일시트, 폰트와 같은 리소스를 미리 로드하여 앱을 더 빠르게 만들 수 있습니다. 예를 들어, 리소스가 사용될 다른 페이지로 이동하기 전에 미리 로드할 수 있습니다.
 
-[React-based frameworks](/learn/start-a-new-react-project) frequently handle resource loading for you, so you might not have to call these APIs yourself. Consult your framework's documentation for details.
+[React 기반 프레임워크](/learn/start-a-new-react-project)는 자주 리소스 로딩을 처리해주므로, 직접 이 API들을 호출할 필요가 없을 수도 있습니다. 프레임워크의 문서를 참조하십시오.
 
-* [`prefetchDNS`](/reference/react-dom/prefetchDNS) lets you prefetch the IP address of a DNS domain name that you expect to connect to.
-* [`preconnect`](/reference/react-dom/preconnect) lets you connect to a server you expect to request resources from, even if you don't know what resources you'll need yet.
-* [`preload`](/reference/react-dom/preload) lets you fetch a stylesheet, font, image, or external script that you expect to use.
-* [`preloadModule`](/reference/react-dom/preloadModule) lets you fetch an ESM module that you expect to use.
-* [`preinit`](/reference/react-dom/preinit) lets you fetch and evaluate an external script or fetch and insert a stylesheet.
-* [`preinitModule`](/reference/react-dom/preinitModule) lets you fetch and evaluate an ESM module.
-
----
-
-## Entry points {/*entry-points*/}
-
-The `react-dom` package provides two additional entry points:
-
-* [`react-dom/client`](/reference/react-dom/client) contains APIs to render React components on the client (in the browser).
-* [`react-dom/server`](/reference/react-dom/server) contains APIs to render React components on the server.
+* [`prefetchDNS`](/reference/react-dom/prefetchDNS)은 연결할 것으로 예상되는 DNS 도메인 이름의 IP 주소를 미리 가져올 수 있게 해줍니다.
+* [`preconnect`](/reference/react-dom/preconnect)은 요청할 리소스를 아직 모르는 경우에도 서버에 미리 연결할 수 있게 해줍니다.
+* [`preload`](/reference/react-dom/preload)은 사용할 것으로 예상되는 스타일시트, 폰트, 이미지 또는 외부 스크립트를 미리 가져올 수 있게 해줍니다.
+* [`preloadModule`](/reference/react-dom/preloadModule)은 사용할 것으로 예상되는 ESM 모듈을 미리 가져올 수 있게 해줍니다.
+* [`preinit`](/reference/react-dom/preinit)은 외부 스크립트를 가져와 평가하거나 스타일시트를 가져와 삽입할 수 있게 해줍니다.
+* [`preinitModule`](/reference/react-dom/preinitModule)은 ESM 모듈을 가져와 평가할 수 있게 해줍니다.
 
 ---
 
-## Deprecated APIs {/*deprecated-apis*/}
+## 엔트리 포인트 {/*entry-points*/}
+
+`react-dom` 패키지는 두 개의 추가 엔트리 포인트를 제공합니다:
+
+* [`react-dom/client`](/reference/react-dom/client)은 클라이언트(브라우저)에서 React 컴포넌트를 렌더링하는 API를 포함하고 있습니다.
+* [`react-dom/server`](/reference/react-dom/server)은 서버에서 React 컴포넌트를 렌더링하는 API를 포함하고 있습니다.
+
+---
+
+## 사용 중단된 APIs {/*deprecated-apis*/}
 
 <Deprecated>
 
-These APIs will be removed in a future major version of React.
+이 API들은 React의 향후 주요 버전에서 제거될 예정입니다.
 
 </Deprecated>
 
-* [`findDOMNode`](/reference/react-dom/findDOMNode) finds the closest DOM node corresponding to a class component instance.
-* [`hydrate`](/reference/react-dom/hydrate) mounts a tree into the DOM created from server HTML. Deprecated in favor of [`hydrateRoot`](/reference/react-dom/client/hydrateRoot).
-* [`render`](/reference/react-dom/render) mounts a tree into the DOM. Deprecated in favor of [`createRoot`](/reference/react-dom/client/createRoot).
-* [`unmountComponentAtNode`](/reference/react-dom/unmountComponentAtNode) unmounts a tree from the DOM. Deprecated in favor of [`root.unmount()`](/reference/react-dom/client/createRoot#root-unmount).
-
+* [`findDOMNode`](/reference/react-dom/findDOMNode)은 클래스 컴포넌트 인스턴스에 해당하는 가장 가까운 DOM 노드를 찾습니다.
+* [`hydrate`](/reference/react-dom/hydrate)은 서버 HTML에서 생성된 트리를 DOM에 마운트합니다. [`hydrateRoot`](/reference/react-dom/client/hydrateRoot)를 대신 사용합니다.
+* [`render`](/reference/react-dom/render)은 트리를 DOM에 마운트합니다. [`createRoot`](/reference/react-dom/client/createRoot)를 대신 사용합니다.
+* [`unmountComponentAtNode`](/reference/react-dom/unmountComponentAtNode)은 트리를 DOM에서 언마운트합니다. [`root.unmount()`](/reference/react-dom/client/createRoot#root-unmount)를 대신 사용합니다.

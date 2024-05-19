@@ -1,14 +1,14 @@
 ---
-title: react-test-renderer Deprecation Warnings
+title: react-test-renderer 非推奨警告
 ---
 
-## ReactTestRenderer.create() warning {/*reacttestrenderercreate-warning*/}
+## ReactTestRenderer.create() 警告 {/*reacttestrenderercreate-warning*/}
 
-react-test-renderer is deprecated. A warning will fire whenever calling ReactTestRenderer.create() or ReactShallowRender.render(). The react-test-renderer package will remain available on NPM but will not be maintained and may break with new React features or changes to React's internals.
+react-test-rendererは非推奨です。ReactTestRenderer.create()またはReactShallowRender.render()を呼び出すたびに警告が発生します。react-test-rendererパッケージはNPMで利用可能なままですが、メンテナンスされず、新しいReactの機能やReactの内部変更により壊れる可能性があります。
 
-The React Team recommends migrating your tests to [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) or [@testing-library/react-native](https://callstack.github.io/react-native-testing-library/docs/getting-started) for a modern and well supported testing experience.
+Reactチームは、モダンでサポートされているテスト体験のために、テストを[@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/)または[@testing-library/react-native](https://callstack.github.io/react-native-testing-library/docs/getting-started)に移行することを推奨しています。
 
 
-## new ShallowRenderer() warning {/*new-shallowrenderer-warning*/}
+## new ShallowRenderer() 警告 {/*new-shallowrenderer-warning*/}
 
-The react-test-renderer package no longer exports a shallow renderer at `react-test-renderer/shallow`. This was simply a repackaging of a previously extracted separate package: `react-shallow-renderer`. Therefore you can continue using the shallow renderer in the same way by installing it directly. See [Github](https://github.com/enzymejs/react-shallow-renderer) / [NPM](https://www.npmjs.com/package/react-shallow-renderer).
+react-test-rendererパッケージは、もはや`react-test-renderer/shallow`でシャロウレンダラーをエクスポートしません。これは、以前に分離された別のパッケージである`react-shallow-renderer`の単なる再パッケージ化でした。したがって、直接インストールすることで同じ方法でシャロウレンダラーを使用し続けることができます。詳細は[Github](https://github.com/enzymejs/react-shallow-renderer) / [NPM](https://www.npmjs.com/package/react-shallow-renderer)を参照してください。

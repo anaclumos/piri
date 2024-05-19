@@ -4,7 +4,7 @@ title: isValidElement
 
 <Intro>
 
-`isValidElement` checks whether a value is a React element.
+`isValidElement`는 값이 React 요소인지 확인합니다.
 
 ```js
 const isElement = isValidElement(value)
@@ -16,72 +16,72 @@ const isElement = isValidElement(value)
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `isValidElement(value)` {/*isvalidelement*/}
 
-Call `isValidElement(value)` to check whether `value` is a React element.
+`isValidElement(value)`를 호출하여 `value`가 React 요소인지 확인합니다.
 
 ```js
 import { isValidElement, createElement } from 'react';
 
-// ✅ React elements
+// ✅ React 요소
 console.log(isValidElement(<p />)); // true
 console.log(isValidElement(createElement('p'))); // true
 
-// ❌ Not React elements
+// ❌ React 요소가 아님
 console.log(isValidElement(25)); // false
 console.log(isValidElement('Hello')); // false
 console.log(isValidElement({ age: 42 })); // false
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
-#### Parameters {/*parameters*/}
+#### 매개변수 {/*parameters*/}
 
-* `value`: The `value` you want to check. It can be any a value of any type.
+* `value`: 확인하려는 `value`. 모든 타입의 값이 될 수 있습니다.
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-`isValidElement` returns `true` if the `value` is a React element. Otherwise, it returns `false`.
+`isValidElement`는 `value`가 React 요소인 경우 `true`를 반환합니다. 그렇지 않으면 `false`를 반환합니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* **Only [JSX tags](/learn/writing-markup-with-jsx) and objects returned by [`createElement`](/reference/react/createElement) are considered to be React elements.** For example, even though a number like `42` is a valid React *node* (and can be returned from a component), it is not a valid React element. Arrays and portals created with [`createPortal`](/reference/react-dom/createPortal) are also *not* considered to be React elements.
+* **오직 [JSX 태그](/learn/writing-markup-with-jsx)와 [`createElement`](/reference/react/createElement)로 반환된 객체만이 React 요소로 간주됩니다.** 예를 들어, `42`와 같은 숫자는 유효한 React *노드*이지만 (컴포넌트에서 반환될 수 있음), 유효한 React 요소는 아닙니다. [`createPortal`](/reference/react-dom/createPortal)로 생성된 배열과 포털도 React 요소로 간주되지 않습니다.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Checking if something is a React element {/*checking-if-something-is-a-react-element*/}
+### 어떤 것이 React 요소인지 확인하기 {/*checking-if-something-is-a-react-element*/}
 
-Call `isValidElement` to check if some value is a *React element.*
+어떤 값이 *React 요소*인지 확인하려면 `isValidElement`를 호출하세요.
 
-React elements are:
+React 요소는 다음과 같습니다:
 
-- Values produced by writing a [JSX tag](/learn/writing-markup-with-jsx)
-- Values produced by calling [`createElement`](/reference/react/createElement)
+- [JSX 태그](/learn/writing-markup-with-jsx)로 생성된 값
+- [`createElement`](/reference/react/createElement)를 호출하여 생성된 값
 
-For React elements, `isValidElement` returns `true`:
+React 요소의 경우, `isValidElement`는 `true`를 반환합니다:
 
 ```js
 import { isValidElement, createElement } from 'react';
 
-// ✅ JSX tags are React elements
+// ✅ JSX 태그는 React 요소입니다
 console.log(isValidElement(<p />)); // true
 console.log(isValidElement(<MyComponent />)); // true
 
-// ✅ Values returned by createElement are React elements
+// ✅ createElement로 반환된 값은 React 요소입니다
 console.log(isValidElement(createElement('p'))); // true
 console.log(isValidElement(createElement(MyComponent))); // true
 ```
 
-Any other values, such as strings, numbers, or arbitrary objects and arrays, are not React elements.
+문자열, 숫자, 임의의 객체 및 배열과 같은 다른 값은 React 요소가 아닙니다.
 
-For them, `isValidElement` returns `false`:
+이 경우, `isValidElement`는 `false`를 반환합니다:
 
 ```js
-// ❌ These are *not* React elements
+// ❌ 이들은 *React 요소가 아닙니다*
 console.log(isValidElement(null)); // false
 console.log(isValidElement(25)); // false
 console.log(isValidElement('Hello')); // false
@@ -90,39 +90,39 @@ console.log(isValidElement([<div />, <div />])); // false
 console.log(isValidElement(MyComponent)); // false
 ```
 
-It is very uncommon to need `isValidElement`. It's mostly useful if you're calling another API that *only* accepts elements (like [`cloneElement`](/reference/react/cloneElement) does) and you want to avoid an error when your argument is not a React element.
+`isValidElement`가 필요한 경우는 매우 드뭅니다. 주로 다른 API가 *오직* 요소만을 허용할 때 (예: [`cloneElement`](/reference/react/cloneElement)) 인수로 전달된 값이 React 요소가 아닐 때 오류를 피하고자 할 때 유용합니다.
 
-Unless you have some very specific reason to add an `isValidElement` check, you probably don't need it.
+`isValidElement` 검사를 추가할 매우 구체적인 이유가 없다면, 아마도 필요하지 않을 것입니다.
 
 <DeepDive>
 
-#### React elements vs React nodes {/*react-elements-vs-react-nodes*/}
+#### React 요소 vs React 노드 {/*react-elements-vs-react-nodes*/}
 
-When you write a component, you can return any kind of *React node* from it:
-
-```js
-function MyComponent() {
-  // ... you can return any React node ...
-}
-```
-
-A React node can be:
-
-- A React element created like `<div />` or `createElement('div')`
-- A portal created with [`createPortal`](/reference/react-dom/createPortal)
-- A string
-- A number
-- `true`, `false`, `null`, or `undefined` (which are not displayed)
-- An array of other React nodes
-
-**Note `isValidElement` checks whether the argument is a *React element,* not whether it's a React node.** For example, `42` is not a valid React element. However, it is a perfectly valid React node:
+컴포넌트를 작성할 때, 어떤 종류의 *React 노드*도 반환할 수 있습니다:
 
 ```js
 function MyComponent() {
-  return 42; // It's ok to return a number from component
+  // ... 어떤 React 노드도 반환할 수 있습니다 ...
 }
 ```
 
-This is why you shouldn't use `isValidElement` as a way to check whether something can be rendered.
+React 노드는 다음과 같습니다:
+
+- `<div />` 또는 `createElement('div')`로 생성된 React 요소
+- [`createPortal`](/reference/react-dom/createPortal)로 생성된 포털
+- 문자열
+- 숫자
+- `true`, `false`, `null`, 또는 `undefined` (표시되지 않음)
+- 다른 React 노드의 배열
+
+**`isValidElement`는 인수가 *React 요소*인지 확인합니다, React 노드인지 확인하는 것이 아닙니다.** 예를 들어, `42`는 유효한 React 요소가 아닙니다. 그러나, 이는 완벽하게 유효한 React 노드입니다:
+
+```js
+function MyComponent() {
+  return 42; // 컴포넌트에서 숫자를 반환하는 것은 괜찮습니다
+}
+```
+
+이것이 `isValidElement`를 사용하여 무언가가 렌더링될 수 있는지 확인하는 방법으로 사용해서는 안 되는 이유입니다.
 
 </DeepDive>

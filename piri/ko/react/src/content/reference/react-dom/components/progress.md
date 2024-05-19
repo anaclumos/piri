@@ -1,10 +1,10 @@
 ---
-title: "<progress>"
+title: <progress>
 ---
 
 <Intro>
 
-The [built-in browser `<progress>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress) lets you render a progress indicator.
+[내장 브라우저 `<progress>` 컴포넌트](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress)를 사용하면 진행 표시기를 렌더링할 수 있습니다.
 
 ```js
 <progress value={0.5} />
@@ -16,36 +16,36 @@ The [built-in browser `<progress>` component](https://developer.mozilla.org/en-U
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `<progress>` {/*progress*/}
 
-To display a progress indicator, render the [built-in browser `<progress>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress) component.
+진행 표시기를 표시하려면 [내장 브라우저 `<progress>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress) 컴포넌트를 렌더링하세요.
 
 ```js
 <progress value={0.5} />
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
 #### Props {/*props*/}
 
-`<progress>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<progress>`는 모든 [공통 요소 props](/reference/react-dom/components/common#props)를 지원합니다.
 
-Additionally, `<progress>` supports these props:
+추가적으로, `<progress>`는 다음 props를 지원합니다:
 
-* [`max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#max): A number. Specifies the maximum `value`. Defaults to `1`.
-* [`value`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#value): A number between `0` and `max`, or `null` for indeterminate progress. Specifies how much was done.
+* [`max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#max): 숫자. 최대 `value`를 지정합니다. 기본값은 `1`입니다.
+* [`value`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#value): `0`에서 `max` 사이의 숫자 또는 불확정 진행을 위한 `null`. 완료된 양을 지정합니다.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Controlling a progress indicator {/*controlling-a-progress-indicator*/}
+### 진행 표시기 제어하기 {/*controlling-a-progress-indicator*/}
 
-To display a progress indicator, render a `<progress>` component. You can pass a number `value` between `0` and the `max` value you specify. If you don't pass a `max` value, it will assumed to be `1` by default.
+진행 표시기를 표시하려면 `<progress>` 컴포넌트를 렌더링하세요. 지정한 `max` 값 사이의 숫자 `value`를 전달할 수 있습니다. `max` 값을 전달하지 않으면 기본값으로 `1`이 사용됩니다.
 
-If the operation is not ongoing, pass `value={null}` to put the progress indicator into an indeterminate state.
+작업이 진행 중이지 않다면 `value={null}`을 전달하여 진행 표시기를 불확정 상태로 만드세요.
 
 <Sandpack>
 

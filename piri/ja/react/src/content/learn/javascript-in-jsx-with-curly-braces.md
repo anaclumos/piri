@@ -1,25 +1,25 @@
 ---
-title: JavaScript in JSX with Curly Braces
+title: JSX内のJavaScriptは中括弧で囲む
 ---
 
 <Intro>
 
-JSX lets you write HTML-like markup inside a JavaScript file, keeping rendering logic and content in the same place. Sometimes you will want to add a little JavaScript logic or reference a dynamic property inside that markup. In this situation, you can use curly braces in your JSX to open a window to JavaScript.
+JSXは、JavaScriptファイル内にHTMLのようなマークアップを書くことができ、レンダリングロジックとコンテンツを同じ場所に保つことができます。時には、そのマークアップ内に少しのJavaScriptロジックを追加したり、動的なプロパティを参照したりしたいことがあります。このような場合、JSX内で中括弧を使用してJavaScriptへの窓を開くことができます。
 
 </Intro>
 
 <YouWillLearn>
 
-* How to pass strings with quotes
-* How to reference a JavaScript variable inside JSX with curly braces
-* How to call a JavaScript function inside JSX with curly braces
-* How to use a JavaScript object inside JSX with curly braces
+* 引用符付きの文字列を渡す方法
+* JSX内で中括弧を使用してJavaScript変数を参照する方法
+* JSX内で中括弧を使用してJavaScript関数を呼び出す方法
+* JSX内で中括弧を使用してJavaScriptオブジェクトを使用する方法
 
 </YouWillLearn>
 
-## Passing strings with quotes {/*passing-strings-with-quotes*/}
+## 引用符付きの文字列を渡す {/*passing-strings-with-quotes*/}
 
-When you want to pass a string attribute to JSX, you put it in single or double quotes:
+JSXに文字列属性を渡したい場合は、シングルクォートまたはダブルクォートで囲みます：
 
 <Sandpack>
 
@@ -41,9 +41,9 @@ export default function Avatar() {
 
 </Sandpack>
 
-Here, `"https://i.imgur.com/7vQD0fPs.jpg"` and `"Gregorio Y. Zara"` are being passed as strings.
+ここでは、`"https://i.imgur.com/7vQD0fPs.jpg"` と `"Gregorio Y. Zara"` が文字列として渡されています。
 
-But what if you want to dynamically specify the `src` or `alt` text? You could **use a value from JavaScript by replacing `"` and `"` with `{` and `}`**:
+しかし、`src`や`alt`テキストを動的に指定したい場合はどうすればよいでしょうか？ **JavaScriptの値を使用して`"`と`"`を`{`と`}`に置き換える**ことができます：
 
 <Sandpack>
 
@@ -67,11 +67,11 @@ export default function Avatar() {
 
 </Sandpack>
 
-Notice the difference between `className="avatar"`, which specifies an `"avatar"` CSS class name that makes the image round, and `src={avatar}` that reads the value of the JavaScript variable called `avatar`. That's because curly braces let you work with JavaScript right there in your markup!
+`className="avatar"`は画像を丸くする`"avatar"`というCSSクラス名を指定し、`src={avatar}`はJavaScript変数`avatar`の値を読み取るという違いに注目してください。これは、中括弧を使用することで、マークアップ内でJavaScriptを操作できるからです！
 
-## Using curly braces: A window into the JavaScript world {/*using-curly-braces-a-window-into-the-javascript-world*/}
+## 中括弧の使用: JavaScriptの世界への窓 {/*using-curly-braces-a-window-into-the-javascript-world*/}
 
-JSX is a special way of writing JavaScript. That means it’s possible to use JavaScript inside it—with curly braces `{ }`. The example below first declares a name for the scientist, `name`, then embeds it with curly braces inside the `<h1>`:
+JSXはJavaScriptを書く特別な方法です。つまり、中括弧`{ }`を使用してJavaScriptを使用することが可能です。以下の例では、まず科学者の名前`name`を宣言し、それを中括弧で`<h1>`内に埋め込んでいます：
 
 <Sandpack>
 
@@ -86,9 +86,9 @@ export default function TodoList() {
 
 </Sandpack>
 
-Try changing the `name`'s value from `'Gregorio Y. Zara'` to `'Hedy Lamarr'`. See how the list title changes?
+`name`の値を`'Gregorio Y. Zara'`から`'Hedy Lamarr'`に変更してみてください。リストのタイトルがどのように変わるか確認してください。
 
-Any JavaScript expression will work between curly braces, including function calls like `formatDate()`:
+中括弧内では、`formatDate()`のような関数呼び出しを含む任意のJavaScript式が動作します：
 
 <Sandpack>
 
@@ -111,18 +111,18 @@ export default function TodoList() {
 
 </Sandpack>
 
-### Where to use curly braces {/*where-to-use-curly-braces*/}
+### 中括弧の使用場所 {/*where-to-use-curly-braces*/}
 
-You can only use curly braces in two ways inside JSX:
+JSX内で中括弧を使用できるのは2つの方法だけです：
 
-1. **As text** directly inside a JSX tag: `<h1>{name}'s To Do List</h1>` works, but `<{tag}>Gregorio Y. Zara's To Do List</{tag}>`  will not.
-2. **As attributes** immediately following the `=` sign: `src={avatar}` will read the `avatar` variable, but `src="{avatar}"` will pass the string `"{avatar}"`.
+1. **テキストとして** JSXタグ内に直接：`<h1>{name}'s To Do List</h1>`は動作しますが、`<{tag}>Gregorio Y. Zara's To Do List</{tag}>`は動作しません。
+2. **属性として** `=`記号の直後に：`src={avatar}`は`avatar`変数を読み取りますが、`src="{avatar}"`は文字列`"{avatar}"`を渡します。
 
-## Using "double curlies": CSS and other objects in JSX {/*using-double-curlies-css-and-other-objects-in-jsx*/}
+## "ダブルカール"の使用: JSX内のCSSおよびその他のオブジェクト {/*using-double-curlies-css-and-other-objects-in-jsx*/}
 
-In addition to strings, numbers, and other JavaScript expressions, you can even pass objects in JSX. Objects are also denoted with curly braces, like `{ name: "Hedy Lamarr", inventions: 5 }`. Therefore, to pass a JS object in JSX, you must wrap the object in another pair of curly braces: `person={{ name: "Hedy Lamarr", inventions: 5 }}`.
+文字列、数値、およびその他のJavaScript式に加えて、JSX内でオブジェクトを渡すこともできます。オブジェクトも中括弧で表されるため、JSX内でJSオブジェクトを渡すには、オブジェクトをもう一対の中括弧で囲む必要があります：`person={{ name: "Hedy Lamarr", inventions: 5 }}`。
 
-You may see this with inline CSS styles in JSX. React does not require you to use inline styles (CSS classes work great for most cases). But when you need an inline style, you pass an object to the `style` attribute:
+これはJSX内のインラインCSSスタイルで見ることができます。Reactはインラインスタイルの使用を必須としていません（ほとんどの場合、CSSクラスがうまく機能します）。しかし、インラインスタイルが必要な場合は、`style`属性にオブジェクトを渡します：
 
 <Sandpack>
 
@@ -148,9 +148,9 @@ ul { padding: 20px 20px 20px 40px; margin: 0; }
 
 </Sandpack>
 
-Try changing the values of `backgroundColor` and `color`.
+`backgroundColor`と`color`の値を変更してみてください。
 
-You can really see the JavaScript object inside the curly braces when you write it like this:
+このように書くと、JSX内の中括弧内にJavaScriptオブジェクトがあることがよくわかります：
 
 ```js {2-5}
 <ul style={
@@ -161,17 +161,17 @@ You can really see the JavaScript object inside the curly braces when you write 
 }>
 ```
 
-The next time you see `{{` and `}}` in JSX, know that it's nothing more than an object inside the JSX curlies!
+次にJSX内で`{{`と`}}`を見たとき、それはJSXの中括弧内にオブジェクトがあるだけだと理解してください！
 
 <Pitfall>
 
-Inline `style` properties are written in camelCase. For example, HTML `<ul style="background-color: black">` would be written as `<ul style={{ backgroundColor: 'black' }}>`  in your component.
+インライン`style`プロパティはキャメルケースで書かれます。例えば、HTMLの`<ul style="background-color: black">`は、コンポーネント内では`<ul style={{ backgroundColor: 'black' }}>`と書かれます。
 
 </Pitfall>
 
-## More fun with JavaScript objects and curly braces {/*more-fun-with-javascript-objects-and-curly-braces*/}
+## JavaScriptオブジェクトと中括弧を使ったさらに楽しいこと {/*more-fun-with-javascript-objects-and-curly-braces*/}
 
-You can move several expressions into one object, and reference them in your JSX inside curly braces:
+いくつかの式を1つのオブジェクトにまとめ、それをJSX内の中括弧で参照することができます：
 
 <Sandpack>
 
@@ -211,7 +211,7 @@ body > div > div { padding: 20px; }
 
 </Sandpack>
 
-In this example, the `person` JavaScript object contains a `name` string and a `theme` object:
+この例では、`person` JavaScriptオブジェクトが`name`文字列と`theme`オブジェクトを含んでいます：
 
 ```js
 const person = {
@@ -223,31 +223,31 @@ const person = {
 };
 ```
 
-The component can use these values from `person` like so:
+コンポーネントは`person`からこれらの値を次のように使用できます：
 
 ```js
 <div style={person.theme}>
   <h1>{person.name}'s Todos</h1>
 ```
 
-JSX is very minimal as a templating language because it lets you organize data and logic using JavaScript.
+JSXはテンプレート言語として非常にミニマルです。なぜなら、JavaScriptを使用してデータとロジックを整理できるからです。
 
 <Recap>
 
-Now you know almost everything about JSX:
+これでJSXについてほぼすべてを知っています：
 
-* JSX attributes inside quotes are passed as strings.
-* Curly braces let you bring JavaScript logic and variables into your markup.
-* They work inside the JSX tag content or immediately after `=` in attributes.
-* `{{` and `}}` is not special syntax: it's a JavaScript object tucked inside JSX curly braces.
+* 引用符内のJSX属性は文字列として渡されます。
+* 中括弧を使用すると、JavaScriptのロジックや変数をマークアップに取り込むことができます。
+* それらはJSXタグの内容内または属性の`=`の直後に機能します。
+* `{{`と`}}`は特別な構文ではありません：JSXの中括弧内にJavaScriptオブジェクトが隠れています。
 
 </Recap>
 
 <Challenges>
 
-#### Fix the mistake {/*fix-the-mistake*/}
+#### 間違いを修正する {/*fix-the-mistake*/}
 
-This code crashes with an error saying `Objects are not valid as a React child`:
+このコードは`Objects are not valid as a React child`というエラーでクラッシュします：
 
 <Sandpack>
 
@@ -287,15 +287,15 @@ body > div > div { padding: 20px; }
 
 </Sandpack>
 
-Can you find the problem?
+問題を見つけられますか？
 
-<Hint>Look for what's inside the curly braces. Are we putting the right thing there?</Hint>
+<Hint>中括弧の中に何があるかを見てください。正しいものを入れていますか？</Hint>
 
 <Solution>
 
-This is happening because this example renders *an object itself* into the markup rather than a string: `<h1>{person}'s Todos</h1>` is trying to render the entire `person` object! Including raw objects as text content throws an error because React doesn't know how you want to display them.
+この例では、*オブジェクト自体*をマークアップにレンダリングしようとしているため、`<h1>{person}'s Todos</h1>`は`person`オブジェクト全体をレンダリングしようとしています！生のオブジェクトをテキストコンテンツとして含めると、Reactはそれをどのように表示するか分からないため、エラーが発生します。
 
-To fix it, replace `<h1>{person}'s Todos</h1>` with `<h1>{person.name}'s Todos</h1>`:
+これを修正するには、`<h1>{person}'s Todos</h1>`を`<h1>{person.name}'s Todos</h1>`に置き換えます：
 
 <Sandpack>
 
@@ -337,9 +337,9 @@ body > div > div { padding: 20px; }
 
 </Solution>
 
-#### Extract information into an object {/*extract-information-into-an-object*/}
+#### 情報をオブジェクトに抽出する {/*extract-information-into-an-object*/}
 
-Extract the image URL into the `person` object.
+画像URLを`person`オブジェクトに抽出します。
 
 <Sandpack>
 
@@ -381,7 +381,7 @@ body > div > div { padding: 20px; }
 
 <Solution>
 
-Move the image URL into a property called `person.imageUrl` and read it from the `<img>` tag using the curlies:
+画像URLを`person.imageUrl`というプロパティに移動し、カールを使用して`<img>`タグから読み取ります：
 
 <Sandpack>
 
@@ -424,13 +424,13 @@ body > div > div { padding: 20px; }
 
 </Solution>
 
-#### Write an expression inside JSX curly braces {/*write-an-expression-inside-jsx-curly-braces*/}
+#### JSX中括弧内に式を書く {/*write-an-expression-inside-jsx-curly-braces*/}
 
-In the object below, the full image URL is split into four parts: base URL, `imageId`, `imageSize`, and file extension.
+以下のオブジェクトでは、完全な画像URLが4つの部分に分割されています：ベースURL、`imageId`、`imageSize`、およびファイル拡張子。
 
-We want the image URL to combine these attributes together: base URL (always `'https://i.imgur.com/'`), `imageId` (`'7vQD0fP'`), `imageSize` (`'s'`), and file extension (always `'.jpg'`). However, something is wrong with how the `<img>` tag specifies its `src`.
+画像URLはこれらの属性を組み合わせて作成したいです：ベースURL（常に`'https://i.imgur.com/'`）、`imageId`（`'7vQD0fP'`）、`imageSize`（`'s'`）、およびファイル拡張子（常に`'.jpg'`）。しかし、`<img>`タグが`src`を指定する方法に何か問題があります。
 
-Can you fix it?
+修正できますか？
 
 <Sandpack>
 
@@ -474,15 +474,15 @@ body > div > div { padding: 20px; }
 
 </Sandpack>
 
-To check that your fix worked, try changing the value of `imageSize` to `'b'`. The image should resize after your edit.
+修正がうまくいったかどうかを確認するには、`imageSize`の値を`'b'`に変更してみてください。編集後に画像がリサイズされるはずです。
 
 <Solution>
 
-You can write it as `src={baseUrl + person.imageId + person.imageSize + '.jpg'}`.
+`src={baseUrl + person.imageId + person.imageSize + '.jpg'}`と書くことができます。
 
-1. `{` opens the JavaScript expression
-2. `baseUrl + person.imageId + person.imageSize + '.jpg'` produces the correct URL string
-3. `}` closes the JavaScript expression
+1. `{`はJavaScript式を開きます
+2. `baseUrl + person.imageId + person.imageSize + '.jpg'`は正しいURL文字列を生成します
+3. `}`はJavaScript式を閉じます
 
 <Sandpack>
 
@@ -519,13 +519,13 @@ export default function TodoList() {
 
 ```css
 body { padding: 0; margin: 0 }
-body > div > div { padding: 20px; }
+body > div > div{ padding: 20px; }
 .avatar { border-radius: 50%; }
 ```
 
 </Sandpack>
 
-You can also move this expression into a separate function like `getImageUrl` below:
+この式を`getImageUrl`のような別の関数に移動することもできます：
 
 <Sandpack>
 
@@ -580,7 +580,7 @@ body > div > div { padding: 20px; }
 
 </Sandpack>
 
-Variables and functions can help you keep the markup simple!
+変数や関数を使用すると、マークアップをシンプルに保つことができます！
 
 </Solution>
 

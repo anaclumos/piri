@@ -1,42 +1,42 @@
 ---
-title: React Reference Overview
+title: React リファレンス概要
 ---
 
 <Intro>
 
-This section provides detailed reference documentation for working with React. For an introduction to React, please visit the [Learn](/learn) section.
+このセクションでは、Reactを使用するための詳細なリファレンスドキュメントを提供します。Reactの紹介については、[Learn](/learn)セクションをご覧ください。
 
 </Intro>
 
-The React reference documentation is broken down into functional subsections:
+Reactのリファレンスドキュメントは、機能ごとに細分化されています：
 
 ## React {/*react*/}
 
-Programmatic React features:
+プログラム的なReactの機能：
 
-* [Hooks](/reference/react/hooks) - Use different React features from your components.
-* [Components](/reference/react/components) - Documents built-in components that you can use in your JSX.
-* [APIs](/reference/react/apis) - APIs that are useful for defining components.
-* [Directives](/reference/rsc/directives) - Provide instructions to bundlers compatible with React Server Components.
+* [Hooks](/reference/react/hooks) - コンポーネントからさまざまなReact機能を使用します。
+* [Components](/reference/react/components) - JSXで使用できる組み込みコンポーネントを文書化します。
+* [APIs](/reference/react/apis) - コンポーネントを定義するのに役立つAPI。
+* [Directives](/reference/rsc/directives) - React Server Componentsに対応するバンドラーに指示を提供します。
 
 ## React DOM {/*react-dom*/}
 
-React-dom contains features that are only supported for web applications (which run in the browser DOM environment). This section is broken into the following:
+React-domには、ウェブアプリケーション（ブラウザのDOM環境で実行される）でのみサポートされる機能が含まれています。このセクションは次のように分かれています：
 
-* [Hooks](/reference/react-dom/hooks) - Hooks for web applications which run in the browser DOM environment.
-* [Components](/reference/react-dom/components) - React supports all of the browser built-in HTML and SVG components.
-* [APIs](/reference/react-dom) - The `react-dom` package contains methods supported only in web applications.
-* [Client APIs](/reference/react-dom/client) - The `react-dom/client` APIs let you render React components on the client (in the browser).
-* [Server APIs](/reference/react-dom/server) - The `react-dom/server` APIs let you render React components to HTML on the server.
+* [Hooks](/reference/react-dom/hooks) - ブラウザのDOM環境で実行されるウェブアプリケーション用のHooks。
+* [Components](/reference/react-dom/components) - Reactはすべてのブラウザ組み込みのHTMLおよびSVGコンポーネントをサポートします。
+* [APIs](/reference/react-dom) - `react-dom`パッケージには、ウェブアプリケーションでのみサポートされるメソッドが含まれています。
+* [Client APIs](/reference/react-dom/client) - `react-dom/client` APIは、クライアント（ブラウザ）でReactコンポーネントをレンダリングすることを可能にします。
+* [Server APIs](/reference/react-dom/server) - `react-dom/server` APIは、サーバー上でReactコンポーネントをHTMLにレンダリングすることを可能にします。
 
 ## Rules of React {/*rules-of-react*/}
 
-React has idioms — or rules — for how to express patterns in a way that is easy to understand and yields high-quality applications:
+Reactには、理解しやすく高品質なアプリケーションを生み出すためのパターンを表現するための慣用句（またはルール）があります：
 
-* [Components and Hooks must be pure](/reference/rules/components-and-hooks-must-be-pure) – Purity makes your code easier to understand, debug, and allows React to automatically optimize your components and hooks correctly.
-* [React calls Components and Hooks](/reference/rules/react-calls-components-and-hooks) – React is responsible for rendering components and hooks when necessary to optimize the user experience.
-* [Rules of Hooks](/reference/rules/rules-of-hooks) – Hooks are defined using JavaScript functions, but they represent a special type of reusable UI logic with restrictions on where they can be called.
+* [Components and Hooks must be pure](/reference/rules/components-and-hooks-must-be-pure) – 純粋性はコードを理解しやすくし、デバッグを容易にし、ReactがコンポーネントとHooksを自動的に最適化できるようにします。
+* [React calls Components and Hooks](/reference/rules/react-calls-components-and-hooks) – Reactは、ユーザーエクスペリエンスを最適化するために必要に応じてコンポーネントとHooksをレンダリングします。
+* [Rules of Hooks](/reference/rules/rules-of-hooks) – HooksはJavaScript関数を使用して定義されますが、呼び出し場所に制限がある特別な種類の再利用可能なUIロジックを表します。
 
 ## Legacy APIs {/*legacy-apis*/}
 
-* [Legacy APIs](/reference/react/legacy) - Exported from the `react` package, but not recommended for use in newly written code.
+* [Legacy APIs](/reference/react/legacy) - `react`パッケージからエクスポートされますが、新しく書かれたコードでの使用は推奨されません。

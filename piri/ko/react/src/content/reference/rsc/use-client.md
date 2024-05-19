@@ -1,18 +1,18 @@
 ---
-title: "'use client'"
-titleForTitleTag: "'use client' directive"
+title: 'use client'
+titleForTitleTag: 'use client' directive
 canary: true
 ---
 
 <Canary>
 
-`'use client'` is needed only if you're [using React Server Components](/learn/start-a-new-react-project#bleeding-edge-react-frameworks) or building a library compatible with them.
+`'use client'`는 [React Server Components를 사용하는 경우](/learn/start-a-new-react-project#bleeding-edge-react-frameworks)나 이와 호환되는 라이브러리를 빌드하는 경우에만 필요합니다.
 </Canary>
 
 
 <Intro>
 
-`'use client'` lets you mark what code runs on the client.
+`'use client'`는 클라이언트에서 실행되는 코드를 표시할 수 있게 해줍니다.
 
 </Intro>
 
@@ -20,11 +20,11 @@ canary: true
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `'use client'` {/*use-client*/}
 
-Add `'use client'` at the top of a file to mark the module and its transitive dependencies as client code.
+파일 상단에 `'use client'`를 추가하여 모듈과 그 전이적 종속성을 클라이언트 코드로 표시합니다.
 
 ```js {1}
 'use client';
@@ -41,26 +41,26 @@ export default function RichTextEditor({ timestamp, text }) {
 }
 ```
 
-When a file marked with `'use client'` is imported from a Server Component, [compatible bundlers](/learn/start-a-new-react-project#bleeding-edge-react-frameworks) will treat the module import as a boundary between server-run and client-run code.
+Server Component에서 `'use client'`로 표시된 파일을 가져올 때, [호환되는 번들러](/learn/start-a-new-react-project#bleeding-edge-react-frameworks)는 모듈 가져오기를 서버 실행 코드와 클라이언트 실행 코드 간의 경계로 처리합니다.
 
-As dependencies of `RichTextEditor`, `formatDate` and `Button` will also be evaluated on the client regardless of whether their modules contain a `'use client'` directive. Note that a single module may be evaluated on the server when imported from server code and on the client when imported from client code.
+`RichTextEditor`의 종속성인 `formatDate`와 `Button`은 모듈에 `'use client'` 지시문이 포함되어 있는지 여부에 관계없이 클라이언트에서 평가됩니다. 단일 모듈은 서버 코드에서 가져올 때 서버에서 평가되고 클라이언트 코드에서 가져올 때 클라이언트에서 평가될 수 있습니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* `'use client'` must be at the very beginning of a file, above any imports or other code (comments are OK). They must be written with single or double quotes, but not backticks.
-* When a `'use client'` module is imported from another client-rendered module, the directive has no effect.
-* When a component module contains a `'use client'` directive, any usage of that component is guaranteed to be a Client Component. However, a component can still be evaluated on the client even if it does not have a `'use client'` directive.
-	* A component usage is considered a Client Component if it is defined in module with `'use client'` directive or when it is a transitive dependency of a module that contains a `'use client'` directive. Otherwise, it is a Server Component.
-* Code that is marked for client evaluation is not limited to components. All code that is a part of the Client module sub-tree is sent to and run by the client.
-* When a server evaluated module imports values from a `'use client'` module, the values must either be a React component or [supported serializable prop values](#passing-props-from-server-to-client-components) to be passed to a Client Component. Any other use case will throw an exception.
+* `'use client'`는 파일의 맨 처음, 모든 import나 다른 코드 위에 있어야 합니다(주석은 괜찮습니다). 단일 또는 이중 따옴표로 작성해야 하며, 백틱은 사용할 수 없습니다.
+* `'use client'` 모듈이 다른 클라이언트 렌더링 모듈에서 가져올 때, 지시문은 아무런 효과가 없습니다.
+* 컴포넌트 모듈에 `'use client'` 지시문이 포함된 경우, 해당 컴포넌트의 사용은 클라이언트 컴포넌트로 보장됩니다. 그러나 컴포넌트가 `'use client'` 지시문이 없어도 클라이언트에서 평가될 수 있습니다.
+	* 컴포넌트 사용은 모듈에 `'use client'` 지시문이 포함되어 있거나 `'use client'` 지시문이 포함된 모듈의 전이적 종속성일 때 클라이언트 컴포넌트로 간주됩니다. 그렇지 않으면 서버 컴포넌트입니다.
+* 클라이언트 평가를 위해 표시된 코드는 컴포넌트에 국한되지 않습니다. 클라이언트 모듈 서브 트리의 모든 코드는 클라이언트로 전송되어 실행됩니다.
+* 서버 평가 모듈이 `'use client'` 모듈에서 값을 가져올 때, 값은 React 컴포넌트이거나 [지원되는 직렬화 가능한 prop 값](#passing-props-from-server-to-client-components)이어야 클라이언트 컴포넌트로 전달될 수 있습니다. 다른 사용 사례는 예외를 발생시킵니다.
 
-### How `'use client'` marks client code {/*how-use-client-marks-client-code*/}
+### `'use client'`가 클라이언트 코드를 표시하는 방법 {/*how-use-client-marks-client-code*/}
 
-In a React app, components are often split into separate files, or [modules](/learn/importing-and-exporting-components#exporting-and-importing-a-component).
+React 앱에서 컴포넌트는 종종 별도의 파일 또는 [모듈](/learn/importing-and-exporting-components#exporting-and-importing-a-component)로 분할됩니다.
 
-For apps that use React Server Components, the app is server-rendered by default. `'use client'` introduces a server-client boundary in the [module dependency tree](/learn/understanding-your-ui-as-a-tree#the-module-dependency-tree), effectively creating a subtree of Client modules.
+React Server Components를 사용하는 앱의 경우 기본적으로 서버에서 렌더링됩니다. `'use client'`는 [모듈 종속성 트리](/learn/understanding-your-ui-as-a-tree#the-module-dependency-tree)에서 서버-클라이언트 경계를 도입하여 클라이언트 모듈의 서브 트리를 효과적으로 생성합니다.
 
-To better illustrate this, consider the following React Server Components app.
+이를 더 잘 설명하기 위해 다음 React Server Components 앱을 고려해 보겠습니다.
 
 <Sandpack>
 
@@ -145,144 +145,144 @@ export default [
 
 </Sandpack>
 
-In the module dependency tree of this example app, the `'use client'` directive in `InspirationGenerator.js` marks that module and all of its transitive dependencies as Client modules. The subtree starting at `InspirationGenerator.js` is now marked as Client modules.
+이 예제 앱의 모듈 종속성 트리에서 `InspirationGenerator.js`의 `'use client'` 지시문은 해당 모듈과 모든 전이적 종속성을 클라이언트 모듈로 표시합니다. 이제 `InspirationGenerator.js`에서 시작하는 서브 트리는 클라이언트 모듈로 표시됩니다.
 
 <Diagram name="use_client_module_dependency" height={250} width={545} alt="A tree graph with the top node representing the module 'App.js'. 'App.js' has three children: 'Copyright.js', 'FancyText.js', and 'InspirationGenerator.js'. 'InspirationGenerator.js' has two children: 'FancyText.js' and 'inspirations.js'. The nodes under and including 'InspirationGenerator.js' have a yellow background color to signify that this sub-graph is client-rendered due to the 'use client' directive in 'InspirationGenerator.js'.">
-`'use client'` segments the module dependency tree of the React Server Components app, marking `InspirationGenerator.js` and all of its dependencies as client-rendered.
+`'use client'`는 React Server Components 앱의 모듈 종속성 트리를 분할하여 `InspirationGenerator.js`와 그 모든 종속성을 클라이언트 렌더링으로 표시합니다.
 </Diagram>
 
-During render, the framework will server-render the root component and continue through the [render tree](/learn/understanding-your-ui-as-a-tree#the-render-tree), opting-out of evaluating any code imported from client-marked code.
+렌더링 중에 프레임워크는 루트 컴포넌트를 서버에서 렌더링하고 [렌더 트리](/learn/understanding-your-ui-as-a-tree#the-render-tree)를 계속 진행하며 클라이언트로 표시된 코드에서 가져온 코드를 평가하지 않습니다.
 
-The server-rendered portion of the render tree is then sent to the client. The client, with its client code downloaded, then completes rendering the rest of the tree.
+서버에서 렌더링된 렌더 트리의 부분은 클라이언트로 전송됩니다. 클라이언트는 클라이언트 코드가 다운로드된 상태에서 나머지 트리의 렌더링을 완료합니다.
 
 <Diagram name="use_client_render_tree" height={250} width={500} alt="A tree graph where each node represents a component and its children as child components. The top-level node is labelled 'App' and it has two child components 'InspirationGenerator' and 'FancyText'. 'InspirationGenerator' has two child components, 'FancyText' and 'Copyright'. Both 'InspirationGenerator' and its child component 'FancyText' are marked to be client-rendered.">
-The render tree for the React Server Components app. `InspirationGenerator` and its child component `FancyText` are components exported from client-marked code and considered Client Components.
+React Server Components 앱의 렌더 트리. `InspirationGenerator`와 그 자식 컴포넌트 `FancyText`는 클라이언트로 표시된 코드에서 내보낸 컴포넌트로 클라이언트 컴포넌트로 간주됩니다.
 </Diagram>
 
-We introduce the following definitions:
+다음 정의를 소개합니다:
 
-* **Client Components** are components in a render tree that are rendered on the client.
-* **Server Components** are components in a render tree that are rendered on the server.
+* **클라이언트 컴포넌트**는 렌더 트리에서 클라이언트에서 렌더링되는 컴포넌트입니다.
+* **서버 컴포넌트**는 렌더 트리에서 서버에서 렌더링되는 컴포넌트입니다.
 
-Working through the example app, `App`, `FancyText` and `Copyright` are all server-rendered and considered Server Components. As `InspirationGenerator.js` and its transitive dependencies are marked as client code, the component `InspirationGenerator` and its child component `FancyText` are Client Components.
+예제 앱을 통해 `App`, `FancyText` 및 `Copyright`는 모두 서버에서 렌더링되며 서버 컴포넌트로 간주됩니다. `InspirationGenerator.js`와 그 전이적 종속성이 클라이언트 코드로 표시되므로 `InspirationGenerator` 컴포넌트와 그 자식 컴포넌트 `FancyText`는 클라이언트 컴포넌트입니다.
 
 <DeepDive>
-#### How is `FancyText` both a Server and a Client Component? {/*how-is-fancytext-both-a-server-and-a-client-component*/}
+#### `FancyText`가 어떻게 서버와 클라이언트 컴포넌트가 될 수 있나요? {/*how-is-fancytext-both-a-server-and-a-client-component*/}
 
-By the above definitions, the component `FancyText` is both a Server and Client Component, how can that be?
+위의 정의에 따르면, `FancyText` 컴포넌트는 서버와 클라이언트 컴포넌트 모두입니다. 어떻게 그럴 수 있을까요?
 
-First, let's clarify that the term "component" is not very precise. Here are just two ways "component" can be understood:
+먼저, "컴포넌트"라는 용어가 매우 정확하지 않다는 점을 명확히 합시다. 여기 두 가지 "컴포넌트"를 이해하는 방법이 있습니다:
 
-1. A "component" can refer to a **component definition**. In most cases this will be a function.
+1. "컴포넌트"는 **컴포넌트 정의**를 의미할 수 있습니다. 대부분의 경우 이는 함수일 것입니다.
 
 ```js
-// This is a definition of a component
+// 이것은 컴포넌트 정의입니다
 function MyComponent() {
   return <p>My Component</p>
 }
 ```
 
-2. A "component" can also refer to a **component usage** of its definition.
+2. "컴포넌트"는 컴포넌트 정의의 **컴포넌트 사용**을 의미할 수도 있습니다.
 ```js
 import MyComponent from './MyComponent';
 
 function App() {
-  // This is a usage of a component
+  // 이것은 컴포넌트 사용입니다
   return <MyComponent />;
 }
 ```
 
-Often, the imprecision is not important when explaining concepts, but in this case it is.
+종종 이러한 부정확성은 개념을 설명할 때 중요하지 않지만, 이 경우에는 중요합니다.
 
-When we talk about Server or Client Components, we are referring to component usages.
+서버 또는 클라이언트 컴포넌트에 대해 이야기할 때, 우리는 컴포넌트 사용을 의미합니다.
 
-* If the component is defined in a module with a `'use client'` directive, or the component is imported and called in a Client Component, then the component usage is a Client Component.
-* Otherwise, the component usage is a Server Component.
+* 컴포넌트가 `'use client'` 지시문이 있는 모듈에서 정의되었거나 클라이언트 컴포넌트에서 가져와 호출된 경우, 해당 컴포넌트 사용은 클라이언트 컴포넌트입니다.
+* 그렇지 않으면, 컴포넌트 사용은 서버 컴포넌트입니다.
 
 
-<Diagram name="use_client_render_tree" height={150} width={450} alt="A tree graph where each node represents a component and its children as child components. The top-level node is labelled 'App' and it has two child components 'InspirationGenerator' and 'FancyText'. 'InspirationGenerator' has two child components, 'FancyText' and 'Copyright'. Both 'InspirationGenerator' and its child component 'FancyText' are marked to be client-rendered.">A render tree illustrates component usages.</Diagram>
+<Diagram name="use_client_render_tree" height={150} width={450} alt="A tree graph where each node represents a component and its children as child components. The top-level node is labelled 'App' and it has two child components 'InspirationGenerator' and 'FancyText'. 'InspirationGenerator' has two child components, 'FancyText' and 'Copyright'. Both 'InspirationGenerator' and its child component 'FancyText' are marked to be client-rendered.">렌더 트리는 컴포넌트 사용을 설명합니다.</Diagram>
 
-Back to the question of `FancyText`, we see that the component definition does _not_ have a `'use client'` directive and it has two usages.
+`FancyText`에 대한 질문으로 돌아가서, 컴포넌트 정의에는 `'use client'` 지시문이 없으며 두 가지 사용이 있습니다.
 
-The usage of `FancyText` as a child of `App`, marks that usage as a Server Component. When `FancyText` is imported and called under `InspirationGenerator`, that usage of `FancyText` is a Client Component as `InspirationGenerator` contains a `'use client'` directive.
+`App`의 자식으로서 `FancyText`의 사용은 서버 컴포넌트로 표시됩니다. `FancyText`가 `InspirationGenerator` 아래에서 가져와 호출될 때, `InspirationGenerator`에 `'use client'` 지시문이 포함되어 있으므로 `FancyText`의 사용은 클라이언트 컴포넌트입니다.
 
-This means that the component definition for `FancyText` will both be evaluated on the server and also downloaded by the client to render its Client Component usage.
+이는 `FancyText`의 컴포넌트 정의가 서버에서 평가되고 클라이언트에서 클라이언트 컴포넌트 사용을 렌더링하기 위해 다운로드된다는 것을 의미합니다.
 
 </DeepDive>
 
 <DeepDive>
 
-#### Why is `Copyright` a Server Component? {/*why-is-copyright-a-server-component*/}
+#### 왜 `Copyright`는 서버 컴포넌트인가요? {/*why-is-copyright-a-server-component*/}
 
-Because `Copyright` is rendered as a child of the Client Component `InspirationGenerator`, you might be surprised that it is a Server Component.
+`Copyright`가 클라이언트 컴포넌트 `InspirationGenerator`의 자식으로 렌더링되기 때문에, 서버 컴포넌트라는 사실에 놀랄 수 있습니다.
 
-Recall that `'use client'` defines the boundary between server and client code on the _module dependency tree_, not the render tree.
+`'use client'`는 _모듈 종속성 트리_에서 서버와 클라이언트 코드 간의 경계를 정의합니다, 렌더 트리가 아닙니다.
 
 <Diagram name="use_client_module_dependency" height={200} width={500} alt="A tree graph with the top node representing the module 'App.js'. 'App.js' has three children: 'Copyright.js', 'FancyText.js', and 'InspirationGenerator.js'. 'InspirationGenerator.js' has two children: 'FancyText.js' and 'inspirations.js'. The nodes under and including 'InspirationGenerator.js' have a yellow background color to signify that this sub-graph is client-rendered due to the 'use client' directive in 'InspirationGenerator.js'.">
-`'use client'` defines the boundary between server and client code on the module dependency tree.
+`'use client'`는 모듈 종속성 트리에서 서버와 클라이언트 코드 간의 경계를 정의합니다.
 </Diagram>
 
-In the module dependency tree, we see that `App.js` imports and calls `Copyright` from the `Copyright.js` module. As `Copyright.js` does not contain a `'use client'` directive, the component usage is rendered on the server. `App` is rendered on the server as it is the root component.
+모듈 종속성 트리에서 `App.js`가 `Copyright`를 `Copyright.js` 모듈에서 가져와 호출하는 것을 볼 수 있습니다. `Copyright.js`에 `'use client'` 지시문이 포함되어 있지 않으므로 컴포넌트 사용은 서버에서 렌더링됩니다. `App`은 루트 컴포넌트이므로 서버에서 렌더링됩니다.
 
-Client Components can render Server Components because you can pass JSX as props. In this case, `InspirationGenerator` receives `Copyright` as [children](/learn/passing-props-to-a-component#passing-jsx-as-children). However, the `InspirationGenerator` module never directly imports the `Copyright` module nor calls the component, all of that is done by `App`. In fact, the `Copyright` component is fully executed before `InspirationGenerator` starts rendering.
+클라이언트 컴포넌트는 JSX를 props로 전달할 수 있기 때문에 서버 컴포넌트를 렌더링할 수 있습니다. 이 경우, `InspirationGenerator`는 [children](/learn/passing-props-to-a-component#passing-jsx-as-children)으로 `Copyright`를 받습니다. 그러나 `InspirationGenerator` 모듈은 `Copyright` 모듈을 직접 가져오거나 컴포넌트를 호출하지 않습니다. 모든 것은 `App`에 의해 수행됩니다. 실제로 `Copyright` 컴포넌트는 `InspirationGenerator`가 렌더링을 시작하기 전에 완전히 실행됩니다.
 
-The takeaway is that a parent-child render relationship between components does not guarantee the same render environment.
+부모-자식 렌더 관계가 동일한 렌더 환경을 보장하지 않는다는 점을 기억하세요.
 
 </DeepDive>
 
-### When to use `'use client'` {/*when-to-use-use-client*/}
+### `'use client'`를 언제 사용해야 하나요? {/*when-to-use-use-client*/}
 
-With `'use client'`, you can determine when components are Client Components. As Server Components are default, here is a brief overview of the advantages and limitations to Server Components to determine when you need to mark something as client rendered.
+`'use client'`를 사용하면 컴포넌트가 클라이언트 컴포넌트인지 결정할 수 있습니다. 서버 컴포넌트가 기본값이므로, 클라이언트 렌더링이 필요한 경우를 결정하기 위해 서버 컴포넌트의 장점과 제한 사항을 간략히 살펴보겠습니다.
 
-For simplicity, we talk about Server Components, but the same principles apply to all code in your app that is server run.
+간단히 말해, 서버 컴포넌트에 대해 이야기하지만, 동일한 원칙이 서버에서 실행되는 앱의 모든 코드에 적용됩니다.
 
-#### Advantages of Server Components {/*advantages*/}
-* Server Components can reduce the amount of code sent and run by the client. Only Client modules are bundled and evaluated by the client.
-* Server Components benefit from running on the server. They can access the local filesystem and may experience low latency for data fetches and network requests.
+#### 서버 컴포넌트의 장점 {/*advantages*/}
+* 서버 컴포넌트는 클라이언트가 전송하고 실행하는 코드의 양을 줄일 수 있습니다. 클라이언트 모듈만 클라이언트에 의해 번들되고 평가됩니다.
+* 서버 컴포넌트는 서버에서 실행되는 이점을 누릴 수 있습니다. 로컬 파일 시스템에 접근할 수 있으며 데이터 가져오기 및 네트워크 요청에 대한 지연 시간이 낮을 수 있습니다.
 
-#### Limitations of Server Components {/*limitations*/}
-* Server Components cannot support interaction as event handlers must be registered and triggered by a client.
-	* For example, event handlers like `onClick` can only be defined in Client Components.
-* Server Components cannot use most Hooks.
-	* When Server Components are rendered, their output is essentially a list of components for the client to render. Server Components do not persist in memory after render and cannot have their own state.
+#### 서버 컴포넌트의 제한 사항 {/*limitations*/}
+* 서버 컴포넌트는 상호작용을 지원할 수 없습니다. 이벤트 핸들러는 클라이언트에 의해 등록되고 트리거되어야 합니다.
+	* 예를 들어, `onClick`과 같은 이벤트 핸들러는 클라이언트 컴포넌트에서만 정의될 수 있습니다.
+* 서버 컴포넌트는 대부분의 Hooks를 사용할 수 없습니다.
+	* 서버 컴포넌트가 렌더링될 때, 그 출력은 클라이언트가 렌더링할 컴포넌트 목록에 불과합니다. 서버 컴포넌트는 렌더링 후 메모리에 남아 있지 않으며 자체 상태를 가질 수 없습니다.
 
-### Serializable types returned by Server Components {/*serializable-types*/}
+### 서버 컴포넌트가 반환하는 직렬화 가능한 타입 {/*serializable-types*/}
 
-As in any React app, parent components pass data to child components. As they are rendered in different environments, passing data from a Server Component to a Client Component requires extra consideration.
+모든 React 앱에서와 같이, 부모 컴포넌트는 자식 컴포넌트에 데이터를 전달합니다. 서로 다른 환경에서 렌더링되므로, 서버 컴포넌트에서 클라이언트 컴포넌트로 데이터를 전달할 때는 추가적인 고려가 필요합니다.
 
-Prop values passed from a Server Component to Client Component must be serializable.
+서버 컴포넌트에서 클라이언트 컴포넌트로 전달되는 prop 값은 직렬화 가능해야 합니다.
 
-Serializable props include:
-* Primitives
+직렬화 가능한 props에는 다음이 포함됩니다:
+* 원시 타입
 	* [string](https://developer.mozilla.org/en-US/docs/Glossary/String)
 	* [number](https://developer.mozilla.org/en-US/docs/Glossary/Number)
 	* [bigint](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 	* [boolean](https://developer.mozilla.org/en-US/docs/Glossary/Boolean)
 	* [undefined](https://developer.mozilla.org/en-US/docs/Glossary/Undefined)
 	* [null](https://developer.mozilla.org/en-US/docs/Glossary/Null)
-	* [symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol), only symbols registered in the global Symbol registry via [`Symbol.for`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for)
-* Iterables containing serializable values
+	* [symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol), [`Symbol.for`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for)를 통해 전역 Symbol 레지스트리에 등록된 심볼만 해당
+* 직렬화 가능한 값을 포함하는 반복 가능한 객체
 	* [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 	* [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 	* [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 	* [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
-	* [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) and [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+	* [[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 및 [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 * [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
-* Plain [objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object): those created with [object initializers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer), with serializable properties
-* Functions that are [Server Actions](/reference/rsc/use-server)
-* Client or Server Component elements (JSX)
+* [객체](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object): [객체 초기화자](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)로 생성된 직렬화 가능한 속성을 가진 객체
+* [서버 액션](/reference/rsc/use-server)인 함수
+* 클라이언트 또는 서버 컴포넌트 요소(JSX)
 * [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Notably, these are not supported:
-* [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) that are not exported from client-marked modules or marked with [`'use server'`](/reference/rsc/use-server)
-* [Classes](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Classes_in_JavaScript)
-* Objects that are instances of any class (other than the built-ins mentioned) or objects with [a null prototype](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)
-* Symbols not registered globally, ex. `Symbol('my new symbol')`
+특히, 다음은 지원되지 않습니다:
+* [함수](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)로 클라이언트 표시 모듈에서 내보내지 않거나 [`'use server'`](/reference/rsc/use-server)로 표시되지 않은 함수
+* [클래스](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Classes_in_JavaScript)
+* 모든 클래스의 인스턴스인 객체(언급된 내장 객체 제외) 또는 [null 프로토타입](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)을 가진 객체
+* 전역적으로 등록되지 않은 심볼, 예: `Symbol('my new symbol')`
 
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Building with interactivity and state {/*building-with-interactivity-and-state*/}
+### 상호작용 및 상태를 사용한 빌드 {/*building-with-interactivity-and-state*/}
 
 <Sandpack>
 
@@ -307,9 +307,9 @@ export default function Counter({initialValue = 0}) {
 
 </Sandpack>
 
-As `Counter` requires both the `useState` Hook and event handlers to increment or decrement the value, this component must be a Client Component and will require a `'use client'` directive at the top.
+`Counter`는 `useState` Hook과 값을 증가 또는 감소시키기 위한 이벤트 핸들러가 필요하므로, 이 컴포넌트는 클라이언트 컴포넌트여야 하며 상단에 `'use client'` 지시문이 필요합니다.
 
-In contrast, a component that renders UI without interaction will not need to be a Client Component.
+반면, 상호작용 없이 UI를 렌더링하는 컴포넌트는 클라이언트 컴포넌트가 필요하지 않습니다.
 
 ```js
 import { readFile } from 'node:fs/promises';
@@ -321,9 +321,9 @@ export default async function CounterContainer() {
 }
 ```
 
-For example, `Counter`'s parent component, `CounterContainer`, does not require `'use client'` as it is not interactive and does not use state. In addition, `CounterContainer` must be a Server Component as it reads from the local file system on the server, which is possible only in a Server Component.
+예를 들어, `Counter`의 부모 컴포넌트인 `CounterContainer`는 상호작용이 필요 없고 상태를 사용하지 않으므로 `'use client'`가 필요하지 않습니다. 또한, `CounterContainer`는 서버에서 로컬 파일 시스템을 읽기 때문에 서버 컴포넌트여야 합니다. 이는 서버 컴포넌트에서만 가능합니다.
 
-There are also components that don't use any server or client-only features and can be agnostic to where they render. In our earlier example, `FancyText` is one such component.
+서버 또는 클라이언트 전용 기능을 사용하지 않는 컴포넌트도 있으며, 어디에서 렌더링되는지에 대해 무관할 수 있습니다. 앞서 예제에서 `FancyText`가 그런 컴포넌트 중 하나입니다.
 
 ```js
 export default function FancyText({title, text}) {
@@ -333,15 +333,15 @@ export default function FancyText({title, text}) {
 }
 ```
 
-In this case, we don't add the `'use client'` directive, resulting in `FancyText`'s _output_ (rather than its source code) to be sent to the browser when referenced from a Server Component. As demonstrated in the earlier Inspirations app example, `FancyText` is used as both a Server or Client Component, depending on where it is imported and used.
+이 경우, `'use client'` 지시문을 추가하지 않으면 `FancyText`의 _출력_이 서버 컴포넌트에서 참조될 때 브라우저로 전송됩니다. 앞서 영감 앱 예제에서 보여준 것처럼, `FancyText`는 가져오고 사용되는 위치에 따라 서버 또는 클라이언트 컴포넌트로 사용됩니다.
 
-But if `FancyText`'s HTML output was large relative to its source code (including dependencies), it might be more efficient to force it to always be a Client Component. Components that return a long SVG path string are one case where it may be more efficient to force a component to be a Client Component.
+하지만 `FancyText`의 HTML 출력이 소스 코드(종속성 포함)에 비해 크다면, 항상 클라이언트 컴포넌트로 강제하는 것이 더 효율적일 수 있습니다. 긴 SVG 경로 문자열을 반환하는 컴포넌트는 클라이언트 컴포넌트로 강제하는 것이 더 효율적일 수 있는 한 가지 경우입니다.
 
-### Using client APIs {/*using-client-apis*/}
+### 클라이언트 API 사용 {/*using-client-apis*/}
 
-Your React app may use client-specific APIs, such as the browser's APIs for web storage, audio and video manipulation, and device hardware, among [others](https://developer.mozilla.org/en-US/docs/Web/API).
+React 앱은 웹 스토리지, 오디오 및 비디오 조작, 장치 하드웨어와 같은 클라이언트 전용 API를 사용할 수 있습니다. [기타](https://developer.mozilla.org/en-US/docs/Web/API) API도 있습니다.
 
-In this example, the component uses [DOM APIs](https://developer.mozilla.org/en-US/docs/Glossary/DOM) to manipulate a [`canvas`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) element. Since those APIs are only available in the browser, it must be marked as a Client Component.
+이 예제에서 컴포넌트는 [`canvas`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) 요소를 조작하기 위해 [DOM API](https://developer.mozilla.org/en-US/docs/Glossary/DOM)를 사용합니다. 이러한 API는 브라우저에서만 사용할 수 있으므로 클라이언트 컴포넌트로 표시해야 합니다.
 
 ```js
 'use client';
@@ -362,18 +362,18 @@ export default function Circle() {
 }
 ```
 
-### Using third-party libraries {/*using-third-party-libraries*/}
+### 서드파티 라이브러리 사용 {/*using-third-party-libraries*/}
 
-Often in a React app, you'll leverage third-party libraries to handle common UI patterns or logic.
+React 앱에서 공통 UI 패턴이나 로직을 처리하기 위해 서드파티 라이브러리를 자주 활용합니다.
 
-These libraries may rely on component Hooks or client APIs. Third-party components that use any of the following React APIs must run on the client:
+이러한 라이브러리는 컴포넌트 Hooks 또는 클라이언트 API에 의존할 수 있습니다. 다음 React API를 사용하는 서드파티 컴포넌트는 클라이언트에서 실행되어야 합니다:
 * [createContext](/reference/react/createContext)
-* [`react`](/reference/react/hooks) and [`react-dom`](/reference/react-dom/hooks) Hooks, excluding [`use`](/reference/react/use) and [`useId`](/reference/react/useId)
+* [`react`](/reference/react/hooks) 및 [`react-dom`](/reference/react-dom/hooks) Hooks, [`use`](/reference/react/use) 및 [`useId`](/reference/react/useId) 제외
 * [forwardRef](/reference/react/forwardRef)
 * [memo](/reference/react/memo)
 * [startTransition](/reference/react/startTransition)
-* If they use client APIs, ex. DOM insertion or native platform views
+* 클라이언트 API를 사용하는 경우, 예: DOM 삽입 또는 네이티브 플랫폼 뷰
 
-If these libraries have been updated to be compatible with React Server Components, then they will already include `'use client'` markers of their own, allowing you to use them directly from your Server Components. If a library hasn't been updated, or if a component needs props like event handlers that can only be specified on the client, you may need to add your own Client Component file in between the third-party Client Component and your Server Component where you'd like to use it.
+이러한 라이브러리가 React Server Components와 호환되도록 업데이트된 경우, 이미 `'use client'` 마커를 포함하고 있어 서버 컴포넌트에서 직접 사용할 수 있습니다. 라이브러리가 업데이트되지 않았거나 클라이언트에서만 지정할 수 있는 이벤트 핸들러와 같은 props가 필요한 경우, 서드파티 클라이언트 컴포넌트와 서버 컴포넌트 사이에 자체 클라이언트 컴포넌트 파일을 추가해야 할 수 있습니다.
 
-[TODO]: <> (Troubleshooting - need use-cases)
+[TODO]: <> (문제 해결 - 사용 사례 필요)

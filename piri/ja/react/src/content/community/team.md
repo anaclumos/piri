@@ -1,103 +1,103 @@
 ---
-title: "Meet the Team"
+title: チーム紹介
 ---
 
 <Intro>
 
-React development is led by a dedicated team working full time at Meta. It also receives contributions from people all over the world.
+Reactの開発は、Metaでフルタイムで働く専任チームによって主導されています。また、世界中の人々からの貢献も受けています。
 
 </Intro>
 
 ## React Core {/*react-core*/}
 
-The React Core team members work full time on the core component APIs, the engine that powers React DOM and React Native, React DevTools, and the React documentation website.
+React Coreチームのメンバーは、React DOMとReact Nativeを動かすエンジン、React DevTools、ReactのドキュメントウェブサイトのコアコンポーネントAPIにフルタイムで取り組んでいます。
 
-Current members of the React team are listed in alphabetical order below.
+現在のReactチームのメンバーは、以下のアルファベット順にリストされています。
 
 <TeamMember name="Andrew Clark" permalink="andrew-clark" photo="/images/team/acdlite.jpg" github="acdlite" twitter="acdlite" threads="acdlite" title="Engineer at Vercel">
-    Andrew got started with web development by making sites with WordPress, and eventually tricked himself into doing JavaScript. His favorite pastime is karaoke. Andrew is either a Disney villain or a Disney princess, depending on the day.
+    Andrewは、WordPressでサイトを作成することでウェブ開発を始め、最終的にはJavaScriptを使うようになりました。彼の趣味はカラオケです。Andrewは日によってディズニーヴィランかディズニープリンセスのどちらかです。
 </TeamMember>
 
 <TeamMember name="Dan Abramov" permalink="dan-abramov" photo="/images/team/gaearon.jpg" github="gaearon" twitter="dan_abramov2" title="Independent Engineer">
-    Dan got into programming after he accidentally discovered Visual Basic inside Microsoft PowerPoint. He has found his true calling in turning [Sebastian](#sebastian-markbåge)'s tweets into long-form blog posts. Dan occasionally wins at Fortnite by hiding in a bush until the game ends.
+    Danは、Microsoft PowerPoint内のVisual Basicを偶然発見したことからプログラミングに興味を持ちました。彼は[Sebastian](#sebastian-markbåge)のツイートを長文のブログ投稿に変えることに真の使命を見出しました。Danは時折、ブッシュに隠れてゲームが終わるまで待つことでFortniteで勝利します。
 </TeamMember>
 
 <TeamMember name="Eli White" permalink="eli-white" photo="/images/team/eli-white.jpg" github="TheSavior" twitter="Eli_White" threads="elicwhite" title="Engineering Manager at Meta">
-    Eli got into programming after he got suspended from middle school for hacking. He has been working on React and React Native since 2017. He enjoys eating treats, especially ice cream and apple pie. You can find Eli trying quirky activities like parkour, indoor skydiving, and aerial silks.
+    Eliは中学校でハッキングをして停学になったことからプログラミングに興味を持ちました。2017年からReactとReact Nativeに取り組んでいます。彼は特にアイスクリームとアップルパイを食べるのが好きです。Eliはパルクール、室内スカイダイビング、エアリアルシルクなどのユニークな活動を楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Jack Pope" permalink="jack-pope" photo="/images/team/jack-pope.jpg" github="jackpope" personal="jackpope.me" title="Engineer at Meta">
-    Shortly after being introduced to AutoHotkey, Jack had written scripts to automate everything he could think of. When reaching limitations there, he dove headfirst into web app development and hasn't looked back. Most recently, Jack worked on the web platform at Instagram before moving to React. His favorite programming language is JSX.
+    AutoHotkeyに紹介された直後、Jackは考えられるすべてのことを自動化するスクリプトを書きました。限界に達したとき、彼はウェブアプリ開発に飛び込み、それ以来振り返ることはありませんでした。最近では、Instagramのウェブプラットフォームで働いてからReactに移りました。彼の好きなプログラミング言語はJSXです。
 </TeamMember>
 
 <TeamMember name="Jason Bonta" permalink="jason-bonta" photo="/images/team/jasonbonta.jpg" threads="someextent" title="Engineering Manager at Meta">
-    Jason abandoned embedded C for a career in front-end engineering and never looked back. Armed with esoteric CSS knowledge and a passion for beautiful UI, Jason joined Facebook in 2010, where he now feels privileged to have seen JavaScript development come of age. Though he may not understand how `for...of` loops work, he loves getting to work with brilliant people on projects that enable amazing UX.
+    Jasonは組み込みCを放棄してフロントエンドエンジニアリングのキャリアに転向し、それ以来振り返ることはありませんでした。彼はエソテリックなCSSの知識と美しいUIへの情熱を持っており、2010年にFacebookに参加しました。彼は`for...of`ループの動作を理解していないかもしれませんが、素晴らしいUXを実現するプロジェクトで優れた人々と一緒に働くことを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Joe Savona" permalink="joe-savona" photo="/images/team/joe.jpg" github="josephsavona" twitter="en_JS" threads="joesavona" title="Engineer at Meta">
-    Joe was planning to major in math and philosophy but got into computer science after writing physics simulations in Matlab. Prior to React, he worked on Relay, RSocket.js, and the Skip programming language. While he’s not building some sort of reactive system he enjoys running, studying Japanese, and spending time with his family.
+    Joeは数学と哲学を専攻する予定でしたが、Matlabで物理シミュレーションを書いたことからコンピュータサイエンスに興味を持ちました。Reactの前には、Relay、RSocket.js、Skipプログラミング言語に取り組んでいました。彼が何らかのリアクティブシステムを構築していないときは、ランニング、日本語の勉強、家族と過ごすことを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Josh Story" permalink="josh-story" photo="/images/team/josh.jpg" github="gnoff" twitter="joshcstory" title="Engineer at Vercel">
-    Josh majored in Mathematics and discovered programming while in college. His first professional developer job was to program insurance rate calculations in Microsoft Excel, the paragon of Reactive Programming which must be why he now works on React. In between that time Josh has been an IC, Manager, and Executive at a few startups. outside of work he likes to push his limits with cooking.
+    Joshは数学を専攻し、大学でプログラミングを発見しました。彼の最初のプロの開発者の仕事は、Microsoft Excelで保険料計算をプログラムすることでした。これはリアクティブプログラミングの典型であり、彼が現在Reactに取り組んでいる理由かもしれません。その間、JoshはIC、マネージャー、いくつかのスタートアップのエグゼクティブを務めました。仕事の外では、料理で自分の限界に挑戦するのが好きです。
 </TeamMember>
 
 <TeamMember name="Lauren Tan" permalink="lauren-tan" photo="/images/team/lauren.jpg" github="poteto" twitter="potetotes" threads="potetotes" personal="no.lol" title="Engineer at Meta">
-    Lauren's programming career peaked when she first discovered the `<marquee>` tag. She’s been chasing that high ever since. She studied Finance instead of CS in college, so she learned to code using Excel instead of Java. Lauren enjoys dropping cheeky memes in chat, playing video games with her partner, and petting her dog Zelda.
+    Laurenのプログラミングキャリアは、彼女が初めて`<marquee>`タグを発見したときにピークに達しました。それ以来、彼女はその高揚感を追い求めています。大学ではCSではなくファイナンスを専攻したため、Excelを使ってコードを学びました。Laurenはチャットでの cheeky memesの投稿、パートナーとのビデオゲーム、犬のZeldaを撫でることを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Luna Wei" permalink="luna-wei" photo="/images/team/luna-wei.jpg" github="lunaleaps" twitter="lunaleaps" threads="lunaleaps" title="Engineer at Meta">
-    Luna first learnt the fundamentals of python at the age of 6 from her father. Since then, she has been unstoppable. Luna aspires to be a gen z, and the road to success is paved with environmental advocacy, urban gardening and lots of quality time with her Voo-Doo’d (as pictured).
+    Lunaは6歳のときに父親からPythonの基礎を学びました。それ以来、彼女は止まることを知りません。LunaはジェネレーションZを目指しており、成功への道は環境保護、都市ガーデニング、そして多くの質の高い時間をVoo-Doo’d（写真の通り）と過ごすことです。
 </TeamMember>
 
 <TeamMember name="Matt Carroll" permalink="matt-carroll" photo="/images/team/matt-carroll.png" github="mattcarrollcode" twitter="mattcarrollcode" threads="mattcarrollcode" title="Developer Advocate at Meta">
-    Matt stumbled into coding, and since then, has become enamored with creating things in communities that can’t be created alone. Prior to React, he worked on YouTube, the Google Assistant, Fuchsia, and Google Cloud AI and Evernote. When he's not trying to make better developer tools he enjoys the mountains, jazz, and spending time with his family.
+    Mattは偶然コーディングに出会い、それ以来、コミュニティで一人では作れないものを作ることに魅了されています。Reactの前には、YouTube、Google Assistant、Fuchsia、Google Cloud AI、Evernoteに取り組んでいました。彼がより良い開発者ツールを作ろうとしていないときは、山、ジャズ、家族と過ごすことを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Mofei Zhang" permalink="mofei-zhang" photo="/images/team/mofei-zhang.png" github="mofeiZ" threads="z_mofei" title="Engineer at Meta">
-    Mofei started programming when she realized it can help her cheat in video games. She focused on operating systems in undergrad / grad school, but now finds herself happily tinkering on React. Outside of work, she enjoys debugging bouldering problems and planning her next backpacking trip(s).
+    Mofeiはビデオゲームでチートするのに役立つことに気づいてプログラミングを始めました。学部・大学院ではオペレーティングシステムに焦点を当てていましたが、現在はReactに取り組むことに満足しています。仕事の外では、ボルダリングの問題をデバッグしたり、次のバックパッキング旅行を計画したりするのを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Noah Lemen" permalink="noah-lemen" photo="/images/team/noahlemen.jpg" github="noahlemen" twitter="noahlemen" threads="noahlemen" personal="noahle.men" title="Engineer at Meta">
-    Noah’s interest in UI programming sparked during his education in music technology at NYU. At Meta, he's worked on internal tools, browsers, web performance, and is currently focused on React. Outside of work, Noah can be found tinkering with synthesizers or spending time with his cat.
+    NoahのUIプログラミングへの興味は、NYUで音楽技術を学んでいる間に芽生えました。Metaでは、内部ツール、ブラウザ、ウェブパフォーマンスに取り組み、現在はReactに集中しています。仕事の外では、シンセサイザーをいじったり、猫と過ごしたりするのが好きです。
 </TeamMember>
 
 <TeamMember name="Rick Hanlon" permalink="rick-hanlon" photo="/images/team/rickhanlonii.jpg" github="rickhanlonii" twitter="rickhanlonii" threads="rickhanlonii" personal="rickhanlon.codes" title="Engineer at Meta">
-    Ricky majored in theoretical math and somehow found himself on the React Native team for a couple years before joining the React team. When he's not programming you can find him snowboarding, biking, climbing, golfing, or closing GitHub issues that do not match the issue template.
+    Rickyは理論数学を専攻し、数年間React Nativeチームに所属した後、Reactチームに参加しました。プログラミングをしていないときは、スノーボード、バイク、クライミング、ゴルフ、またはGitHubのテンプレートに一致しないイシューを閉じることを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Ruslan Lesiutin" permalink="ruslan-lesiutin" photo="/images/team/lesiutin.jpg" github="hoxyq" twitter="ruslanlesiutin" threads="lesiutin" title="Engineer at Meta">
-    Ruslan's introduction to UI programming started when he was a kid by manually editing HTML templates for his custom gaming forums. Somehow, he ended up majoring in Computer Science. He enjoys music, games, and memes. Mostly memes.
+    RuslanのUIプログラミングへの導入は、子供の頃にカスタムゲームフォーラムのHTMLテンプレートを手動で編集することから始まりました。彼はコンピュータサイエンスを専攻しました。彼は音楽、ゲーム、そしてミームを楽しんでいます。主にミームです。
 </TeamMember>
 
 <TeamMember name="Sathya Gunasekaran " permalink="sathya-gunasekaran" photo="/images/team/sathya.jpg" github="gsathya" twitter="_gsathya" threads="gsathya.03" title="Engineer at Meta">
-    Sathya hated the Dragon Book in school but somehow ended up working on compilers all his career. When he's not compiling React components, he's either drinking coffee or eating yet another Dosa.
+    Sathyaは学校でドラゴンブックを嫌っていましたが、キャリアを通じてコンパイラに取り組むことになりました。Reactコンポーネントをコンパイルしていないときは、コーヒーを飲んだり、また別のドーサを食べたりしています。
 </TeamMember>
 
 <TeamMember name="Sebastian Markbåge" permalink="sebastian-markbåge" photo="/images/team/sebmarkbage.jpg" github="sebmarkbage" twitter="sebmarkbage" threads="sebmarkbage" title="Engineer at Vercel">
-    Sebastian majored in psychology. He's usually quiet. Even when he says something, it often doesn't make sense to the rest of us until a few months later. The correct way to pronounce his surname is "mark-boa-geh" but he settled for "mark-beige" out of pragmatism -- and that's how he approaches React.
+    Sebastianは心理学を専攻しました。彼は通常静かです。何かを言うときでも、それが他の人に意味を成すのは数ヶ月後のことが多いです。彼の姓の正しい発音は「mark-boa-geh」ですが、実用性から「mark-beige」に落ち着きました。Reactに対する彼のアプローチも同様です。
 </TeamMember>
 
 <TeamMember name="Sebastian Silbermann" permalink="sebastian-silbermann" photo="/images/team/sebsilbermann.jpg" github="eps1lon" twitter="sebsilbermann" threads="sebsilbermann" title="Engineer at Vercel">
-    Sebastian learned programming to make the browser games he played during class more enjoyable. Eventually this lead to contributing to as much open source code as possible. Outside of coding he's busy making sure people don't confuse him with the other Sebastians and Zilberman of the React community.
+    Sebastianは授業中にプレイしていたブラウザゲームをより楽しむためにプログラミングを学びました。最終的には、できるだけ多くのオープンソースコードに貢献することになりました。コーディング以外では、他のSebastiansやReactコミュニティのZilbermanと混同されないようにするのに忙しいです。
 </TeamMember>
 
 <TeamMember name="Seth Webster" permalink="seth-webster" photo="/images/team/seth.jpg" github="sethwebster" twitter="sethwebster" threads="sethwebster" personal="sethwebster.com" title="Engineering Manager at Meta">
-    Seth started programming as a kid growing up in Tucson, AZ. After school, he was bitten by the music bug and was a touring musician for about 10 years before returning to *work*, starting with Intuit. In his spare time, he loves [taking pictures](https://www.sethwebster.com) and flying for animal rescues in the northeastern United States.
+    Sethはアリゾナ州ツーソンで育ち、子供の頃からプログラミングを始めました。学校を卒業した後、音楽の虫に刺され、約10年間ツアーミュージシャンとして活動しましたが、Intuitで働き始めてから再び*仕事*に戻りました。余暇には、[写真を撮る](https://www.sethwebster.com)ことや、アメリカ北東部で動物救助のために飛行することを楽しんでいます。
 </TeamMember>
 
 <TeamMember name="Sophie Alpert" permalink="sophie-alpert" photo="/images/team/sophiebits.jpg" github="sophiebits" twitter="sophiebits" threads="sophiebits" personal="sophiebits.com" title="Independent Engineer">
-    Four days after React was released, Sophie rewrote the entirety of her then-current project to use it, which she now realizes was perhaps a bit reckless. After she became the project's #1 committer, she wondered why she wasn't getting paid by Facebook like everyone else was and joined the team officially to lead React through its adolescent years. Though she quit that job years ago, somehow she's still in the team's group chats and “providing value”.
+    Reactがリリースされてから4日後、Sophieは当時のプロジェクト全体をReactを使って書き直しましたが、今ではそれが少し無謀だったと気づいています。彼女がプロジェクトの#1コミッターになった後、なぜ他の人たちのようにFacebookから給料をもらっていないのか疑問に思い、正式にチームに参加してReactの成長期をリードしました。彼女はその仕事を何年も前に辞めましたが、なぜかまだチームのグループチャットに参加して「価値を提供」しています。
 </TeamMember>
 
 <TeamMember name="Tianyu Yao" permalink="tianyu-yao" photo="/images/team/tianyu.jpg" github="tyao1" twitter="tianyu0" title="Engineer at Meta">
-    Tianyu’s interest in computers started as a kid because he loves video games. So he majored in computer science and still plays childish games like League of Legends. When he is not in front of a computer, he enjoys playing with his two kittens, hiking and kayaking.
+    Tianyuのコンピュータへの興味は、子供の頃にビデオゲームが好きだったことから始まりました。彼はコンピュータサイエンスを専攻し、今でもLeague of Legendsのような子供っぽいゲームをプレイしています。コンピュータの前にいないときは、2匹の子猫と遊んだり、ハイキングやカヤックを楽しんだりしています。
 </TeamMember>
 
 <TeamMember name="Yuzhi Zheng" permalink="yuzhi-zheng" photo="/images/team/yuzhi.jpg" github="yuzhi" twitter="yuzhiz" threads="yuzhiz" title="Engineering Manager at Meta">
-    Yuzhi studied Computer Science in school. She liked the instant gratification of seeing code come to life without having to physically be in a laboratory. Now she’s a manager in the React org. Before management, she used to work on the Relay data fetching framework. In her spare time, Yuzhi enjoys optimizing her life via gardening and home improvement projects.
+    Yuzhiは学校でコンピュータサイエンスを学びました。彼女は実験室に物理的にいることなくコードが生き生きとするのを見る即時の満足感が好きでした。現在、彼女はReact組織のマネージャーです。管理職になる前は、Relayデータフェッチングフレームワークに取り組んでいました。余暇には、ガーデニングやホームインプルーブメントプロジェクトを通じて生活を最適化することを楽しんでいます。
 </TeamMember>
 
 ## Past contributors {/*past-contributors*/}
 
-You can find the past team members and other people who significantly contributed to React over the years on the [acknowledgements](/community/acknowledgements) page.
+過去のチームメンバーや、これまでにReactに大きく貢献した他の人々は、[acknowledgements](/community/acknowledgements)ページで見つけることができます。

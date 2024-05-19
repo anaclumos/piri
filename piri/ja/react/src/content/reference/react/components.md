@@ -1,24 +1,24 @@
 ---
-title: "Built-in React Components"
+title: 組み込みReactコンポーネント
 ---
 
 <Intro>
 
-React exposes a few built-in components that you can use in your JSX.
+Reactは、JSXで使用できるいくつかの組み込みコンポーネントを公開しています。
 
 </Intro>
 
 ---
 
-## Built-in components {/*built-in-components*/}
+## 組み込みコンポーネント {/*built-in-components*/}
 
-* [`<Fragment>`](/reference/react/Fragment), alternatively written as `<>...</>`, lets you group multiple JSX nodes together.
-* [`<Profiler>`](/reference/react/Profiler) lets you measure rendering performance of a React tree programmatically.
-* [`<Suspense>`](/reference/react/Suspense) lets you display a fallback while the child components are loading.
-* [`<StrictMode>`](/reference/react/StrictMode) enables extra development-only checks that help you find bugs early.
+* [`<Fragment>`](/reference/react/Fragment)、または `<>...</>` として書かれることもありますが、複数のJSXノードを一緒にグループ化できます。
+* [`<Profiler>`](/reference/react/Profiler) は、Reactツリーのレンダリングパフォーマンスをプログラムで測定できます。
+* [`<Suspense>`](/reference/react/Suspense) は、子コンポーネントが読み込まれている間にフォールバックを表示できます。
+* [`<StrictMode>`](/reference/react/StrictMode) は、バグを早期に発見するのに役立つ追加の開発専用チェックを有効にします。
 
 ---
 
-## Your own components {/*your-own-components*/}
+## 独自のコンポーネント {/*your-own-components*/}
 
-You can also [define your own components](/learn/your-first-component) as JavaScript functions.
+JavaScript関数として[独自のコンポーネントを定義](/learn/your-first-component)することもできます。

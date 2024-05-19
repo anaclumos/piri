@@ -1,17 +1,17 @@
 ---
-script: "<script>"
+script: <script>
 canary: true
 ---
 
 <Canary>
 
-React's extensions to `<script>` are currently only available in React's canary and experimental channels. In stable releases of React `<script>` works only as a [built-in browser HTML component](https://react.dev/reference/react-dom/components#all-html-components). Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+Reactの`<script>`への拡張は現在、Reactのcanaryおよび実験的なチャンネルでのみ利用可能です。Reactの安定版リリースでは、`<script>`は[組み込みのブラウザHTMLコンポーネント](https://react.dev/reference/react-dom/components#all-html-components)としてのみ機能します。[Reactのリリースチャンネルについてはこちら](https://react.dev/community/versioning-policy#all-release-channels)をご覧ください。
 
 </Canary>
 
 <Intro>
 
-The [built-in browser `<script>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) lets you add a script to your document.
+[組み込みのブラウザ`<script>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)を使用すると、ドキュメントにスクリプトを追加できます。
 
 ```js
 <script> alert("hi!") </script>
@@ -23,71 +23,69 @@ The [built-in browser `<script>` component](https://developer.mozilla.org/en-US/
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `<script>` {/*script*/}
 
-To add inline or external scripts to your document, render the [built-in browser `<script>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script). You can render `<script>` from any component and React will [in certain cases](#special-rendering-behavior) place the corresponding DOM element in the document head and de-duplicate identical scripts.
+ドキュメントにインラインまたは外部スクリプトを追加するには、[組み込みのブラウザ`<script>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)をレンダリングします。任意のコンポーネントから`<script>`をレンダリングでき、Reactは[特定のケース](#special-rendering-behavior)で対応するDOM要素をドキュメントのヘッドに配置し、同一のスクリプトを重複しないようにします。
 
 ```js
 <script> alert("hi!") </script>
 <script src="script.js" />
 ```
 
-[See more examples below.](#usage)
+[以下にさらに例を示します。](#usage)
 
 #### Props {/*props*/}
 
-`<script>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<script>`はすべての[共通要素のprops](/reference/react-dom/components/common#props)をサポートします。
 
-It should have *either* `children` or a `src` prop.
+* `children`: 文字列。インラインスクリプトのソースコード。
+* `src`: 文字列。外部スクリプトのURL。
 
-* `children`: a string. The source code of an inline script.
-* `src`: a string. The URL of an external script.
+その他のサポートされているprops:
 
-Other supported props:
+* `async`: ブール値。ブラウザがスクリプトの実行をドキュメントの他の部分が処理されるまで遅延させることを許可します。パフォーマンスのために推奨される動作です。
+* `crossOrigin`: 文字列。[CORSポリシー](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin)を使用します。可能な値は`anonymous`と`use-credentials`です。
+* `fetchPriority`: 文字列。複数のスクリプトを同時にフェッチする際に、ブラウザがスクリプトの優先順位をランク付けすることを許可します。`"high"`、`"low"`、または`"auto"`（デフォルト）です。
+* `integrity`: 文字列。スクリプトの暗号ハッシュで、[その真正性を検証](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)します。
+* `noModule`: ブール値。ESモジュールをサポートするブラウザでスクリプトを無効にします。これにより、サポートしていないブラウザのためのフォールバックスクリプトが可能になります。
+* `nonce`: 文字列。厳格なコンテンツセキュリティポリシーを使用する際にリソースを許可するための暗号[nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)です。
+* `referrer`: 文字列。スクリプトをフェッチする際に送信する[Refererヘッダー](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#referrerpolicy)を指定します。
+* `type`: 文字列。スクリプトが[クラシックスクリプト、ESモジュール、またはインポートマップ](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type)のいずれであるかを指定します。
 
-* `async`: a boolean. Allows the browser to defer execution of the script until the rest of the document has been processed — the preferred behavior for performance.
-*  `crossOrigin`: a string. The [CORS policy](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin) to use. Its possible values are `anonymous` and `use-credentials`.
-* `fetchPriority`: a string. Lets the browser rank scripts in priority when fetching multiple scripts at the same time. Can be `"high"`, `"low"`, or `"auto"` (the default).
-* `integrity`: a string. A cryptographic hash of the script, to [verify its authenticity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).
-* `noModule`: a boolean. Disables the script in browsers that support ES modules — allowing for a fallback script for browsers that do not.
-* `nonce`: a string. A cryptographic [nonce to allow the resource](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) when using a strict Content Security Policy.
-* `referrer`: a string. Says [what Referer header to send](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#referrerpolicy) when fetching the script and any resources that the script fetches in turn. 
-* `type`: a string. Says whether the script is a [classic script, ES module, or import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type).
+Reactの[スクリプトの特別な処理](#special-rendering-behavior)を無効にするprops:
 
-Props that disable React's [special treatment of scripts](#special-rendering-behavior):
+* `onError`: 関数。スクリプトの読み込みに失敗したときに呼び出されます。
+* `onLoad`: 関数。スクリプトの読み込みが完了したときに呼び出されます。
 
-* `onError`: a function. Called when the script fails to load.
-* `onLoad`: a function. Called when the script finishes being loaded.
+Reactでの使用が**推奨されない**props:
 
-Props that are **not recommended** for use with React:
+* `blocking`: 文字列。`"render"`に設定すると、スクリプトシートが読み込まれるまでブラウザにページのレンダリングを指示しません。ReactはSuspenseを使用してより細かい制御を提供します。
+* `defer`: 文字列。ドキュメントの読み込みが完了するまでブラウザがスクリプトを実行しないようにします。ストリーミングサーバーレンダリングコンポーネントとは互換性がありません。代わりに`async`プロップを使用してください。
 
-* `blocking`: a string. If set to `"render"`, instructs the browser not to render the page until the scriptsheet is loaded. React provides more fine-grained control using Suspense.
-* `defer`: a string. Prevents the browser from executing the script until the document is done loading. Not compatible with streaming server-rendered components. Use the `async` prop instead.
+#### 特別なレンダリング動作 {/*special-rendering-behavior*/}
 
-#### Special rendering behavior {/*special-rendering-behavior*/}
+Reactは`<script>`コンポーネントをドキュメントの`<head>`に移動し、同一のスクリプトを重複しないようにし、スクリプトの読み込み中に[サスペンド](/reference/react/Suspense)することができます。
 
-React can move `<script>` components to the document's `<head>`, de-duplicate identical scripts, and [suspend](/reference/react/Suspense) while the script is loading.
+この動作を有効にするには、`src`および`async={true}`プロップを提供します。Reactは同じ`src`を持つスクリプトを重複しないようにします。スクリプトを安全に移動するためには、`async`プロップがtrueである必要があります。
 
-To opt into this behavior, provide the `src` and `async={true}` props. React will de-duplicate scripts if they have the same `src`. The `async` prop must be true to allow scripts to be safely moved.
+`onLoad`または`onError`プロップのいずれかを提供する場合、特別な動作はありません。これらのプロップは、コンポーネント内でスクリプトの読み込みを手動で管理していることを示しているためです。
 
-If you supply any of the `onLoad` or `onError` props, there is no special behavior, because these props indicate that you are managing the loading of the script manually within your component.
+この特別な処理には2つの注意点があります:
 
-This special treatment comes with two caveats:
-
-* React will ignore changes to props after the script has been rendered. (React will issue a warning in development if this happens.)
-* React may leave the script in the DOM even after the component that rendered it has been unmounted. (This has no effect as scripts just execute once when they are inserted into the DOM.)
+* スクリプトがレンダリングされた後にプロップの変更を無視します。（開発中にこれが発生すると、Reactは警告を発します。）
+* スクリプトをレンダリングしたコンポーネントがアンマウントされた後でも、スクリプトをDOMに残す場合があります。（スクリプトはDOMに挿入されたときに一度だけ実行されるため、これは影響しません。）
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Rendering an external script {/*rendering-an-external-script*/}
+### 外部スクリプトのレンダリング {/*rendering-an-external-script*/}
 
-If a component depends on certain scripts in order to be displayed correctly, you can render a `<script>` within the component.
+特定のスクリプトに依存して正しく表示されるコンポーネントがある場合、そのコンポーネント内で`<script>`をレンダリングできます。
 
-If you supply an `src` and `async` prop, your component will suspend while the script is loading. React will de-duplicate scripts that have the same `src`, inserting only one of them into the DOM even if multiple components render it.
+`src`および`async`プロップを提供すると、スクリプトの読み込み中にコンポーネントがサスペンドされます。Reactは同じ`src`を持つスクリプトを重複しないようにし、複数のコンポーネントがそれをレンダリングしてもDOMに1つだけ挿入します。
 
 <SandpackWithHTMLOutput>
 
@@ -115,12 +113,12 @@ export default function Page() {
 </SandpackWithHTMLOutput>
 
 <Note>
-When you want to use a script, it can be beneficial to call the [preinit](/reference/react-dom/preinit) function. Calling this function may allow the browser to start fetching the script earlier than if you just render a `<script>` component, for example by sending an [HTTP Early Hints response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103).
+スクリプトを使用する場合、[preinit](/reference/react-dom/preinit)関数を呼び出すことが有益です。この関数を呼び出すことで、たとえば[HTTP Early Hintsレスポンス](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103)を送信することにより、ブラウザがスクリプトを`<script>`コンポーネントをレンダリングするよりも早くフェッチを開始できる場合があります。
 </Note>
 
-### Rendering an inline script {/*rendering-an-inline-script*/}
+### インラインスクリプトのレンダリング {/*rendering-an-inline-script*/}
 
-To include an inline script, render the `<script>` component with the script source code as its children. Inline scripts are not de-duplicated or moved to the document `<head>`, and since they don't load any external resources, they will not cause your component to suspend.
+インラインスクリプトを含めるには、スクリプトのソースコードを子として持つ`<script>`コンポーネントをレンダリングします。インラインスクリプトは重複しないようにされず、ドキュメントの`<head>`に移動されません。また、外部リソースを読み込まないため、コンポーネントがサスペンドすることはありません。
 
 <SandpackWithHTMLOutput>
 

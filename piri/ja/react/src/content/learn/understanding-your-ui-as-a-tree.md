@@ -1,41 +1,41 @@
 ---
-title: Understanding Your UI as a Tree
+title: UIをツリーとして理解する
 ---
 
 <Intro>
 
-Your React app is taking shape with many components being nested within each other. How does React keep track of your app's component structure?
+あなたのReactアプリは、多くのコンポーネントが互いにネストされて形作られています。Reactはどのようにしてアプリのコンポーネント構造を追跡しているのでしょうか？
 
-React, and many other UI libraries, model UI as a tree. Thinking of your app as a tree is useful for understanding the relationship between components. This understanding will help you debug future concepts like performance and state management.
+Reactや他の多くのUIライブラリは、UIをツリーとしてモデル化します。アプリをツリーとして考えることは、コンポーネント間の関係を理解するのに役立ちます。この理解は、パフォーマンスや状態管理などの将来の概念をデバッグするのに役立ちます。
 
 </Intro>
 
 <YouWillLearn>
 
-* How React "sees" component structures
-* What a render tree is and what it is useful for
-* What a module dependency tree is and what it is useful for
+* Reactがコンポーネント構造をどのように「見る」か
+* レンダーツリーとは何か、それが何に役立つか
+* モジュール依存ツリーとは何か、それが何に役立つか
 
 </YouWillLearn>
 
-## Your UI as a tree {/*your-ui-as-a-tree*/}
+## ツリーとしてのUI {/*your-ui-as-a-tree*/}
 
-Trees are a relationship model between items and UI is often represented using tree structures. For example, browsers use tree structures to model HTML ([DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)) and CSS ([CSSOM](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model)). Mobile platforms also use trees to represent their view hierarchy.
+ツリーはアイテム間の関係モデルであり、UIはしばしばツリー構造を使用して表現されます。例えば、ブラウザはツリー構造を使用してHTML（[DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)）やCSS（[CSSOM](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model)）をモデル化します。モバイルプラットフォームもビュー階層を表現するためにツリーを使用します。
 
-<Diagram name="preserving_state_dom_tree" height={193} width={864} alt="Diagram with three sections arranged horizontally. In the first section, there are three rectangles stacked vertically, with labels 'Component A', 'Component B', and 'Component C'. Transitioning to the next pane is an arrow with the React logo on top labeled 'React'. The middle section contains a tree of components, with the root labeled 'A' and two children labeled 'B' and 'C'. The next section is again transitioned using an arrow with the React logo on top labeled 'React DOM'. The third and final section is a wireframe of a browser, containing a tree of 8 nodes, which has only a subset highlighted (indicating the subtree from the middle section).">
+<Diagram name="preserving_state_dom_tree" height={193} width={864} alt="図は横に並んだ3つのセクションで構成されています。最初のセクションには、縦に積み重なった3つの長方形があり、それぞれに「Component A」、「Component B」、「Component C」とラベルが付いています。次のペインに移行する矢印にはReactのロゴが上にあり、「React」とラベルが付いています。中央のセクションには、ルートが「A」とラベル付けされ、2つの子が「B」と「C」とラベル付けされたコンポーネントのツリーがあります。次のセクションも「React DOM」とラベル付けされたReactのロゴが上にある矢印で移行します。最後のセクションはブラウザのワイヤーフレームで、8つのノードのツリーが含まれており、そのうちの一部だけが強調表示されています（中央のセクションからのサブツリーを示しています）。">
 
-React creates a UI tree from your components. In this example, the UI tree is then used to render to the DOM.
+ReactはコンポーネントからUIツリーを作成します。この例では、UIツリーがDOMにレンダリングされます。
 </Diagram>
 
-Like browsers and mobile platforms, React also uses tree structures to manage and model the relationship between components in a React app. These trees are useful tools to understand how data flows through a React app and how to optimize rendering and app size.
+ブラウザやモバイルプラットフォームと同様に、Reactもツリー構造を使用してReactアプリのコンポーネント間の関係を管理およびモデル化します。これらのツリーは、Reactアプリ内のデータフローを理解し、レンダリングやアプリサイズの最適化を行うための有用なツールです。
 
-## The Render Tree {/*the-render-tree*/}
+## レンダーツリー {/*the-render-tree*/}
 
-A major feature of components is the ability to compose components of other components. As we [nest components](/learn/your-first-component#nesting-and-organizing-components), we have the concept of parent and child components, where each parent component may itself be a child of another component.
+コンポーネントの主要な機能の一つは、他のコンポーネントを構成する能力です。コンポーネントを[ネストする](/learn/your-first-component#nesting-and-organizing-components)と、親コンポーネントと子コンポーネントの概念が生まれ、各親コンポーネントは別のコンポーネントの子である場合があります。
 
-When we render a React app, we can model this relationship in a tree, known as the render tree.
+Reactアプリをレンダリングするとき、この関係をツリーとしてモデル化することができ、これをレンダーツリーと呼びます。
 
-Here is a React app that renders inspirational quotes.
+ここに、インスピレーショナルな引用をレンダリングするReactアプリがあります。
 
 <Sandpack>
 
@@ -118,34 +118,33 @@ export default [
 
 </Sandpack>
 
-<Diagram name="render_tree" height={250} width={500} alt="Tree graph with five nodes. Each node represents a component. The root of the tree is App, with two arrows extending from it to 'InspirationGenerator' and 'FancyText'. The arrows are labelled with the word 'renders'. 'InspirationGenerator' node also has two arrows pointing to nodes 'FancyText' and 'Copyright'.">
+<Diagram name="render_tree" height={250} width={500} alt="ツリーグラフには5つのノードがあります。各ノードはコンポーネントを表しています。ツリーのルートはAppで、そこから'InspirationGenerator'と'FancyText'に向かって2つの矢印が伸びています。矢印には'renders'というラベルが付いています。'InspirationGenerator'ノードには'FancyText'と'Copyright'に向かう2つの矢印もあります。">
 
-React creates a *render tree*, a UI tree, composed of the rendered components.
-
+Reactはレンダーツリー、つまりレンダリングされたコンポーネントで構成されたUIツリーを作成します。
 
 </Diagram>
 
-From the example app, we can construct the above render tree.
+この例のアプリから、上記のレンダーツリーを構築することができます。
 
-The tree is composed of nodes, each of which represents a component. `App`, `FancyText`, `Copyright`, to name a few, are all nodes in our tree.
+ツリーはノードで構成されており、それぞれがコンポーネントを表しています。`App`、`FancyText`、`Copyright`などがツリー内のノードです。
 
-The root node in a React render tree is the [root component](/learn/importing-and-exporting-components#the-root-component-file) of the app. In this case, the root component is `App` and it is the first component React renders. Each arrow in the tree points from a parent component to a child component.
+Reactレンダーツリーのルートノードはアプリの[ルートコンポーネント](/learn/importing-and-exporting-components#the-root-component-file)です。この場合、ルートコンポーネントは`App`であり、Reactが最初にレンダリングするコンポーネントです。ツリー内の各矢印は親コンポーネントから子コンポーネントへの関係を示しています。
 
 <DeepDive>
 
-#### Where are the HTML tags in the render tree? {/*where-are-the-html-elements-in-the-render-tree*/}
+#### レンダーツリーにはHTMLタグはどこにあるのか？ {/*where-are-the-html-elements-in-the-render-tree*/}
 
-You'll notice in the above render tree, there is no mention of the HTML tags that each component renders. This is because the render tree is only composed of React [components](learn/your-first-component#components-ui-building-blocks).
+上記のレンダーツリーには、各コンポーネントがレンダリングするHTMLタグが記載されていないことに気づくでしょう。これは、レンダーツリーがReactの[コンポーネント](learn/your-first-component#components-ui-building-blocks)のみで構成されているためです。
 
-React, as a UI framework, is platform agnostic. On react.dev, we showcase examples that render to the web, which uses HTML markup as its UI primitives. But a React app could just as likely render to a mobile or desktop platform, which may use different UI primitives like [UIView](https://developer.apple.com/documentation/uikit/uiview) or [FrameworkElement](https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkelement?view=windowsdesktop-7.0).
+ReactはUIフレームワークとしてプラットフォームに依存しません。react.devでは、HTMLマークアップをUIプリミティブとして使用するウェブにレンダリングする例を紹介していますが、Reactアプリはモバイルやデスクトッププラットフォームにもレンダリングされる可能性があり、[UIView](https://developer.apple.com/documentation/uikit/uiview)や[FrameworkElement](https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkelement?view=windowsdesktop-7.0)などの異なるUIプリミティブを使用することがあります。
 
-These platform UI primitives are not a part of React. React render trees can provide insight to our React app regardless of what platform your app renders to.
+これらのプラットフォームUIプリミティブはReactの一部ではありません。Reactレンダーツリーは、アプリがどのプラットフォームにレンダリングされるかに関係なく、Reactアプリに関する洞察を提供できます。
 
 </DeepDive>
 
-A render tree represents a single render pass of a React application. With [conditional rendering](/learn/conditional-rendering), a parent component may render different children depending on the data passed.
+レンダーツリーは、Reactアプリケーションの単一のレンダーパスを表します。[条件付きレンダリング](/learn/conditional-rendering)を使用すると、親コンポーネントは渡されたデータに応じて異なる子をレンダリングすることがあります。
 
-We can update the app to conditionally render either an inspirational quote or color.
+アプリを更新して、インスピレーショナルな引用または色を条件付きでレンダリングするようにできます。
 
 <Sandpack>
 
@@ -245,55 +244,54 @@ export default [
 ```
 </Sandpack>
 
-<Diagram name="conditional_render_tree" height={250} width={561} alt="Tree graph with six nodes. The top node of the tree is labelled 'App' with two arrows extending to nodes labelled 'InspirationGenerator' and 'FancyText'. The arrows are solid lines and are labelled with the word 'renders'. 'InspirationGenerator' node also has three arrows. The arrows to nodes 'FancyText' and 'Color' are dashed and labelled with 'renders?'. The last arrow points to the node labelled 'Copyright' and is solid and labelled with 'renders'.">
+<Diagram name="conditional_render_tree" height={250} width={561} alt="ツリーグラフには6つのノードがあります。ツリーの最上部のノードは'App'とラベル付けされており、'InspirationGenerator'と'FancyText'に向かって2つの矢印が伸びています。矢印は実線で、'renders'というラベルが付いています。'InspirationGenerator'ノードには3つの矢印もあります。'FancyText'と'Color'への矢印は点線で、'renders?'というラベルが付いています。最後の矢印は'Copyright'に向かっており、実線で'renders'というラベルが付いています。">
 
-With conditional rendering, across different renders, the render tree may render different components.
-
-</Diagram>
-
-In this example, depending on what `inspiration.type` is, we may render `<FancyText>` or `<Color>`. The render tree may be different for each render pass.
-
-Although render trees may differ across render passes, these trees are generally helpful for identifying what the *top-level* and *leaf components* are in a React app. Top-level components are the components nearest to the root component and affect the rendering performance of all the components beneath them and often contain the most complexity. Leaf components are near the bottom of the tree and have no child components and are often frequently re-rendered.
-
-Identifying these categories of components are useful for understanding data flow and performance of your app.
-
-## The Module Dependency Tree {/*the-module-dependency-tree*/}
-
-Another relationship in a React app that can be modeled with a tree are an app's module dependencies. As we [break up our components](/learn/importing-and-exporting-components#exporting-and-importing-a-component) and logic into separate files, we create [JS modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) where we may export components, functions, or constants.
-
-Each node in a module dependency tree is a module and each branch represents an `import` statement in that module.
-
-If we take the previous Inspirations app, we can build a module dependency tree, or dependency tree for short.
-
-<Diagram name="module_dependency_tree" height={250} width={658} alt="A tree graph with seven nodes. Each node is labelled with a module name. The top level node of the tree is labelled 'App.js'. There are three arrows pointing to the modules 'InspirationGenerator.js', 'FancyText.js' and 'Copyright.js' and the arrows are labelled with 'imports'. From the 'InspirationGenerator.js' node, there are three arrows that extend to three modules: 'FancyText.js', 'Color.js', and 'inspirations.js'. The arrows are labelled with 'imports'.">
-
-The module dependency tree for the Inspirations app.
+条件付きレンダリングでは、異なるレンダーごとにレンダーツリーが異なるコンポーネントをレンダリングすることがあります。
 
 </Diagram>
 
-The root node of the tree is the root module, also known as the entrypoint file. It often is the module that contains the root component.
+この例では、`inspiration.type`が何であるかに応じて、`<FancyText>`または`<Color>`をレンダリングすることがあります。レンダーパスごとにレンダーツリーが異なる場合があります。
 
-Comparing to the render tree of the same app, there are similar structures but some notable differences:
+レンダーツリーはレンダーパスごとに異なる場合がありますが、これらのツリーは一般的にReactアプリの*トップレベル*および*リーフコンポーネント*を特定するのに役立ちます。トップレベルコンポーネントはルートコンポーネントに最も近いコンポーネントであり、その下のすべてのコンポーネントのレンダリングパフォーマンスに影響を与え、しばしば最も複雑です。リーフコンポーネントはツリーの下部にあり、子コンポーネントを持たず、頻繁に再レンダリングされることが多いです。
 
-* The nodes that make-up the tree represent modules, not components.
-* Non-component modules, like `inspirations.js`, are also represented in this tree. The render tree only encapsulates components.
-* `Copyright.js` appears under `App.js` but in the render tree, `Copyright`, the component, appears as a child of `InspirationGenerator`. This is because `InspirationGenerator` accepts JSX as [children props](/learn/passing-props-to-a-component#passing-jsx-as-children), so it renders `Copyright` as a child component but does not import the module.
+これらのコンポーネントのカテゴリを特定することは、アプリのデータフローとパフォーマンスを理解するのに役立ちます。
 
-Dependency trees are useful to determine what modules are necessary to run your React app. When building a React app for production, there is typically a build step that will bundle all the necessary JavaScript to ship to the client. The tool responsible for this is called a [bundler](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview#the_modern_tooling_ecosystem), and bundlers will use the dependency tree to determine what modules should be included.
+## モジュール依存ツリー {/*the-module-dependency-tree*/}
 
-As your app grows, often the bundle size does too. Large bundle sizes are expensive for a client to download and run. Large bundle sizes can delay the time for your UI to get drawn. Getting a sense of your app's dependency tree may help with debugging these issues.
+Reactアプリのもう一つの関係は、アプリのモジュール依存関係をツリーとしてモデル化することができます。コンポーネントやロジックを別々のファイルに[分割する](/learn/importing-and-exporting-components#exporting-and-importing-a-component)と、コンポーネント、関数、定数をエクスポートする[JSモジュール](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)を作成します。
+
+モジュール依存ツリーの各ノードはモジュールであり、各ブランチはそのモジュール内の`import`文を表します。
+
+前述のInspirationsアプリを例にとると、モジュール依存ツリー、または依存ツリーを構築することができます。
+
+<Diagram name="module_dependency_tree" height={250} width={658} alt="ツリーグラフには7つのノードがあります。各ノードにはモジュール名がラベル付けされています。ツリーの最上部のノードは'App.js'とラベル付けされています。3つの矢印がモジュール'InspirationGenerator.js'、'FancyText.js'、'Copyright.js'に向かっており、矢印には'imports'というラベルが付いています。'InspirationGenerator.js'ノードからは、'FancyText.js'、'Color.js'、'inspirations.js'の3つのモジュールに向かって3つの矢印が伸びています。矢印には'imports'というラベルが付いています。">
+
+Inspirationsアプリのモジュール依存ツリー。
+
+</Diagram>
+
+ツリーのルートノードはルートモジュール、またはエントリーポイントファイルとして知られています。通常、ルートコンポーネントを含むモジュールです。
+
+同じアプリのレンダーツリーと比較すると、似た構造がありますが、いくつかの顕著な違いがあります：
+
+* ツリーを構成するノードはコンポーネントではなくモジュールを表しています。
+* `inspirations.js`のような非コンポーネントモジュールもこのツリーに表現されています。レンダーツリーはコンポーネントのみをカプセル化します。
+* `Copyright.js`は`App.js`の下に表示されますが、レンダーツリーでは`Copyright`コンポーネントは`InspirationGenerator`の子として表示されます。これは、`InspirationGenerator`が[子プロップ](/learn/passing-props-to-a-component#passing-jsx-as-children)としてJSXを受け入れるため、子コンポーネントとして`Copyright`をレンダリングしますが、モジュールをインポートしないためです。
+
+依存ツリーは、Reactアプリを実行するために必要なモジュールを特定するのに役立ちます。Reactアプリをプロダクション用にビルドする際には、クライアントに送信するために必要なJavaScriptをすべてバンドルするビルドステップが通常あります。この役割を担うツールは[バンドラー](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview#the_modern_tooling_ecosystem)と呼ばれ、バンドラーは依存ツリーを使用してどのモジュールを含めるべきかを決定します。
+
+アプリが成長するにつれて、バンドルサイズも大きくなることがよくあります。大きなバンドルサイズはクライアントがダウンロードして実行するのにコストがかかります。大きなバンドルサイズはUIの描画時間を遅らせる可能性があります。アプリの依存ツリーを把握することで、これらの問題のデバッグに役立つことがあります。
 
 [comment]: <> (perhaps we should also deep dive on conditional imports)
 
 <Recap>
 
-* Trees are a common way to represent the relationship between entities. They are often used to model UI.
-* Render trees represent the nested relationship between React components across a single render.
-* With conditional rendering, the render tree may change across different renders. With different prop values, components may render different children components.
-* Render trees help identify what the top-level and leaf components are. Top-level components affect the rendering performance of all components beneath them and leaf components are often re-rendered frequently. Identifying them is useful for understanding and debugging rendering performance.
-* Dependency trees represent the module dependencies in a React app.
-* Dependency trees are used by build tools to bundle the necessary code to ship an app.
-* Dependency trees are useful for debugging large bundle sizes that slow time to paint and expose opportunities for optimizing what code is bundled.
+* ツリーはエンティティ間の関係を表現する一般的な方法です。UIをモデル化するためによく使用されます。
+* レンダーツリーは、単一のレンダーにおけるReactコンポーネント間のネスト関係を表します* 条件付きレンダリングでは、レンダーツリーは異なるレンダーごとに変わることがあります。異なるプロップ値により、コンポーネントは異なる子コンポーネントをレンダリングすることがあります。
+* レンダーツリーは、トップレベルコンポーネントとリーフコンポーネントを特定するのに役立ちます。トップレベルコンポーネントはその下のすべてのコンポーネントのレンダリングパフォーマンスに影響を与え、リーフコンポーネントは頻繁に再レンダリングされることが多いです。これらを特定することは、レンダリングパフォーマンスの理解とデバッグに役立ちます。
+* 依存ツリーは、Reactアプリのモジュール依存関係を表します。
+* 依存ツリーは、ビルドツールがアプリを出荷するために必要なコードをバンドルするために使用されます。
+* 依存ツリーは、ペイント時間を遅らせる大きなバンドルサイズをデバッグし、バンドルするコードを最適化する機会を見つけるのに役立ちます。
 
 </Recap>
 

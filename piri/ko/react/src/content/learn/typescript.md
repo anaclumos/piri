@@ -1,57 +1,57 @@
 ---
-title: Using TypeScript
+title: TypeScript 사용하기
 re: https://github.com/reactjs/react.dev/issues/5960
 ---
 
 <Intro>
 
-TypeScript is a popular way to add type definitions to JavaScript codebases. Out of the box, TypeScript [supports JSX](/learn/writing-markup-with-jsx) and you can get full React Web support by adding [`@types/react`](https://www.npmjs.com/package/@types/react) and [`@types/react-dom`](https://www.npmjs.com/package/@types/react-dom) to your project.
+TypeScript는 JavaScript 코드베이스에 타입 정의를 추가하는 인기 있는 방법입니다. 기본적으로 TypeScript는 [JSX를 지원](/learn/writing-markup-with-jsx)하며, 프로젝트에 [`@types/react`](https://www.npmjs.com/package/@types/react)와 [`@types/react-dom`](https://www.npmjs.com/package/@types/react-dom)를 추가하여 완전한 React Web 지원을 받을 수 있습니다.
 
 </Intro>
 
 <YouWillLearn>
 
-* [TypeScript with React Components](/learn/typescript#typescript-with-react-components)
-* [Examples of typing with Hooks](/learn/typescript#example-hooks)
-* [Common types from `@types/react`](/learn/typescript/#useful-types)
-* [Further learning locations](/learn/typescript/#further-learning)
+* [React 컴포넌트와 TypeScript](/learn/typescript#typescript-with-react-components)
+* [Hooks를 사용한 타이핑 예제](/learn/typescript#example-hooks)
+* [`@types/react`의 일반적인 타입](/learn/typescript/#useful-types)
+* [추가 학습 자료](/learn/typescript/#further-learning)
 
 </YouWillLearn>
 
-## Installation {/*installation*/}
+## 설치 {/*installation*/}
 
-All [production-grade React frameworks](/learn/start-a-new-react-project#production-grade-react-frameworks) offer support for using TypeScript. Follow the framework specific guide for installation:
+모든 [프로덕션급 React 프레임워크](/learn/start-a-new-react-project#production-grade-react-frameworks)는 TypeScript 사용을 지원합니다. 프레임워크별 설치 가이드를 따르세요:
 
 - [Next.js](https://nextjs.org/docs/app/building-your-application/configuring/typescript)
 - [Remix](https://remix.run/docs/en/1.19.2/guides/typescript)
 - [Gatsby](https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/)
 - [Expo](https://docs.expo.dev/guides/typescript/)
 
-### Adding TypeScript to an existing React project {/*adding-typescript-to-an-existing-react-project*/}
+### 기존 React 프로젝트에 TypeScript 추가하기 {/*adding-typescript-to-an-existing-react-project*/}
 
-To install the latest version of React's type definitions:
+최신 버전의 React 타입 정의를 설치하려면:
 
 <TerminalBlock>
 npm install @types/react @types/react-dom
 </TerminalBlock>
 
-The following compiler options need to be set in your `tsconfig.json`:
+다음 컴파일러 옵션을 `tsconfig.json`에 설정해야 합니다:
 
-1. `dom` must be included in [`lib`](https://www.typescriptlang.org/tsconfig/#lib) (Note: If no `lib` option is specified, `dom` is included by default).
-1. [`jsx`](https://www.typescriptlang.org/tsconfig/#jsx) must be set to one of the valid options. `preserve` should suffice for most applications.
-  If you're publishing a library, consult the [`jsx` documentation](https://www.typescriptlang.org/tsconfig/#jsx) on what value to choose.
+1. [`lib`](https://www.typescriptlang.org/tsconfig/#lib)에 `dom`이 포함되어야 합니다 (참고: `lib` 옵션이 지정되지 않은 경우 기본적으로 `dom`이 포함됩니다).
+1. [`jsx`](https://www.typescriptlang.org/tsconfig/#jsx)는 유효한 옵션 중 하나로 설정되어야 합니다. 대부분의 애플리케이션에서는 `preserve`가 충분합니다.
+  라이브러리를 게시하는 경우, 어떤 값을 선택할지에 대한 [`jsx` 문서](https://www.typescriptlang.org/tsconfig/#jsx)를 참조하세요.
 
-## TypeScript with React Components {/*typescript-with-react-components*/}
+## React 컴포넌트와 TypeScript {/*typescript-with-react-components*/}
 
 <Note>
 
-Every file containing JSX must use the `.tsx` file extension. This is a TypeScript-specific extension that tells TypeScript that this file contains JSX.
+JSX를 포함하는 모든 파일은 `.tsx` 파일 확장자를 사용해야 합니다. 이는 이 파일에 JSX가 포함되어 있음을 TypeScript에 알리는 TypeScript 전용 확장자입니다.
 
 </Note>
 
-Writing TypeScript with React is very similar to writing JavaScript with React. The key difference when working with a component is that you can provide types for your component's props. These types can be used for correctness checking and providing inline documentation in editors.
+React와 함께 TypeScript를 작성하는 것은 React와 함께 JavaScript를 작성하는 것과 매우 유사합니다. 컴포넌트 작업 시 주요 차이점은 컴포넌트의 props에 대한 타입을 제공할 수 있다는 것입니다. 이러한 타입은 정확성 검사와 편집기 내 문서 제공에 사용될 수 있습니다.
 
-Taking the [`MyButton` component](/learn#components) from the [Quick Start](/learn) guide, we can add a type describing the `title` for the button:
+[Quick Start](/learn) 가이드의 [`MyButton` 컴포넌트](/learn#components)를 가져와 버튼의 `title`을 설명하는 타입을 추가할 수 있습니다:
 
 <Sandpack>
 
@@ -78,21 +78,21 @@ export default App = AppTSX;
 ```
 </Sandpack>
 
- <Note>
+<Note>
 
-These sandboxes can handle TypeScript code, but they do not run the type-checker. This means you can amend the TypeScript sandboxes to learn, but you won't get any type errors or warnings. To get type-checking, you can use the [TypeScript Playground](https://www.typescriptlang.org/play) or use a more fully-featured online sandbox.
+이 샌드박스는 TypeScript 코드를 처리할 수 있지만 타입 체커를 실행하지 않습니다. 이는 학습을 위해 TypeScript 샌드박스를 수정할 수 있지만 타입 오류나 경고를 받지 않는다는 것을 의미합니다. 타입 검사를 받으려면 [TypeScript Playground](https://www.typescriptlang.org/play)를 사용하거나 더 완전한 기능을 갖춘 온라인 샌드박스를 사용하세요.
 
 </Note>
 
-This inline syntax is the simplest way to provide types for a component, though once you start to have a few fields to describe it can become unwieldy. Instead, you can use an `interface` or `type` to describe the component's props:
+이 인라인 구문은 컴포넌트에 대한 타입을 제공하는 가장 간단한 방법이지만, 설명해야 할 필드가 몇 개 생기기 시작하면 다루기 어려워질 수 있습니다. 대신, 컴포넌트의 props를 설명하기 위해 `interface` 또는 `type`을 사용할 수 있습니다:
 
 <Sandpack>
 
 ```tsx src/App.tsx active
 interface MyButtonProps {
-  /** The text to display inside the button */
+  /** 버튼 안에 표시할 텍스트 */
   title: string;
-  /** Whether the button can be interacted with */
+  /** 버튼을 상호작용할 수 있는지 여부 */
   disabled: boolean;
 }
 
@@ -119,32 +119,32 @@ export default App = AppTSX;
 
 </Sandpack>
 
-The type describing your component's props can be as simple or as complex as you need, though they should be an object type described with either a `type` or `interface`. You can learn about how TypeScript describes objects in [Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html) but you may also be interested in using [Union Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) to describe a prop that can be one of a few different types and the [Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html) guide for more advanced use cases.
+컴포넌트의 props를 설명하는 타입은 필요에 따라 간단하거나 복잡할 수 있지만, `type` 또는 `interface`로 설명된 객체 타입이어야 합니다. TypeScript가 객체를 설명하는 방법에 대해 [Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html)에서 배울 수 있지만, prop이 몇 가지 다른 타입 중 하나일 수 있는 경우를 설명하기 위해 [Union Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types)를 사용하거나 더 고급 사용 사례를 위해 [Creating Types from Types](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html) 가이드를 참조할 수도 있습니다.
 
 
-## Example Hooks {/*example-hooks*/}
+## Hooks 예제 {/*example-hooks*/}
 
-The type definitions from `@types/react` include types for the built-in Hooks, so you can use them in your components without any additional setup. They are built to take into account the code you write in your component, so you will get [inferred types](https://www.typescriptlang.org/docs/handbook/type-inference.html) a lot of the time and ideally do not need to handle the minutiae of providing the types. 
+`@types/react`의 타입 정의에는 내장된 Hooks에 대한 타입이 포함되어 있어 추가 설정 없이 컴포넌트에서 사용할 수 있습니다. 이들은 컴포넌트에서 작성한 코드를 고려하여 작성되었기 때문에, 많은 경우 [추론된 타입](https://www.typescriptlang.org/docs/handbook/type-inference.html)을 얻을 수 있으며, 이상적으로는 타입을 제공하는 세부 사항을 처리할 필요가 없습니다.
 
-However, we can look at a few examples of how to provide types for Hooks.
+그러나 Hooks에 대한 타입을 제공하는 몇 가지 예제를 살펴볼 수 있습니다.
 
 ### `useState` {/*typing-usestate*/}
 
-The [`useState` Hook](/reference/react/useState) will re-use the value passed in as the initial state to determine what the type of the value should be. For example:
+[`useState` Hook](/reference/react/useState)은 초기 상태로 전달된 값을 재사용하여 값의 타입을 결정합니다. 예를 들어:
 
 ```ts
-// Infer the type as "boolean"
+// 타입을 "boolean"으로 추론
 const [enabled, setEnabled] = useState(false);
 ```
 
-This will assign the type of `boolean` to `enabled`, and `setEnabled` will be a function accepting either a `boolean` argument, or a function that returns a `boolean`. If you want to explicitly provide a type for the state, you can do so by providing a type argument to the `useState` call:
+이렇게 하면 `enabled`에 `boolean` 타입이 할당되고, `setEnabled`는 `boolean` 인수를 받거나 `boolean`을 반환하는 함수를 받는 함수가 됩니다. 상태에 대한 타입을 명시적으로 제공하려면 `useState` 호출에 타입 인수를 제공할 수 있습니다:
 
 ```ts 
-// Explicitly set the type to "boolean"
+// 타입을 "boolean"으로 명시적으로 설정
 const [enabled, setEnabled] = useState<boolean>(false);
 ```
 
-This isn't very useful in this case, but a common case where you may want to provide a type is when you have a union type. For example, `status` here can be one of a few different strings:
+이 경우에는 별로 유용하지 않지만, 공통적으로 타입을 제공하고자 하는 경우는 유니언 타입을 가질 때입니다. 예를 들어, 여기서 `status`는 몇 가지 다른 문자열 중 하나일 수 있습니다:
 
 ```ts
 type Status = "idle" | "loading" | "success" | "error";
@@ -152,7 +152,7 @@ type Status = "idle" | "loading" | "success" | "error";
 const [status, setStatus] = useState<Status>("idle");
 ```
 
-Or, as recommended in [Principles for structuring state](/learn/choosing-the-state-structure#principles-for-structuring-state), you can group related state as an object and describe the different possibilities via object types:
+또는, [상태 구조화 원칙](/learn/choosing-the-state-structure#principles-for-structuring-state)에서 권장하는 대로 관련 상태를 객체로 그룹화하고 객체 타입을 통해 다양한 가능성을 설명할 수 있습니다:
 
 ```ts
 type RequestState =
@@ -166,7 +166,7 @@ const [requestState, setRequestState] = useState<RequestState>({ status: 'idle' 
 
 ### `useReducer` {/*typing-usereducer*/}
 
-The [`useReducer` Hook](/reference/react/useReducer) is a more complex Hook that takes a reducer function and an initial state. The types for the reducer function are inferred from the initial state. You can optionally provide a type argument to the `useReducer` call to provide a type for the state, but it is often better to set the type on the initial state instead:
+[`useReducer` Hook](/reference/react/useReducer)은 리듀서 함수와 초기 상태를 받는 더 복잡한 Hook입니다. 리듀서 함수의 타입은 초기 상태에서 추론됩니다. 상태에 대한 타입을 제공하기 위해 `useReducer` 호출에 타입 인수를 선택적으로 제공할 수 있지만, 초기 상태에 타입을 설정하는 것이 더 좋습니다:
 
 <Sandpack>
 
@@ -221,14 +221,14 @@ export default App = AppTSX;
 </Sandpack>
 
 
-We are using TypeScript in a few key places:
+우리는 몇 가지 주요 위치에서 TypeScript를 사용하고 있습니다:
 
- - `interface State` describes the shape of the reducer's state.
- - `type CounterAction` describes the different actions which can be dispatched to the reducer.
- - `const initialState: State` provides a type for the initial state, and also the type which is used by `useReducer` by default.
- - `stateReducer(state: State, action: CounterAction): State` sets the types for the reducer function's arguments and return value.
+ - `interface State`는 리듀서의 상태 모양을 설명합니다.
+ - `type CounterAction`은 리듀서에 디스패치할 수 있는 다양한 액션을 설명합니다.
+ - `const initialState: State`는 초기 상태에 대한 타입을 제공하며, 기본적으로 `useReducer`에서 사용되는 타입입니다.
+ - `stateReducer(state: State, action: CounterAction): State`는 리듀서 함수의 인수와 반환 값에 대한 타입을 설정합니다.
 
-A more explicit alternative to setting the type on `initialState` is to provide a type argument to `useReducer`:
+`initialState`에 타입을 설정하는 것보다 더 명시적인 대안은 `useReducer`에 타입 인수를 제공하는 것입니다:
 
 ```ts
 import { stateReducer, State } from './your-reducer-implementation';
@@ -242,9 +242,9 @@ export default function App() {
 
 ### `useContext` {/*typing-usecontext*/}
 
-The [`useContext` Hook](/reference/react/useContext) is a technique for passing data down the component tree without having to pass props through components. It is used by creating a provider component and often by creating a Hook to consume the value in a child component.
+[`useContext` Hook](/reference/react/useContext)은 컴포넌트를 통해 props를 전달하지 않고 데이터 트리를 통해 데이터를 전달하는 기술입니다. 이는 제공자 컴포넌트를 생성하고 자주 자식 컴포넌트에서 값을 소비하기 위한 Hook을 생성하여 사용됩니다.
 
-The type of the value provided by the context is inferred from the value passed to the `createContext` call:
+컨텍스트에서 제공되는 값의 타입은 `createContext` 호출에 전달된 값에서 추론됩니다:
 
 <Sandpack>
 
@@ -284,22 +284,22 @@ export default App = AppTSX;
 
 </Sandpack>
 
-This technique works when you have a default value which makes sense - but there are occasionally cases when you do not, and in those cases `null` can feel reasonable as a default value. However, to allow the type-system to understand your code, you need to explicitly set `ContextShape | null` on the `createContext`. 
+이 기술은 의미 있는 기본값이 있을 때 작동합니다 - 그러나 때때로 기본값이 없을 때 `null`이 합리적으로 느껴질 수 있습니다. 그러나 타입 시스템이 코드를 이해할 수 있도록 `ContextShape | null`을 `createContext`에 명시적으로 설정해야 합니다.
 
-This causes the issue that you need to eliminate the `| null` in the type for context consumers. Our recommendation is to have the Hook do a runtime check for it's existence and throw an error when not present:
+이로 인해 컨텍스트 소비자에 대한 타입에서 `| null`을 제거해야 하는 문제가 발생합니다. 우리의 권장 사항은 Hook이 존재 여부를 런타임에서 확인하고 존재하지 않을 때 오류를 발생시키는 것입니다:
 
 ```js {5, 16-20}
 import { createContext, useContext, useState, useMemo } from 'react';
 
-// This is a simpler example, but you can imagine a more complex object here
+// 이것은 더 간단한 예제이지만, 여기서 더 복잡한 객체를 상상할 수 있습니다
 type ComplexObject = {
   kind: string
 };
 
-// The context is created with `| null` in the type, to accurately reflect the default value.
+// 컨텍스트는 기본값을 정확하게 반영하기 위해 타입에 `| null`로 생성됩니다.
 const Context = createContext<ComplexObject | null>(null);
 
-// The `| null` will be removed via the check in the Hook.
+// Hook에서 존재 여부를 확인하여 `| null`이 제거됩니다.
 const useGetComplexObject = () => {
   const object = useContext(Context);
   if (!object) { throw new Error("useGetComplexObject must be used within a Provider") }
@@ -329,18 +329,17 @@ function MyComponent() {
 
 ### `useMemo` {/*typing-usememo*/}
 
-The [`useMemo`](/reference/react/useMemo) Hooks will create/re-access a memorized value from a function call, re-running the function only when dependencies passed as the 2nd parameter are changed. The result of calling the Hook is inferred from the return value from the function in the first parameter. You can be more explicit by providing a type argument to the Hook.
+[`useMemo`](/reference/react/useMemo) Hooks는 함수 호출에서 메모이제이션된 값을 생성/재접근하며, 두 번째 매개변수로 전달된 종속성이 변경될 때만 함수를 다시 실행합니다. Hook 호출의 결과는 첫 번째 매개변수의 함수 반환 값에서 추론됩니다. Hook에 타입 인수를 제공하여 더 명시적으로 할 수 있습니다.
 
 ```ts
-// The type of visibleTodos is inferred from the return value of filterTodos
+// visibleTodos의 타입은 filterTodos의 반환 값에서 추론됩니다
 const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
 ```
 
 
 ### `useCallback` {/*typing-usecallback*/}
 
-The [`useCallback`](/reference/react/useCallback) provide a stable reference to a function as long as the dependencies passed into the second parameter are the same. Like `useMemo`, the function's type is inferred from the return value of the function in the first parameter, and you can be more explicit by providing a type argument to the Hook.
-
+[`useCallback`](/reference/react/useCallback)은 두 번째 매개변수로 전달된 종속성이 동일한 한 함수에 대한 안정적인 참조를 제공합니다. `useMemo`와 마찬가지로 함수의 타입은 첫 번째 매개변수의 함수 반환 값에서 추론되며, Hook에 타입 인수를 제공하여 더 명시적으로 할 수 있습니다.
 
 ```ts
 const handleClick = useCallback(() => {
@@ -348,9 +347,9 @@ const handleClick = useCallback(() => {
 }, [todos]);
 ```
 
-When working in TypeScript strict mode `useCallback` requires adding types for the parameters in your callback. This is because the type of the callback is inferred from the return value of the function, and without parameters the type cannot be fully understood.
+TypeScript strict 모드에서 작업할 때 `useCallback`은 콜백의 매개변수에 대한 타입을 추가해야 합니다. 이는 콜백의 타입이 함수의 반환 값에서 추론되며, 매개변수 없이 타입을 완전히 이해할 수 없기 때문입니다.
 
-Depending on your code-style preferences, you could use the `*EventHandler` functions from the React types to provide the type for the event handler at the same time as defining the callback: 
+코드 스타일 선호도에 따라, `*EventHandler` 함수를 사용하여 콜백을 정의할 때 이벤트 핸들러에 대한 타입을 제공할 수 있습니다:
 
 ```ts
 import { useState, useCallback } from 'react';
@@ -371,13 +370,13 @@ export default function Form() {
 }
 ```
 
-## Useful Types {/*useful-types*/}
+## 유용한 타입 {/*useful-types*/}
 
-There is quite an expansive set of types which come from the `@types/react` package, it is worth a read when you feel comfortable with how React and TypeScript interact. You can find them [in React's folder in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts). We will cover a few of the more common types here.
+`@types/react` 패키지에서 제공하는 타입은 매우 광범위하며, React와 TypeScript의 상호 작용에 익숙해지면 읽어볼 가치가 있습니다. [DefinitelyTyped의 React 폴더](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts)에서 찾을 수 있습니다. 여기서는 몇 가지 일반적인 타입을 다루겠습니다.
 
-### DOM Events {/*typing-dom-events*/}
+### DOM 이벤트 {/*typing-dom-events*/}
 
-When working with DOM events in React, the type of the event can often be inferred from the event handler. However, when you want to extract a function to be passed to an event handler, you will need to explicitly set the type of the event.
+React에서 DOM 이벤트를 다룰 때, 이벤트의 타입은 종종 이벤트 핸들러에서 추론될 수 있습니다. 그러나 이벤트 핸들러에 전달할 함수를 추출하려면 이벤트의 타입을 명시적으로 설정해야 합니다.
 
 <Sandpack>
 
@@ -407,15 +406,15 @@ export default App = AppTSX;
 
 </Sandpack>
 
-There are many types of events provided in the React types - the full list can be found [here](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/b580df54c0819ec9df62b0835a315dd48b8594a9/types/react/index.d.ts#L1247C1-L1373) which is based on the [most popular events from the DOM](https://developer.mozilla.org/en-US/docs/Web/Events).
+React 타입에는 많은 이벤트 타입이 제공됩니다 - 전체 목록은 [여기](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/b580df54c0819ec9df62b0835a315dd48b8594a9/types/react/index.d.ts#L1247C1-L1373)에서 찾을 수 있으며, 이는 [DOM의 가장 인기 있는 이벤트](https://developer.mozilla.org/en-US/docs/Web/Events)를 기반으로 합니다.
 
-When determining the type you are looking for you can first look at the hover information for the event handler you are using, which will show the type of the event.
+찾고 있는 타입을 결정할 때 사용하는 이벤트 핸들러의 호버 정보를 먼저 확인할 수 있으며, 이는 이벤트의 타입을 보여줍니다.
 
-If you need to use an event that is not included in this list, you can use the `React.SyntheticEvent` type, which is the base type for all events.
+이 목록에 포함되지 않은 이벤트를 사용해야 하는 경우, `React.SyntheticEvent` 타입을 사용할 수 있으며, 이는 모든 이벤트의 기본 타입입니다.
 
 ### Children {/*typing-children*/}
 
-There are two common paths to describing the children of a component. The first is to use the `React.ReactNode` type, which is a union of all the possible types that can be passed as children in JSX:
+컴포넌트의 children을 설명하는 두 가지 일반적인 방법이 있습니다. 첫 번째는 JSX에서 children으로 전달될 수 있는 모든 가능한 타입의 유니언인 `React.ReactNode` 타입을 사용하는 것입니다:
 
 ```ts
 interface ModalRendererProps {
@@ -424,7 +423,7 @@ interface ModalRendererProps {
 }
 ```
 
-This is a very broad definition of children. The second is to use the `React.ReactElement` type, which is only JSX elements and not JavaScript primitives like strings or numbers:
+이는 children의 매우 광범위한 정의입니다. 두 번째는 JSX 요소만 포함하고 문자열이나 숫자와 같은 JavaScript 원시 타입을 포함하지 않는 `React.ReactElement` 타입을 사용하는 것입니다:
 
 ```ts
 interface ModalRendererProps {
@@ -433,13 +432,13 @@ interface ModalRendererProps {
 }
 ```
 
-Note, that you cannot use TypeScript to describe that the children are a certain type of JSX elements, so you cannot use the type-system to describe a component which only accepts `<li>` children. 
+참고로, TypeScript를 사용하여 특정 타입의 JSX 요소만 children으로 허용하는 컴포넌트를 설명할 수는 없습니다. 예를 들어, `li` 요소만 children으로 허용하는 컴포넌트를 타입 시스템으로 설명할 수 없습니다.
 
-You can see an example of both `React.ReactNode` and `React.ReactElement` with the type-checker in [this TypeScript playground](https://www.typescriptlang.org/play?#code/JYWwDg9gTgLgBAJQKYEMDG8BmUIjgIilQ3wChSB6CxYmAOmXRgDkIATJOdNJMGAZzgwAFpxAR+8YADswAVwGkZMJFEzpOjDKw4AFHGEEBvUnDhphwADZsi0gFw0mDWjqQBuUgF9yaCNMlENzgAXjgACjADfkctFnYkfQhDAEpQgD44AB42YAA3dKMo5P46C2tbJGkvLIpcgt9-QLi3AEEwMFCItJDMrPTTbIQ3dKywdIB5aU4kKyQQKpha8drhhIGzLLWODbNs3b3s8YAxKBQAcwXpAThMaGWDvbH0gFloGbmrgQfBzYpd1YjQZbEYARkB6zMwO2SHSAAlZlYIBCdtCRkZpHIrFYahQYQD8UYYFA5EhcfjyGYqHAXnJAsIUHlOOUbHYhMIIHJzsI0Qk4P9SLUBuRqXEXEwAKKfRZcNA8PiCfxWACecAAUgBlAAacFm80W-CU11U6h4TgwUv11yShjgJjMLMqDnN9Dilq+nh8pD8AXgCHdMrCkWisVoAet0R6fXqhWKhjKllZVVxMcavpd4Zg7U6Qaj+2hmdG4zeRF10uu-Aeq0LBfLMEe-V+T2L7zLVu+FBWLdLeq+lc7DYFf39deFVOotMCACNOCh1dq219a+30uC8YWoZsRyuEdjkevR8uvoVMdjyTWt4WiSSydXD4NqZP4AymeZE072ZzuUeZQKheQgA).
+`React.ReactNode`와 `React.ReactElement`의 예제를 타입 체커와 함께 [이 TypeScript 플레이그라운드](https://www.typescriptlang.org/play?#code/JYWwDg9gTgLgBAJQKYEMDG8BmUIjgIilQ3wChSB6CxYmAOmXRgDkIATJOdNJMGAZzgwAFpxAR+8YADswAVwGkZMJFEzpOjDKw4AFHGEEBvUnDhphwADZsi0gFw0mDWjqQBuUgF9yaCNMlENzgAXjgACjADfkctFnYkfQhDAEpQgD44AB42YAA3dKMo5P46C2tbJGkvLIpcgt9-QLi3AEEwMFCItJDMrPTTbIQ3dKywdIB5aU4kKyQQKpha8drhhIGzLLWODbNs3b3s8YAxKBQAcwXpAThMaGWDvbH0gFloGbmrgQfBzYpd1YjQZbEYARkB6zMwO2SHSAAlZlYIBCdtCRkZpHIrFYahQYQD8UYYFA5EhcfjyGYqHAXnJAsIUHlOOUbHYhMIIHJzsI0Qk4P9SLUBuRqXEXEwAKKfRZcNA8PiCfxWACecAAUgBlAAacFm80W-CU11U6h4TgwUv11yShjgJjMLMqDnN9Dilq+nh8pD8AXgCHdMrCkWisVoAet0R6fXqhWKhjKllZVVxMcavpd4Zg7U6Qaj+2hmdG4zeRF10uu-Aeq0LBfLMEe-V+T2L7zLVu+FBWLdLeq+lc7DYFf39deFVOotMCACNOCh1dq219a+30uC8YWoZsRyuEdjkevR8uvoVMdjyTWt4WiSSydXD4NqZP4AymeZE072ZzuUeZQKheQgA)에서 확인할 수 있습니다.
 
-### Style Props {/*typing-style-props*/}
+### 스타일 Props {/*typing-style-props*/}
 
-When using inline styles in React, you can use `React.CSSProperties` to describe the object passed to the `style` prop. This type is a union of all the possible CSS properties, and is a good way to ensure you are passing valid CSS properties to the `style` prop, and to get auto-complete in your editor.
+React에서 인라인 스타일을 사용할 때, `React.CSSProperties`를 사용하여 `style` prop에 전달되는 객체를 설명할 수 있습니다. 이 타입은 모든 가능한 CSS 속성의 유니언이며, `style` prop에 유효한 CSS 속성을 전달하는지 확인하고 편집기에서 자동 완성을 받을 수 있는 좋은 방법입니다.
 
 ```ts
 interface MyComponentProps {
@@ -447,17 +446,17 @@ interface MyComponentProps {
 }
 ```
 
-## Further learning {/*further-learning*/}
+## 추가 학습 자료 {/*further-learning*/}
 
-This guide has covered the basics of using TypeScript with React, but there is a lot more to learn.
-Individual API pages on the docs may contain more in-depth documentation on how to use them with TypeScript.
+이 가이드는 React와 함께 TypeScript를 사용하는 기본 사항을 다루었지만, 배울 것이 훨씬 더 많습니다.
+문서의 개별 API 페이지에는 TypeScript와 함께 사용하는 방법에 대한 더 심층적인 문서가 포함될 수 있습니다.
 
-We recommend the following resources:
+다음 리소스를 추천합니다:
 
- - [The TypeScript handbook](https://www.typescriptlang.org/docs/handbook/) is the official documentation for TypeScript, and covers most key language features.
+ - [TypeScript 핸드북](https://www.typescriptlang.org/docs/handbook/)은 TypeScript의 공식 문서로, 대부분의 주요 언어 기능을 다룹니다.
 
- - [The TypeScript release notes](https://devblogs.microsoft.com/typescript/) cover new features in depth.
+ - [TypeScript 릴리스 노트](https://devblogs.microsoft.com/typescript/)는 새로운 기능을 깊이 있게 다룹니다.
 
- - [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/) is a community-maintained cheatsheet for using TypeScript with React, covering a lot of useful edge cases and providing more breadth than this document.
+ - [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)는 TypeScript와 React를 함께 사용하는 방법에 대한 커뮤니티 유지 치트 시트로, 이 문서보다 더 많은 유용한 엣지 케이스를 다루고 더 폭넓은 내용을 제공합니다.
 
- - [TypeScript Community Discord](https://discord.com/invite/typescript) is a great place to ask questions and get help with TypeScript and React issues.
+ - [TypeScript 커뮤니티 Discord](https://discord.com/invite/typescript)는 TypeScript와 React 문제에 대한 질문을 하고 도움을 받을 수 있는 좋은 장소입니다.

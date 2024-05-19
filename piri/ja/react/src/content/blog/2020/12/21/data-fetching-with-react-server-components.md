@@ -1,34 +1,34 @@
 ---
-title: "Introducing Zero-Bundle-Size React Server Components"
+title: ゼロバンドルサイズのReact Server Componentsの紹介
 author: Dan Abramov, Lauren Tan, Joseph Savona, and Sebastian Markbage
 date: 2020/12/21
-description: 2020 has been a long year. As it comes to an end we wanted to share a special Holiday Update on our research into zero-bundle-size React Server Components.
+description: 2020年は長い一年でした。年末が近づく中、ゼロバンドルサイズのReact Server Componentsに関する研究について特別なホリデーアップデートを共有したいと思います。
 ---
 
-December 21, 2020 by [Dan Abramov](https://twitter.com/dan_abramov), [Lauren Tan](https://twitter.com/potetotes), [Joseph Savona](https://twitter.com/en_JS), and [Sebastian Markbåge](https://twitter.com/sebmarkbage)
+2020年12月21日 [Dan Abramov](https://twitter.com/dan_abramov)、[Lauren Tan](https://twitter.com/potetotes)、[Joseph Savona](https://twitter.com/en_JS)、[Sebastian Markbåge](https://twitter.com/sebmarkbage)
 
 ---
 
 <Intro>
 
-2020 has been a long year. As it comes to an end we wanted to share a special Holiday Update on our research into zero-bundle-size **React Server Components**.
+2020年は長い一年でした。年末が近づく中、ゼロバンドルサイズの**React Server Components**に関する研究について特別なホリデーアップデートを共有したいと思います。
 
 </Intro>
 
 ---
 
-To introduce React Server Components, we have prepared a talk and a demo. If you want, you can check them out during the holidays, or later when work picks back up in the new year.
+React Server Componentsを紹介するために、トークとデモを用意しました。ホリデーシーズン中にチェックすることもできますし、新年に仕事が再開したときに見ることもできます。
 
 <YouTubeIframe src="https://www.youtube.com/embed/TQQPAU21ZUw" />
 
-**React Server Components are still in research and development.** We are sharing this work in the spirit of transparency and to get initial feedback from the React community. There will be plenty of time for that, so **don't feel like you have to catch up right now!**
+**React Server Componentsはまだ研究開発中です。** この作業を透明性の精神で共有し、Reactコミュニティからの初期フィードバックを得るためです。時間はたっぷりありますので、**今すぐ追いつく必要はありません！**
 
-If you want to check them out, we recommend going in the following order:
+チェックしたい場合は、次の順序で進めることをお勧めします：
 
-1. **Watch the talk** to learn about React Server Components and see the demo.
+1. **トークを見る** React Server Componentsについて学び、デモを確認します。
 
-2. **[Clone the demo](http://github.com/reactjs/server-components-demo)** to play with React Server Components on your computer.
+2. **[デモをクローン](http://github.com/reactjs/server-components-demo)** して、コンピュータ上でReact Server Componentsを試してみます。
 
-3. **[Read the RFC (with FAQ at the end)](https://github.com/reactjs/rfcs/pull/188)** for a deeper technical breakdown and to provide feedback.
+3. **[RFCを読む（最後にFAQあり）](https://github.com/reactjs/rfcs/pull/188)** より深い技術的な内訳を理解し、フィードバックを提供します。
 
-We are excited to hear from you on the RFC or in replies to the [@reactjs](https://twitter.com/reactjs) Twitter handle. Happy holidays, stay safe, and see you next year!
+RFCや[@reactjs](https://twitter.com/reactjs)のTwitterハンドルへの返信で皆さんの意見を聞くのを楽しみにしています。良いホリデーをお過ごしください、安全に過ごし、来年お会いしましょう！

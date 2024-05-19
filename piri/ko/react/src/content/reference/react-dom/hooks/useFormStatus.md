@@ -5,13 +5,13 @@ canary: true
 
 <Canary>
 
-The `useFormStatus` Hook is currently only available in React's Canary and experimental channels. Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+`useFormStatus` 훅은 현재 React의 Canary 및 실험 채널에서만 사용할 수 있습니다. [React의 릴리스 채널에 대해 자세히 알아보세요](/community/versioning-policy#all-release-channels).
 
 </Canary>
 
 <Intro>
 
-`useFormStatus` is a Hook that gives you status information of the last form submission.
+`useFormStatus`는 마지막 폼 제출의 상태 정보를 제공하는 훅입니다.
 
 ```js
 const { pending, data, method, action } = useFormStatus();
@@ -23,11 +23,11 @@ const { pending, data, method, action } = useFormStatus();
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `useFormStatus()` {/*use-form-status*/}
 
-The `useFormStatus` Hook provides status information of the last form submission.
+`useFormStatus` 훅은 마지막 폼 제출의 상태 정보를 제공합니다.
 
 ```js {5},[[1, 6, "status.pending"]]
 import { useFormStatus } from "react-dom";
@@ -47,42 +47,42 @@ export default function App() {
 }
 ```
 
-To get status information, the `Submit` component must be rendered within a `<form>`. The Hook returns information like the <CodeStep step={1}>`pending`</CodeStep> property which tells you if the form is actively submitting. 
+상태 정보를 얻으려면, `Submit` 컴포넌트는 `<form>` 내에서 렌더링되어야 합니다. 훅은 폼이 적극적으로 제출되고 있는지 여부를 알려주는 <CodeStep step={1}>`pending`</CodeStep> 속성과 같은 정보를 반환합니다.
 
-In the above example, `Submit` uses this information to disable `<button>` presses while the form is submitting.
+위 예제에서 `Submit`은 이 정보를 사용하여 폼이 제출되는 동안 `<button>` 클릭을 비활성화합니다.
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
-#### Parameters {/*parameters*/}
+#### 매개변수 {/*parameters*/}
 
-`useFormStatus` does not take any parameters.
+`useFormStatus`는 매개변수를 받지 않습니다.
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-A `status` object with the following properties:
+다음 속성을 가진 `status` 객체를 반환합니다:
 
-* `pending`: A boolean. If `true`, this means the parent `<form>` is pending submission. Otherwise, `false`.
+* `pending`: 불리언 값입니다. `true`이면 부모 `<form>`이 제출 대기 중임을 의미합니다. 그렇지 않으면 `false`입니다.
 
-* `data`: An object implementing the [`FormData interface`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) that contains the data the parent `<form>` is submitting. If there is no active submission or no parent `<form>`, it will be `null`.
+* `data`: 부모 `<form>`이 제출하는 데이터를 포함하는 [`FormData 인터페이스`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)를 구현하는 객체입니다. 활성 제출이 없거나 부모 `<form>`이 없으면 `null`입니다.
 
-* `method`: A string value of either `'get'` or `'post'`. This represents whether the parent `<form>` is submitting with either a `GET` or `POST` [HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods). By default, a `<form>` will use the `GET` method and can be specified by the [`method`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method) property.
+* `method`: `'get'` 또는 `'post'` 중 하나의 문자열 값입니다. 이는 부모 `<form>`이 `GET` 또는 `POST` [HTTP 메서드](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)로 제출되는지 나타냅니다. 기본적으로 `<form>`은 `GET` 메서드를 사용하며 [`method`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method) 속성으로 지정할 수 있습니다.
 
 [//]: # (Link to `<form>` documentation. "Read more on the `action` prop on `<form>`.")
-* `action`: A reference to the function passed to the `action` prop on the parent `<form>`. If there is no parent `<form>`, the property is `null`. If there is a URI value provided to the `action` prop, or no `action` prop specified, `status.action` will be `null`.
+* `action`: 부모 `<form>`의 `action` 속성에 전달된 함수에 대한 참조입니다. 부모 `<form>`이 없으면 속성은 `null`입니다. `action` 속성에 URI 값이 제공되었거나 `action` 속성이 지정되지 않은 경우, `status.action`은 `null`입니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* The `useFormStatus` Hook must be called from a component that is rendered inside a `<form>`. 
-* `useFormStatus` will only return status information for a parent `<form>`. It will not return status information for any `<form>` rendered in that same component or children components.
+* `useFormStatus` 훅은 `<form>` 내에서 렌더링된 컴포넌트에서 호출되어야 합니다.
+* `useFormStatus`는 부모 `<form>`에 대한 상태 정보만 반환합니다. 동일한 컴포넌트나 자식 컴포넌트에 렌더링된 다른 `<form>`에 대한 상태 정보는 반환하지 않습니다.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Display a pending state during form submission {/*display-a-pending-state-during-form-submission*/}
-To display a pending state while a form is submitting, you can call the `useFormStatus` Hook in a component rendered in a `<form>` and read the `pending` property returned.
+### 폼 제출 중 대기 상태 표시 {/*display-a-pending-state-during-form-submission*/}
+폼이 제출되는 동안 대기 상태를 표시하려면, `<form>` 내에서 렌더링된 컴포넌트에서 `useFormStatus` 훅을 호출하고 반환된 `pending` 속성을 읽을 수 있습니다.
 
-Here, we use the `pending` property to indicate the form is submitting. 
+여기서는 `pending` 속성을 사용하여 폼이 제출 중임을 나타냅니다.
 
 <Sandpack>
 
@@ -133,30 +133,30 @@ export async function submitForm(query) {
 
 <Pitfall>
 
-##### `useFormStatus` will not return status information for a `<form>` rendered in the same component. {/*useformstatus-will-not-return-status-information-for-a-form-rendered-in-the-same-component*/}
+##### `useFormStatus`는 동일한 컴포넌트에 렌더링된 `<form>`에 대한 상태 정보를 반환하지 않습니다. {/*useformstatus-will-not-return-status-information-for-a-form-rendered-in-the-same-component*/}
 
-The `useFormStatus` Hook only returns status information for a parent `<form>` and not for any `<form>` rendered in the same component calling the Hook, or child components.
+`useFormStatus` 훅은 부모 `<form>`에 대한 상태 정보만 반환하며, 훅을 호출하는 동일한 컴포넌트에 렌더링된 `<form>`이나 자식 컴포넌트에 대한 상태 정보는 반환하지 않습니다.
 
 ```js
 function Form() {
-  // 🚩 `pending` will never be true
-  // useFormStatus does not track the form rendered in this component
+  // 🚩 `pending`은 절대 true가 되지 않습니다.
+  // useFormStatus는 이 컴포넌트에 렌더링된 폼을 추적하지 않습니다.
   const { pending } = useFormStatus();
   return <form action={submit}></form>;
 }
 ```
 
-Instead call `useFormStatus` from inside a component that is located inside `<form>`.
+대신 `<form>` 내에 위치한 컴포넌트에서 `useFormStatus`를 호출하세요.
 
 ```js
 function Submit() {
-  // ✅ `pending` will be derived from the form that wraps the Submit component
+  // ✅ `pending`은 Submit 컴포넌트를 감싸는 폼에서 파생됩니다.
   const { pending } = useFormStatus(); 
   return <button disabled={pending}>...</button>;
 }
 
 function Form() {
-  // This is the <form> `useFormStatus` tracks
+  // 이것이 `useFormStatus`가 추적하는 <form>입니다.
   return (
     <form action={submit}>
       <Submit />
@@ -167,11 +167,11 @@ function Form() {
 
 </Pitfall>
 
-### Read the form data being submitted {/*read-form-data-being-submitted*/}
+### 제출 중인 폼 데이터 읽기 {/*read-form-data-being-submitted*/}
 
-You can use the `data` property of the status information returned from `useFormStatus` to display what data is being submitted by the user.
+`useFormStatus`에서 반환된 상태 정보의 `data` 속성을 사용하여 사용자가 제출 중인 데이터를 표시할 수 있습니다.
 
-Here, we have a form where users can request a username. We can use `useFormStatus` to display a temporary status message confirming what username they have requested.
+여기서는 사용자가 사용자 이름을 요청할 수 있는 폼이 있습니다. `useFormStatus`를 사용하여 사용자가 요청한 사용자 이름을 확인하는 임시 상태 메시지를 표시할 수 있습니다.
 
 <Sandpack>
 
@@ -249,12 +249,12 @@ button {
 
 ---
 
-## Troubleshooting {/*troubleshooting*/}
+## 문제 해결 {/*troubleshooting*/}
 
-### `status.pending` is never `true` {/*pending-is-never-true*/}
+### `status.pending`이 절대 `true`가 되지 않습니다. {/*pending-is-never-true*/}
 
-`useFormStatus` will only return status information for a parent `<form>`. 
+`useFormStatus`는 부모 `<form>`에 대한 상태 정보만 반환합니다.
 
-If the component that calls `useFormStatus` is not nested in a `<form>`, `status.pending` will always return `false`. Verify `useFormStatus` is called in a component that is a child of a `<form>` element.
+`useFormStatus`를 호출하는 컴포넌트가 `<form>` 내에 중첩되지 않은 경우, `status.pending`은 항상 `false`를 반환합니다. `useFormStatus`가 `<form>` 요소의 자식인 컴포넌트에서 호출되는지 확인하세요.
 
-`useFormStatus` will not track the status of a `<form>` rendered in the same component. See [Pitfall](#useformstatus-will-not-return-status-information-for-a-form-rendered-in-the-same-component) for more details.
+`useFormStatus`는 동일한 컴포넌트에 렌더링된 `<form>`의 상태를 추적하지 않습니다. 자세한 내용은 [Pitfall](#useformstatus-will-not-return-status-information-for-a-form-rendered-in-the-same-component)을 참조하세요.

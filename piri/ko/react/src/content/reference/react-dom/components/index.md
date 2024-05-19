@@ -1,40 +1,40 @@
 ---
-title: "React DOM Components"
+title: React DOM 컴포넌트
 ---
 
 <Intro>
 
-React supports all of the browser built-in [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) and [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG/Element) components.
+React는 모든 브라우저 내장 [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) 및 [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG/Element) 컴포넌트를 지원합니다.
 
 </Intro>
 
 ---
 
-## Common components {/*common-components*/}
+## 공통 컴포넌트 {/*common-components*/}
 
-All of the built-in browser components support some props and events.
+모든 내장 브라우저 컴포넌트는 일부 props와 이벤트를 지원합니다.
 
-* [Common components (e.g. `<div>`)](/reference/react-dom/components/common)
+* [공통 컴포넌트 (예: `<div>`)](/reference/react-dom/components/common)
 
-This includes React-specific props like `ref` and `dangerouslySetInnerHTML`.
+여기에는 `ref` 및 `dangerouslySetInnerHTML`과 같은 React 전용 props가 포함됩니다.
 
 ---
 
-## Form components {/*form-components*/}
+## 폼 컴포넌트 {/*form-components*/}
 
-These built-in browser components accept user input:
+이 내장 브라우저 컴포넌트는 사용자 입력을 받습니다:
 
 * [`<input>`](/reference/react-dom/components/input)
 * [`<select>`](/reference/react-dom/components/select)
 * [`<textarea>`](/reference/react-dom/components/textarea)
 
-They are special in React because passing the `value` prop to them makes them *[controlled.](/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)*
+이들은 React에서 특별한 컴포넌트입니다. 왜냐하면 `value` prop을 전달하면 *[제어된 컴포넌트](/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)*가 되기 때문입니다.
 
 ---
 
-## Resource and Metadata Components {/*resource-and-metadata-components*/}
+## 리소스 및 메타데이터 컴포넌트 {/*resource-and-metadata-components*/}
 
-These bulit-in browser components let you load external resources or annotate the document with metadata:
+이 내장 브라우저 컴포넌트는 외부 리소스를 로드하거나 문서에 메타데이터를 주석으로 추가할 수 있습니다:
 
 * [`<link>`](/reference/react-dom/components/link)
 * [`<meta>`](/reference/react-dom/components/meta)
@@ -42,13 +42,13 @@ These bulit-in browser components let you load external resources or annotate th
 * [`<style>`](/reference/react-dom/components/style)
 * [`<title>`](/reference/react-dom/components/title)
 
-They are special in React because React can render them into the document head, suspend while resources are loading, and enact other behaviors that are described on the reference page for each specific component.
+이들은 React에서 특별한 컴포넌트입니다. React는 이들을 문서의 head에 렌더링하고, 리소스가 로드되는 동안 일시 중지하며, 각 특정 컴포넌트의 참조 페이지에 설명된 다른 동작을 수행할 수 있기 때문입니다.
 
 ---
 
-## All HTML components {/*all-html-components*/}
+## 모든 HTML 컴포넌트 {/*all-html-components*/}
 
-React supports all built-in browser HTML components. This includes:
+React는 모든 내장 브라우저 HTML 컴포넌트를 지원합니다. 여기에는 다음이 포함됩니다:
 
 * [`<aside>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside)
 * [`<audio>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio)
@@ -154,38 +154,38 @@ React supports all built-in browser HTML components. This includes:
 
 <Note>
 
-Similar to the [DOM standard,](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) React uses a `camelCase` convention for prop names. For example, you'll write `tabIndex` instead of `tabindex`. You can convert existing HTML to JSX with an [online converter.](https://transform.tools/html-to-jsx)
+[DOM 표준](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)과 유사하게, React는 prop 이름에 `camelCase` 표기법을 사용합니다. 예를 들어, `tabindex` 대신 `tabIndex`를 작성합니다. 기존 HTML을 JSX로 변환하려면 [온라인 변환기](https://transform.tools/html-to-jsx)를 사용할 수 있습니다.
 
 </Note>
 
 ---
 
-### Custom HTML elements {/*custom-html-elements*/}
+### 사용자 정의 HTML 요소 {/*custom-html-elements*/}
 
-If you render a tag with a dash, like `<my-element>`, React will assume you want to render a [custom HTML element.](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) In React, rendering custom elements works differently from rendering built-in browser tags:
+대시가 있는 태그를 렌더링하면, 예를 들어 `<my-element>`, React는 [사용자 정의 HTML 요소](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)를 렌더링하려고 한다고 가정합니다. React에서 사용자 정의 요소를 렌더링하는 것은 내장 브라우저 태그를 렌더링하는 것과 다르게 작동합니다:
 
-- All custom element props are serialized to strings and are always set using attributes.
-- Custom elements accept `class` rather than `className`, and `for` rather than `htmlFor`.
+- 모든 사용자 정의 요소 props는 문자열로 직렬화되며 항상 속성을 사용하여 설정됩니다.
+- 사용자 정의 요소는 `className` 대신 `class`를, `htmlFor` 대신 `for`를 사용합니다.
 
-If you render a built-in browser HTML element with an [`is`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/is) attribute, it will also be treated as a custom element.
+[`is`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/is) 속성이 있는 내장 브라우저 HTML 요소를 렌더링하면 사용자 정의 요소로 처리됩니다.
 
 <Note>
 
-[A future version of React will include more comprehensive support for custom elements.](https://github.com/facebook/react/issues/11347#issuecomment-1122275286)
+[React의 향후 버전은 사용자 정의 요소에 대한 더 포괄적인 지원을 포함할 것입니다.](https://github.com/facebook/react/issues/11347#issuecomment-1122275286)
 
-You can try it by upgrading React packages to the most recent experimental version:
+React 패키지를 최신 실험적 버전으로 업그레이드하여 시도해 볼 수 있습니다:
 
 - `react@experimental`
 - `react-dom@experimental`
 
-Experimental versions of React may contain bugs. Don't use them in production.
+React의 실험적 버전에는 버그가 있을 수 있습니다. 프로덕션에서는 사용하지 마십시오.
 
 </Note>
 ---
 
-## All SVG components {/*all-svg-components*/}
+## 모든 SVG 컴포넌트 {/*all-svg-components*/}
 
-React supports all built-in browser SVG components. This includes:
+React는 모든 내장 브라우저 SVG 컴포넌트를 지원합니다. 여기에는 다음이 포함됩니다:
 
 * [`<a>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/a)
 * [`<animate>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animate)
@@ -229,8 +229,7 @@ React supports all built-in browser SVG components. This includes:
 * `<hatchpath>`
 * [`<image>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/image)
 * [`<line>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/line)
-* [`<linearGradient>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient)
-* [`<marker>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/marker)
+* [`<linearGradient>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient* [`<marker>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/marker)
 * [`<mask>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mask)
 * [`<metadata>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/metadata)
 * [`<mpath>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mpath)
@@ -256,20 +255,20 @@ React supports all built-in browser SVG components. This includes:
 
 <Note>
 
-Similar to the [DOM standard,](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) React uses a `camelCase` convention for prop names. For example, you'll write `tabIndex` instead of `tabindex`. You can convert existing SVG to JSX with an [online converter.](https://transform.tools/)
+[DOM 표준](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)과 유사하게, React는 prop 이름에 `camelCase` 표기법을 사용합니다. 예를 들어, `tabindex` 대신 `tabIndex`를 작성합니다. 기존 SVG를 JSX로 변환하려면 [온라인 변환기](https://transform.tools/)를 사용할 수 있습니다.
 
-Namespaced attributes also have to be written without the colon:
+네임스페이스가 있는 속성도 콜론 없이 작성해야 합니다:
 
-* `xlink:actuate` becomes `xlinkActuate`.
-* `xlink:arcrole` becomes `xlinkArcrole`.
-* `xlink:href` becomes `xlinkHref`.
-* `xlink:role` becomes `xlinkRole`.
-* `xlink:show` becomes `xlinkShow`.
-* `xlink:title` becomes `xlinkTitle`.
-* `xlink:type` becomes `xlinkType`.
-* `xml:base` becomes `xmlBase`.
-* `xml:lang` becomes `xmlLang`.
-* `xml:space` becomes `xmlSpace`.
-* `xmlns:xlink` becomes `xmlnsXlink`.
+* `xlink:actuate`는 `xlinkActuate`가 됩니다.
+* `xlink:arcrole`는 `xlinkArcrole`가 됩니다.
+* `xlink:href`는 `xlinkHref`가 됩니다.
+* `xlink:role`는 `xlinkRole`가 됩니다.
+* `xlink:show`는 `xlinkShow`가 됩니다.
+* `xlink:title`는 `xlinkTitle`가 됩니다.
+* `xlink:type`는 `xlinkType`가 됩니다.
+* `xml:base`는 `xmlBase`가 됩니다.
+* `xml:lang`는 `xmlLang`가 됩니다.
+* `xml:space`는 `xmlSpace`가 됩니다.
+* `xmlns:xlink`는 `xmlnsXlink`가 됩니다.
 
 </Note>

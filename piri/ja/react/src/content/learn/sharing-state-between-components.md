@@ -1,31 +1,31 @@
 ---
-title: Sharing State Between Components
+title: コンポーネント間での状態の共有
 ---
 
 <Intro>
 
-Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as *lifting state up,* and it's one of the most common things you will do writing React code.
+時々、2つのコンポーネントの状態を常に一緒に変えたいことがあります。そのためには、両方のコンポーネントから状態を削除し、最も近い共通の親に移動し、propsを介してそれらに渡します。これは*状態のリフトアップ*として知られており、Reactコードを書く際に最も一般的に行うことの1つです。
 
 </Intro>
 
 <YouWillLearn>
 
-- How to share state between components by lifting it up
-- What are controlled and uncontrolled components
+- 状態をリフトアップしてコンポーネント間で共有する方法
+- 制御されたコンポーネントと制御されていないコンポーネントとは何か
 
 </YouWillLearn>
 
-## Lifting state up by example {/*lifting-state-up-by-example*/}
+## 例による状態のリフトアップ {/*lifting-state-up-by-example*/}
 
-In this example, a parent `Accordion` component renders two separate `Panel`s:
+この例では、親の`Accordion`コンポーネントが2つの別々の`Panel`をレンダリングします：
 
 * `Accordion`
   - `Panel`
   - `Panel`
 
-Each `Panel` component has a boolean `isActive` state that determines whether its content is visible.
+各`Panel`コンポーネントには、その内容が表示されるかどうかを決定するブール値の`isActive`状態があります。
 
-Press the Show button for both panels:
+両方のパネルのShowボタンを押してください：
 
 <Sandpack>
 
@@ -73,59 +73,59 @@ h3, p { margin: 5px 0px; }
 
 </Sandpack>
 
-Notice how pressing one panel's button does not affect the other panel--they are independent.
+1つのパネルのボタンを押しても他のパネルには影響しないことに注意してください。これらは独立しています。
 
 <DiagramGroup>
 
 <Diagram name="sharing_state_child" height={367} width={477} alt="Diagram showing a tree of three components, one parent labeled Accordion and two children labeled Panel. Both Panel components contain isActive with value false.">
 
-Initially, each `Panel`'s `isActive` state is `false`, so they both appear collapsed
+最初は、各`Panel`の`isActive`状態は`false`であるため、両方とも折りたたまれた状態で表示されます
 
 </Diagram>
 
 <Diagram name="sharing_state_child_clicked" height={367} width={480} alt="The same diagram as the previous, with the isActive of the first child Panel component highlighted indicating a click with the isActive value set to true. The second Panel component still contains value false." >
 
-Clicking either `Panel`'s button will only update that `Panel`'s `isActive` state alone
+どちらかの`Panel`のボタンをクリックすると、その`Panel`の`isActive`状態のみが更新されます
 
 </Diagram>
 
 </DiagramGroup>
 
-**But now let's say you want to change it so that only one panel is expanded at any given time.** With that design, expanding the second panel should collapse the first one. How would you do that?
+**しかし、今度は一度に1つのパネルだけが展開されるように変更したいとしましょう。** このデザインでは、2番目のパネルを展開すると最初のパネルが折りたたまれるべきです。どうすればそれを実現できますか？
 
-To coordinate these two panels, you need to "lift their state up" to a parent component in three steps:
+これらの2つのパネルを調整するためには、3つのステップで状態を親コンポーネントに「リフトアップ」する必要があります：
 
-1. **Remove** state from the child components.
-2. **Pass** hardcoded data from the common parent.
-3. **Add** state to the common parent and pass it down together with the event handlers.
+1. 子コンポーネントから状態を**削除**します。
+2. 共通の親からハードコーディングされたデータを**渡します**。
+3. 共通の親に状態を**追加**し、イベントハンドラと一緒にそれを渡します。
 
-This will allow the `Accordion` component to coordinate both `Panel`s and only expand one at a time.
+これにより、`Accordion`コンポーネントが両方の`Panel`を調整し、一度に1つだけ展開できるようになります。
 
-### Step 1: Remove state from the child components {/*step-1-remove-state-from-the-child-components*/}
+### ステップ1: 子コンポーネントから状態を削除する {/*step-1-remove-state-from-the-child-components*/}
 
-You will give control of the `Panel`'s `isActive` to its parent component. This means that the parent component will pass `isActive` to `Panel` as a prop instead. Start by **removing this line** from the `Panel` component:
+`Panel`の`isActive`の制御を親コンポーネントに渡します。これは、親コンポーネントが`isActive`をpropsとして`Panel`に渡すことを意味します。まず、`Panel`コンポーネントから**この行を削除**します：
 
 ```js
 const [isActive, setIsActive] = useState(false);
 ```
 
-And instead, add `isActive` to the `Panel`'s list of props:
+そして、`isActive`を`Panel`のpropsリストに追加します：
 
 ```js
 function Panel({ title, children, isActive }) {
 ```
 
-Now the `Panel`'s parent component can *control* `isActive` by [passing it down as a prop.](/learn/passing-props-to-a-component) Conversely, the `Panel` component now has *no control* over the value of `isActive`--it's now up to the parent component!
+これで、`Panel`の親コンポーネントが[propsとして渡すことによって](/learn/passing-props-to-a-component) `isActive`を*制御*できるようになります。逆に、`Panel`コンポーネントは`isActive`の値を*制御できなくなります*--それは親コンポーネント次第です！
 
-### Step 2: Pass hardcoded data from the common parent {/*step-2-pass-hardcoded-data-from-the-common-parent*/}
+### ステップ2: 共通の親からハードコーディングされたデータを渡す {/*step-2-pass-hardcoded-data-from-the-common-parent*/}
 
-To lift state up, you must locate the closest common parent component of *both* of the child components that you want to coordinate:
+状態をリフトアップするためには、調整したい*両方*の子コンポーネントの最も近い共通の親コンポーネントを見つける必要があります：
 
-* `Accordion` *(closest common parent)*
+* `Accordion` *(最も近い共通の親)*
   - `Panel`
   - `Panel`
 
-In this example, it's the `Accordion` component. Since it's above both panels and can control their props, it will become the "source of truth" for which panel is currently active. Make the `Accordion` component pass a hardcoded value of `isActive` (for example, `true`) to both panels:
+この例では、それは`Accordion`コンポーネントです。両方のパネルの上にあり、そのpropsを制御できるため、どのパネルが現在アクティブであるかの「真実の源」になります。`Accordion`コンポーネントが両方のパネルに`isActive`のハードコーディングされた値（例えば、`true`）を渡すようにします：
 
 <Sandpack>
 
@@ -172,21 +172,21 @@ h3, p { margin: 5px 0px; }
 
 </Sandpack>
 
-Try editing the hardcoded `isActive` values in the `Accordion` component and see the result on the screen.
+`Accordion`コンポーネントのハードコーディングされた`isActive`値を編集して、画面上の結果を確認してください。
 
-### Step 3: Add state to the common parent {/*step-3-add-state-to-the-common-parent*/}
+### ステップ3: 共通の親に状態を追加する {/*step-3-add-state-to-the-common-parent*/}
 
-Lifting state up often changes the nature of what you're storing as state.
+状態をリフトアップすると、保存している状態の性質が変わることがよくあります。
 
-In this case, only one panel should be active at a time. This means that the `Accordion` common parent component needs to keep track of *which* panel is the active one. Instead of a `boolean` value, it could use a number as the index of the active `Panel` for the state variable:
+この場合、一度に1つのパネルだけがアクティブであるべきです。これは、`Accordion`共通の親コンポーネントが*どの*パネルがアクティブであるかを追跡する必要があることを意味します。`boolean`値の代わりに、状態変数としてアクティブな`Panel`のインデックスとして数値を使用できます：
 
 ```js
 const [activeIndex, setActiveIndex] = useState(0);
 ```
 
-When the `activeIndex` is `0`, the first panel is active, and when it's `1`, it's the second one.
+`activeIndex`が`0`のとき、最初のパネルがアクティブであり、`1`のときは2番目のパネルがアクティブです。
 
-Clicking the "Show" button in either `Panel` needs to change the active index in `Accordion`. A `Panel` can't set the `activeIndex` state directly because it's defined inside the `Accordion`. The `Accordion` component needs to *explicitly allow* the `Panel` component to change its state by [passing an event handler down as a prop](/learn/responding-to-events#passing-event-handlers-as-props):
+どちらの`Panel`の「Show」ボタンをクリックしても、`Accordion`のアクティブインデックスを変更する必要があります。`Panel`は`Accordion`内で定義されているため、直接`activeIndex`状態を設定することはできません。`Accordion`コンポーネントは、[イベントハンドラをpropsとして渡すことによって](/learn/responding-to-events#passing-event-handlers-as-props) `Panel`コンポーネントがその状態を変更できるように*明示的に許可*する必要があります：
 
 ```js
 <>
@@ -205,7 +205,7 @@ Clicking the "Show" button in either `Panel` needs to change the active index in
 </>
 ```
 
-The `<button>` inside the `Panel` will now use the `onShow` prop as its click event handler:
+`Panel`内の`<button>`は、クリックイベントハンドラとして`onShow`プロップを使用します：
 
 <Sandpack>
 
@@ -266,19 +266,19 @@ h3, p { margin: 5px 0px; }
 
 </Sandpack>
 
-This completes lifting state up! Moving state into the common parent component allowed you to coordinate the two panels. Using the active index instead of two "is shown" flags ensured that only one panel is active at a given time. And passing down the event handler to the child allowed the child to change the parent's state.
+これで状態のリフトアップが完了しました！ 状態を共通の親コンポーネントに移動することで、2つのパネルを調整できるようになりました。アクティブなインデックスを使用することで、2つの「表示されている」フラグの代わりに、一度に1つのパネルだけがアクティブになるようにしました。そして、イベントハンドラを子に渡すことで、子が親の状態を変更できるようにしました。
 
 <DiagramGroup>
 
 <Diagram name="sharing_state_parent" height={385} width={487} alt="Diagram showing a tree of three components, one parent labeled Accordion and two children labeled Panel. Accordion contains an activeIndex value of zero which turns into isActive value of true passed to the first Panel, and isActive value of false passed to the second Panel." >
 
-Initially, `Accordion`'s `activeIndex` is `0`, so the first `Panel` receives `isActive = true`
+最初は、`Accordion`の`activeIndex`が`0`であるため、最初の`Panel`が`isActive = true`を受け取ります
 
 </Diagram>
 
 <Diagram name="sharing_state_parent_clicked" height={385} width={521} alt="The same diagram as the previous, with the activeIndex value of the parent Accordion component highlighted indicating a click with the value changed to one. The flow to both of the children Panel components is also highlighted, and the isActive value passed to each child is set to the opposite: false for the first Panel and true for the second one." >
 
-When `Accordion`'s `activeIndex` state changes to `1`, the second `Panel` receives `isActive = true` instead
+`Accordion`の`activeIndex`状態が`1`に変わると、2番目の`Panel`が`isActive = true`を受け取ります
 
 </Diagram>
 
@@ -286,48 +286,48 @@ When `Accordion`'s `activeIndex` state changes to `1`, the second `Panel` receiv
 
 <DeepDive>
 
-#### Controlled and uncontrolled components {/*controlled-and-uncontrolled-components*/}
+#### 制御されたコンポーネントと制御されていないコンポーネント {/*controlled-and-uncontrolled-components*/}
 
-It is common to call a component with some local state "uncontrolled". For example, the original `Panel` component with an `isActive` state variable is uncontrolled because its parent cannot influence whether the panel is active or not.
+ローカル状態を持つコンポーネントを「制御されていない」と呼ぶことが一般的です。例えば、`isActive`状態変数を持つ元の`Panel`コンポーネントは、親がパネルがアクティブかどうかに影響を与えることができないため、制御されていません。
 
-In contrast, you might say a component is "controlled" when the important information in it is driven by props rather than its own local state. This lets the parent component fully specify its behavior. The final `Panel` component with the `isActive` prop is controlled by the `Accordion` component.
+対照的に、重要な情報がローカル状態ではなくpropsによって駆動される場合、コンポーネントは「制御されている」と言うことができます。これにより、親コンポーネントがその動作を完全に指定できるようになります。`isActive`プロップを持つ最終的な`Panel`コンポーネントは、`Accordion`コンポーネントによって制御されています。
 
-Uncontrolled components are easier to use within their parents because they require less configuration. But they're less flexible when you want to coordinate them together. Controlled components are maximally flexible, but they require the parent components to fully configure them with props.
+制御されていないコンポーネントは、親の中で使用するのが簡単です。なぜなら、設定が少なくて済むからです。しかし、これらを一緒に調整したい場合には柔軟性が低くなります。制御されたコンポーネントは最大限の柔軟性を持ちますが、親コンポーネントがpropsで完全に設定する必要があります。
 
-In practice, "controlled" and "uncontrolled" aren't strict technical terms--each component usually has some mix of both local state and props. However, this is a useful way to talk about how components are designed and what capabilities they offer.
+実際には、「制御された」と「制御されていない」は厳密な技術用語ではありません--各コンポーネントは通常、ローカル状態とpropsの両方の混合を持っています。しかし、これはコンポーネントがどのように設計されているか、どのような機能を提供するかについて話すための有用な方法です。
 
-When writing a component, consider which information in it should be controlled (via props), and which information should be uncontrolled (via state). But you can always change your mind and refactor later.
+コンポーネントを書くときには、その中のどの情報が（propsを介して）制御されるべきか、どの情報が（状態を介して）制御されないべきかを考慮してください。しかし、後で考えを変えてリファクタリングすることもできます。
 
 </DeepDive>
 
-## A single source of truth for each state {/*a-single-source-of-truth-for-each-state*/}
+## 各状態の単一の真実の源 {/*a-single-source-of-truth-for-each-state*/}
 
-In a React application, many components will have their own state. Some state may "live" close to the leaf components (components at the bottom of the tree) like inputs. Other state may "live" closer to the top of the app. For example, even client-side routing libraries are usually implemented by storing the current route in the React state, and passing it down by props!
+Reactアプリケーションでは、多くのコンポーネントが独自の状態を持ちます。いくつかの状態は、入力のようにツリーの下部に近いリーフコンポーネントに「住む」ことがあります。他の状態は、アプリの上部に近い場所に「住む」ことがあります。例えば、クライアントサイドのルーティングライブラリは通常、現在のルートをReactの状態に保存し、propsを介してそれを渡します！
 
-**For each unique piece of state, you will choose the component that "owns" it.** This principle is also known as having a ["single source of truth".](https://en.wikipedia.org/wiki/Single_source_of_truth) It doesn't mean that all state lives in one place--but that for _each_ piece of state, there is a _specific_ component that holds that piece of information. Instead of duplicating shared state between components, *lift it up* to their common shared parent, and *pass it down* to the children that need it.
+**各ユニークな状態について、その状態を「所有」するコンポーネントを選択します。** この原則は、["単一の真実の源"](https://en.wikipedia.org/wiki/Single_source_of_truth)としても知られています。これは、すべての状態が1つの場所にあることを意味するのではなく、_各_状態について、その情報を保持する_特定の_コンポーネントがあることを意味します。共有状態をコンポーネント間で重複させるのではなく、共通の親に*リフトアップ*し、それを必要とする子に*渡します*。
 
-Your app will change as you work on it. It is common that you will move state down or back up while you're still figuring out where each piece of the state "lives". This is all part of the process!
+アプリは作業を進めるうちに変わります。各状態が「住む」場所をまだ見つけている間に、状態を下に移動したり、再び上に移動したりすることは一般的です。これはすべてプロセスの一部です！
 
-To see what this feels like in practice with a few more components, read [Thinking in React.](/learn/thinking-in-react)
+いくつかのコンポーネントを使って実際にどのように感じるかを確認するには、[Thinking in React](/learn/thinking-in-react)を読んでください。
 
 <Recap>
 
-* When you want to coordinate two components, move their state to their common parent.
-* Then pass the information down through props from their common parent.
-* Finally, pass the event handlers down so that the children can change the parent's state.
-* It's useful to consider components as "controlled" (driven by props) or "uncontrolled" (driven by state).
+* 2つのコンポーネントを調整したい場合は、その状態を共通の親に移動します。
+* 次に、共通の親からpropsを介して情報を渡します。
+* 最後に、イベントハンドラを渡して、子が親の状態を変更できるようにします。
+* コンポーネントを「制御された」（propsによって駆動される）または「制御されていない」（状態によって駆動される）と考えることは有用です。
 
 </Recap>
 
 <Challenges>
 
-#### Synced inputs {/*synced-inputs*/}
+#### 同期された入力 {/*synced-inputs*/}
 
-These two inputs are independent. Make them stay in sync: editing one input should update the other input with the same text, and vice versa. 
+これらの2つの入力は独立しています。編集すると、一方の入力が他方の入力と同じテキストで更新されるように同期させてください。
 
 <Hint>
 
-You'll need to lift their state up into the parent component.
+状態を親コンポーネントにリフトアップする必要があります。
 
 </Hint>
 
@@ -374,7 +374,7 @@ label { display: block; }
 
 <Solution>
 
-Move the `text` state variable into the parent component along with the `handleChange` handler. Then pass them down as props to both of the `Input` components. This will keep them in sync.
+`text`状態変数を親コンポーネントに移動し、`handleChange`ハンドラも一緒に移動します。次に、それらを両方の`Input`コンポーネントにpropsとして渡します。これにより、同期が保たれます。
 
 <Sandpack>
 
@@ -427,17 +427,17 @@ label { display: block; }
 
 </Solution>
 
-#### Filtering a list {/*filtering-a-list*/}
+#### リストのフィルタリング {/*filtering-a-list*/}
 
-In this example, the `SearchBar` has its own `query` state that controls the text input. Its parent `FilterableList` component displays a `List` of items, but it doesn't take the search query into account.
+この例では、`SearchBar`にはテキスト入力を制御する`query`状態があります。親の`FilterableList`コンポーネントはアイテムの`List`を表示しますが、検索クエリを考慮していません。
 
-Use the `filterItems(foods, query)` function to filter the list according to the search query. To test your changes, verify that typing "s" into the input filters down the list to "Sushi", "Shish kebab", and "Dim sum".
+`filterItems(foods, query)`関数を使用して、検索クエリに従ってリストをフィルタリングします。変更をテストするには、入力に「s」と入力して、リストが「Sushi」、「Shish kebab」、「Dim sum」に絞り込まれることを確認してください。
 
-Note that `filterItems` is already implemented and imported so you don't need to write it yourself!
+`filterItems`はすでに実装されており、インポートされているため、自分で書く必要はありません！
 
 <Hint>
 
-You will want to remove the `query` state and the `handleChange` handler from the `SearchBar`, and move them to the `FilterableList`. Then pass them down to `SearchBar` as `query` and `onChange` props.
+`query`状態と`handleChange`ハンドラを`SearchBar`から削除し、それらを`FilterableList`に移動します。次に、それらを`SearchBar`に`query`と`onChange`のpropsとして渡します。
 
 </Hint>
 
@@ -528,7 +528,7 @@ export const foods = [{
 
 <Solution>
 
-Lift the `query` state up into the `FilterableList` component. Call `filterItems(foods, query)` to get the filtered list and pass it down to the `List`. Now changing the query input is reflected in the list:
+`query`状態を`FilterableList`コンポーネントにリフトアップします。`filterItems(foods, query)`を呼び出してフィルタリングされたリストを取得し、それを`List`に渡します。これで、クエリ入力の変更がリストに反映されます：
 
 <Sandpack>
 

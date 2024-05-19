@@ -1,17 +1,17 @@
 ---
-title: "Introducing react.dev"
+title: react.dev の紹介
 author: Dan Abramov and Rachel Nabors
 date: 2023/03/16
-description: Today we are thrilled to launch react.dev, the new home for React and its documentation. In this post, we would like to give you a tour of the new site.
+description: 本日、Reactとそのドキュメントの新しいホームであるreact.devを立ち上げることに大変興奮しています。この投稿では、新しいサイトのツアーをご紹介したいと思います。
 ---
 
-March 16, 2023 by [Dan Abramov](https://twitter.com/dan_abramov) and [Rachel Nabors](https://twitter.com/rachelnabors)
+2023年3月16日 [Dan Abramov](https://twitter.com/dan_abramov) と [Rachel Nabors](https://twitter.com/rachelnabors)
 
 ---
 
 <Intro>
 
-Today we are thrilled to launch [react.dev](https://react.dev), the new home for React and its documentation. In this post, we would like to give you a tour of the new site.
+本日、Reactとそのドキュメントの新しいホームである [react.dev](https://react.dev) を発表できることを非常に嬉しく思います。この投稿では、新しいサイトのツアーをご紹介します。
 
 </Intro>
 
@@ -19,44 +19,44 @@ Today we are thrilled to launch [react.dev](https://react.dev), the new home for
 
 ## tl;dr {/*tldr*/}
 
-* The new React site ([react.dev](https://react.dev)) teaches modern React with function components and Hooks.
-* We've included diagrams, illustrations, challenges, and over 600 new interactive examples.
-* The previous React documentation site has now moved to [legacy.reactjs.org](https://legacy.reactjs.org).
+* 新しいReactサイト ([react.dev](https://react.dev)) は、関数コンポーネントとHooksを使ったモダンなReactを教えます。
+* 図解、イラスト、チャレンジ、そして600以上の新しいインタラクティブな例を含めました。
+* 以前のReactドキュメントサイトは [legacy.reactjs.org](https://legacy.reactjs.org) に移動しました。
 
-## New site, new domain, new homepage {/*new-site-new-domain-new-homepage*/}
+## 新しいサイト、新しいドメイン、新しいホームページ {/*new-site-new-domain-new-homepage*/}
 
-First, a little bit of housekeeping.
+まずは、少し整理整頓をしましょう。
 
-To celebrate the launch of the new docs and, more importantly, to clearly separate the old and the new content, we've moved to the shorter [react.dev](https://react.dev) domain. The old [reactjs.org](https://reactjs.org) domain will now redirect here.
+新しいドキュメントの公開を祝うため、そしてより重要なこととして、古いコンテンツと新しいコンテンツを明確に分けるために、短い [react.dev](https://react.dev) ドメインに移行しました。古い [reactjs.org](https://reactjs.org) ドメインはここにリダイレクトされます。
 
-The old React docs are now archived at [legacy.reactjs.org](https://legacy.reactjs.org). All existing links to the old content will automatically redirect there to avoid "breaking the web", but the legacy site will not get many more updates.
+古いReactドキュメントは [legacy.reactjs.org](https://legacy.reactjs.org) にアーカイブされました。既存の古いコンテンツへのリンクはすべて自動的にそこにリダイレクトされ、「ウェブを壊す」ことを避けるためですが、レガシーサイトは多くの更新を受けることはありません。
 
-Believe it or not, React will soon be ten years old. In JavaScript years, it's like a whole century! We've [refreshed the React homepage](https://react.dev) to reflect why we think React is a great way to create user interfaces today, and updated the getting started guides to more prominently mention modern React-based frameworks.
+信じられないかもしれませんが、Reactはもうすぐ10歳になります。JavaScriptの年齢では、まるで一世紀のようです！私たちは [Reactのホームページを刷新しました](https://react.dev) ので、なぜReactが今日のユーザーインターフェースを作成するための素晴らしい方法であると考えているのかを反映し、モダンなReactベースのフレームワークをより目立つように紹介するためのガイドを更新しました。
 
-If you haven't seen the new homepage yet, check it out!
+まだ新しいホームページを見ていない場合は、ぜひチェックしてください！
 
-## Going all-in on modern React with Hooks {/*going-all-in-on-modern-react-with-hooks*/}
+## Hooksを使ったモダンなReactに全力投球 {/*going-all-in-on-modern-react-with-hooks*/}
 
-When we released React Hooks in 2018, the Hooks docs assumed the reader is familiar with class components. This helped the community adopt Hooks very swiftly, but after a while the old docs failed to serve the new readers. New readers had to learn React twice: once with class components and then once again with Hooks.
+2018年にReact Hooksをリリースしたとき、Hooksのドキュメントはクラスコンポーネントに精通している読者を前提としていました。これにより、コミュニティはHooksを非常に迅速に採用することができましたが、しばらくすると古いドキュメントは新しい読者に対応できなくなりました。新しい読者は、クラスコンポーネントとHooksの両方を学ぶ必要がありました。
 
-**The new docs teach React with Hooks from the beginning.** The docs are divided in two main sections:
+**新しいドキュメントは最初からHooksを使ってReactを教えます。** ドキュメントは主に2つのセクションに分かれています：
 
-* **[Learn React](/learn)** is a self-paced course that teaches React from scratch.
-* **[API Reference](/reference)** provides the details and usage examples for every React API.
+* **[Learn React](/learn)** は、Reactをゼロから教える自己ペースのコースです。
+* **[API Reference](/reference)** は、すべてのReact APIの詳細と使用例を提供します。
 
-Let's have a closer look at what you can find in each section.
+各セクションで見つけることができるものを詳しく見てみましょう。
 
 <Note>
 
-There are still a few rare class component use cases that do not yet have a Hook-based equivalent. Class components remain supported, and are documented in the [Legacy API](/reference/react/legacy) section of the new site.
+まだHookベースの同等のものがないいくつかの稀なクラスコンポーネントの使用例があります。クラスコンポーネントは引き続きサポートされており、新しいサイトの [Legacy API](/reference/react/legacy) セクションにドキュメント化されています。
 
 </Note>
 
-## Quick start {/*quick-start*/}
+## クイックスタート {/*quick-start*/}
 
-The Learn section begins with the [Quick Start](/learn) page. It is a short introductory tour of React. It introduces the syntax for concepts like components, props, and state, but doesn't go into much detail on how to use them.
+Learnセクションは [Quick Start](/learn) ページから始まります。これはReactの短い紹介ツアーです。コンポーネント、props、stateなどの概念の構文を紹介しますが、それらの使用方法については詳しく説明しません。
 
-If you like to learn by doing, we recommend checking out the [Tic-Tac-Toe Tutorial](/learn/tutorial-tic-tac-toe) next. It walks you through building a little game with React, while teaching the skills you'll use every day. Here's what you'll build:
+実際に手を動かして学ぶのが好きな方は、次に [Tic-Tac-Toe Tutorial](/learn/tutorial-tic-tac-toe) をチェックすることをお勧めします。これはReactを使って小さなゲームを作成する方法を教え、日常的に使用するスキルを教えます。以下はあなたが作成するものです：
 
 <Sandpack>
 
@@ -225,43 +225,43 @@ body {
 
 </Sandpack>
 
-We'd also like to highlight [Thinking in React](/learn/thinking-in-react)—that's the tutorial that made React "click" for many of us. **We've updated both of these classic tutorials to use function components and Hooks,** so they're as good as new.
+また、[Thinking in React](/learn/thinking-in-react) を強調したいと思います。これは多くの人にとってReactが「クリック」したチュートリアルです。**これらのクラシックなチュートリアルの両方を関数コンポーネントとHooksを使用するように更新しました**ので、新品同様です。
 
 <Note>
 
-The example above is a *sandbox*. We've added a lot of sandboxes—over 600!—everywhere throughout the site. You can edit any sandbox, or press "Fork" in the upper right corner to open it in a separate tab. Sandboxes let you quickly play with the React APIs, explore your ideas, and check your understanding.
+上記の例は *sandbox* です。サイト全体に600以上のサンドボックスを追加しました。どのサンドボックスも編集でき、右上の「Fork」を押すと別のタブで開くことができます。サンドボックスを使ってReact APIをすばやく試したり、アイデアを探求したり、理解を確認したりできます。
 
 </Note>
 
-## Learn React step by step {/*learn-react-step-by-step*/}
+## ステップバイステップでReactを学ぶ {/*learn-react-step-by-step*/}
 
-We'd like everyone in the world to have an equal opportunity to learn React for free on their own.
+世界中の誰もが無料で自分のペースでReactを学ぶ機会を平等に持てるようにしたいと考えています。
 
-This is why the Learn section is organized like a self-paced course split into chapters. The first two chapters describe the fundamentals of React. If you're new to React, or want to refresh it in your memory, start here:
+そのため、Learnセクションは章ごとに分かれた自己ペースのコースのように構成されています。最初の2章はReactの基本を説明します。Reactに初めて触れる方や、記憶をリフレッシュしたい方はここから始めてください：
 
-- **[Describing the UI](/learn/describing-the-ui)** teaches how to display information with components.
-- **[Adding Interactivity](/learn/adding-interactivity)** teaches how to update the screen in response to user input.
+- **[UIの記述](/learn/describing-the-ui)** は、コンポーネントを使って情報を表示する方法を教えます。
+- **[インタラクティビティの追加](/learn/adding-interactivity)** は、ユーザー入力に応じて画面を更新する方法を教えます。
 
-The next two chapters are more advanced, and will give you a deeper insight into the trickier parts:
+次の2章はより高度で、より難しい部分についての深い洞察を提供します：
 
-- **[Managing State](/learn/managing-state)** teaches how to organize your logic as your app grows in complexity.
-- **[Escape Hatches](/learn/escape-hatches)** teaches how you can "step outside" React, and when it makes most sense to do so.
+- **[状態の管理](/learn/managing-state)** は、アプリが複雑になるにつれてロジックを整理する方法を教えます。
+- **[エスケープハッチ](/learn/escape-hatches)** は、Reactの外に「ステップアウト」する方法と、その最適なタイミングを教えます。
 
-Every chapter consists of several related pages. Most of these pages teach a specific skill or a technique—for example, [Writing Markup with JSX](/learn/writing-markup-with-jsx), [Updating Objects in State](/learn/updating-objects-in-state), or [Sharing State Between Components](/learn/sharing-state-between-components). Some of the pages focus on explaining an idea—like [Render and Commit](/learn/render-and-commit), or [State as a Snapshot](/learn/state-as-a-snapshot). And there are a few, like [You Might Not Need an Effect](/learn/you-might-not-need-an-effect), that share our suggestions based on what we've learned over these years.
+各章は関連するいくつかのページで構成されています。これらのページのほとんどは特定のスキルや技術を教えます—例えば、[JSXでマークアップを書く](/learn/writing-markup-with-jsx)、[状態のオブジェクトを更新する](/learn/updating-objects-in-state)、または[コンポーネント間で状態を共有する](/learn/sharing-state-between-components) などです。一部のページはアイデアの説明に焦点を当てています—例えば、[レンダーとコミット](/learn/render-and-commit) や [スナップショットとしての状態](/learn/state-as-a-snapshot) などです。そして、[エフェクトが必要ないかもしれない](/learn/you-might-not-need-an-effect) など、これまでの経験に基づいた提案を共有するページもあります。
 
-You don't have to read these chapters as a sequence. Who has the time for this?! But you could. Pages in the Learn section only rely on concepts introduced by the earlier pages. If you want to read it like a book, go for it!
+これらの章を順番に読む必要はありません。誰がそんな時間を持っているでしょうか？！でも、読むこともできます。Learnセクションのページは、前のページで紹介された概念にのみ依存しています。本のように読みたい場合は、どうぞ！
 
-### Check your understanding with challenges {/*check-your-understanding-with-challenges*/}
+### チャレンジで理解を確認する {/*check-your-understanding-with-challenges*/}
 
-Most pages in the Learn section end with a few challenges to check your understanding. For example, here are a few challenges from the page about [Conditional Rendering](/learn/conditional-rendering#challenges).
+Learnセクションのほとんどのページは、理解を確認するためのいくつかのチャレンジで終わります。例えば、[条件付きレンダリング](/learn/conditional-rendering#challenges) のページからのいくつかのチャレンジを以下に示します。
 
-You don't have to solve them right now! Unless you *really* want to.
+今すぐ解決する必要はありません！本当にやりたい場合を除いて。
 
 <Challenges noTitle={true}>
 
-#### Show an icon for incomplete items with `? :` {/*show-an-icon-for-incomplete-items-with--*/}
+#### `? :` を使って未完了のアイテムにアイコンを表示する {/*show-an-icon-for-incomplete-items-with--*/}
 
-Use the conditional operator (`cond ? a : b`) to render a ❌ if `isPacked` isn’t `true`.
+条件演算子 (`cond ? a : b`) を使用して、`isPacked` が `true` でない場合に ❌ をレンダリングします。
 
 <Sandpack>
 
@@ -339,15 +339,15 @@ export default function PackingList() {
 
 </Solution>
 
-#### Show the item importance with `&&` {/*show-the-item-importance-with-*/}
+#### `&&` を使ってアイテムの重要度を表示する {/*show-the-item-importance-with-*/}
 
-In this example, each `Item` receives a numerical `importance` prop. Use the `&&` operator to render "_(Importance: X)_" in italics, but only for items that have non-zero importance. Your item list should end up looking like this:
+この例では、各 `Item` が数値の `importance` prop を受け取ります。`&&` 演算子を使用して、重要度がゼロでないアイテムにのみイタリック体で "_(Importance: X)_" をレンダリングします。アイテムリストは次のようになります：
 
 * Space suit _(Importance: 9)_
 * Helmet with a golden leaf
 * Photo of Tam _(Importance: 6)_
 
-Don't forget to add a space between the two labels!
+2つのラベルの間にスペースを追加するのを忘れないでください！
 
 <Sandpack>
 
@@ -387,7 +387,7 @@ export default function PackingList() {
 
 <Solution>
 
-This should do the trick:
+これでうまくいくはずです：
 
 <Sandpack>
 
@@ -429,53 +429,53 @@ export default function PackingList() {
 
 </Sandpack>
 
-Note that you must write `importance > 0 && ...` rather than `importance && ...` so that if the `importance` is `0`, `0` isn't rendered as the result!
+注意：`importance > 0 && ...` と書く必要があります。`importance && ...` と書くと、`importance` が `0` の場合に `0` が結果としてレンダリングされてしまいます！
 
-In this solution, two separate conditions are used to insert a space between then name and the importance label. Alternatively, you could use a Fragment with a leading space: `importance > 0 && <> <i>...</i></>` or add a space immediately inside the `<i>`:  `importance > 0 && <i> ...</i>`.
+この解決策では、名前と重要度ラベルの間にスペースを挿入するために2つの別々の条件が使用されています。代わりに、先頭にスペースを持つフラグメントを使用することもできます：`importance > 0 && <> <i>...</i></>` または `<i>` のすぐ内側にスペースを追加することもできます：`importance > 0 && <i> ...</i>`。
 
 </Solution>
 
 </Challenges>
 
-Notice the "Show solution" button in the left bottom corner. It's handy if you want to check yourself!
+左下隅の「Show solution」ボタンに注目してください。自分を確認したい場合に便利です！
 
-### Build an intuition with diagrams and illustrations {/*build-an-intuition-with-diagrams-and-illustrations*/}
+### 図解やイラストで直感を養う {/*build-an-intuition-with-diagrams-and-illustrations*/}
 
-When we couldn't figure out how to explain something with code and words alone, we've added diagrams that help provide some intuition. For example, here is one of the diagrams from [Preserving and Resetting State](/learn/preserving-and-resetting-state):
+コードや言葉だけでは説明が難しい場合、直感を提供するための図解を追加しました。例えば、[状態の保持とリセット](/learn/preserving-and-resetting-state) の一つの図解はこちらです：
 
-<Diagram name="preserving_state_diff_same_pt1" height={350} width={794} alt="Diagram with three sections, with an arrow transitioning each section in between. The first section contains a React component labeled 'div' with a single child labeled 'section', which has a single child labeled 'Counter' containing a state bubble labeled 'count' with value 3. The middle section has the same 'div' parent, but the child components have now been deleted, indicated by a yellow 'proof' image. The third section has the same 'div' parent again, now with a new child labeled 'div', highlighted in yellow, also with a new child labeled 'Counter' containing a state bubble labeled 'count' with value 0, all highlighted in yellow.">
+<Diagram name="preserving_state_diff_same_pt1" height={350} width={794} alt="3つのセクションがあり、それぞれの間に矢印で遷移しています。最初のセクションには、'div'とラベル付けされたReactコンポーネントがあり、1つの子要素として'Counter'が含まれています。'Counter'には'count'とラベル付けされた状態バブルがあり、値は3です。中央のセクションでは、同じ'div'親があり、子コンポーネントは削除され、黄色の'proof'画像で示されています。3番目のセクションでは、再び同じ'div'親があり、新しい子要素として'Counter'が含まれ、状態バブル'count'の値は0です。すべてが黄色で強調されています。">
 
-When `section` changes to `div`, the `section` is deleted and the new `div` is added
+`section` が `div` に変わると、`section` は削除され、新しい `div` が追加されます
 
 </Diagram>
 
-You'll also see some illustrations throughout the docs--here's one of the [browser painting the screen](/learn/render-and-commit#epilogue-browser-paint):
+また、ドキュメント全体にいくつかのイラストもあります—こちらは [ブラウザが画面を描画する](/learn/render-and-commit#epilogue-browser-paint) イラストの一つです：
 
-<Illustration alt="A browser painting 'still life with card element'." src="/images/docs/illustrations/i_browser-paint.png" />
+<Illustration alt="ブラウザが「カード要素の静物画」を描いている。" src="/images/docs/illustrations/i_browser-paint.png" />
 
-We've confirmed with the browser vendors that this depiction is 100% scientifically accurate.
+ブラウザベンダーに確認したところ、この描写は100%科学的に正確です。
 
-## A new, detailed API Reference {/*a-new-detailed-api-reference*/}
+## 新しく詳細なAPIリファレンス {/*a-new-detailed-api-reference*/}
 
-In the [API Reference](/reference/react), every React API now has a dedicated page. This includes all kinds of APIs:
+[APIリファレンス](/reference/react) では、すべてのReact APIに専用のページがあります。これには、さまざまなAPIが含まれます：
 
-- Built-in Hooks like [`useState`](/reference/react/useState).
-- Built-in components like [`<Suspense>`](/reference/react/Suspense).
-- Built-in browser components like [`<input>`](/reference/react-dom/components/input).
-- Framework-oriented APIs like [`renderToPipeableStream`](/reference/react-dom/server/renderToReadableStream).
-- Other React APIs like [`memo`](/reference/react/memo).
+- [`useState`](/reference/react/useState) のような組み込みのHooks。
+- [`<Suspense>`](/reference/react/Suspense) のような組み込みのコンポーネント。
+- [`<input>`](/reference/react-dom/components/input) のような組み込みのブラウザコンポーネント。
+- [`renderToPipeableStream`](/reference/react-dom/server/renderToReadableStream) のようなフレームワーク指向のAPI。
+- [`memo`](/reference/react/memo) のようなその他のReact API。
 
-You'll notice that every API page is split into at least two segments: *Reference* and *Usage*.
+すべてのAPIページは少なくとも2つのセグメントに分かれています：*Reference* と *Usage*。
 
-[Reference](/reference/react/useState#reference) describes the formal API signature by listing its arguments and return values. It's concise, but it can feel a bit abstract if you're not familiar with that API. It describes what an API does, but not how to use it.
+[Reference](/reference/react/useState#reference) は、引数と戻り値をリストアップして正式なAPIシグネチャを説明します。簡潔ですが、そのAPIに慣れていない場合は少し抽象的に感じるかもしれません。APIが何をするかを説明しますが、どのように使用するかは説明しません。
 
-[Usage](/reference/react/useState#usage) shows why and how you would use this API in practice, like a colleague or a friend might explain. It shows the **canonical scenarios for how each API was meant to be used by the React team.** We've added color-coded snippets, examples of using different APIs together, and recipes that you can copy and paste from:
+[Usage](/reference/react/useState#usage) は、このAPIを実際にどのように使用するかを示します。Reactチームが意図した**各APIの標準的なシナリオ**を示します。色分けされたスニペット、異なるAPIを一緒に使用する例、コピーして貼り付けることができるレシピを追加しました：
 
-<Recipes titleText="Basic useState examples" titleId="examples-basic">
+<Recipes titleText="基本的なuseStateの例" titleId="examples-basic">
 
-#### Counter (number) {/*counter-number*/}
+#### カウンター（数値） {/*counter-number*/}
 
-In this example, the `count` state variable holds a number. Clicking the button increments it.
+この例では、`count` 状態変数が数値を保持します。ボタンをクリックすると、それがインクリメントされます。
 
 <Sandpack>
 
@@ -501,9 +501,9 @@ export default function Counter() {
 
 <Solution />
 
-#### Text field (string) {/*text-field-string*/}
+#### テキストフィールド（文字列） {/*text-field-string*/}
 
-In this example, the `text` state variable holds a string. When you type, `handleChange` reads the latest input value from the browser input DOM element, and calls `setText` to update the state. This allows you to display the current `text` below.
+この例では、`text` 状態変数が文字列を保持します。入力すると、`handleChange` がブラウザの入力DOM要素から最新の入力値を読み取り、`setText` を呼び出して状態を更新します。これにより、現在の `text` を下に表示できます。
 
 <Sandpack>
 
@@ -533,9 +533,9 @@ export default function MyInput() {
 
 <Solution />
 
-#### Checkbox (boolean) {/*checkbox-boolean*/}
+#### チェックボックス（ブール値） {/*checkbox-boolean*/}
 
-In this example, the `liked` state variable holds a boolean. When you click the input, `setLiked` updates the `liked` state variable with whether the browser checkbox input is checked. The `liked` variable is used to render the text below the checkbox.
+この例では、`liked` 状態変数がブール値を保持します。入力をクリックすると、`setLiked` がブラウザのチェックボックス入力がチェックされているかどうかで `liked` 状態変数を更新します。`liked` 変数はチェックボックスの下にテキストをレンダリングするために使用されます。
 
 <Sandpack>
 
@@ -569,9 +569,9 @@ export default function MyCheckbox() {
 
 <Solution />
 
-#### Form (two variables) {/*form-two-variables*/}
+#### フォーム（2つの変数） {/*form-two-variables*/}
 
-You can declare more than one state variable in the same component. Each state variable is completely independent.
+同じコンポーネントで複数の状態変数を宣言できます。各状態変数は完全に独立しています。
 
 <Sandpack>
 
@@ -607,42 +607,42 @@ button { display: block; margin-top: 10px; }
 
 </Recipes>
 
-Some API pages also include [Troubleshooting](/reference/react/useEffect#troubleshooting) (for common problems) and [Alternatives](/reference/react-dom/findDOMNode#alternatives) (for deprecated APIs).
+一部のAPIページには、[トラブルシューティング](/reference/react/useEffect#troubleshooting)（一般的な問題）や [代替案](/reference/react-dom/findDOMNode#alternatives)（廃止されたAPI）も含まれています。
 
-We hope that this approach will make the API reference useful not only as a way to look up an argument, but as a way to see all the different things you can do with any given API—and how it connects to the other ones.
+このアプローチが、APIリファレンスを引数を調べるためだけでなく、特定のAPIでできるすべてのことを見て、それが他のAPIとどのように接続されているかを理解するための方法として役立つことを願っています。
 
-## What's next? {/*whats-next*/}
+## 次は何ですか？ {/*whats-next*/}
 
-That's a wrap for our little tour! Have a look around the new website, see what you like or don't like, and keep the feedback coming in our [issue tracker](https://github.com/reactjs/react.dev/issues).
+これで私たちの小さなツアーは終了です！新しいウェブサイトを見て、気に入った点や気に入らない点を確認し、[issue tracker](https://github.com/reactjs/react.dev/issues) でフィードバックをお寄せください。
 
-We acknowledge this project has taken a long time to ship. We wanted to maintain a high quality bar that the React community deserves. While writing these docs and creating all of the examples, we found mistakes in some of our own explanations, bugs in React, and even gaps in the React design that we are now working to address. We hope that the new documentation will help us hold React itself to a higher bar in the future.
+このプロジェクトが出荷されるまでに長い時間がかかったことを認めます。Reactコミュニティが求める高い品質基準を維持したいと考えていました。これらのドキュメントを書き、すべての例を作成する中で、私たち自身の説明の中で間違いを見つけ、Reactのバグを発見し、Reactの設計におけるギャップを見つけました。これらを今後解決していく予定です。新しいドキュメントが、将来的にReact自体をより高い基準に保つのに役立つことを願っています。
 
-We've heard many of your requests to expand the content and functionality of the website, for example:
+ウェブサイトのコンテンツと機能を拡充するための多くのリクエストを聞いています。例えば：
 
-- Providing a TypeScript version for all examples;
-- Creating the updated performance, testing, and accessibility guides;
-- Documenting React Server Components independently from the frameworks that support them;
-- Working with our international community to get the new docs translated;
-- Adding missing features to the new website (for example, RSS for this blog).
+- すべての例のTypeScriptバージョンを提供すること；
+- 更新されたパフォーマンス、テスト、およびアクセシビリティガイドを作成すること；
+- フレームワークから独立してReact Server Componentsを文書化すること；
+- 新しいドキュメントを翻訳するために国際的なコミュニティと協力すること；
+- 新しいウェブサイトに欠けている機能を追加すること（例えば、このブログのRSS）。
 
-Now that [react.dev](https://react.dev/) is out, we will be able to shift our focus from "catching up" with the third-party React educational resources to adding new information and further improving our new website.
+[react.dev](https://react.dev/) が公開された今、サードパーティのReact教育リソースに「追いつく」ことから、新しい情報を追加し、新しいウェブサイトをさらに改善することに焦点を移すことができます。
 
-We think there's never been a better time to learn React.
+Reactを学ぶのにこれ以上の時期はないと思います。
 
-## Who worked on this? {/*who-worked-on-this*/}
+## 誰がこれに取り組んだのですか？ {/*who-worked-on-this*/}
 
-On the React team, [Rachel Nabors](https://twitter.com/rachelnabors/) led the project (and provided the illustrations), and [Dan Abramov](https://twitter.com/dan_abramov) designed the curriculum. They co-authored most of the content together as well.
+Reactチームでは、[Rachel Nabors](https://twitter.com/rachelnabors/) がプロジェクトをリードし（イラストも提供しました）、[Dan Abramov](https://twitter.com/dan_abramov) がカリキュラムを設計しました。彼らはほとんどのコンテンツを共同執筆しました。
 
-Of course, no project this large happens in isolation. We have a lot of people to thank!
+もちろん、これほど大きなプロジェクトは孤立して行われるものではありません。感謝すべき多くの人々がいます！
 
-[Sylwia Vargas](https://twitter.com/SylwiaVargas) overhauled our examples to go beyond "foo/bar/baz" and kittens, and feature scientists, artists and cities from around the world. [Maggie Appleton](https://twitter.com/Mappletons) turned our doodles into a clear diagram system.
+[Sylwia Vargas](https://twitter.com/SylwiaVargas) は、例を「foo/bar/baz」や子猫を超えて、世界中の科学者、アーティスト、都市を特徴とするものにオーバーホールしました。[Maggie Appleton](https://twitter.com/Mappletons) は、私たちの落書きを明確な図解システムに変えました。
 
-Thanks to [David McCabe](https://twitter.com/mcc_abe), [Sophie Alpert](https://twitter.com/sophiebits), [Rick Hanlon](https://twitter.com/rickhanlonii), [Andrew Clark](https://twitter.com/acdlite), and [Matt Carroll](https://twitter.com/mattcarrollcode) for additional writing contributions. We'd also like to thank [Natalia Tepluhina](https://twitter.com/n_tepluhina) and [Sebastian Markbåge](https://twitter.com/sebmarkbage) for their ideas and feedback.
+追加の執筆貢献をしてくれた [David McCabe](https://twitter.com/mcc_abe)、[Sophie Alpert](https://twitter.com/sophiebits)、[Rick Hanlon](https://twitter.com/rickhanlonii)、[Andrew Clark](https://twitter.com/acdlite)、および [Matt Carroll](https://twitter.com/mattcarrollcode) に感謝します。また、アイデアやフィードバックを提供してくれた [Natalia Tepluhina](https://twitter.com/n_tepluhina) と [Sebastian Markbåge](https://twitter.com/sebmarkbage) にも感謝します。
 
-Thanks to [Dan Lebowitz](https://twitter.com/lebo) for the site design and [Razvan Gradinar](https://dribbble.com/GradinarRazvan) for the sandbox design.
+サイトデザインを担当した [Dan Lebowitz](https://twitter.com/lebo) と、サンドボックスデザインを担当した [Razvan Gradinar](https://dribbble.com/GradinarRazvan) に感謝します。
 
-On the development front, thanks to [Jared Palmer](https://twitter.com/jaredpalmer) for prototype development. Thanks to [Dane Grant](https://twitter.com/danecando) and [Dustin Goodman](https://twitter.com/dustinsgoodman) from [ThisDotLabs](https://www.thisdot.co/) for their support on UI development. Thanks to [Ives van Hoorne](https://twitter.com/CompuIves), [Alex Moldovan](https://twitter.com/alexnmoldovan), [Jasper De Moor](https://twitter.com/JasperDeMoor), and [Danilo Woznica](https://twitter.com/danilowoz) from [CodeSandbox](https://codesandbox.io/) for their work with sandbox integration. Thanks to [Rick Hanlon](https://twitter.com/rickhanlonii) for spot development and design work, finessing our colors and finer details. Thanks to [Harish Kumar](https://www.strek.in/) and [Luna Ruan](https://twitter.com/lunaruan) for adding new features to the site and helping maintain it.
+開発面では、プロトタイプ開発を担当した [Jared Palmer](https://twitter.com/jaredpalmer) に感謝します。UI開発をサポートしてくれた [Dane Grant](https://twitter.com/danecando) と [Dustin Goodman](https://twitter.com/dustinsgoodman) から [ThisDotLabs](https://www.thisdot.co/) に感謝します。サンドボックス統合に取り組んでくれた [Ives van Hoorne](https://twitter.com/CompuIves)、[Alex Moldovan](https://twitter.com/alexnmoldovan)、[Jasper De Moor](https://twitter.com/JasperDeMoor)、および [Danilo Woznica](https://twitter.com/danilowoz) から [CodeSandbox](https://codesandbox.io/) に感謝します。色や細部を微調整してくれた [Rick Hanlon](https://twitter.com/rickhanlonii) に感謝します。サイトに新機能を追加し、維持するのを手伝ってくれた [Harish Kumar](https://www.strek.in/) と [Luna Ruan](https://twitter.com/lunaruan) に感謝します。
 
-Huge thanks to the folks who volunteered their time to participate in the alpha and beta testing program. Your enthusiasm and invaluable feedback helped us shape these docs. A special shout out to our beta tester, [Debbie O'Brien](https://twitter.com/debs_obrien), who gave a talk about her experience using the React docs at React Conf 2021.
+アルファおよびベータテストプログラムに参加してくれた方々に大きな感謝を捧げます。あなたの熱意と貴重なフィードバックがこれらのドキュメントを形作るのに役立ちました。特に、React Conf 2021でReactドキュメントの使用経験について講演してくれたベータテスターの [Debbie O'Brien](https://twitter.com/debs_obrien) に感謝します。
 
-Finally, thanks to the React community for being the inspiration behind this effort. You are the reason we do this, and we hope that the new docs will help you use React to build any user interface that you want.
+最後に、この努力の背後にあるインスピレーションであるReactコミュニティに感謝します。あなたがいるからこそ、私たちはこれを行っています。新しいドキュメントが、あなたが望むどんなユーザーインターフェースでもReactを使って構築するのに役立つことを願っています。

@@ -4,7 +4,7 @@ title: createElement
 
 <Intro>
 
-`createElement` lets you create a React element. It serves as an alternative to writing [JSX.](/learn/writing-markup-with-jsx)
+`createElement`を使用すると、React要素を作成できます。これは[JSX](/learn/writing-markup-with-jsx)を書く代わりの方法として機能します。
 
 ```js
 const element = createElement(type, props, ...children)
@@ -16,11 +16,11 @@ const element = createElement(type, props, ...children)
 
 ---
 
-## Reference {/*reference*/}
+## 参照 {/*reference*/}
 
 ### `createElement(type, props, ...children)` {/*createelement*/}
 
-Call `createElement` to create a React element with the given `type`, `props`, and `children`.
+`createElement`を呼び出して、指定された`type`、`props`、および`children`を持つReact要素を作成します。
 
 ```js
 import { createElement } from 'react';
@@ -34,44 +34,44 @@ function Greeting({ name }) {
 }
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `type`: The `type` argument must be a valid React component type. For example, it could be a tag name string (such as `'div'` or `'span'`), or a React component (a function, a class, or a special component like [`Fragment`](/reference/react/Fragment)).
+* `type`: `type`引数は有効なReactコンポーネントタイプでなければなりません。例えば、タグ名の文字列（`'div'`や`'span'`など）や、Reactコンポーネント（関数、クラス、または[`Fragment`](/reference/react/Fragment)のような特別なコンポーネント）である可能性があります。
 
-* `props`: The `props` argument must either be an object or `null`. If you pass `null`, it will be treated the same as an empty object. React will create an element with props matching the `props` you have passed. Note that `ref` and `key` from your `props` object are special and will *not* be available as `element.props.ref` and `element.props.key` on the returned `element`. They will be available as `element.ref` and `element.key`.
+* `props`: `props`引数はオブジェクトまたは`null`でなければなりません。`null`を渡すと、空のオブジェクトと同じように扱われます。Reactは渡された`props`に一致するプロパティを持つ要素を作成します。`props`オブジェクトの`ref`と`key`は特別であり、返された要素の`element.props.ref`および`element.props.key`としては利用できません。これらは`element.ref`および`element.key`として利用できます。
 
-* **optional** `...children`: Zero or more child nodes. They can be any React nodes, including React elements, strings, numbers, [portals](/reference/react-dom/createPortal), empty nodes (`null`, `undefined`, `true`, and `false`), and arrays of React nodes.
+* **オプション** `...children`: 0個以上の子ノード。これらはReact要素、文字列、数値、[ポータル](/reference/react-dom/createPortal)、空のノード（`null`、`undefined`、`true`、`false`）、およびReactノードの配列を含む任意のReactノードである可能性があります。
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`createElement` returns a React element object with a few properties:
+`createElement`は、いくつかのプロパティを持つReact要素オブジェクトを返します：
 
-* `type`: The `type` you have passed.
-* `props`: The `props` you have passed except for `ref` and `key`. If the `type` is a component with legacy `type.defaultProps`, then any missing or undefined `props` will get the values from `type.defaultProps`.
-* `ref`: The `ref` you have passed. If missing, `null`.
-* `key`: The `key` you have passed, coerced to a string. If missing, `null`.
+* `type`: 渡された`type`。
+* `props`: 渡された`props`（`ref`と`key`を除く）。`type`がレガシーな`type.defaultProps`を持つコンポーネントである場合、欠落しているまたは未定義の`props`は`type.defaultProps`の値を取得します。
+* `ref`: 渡された`ref`。欠落している場合は`null`。
+* `key`: 渡された`key`。文字列に強制変換されます。欠落している場合は`null`。
 
-Usually, you'll return the element from your component or make it a child of another element. Although you may read the element's properties, it's best to treat every element as opaque after it's created, and only render it.
+通常、要素をコンポーネントから返すか、別の要素の子として作成します。要素のプロパティを読み取ることはできますが、作成後はすべての要素を不透明なものとして扱い、レンダリングのみに使用するのが最善です。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* You must **treat React elements and their props as [immutable](https://en.wikipedia.org/wiki/Immutable_object)** and never change their contents after creation. In development, React will [freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze) the returned element and its `props` property shallowly to enforce this.
+* **React要素とそのpropsを[不変](https://en.wikipedia.org/wiki/Immutable_object)として扱い、作成後にその内容を変更しない**必要があります。開発中は、Reactは返された要素とその`props`プロパティを浅く[凍結](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)してこれを強制します。
 
-* When you use JSX, **you must start a tag with a capital letter to render your own custom component.** In other words, `<Something />` is equivalent to `createElement(Something)`, but `<something />` (lowercase) is equivalent to `createElement('something')` (note it's a string, so it will be treated as a built-in HTML tag).
+* JSXを使用する場合、**独自のカスタムコンポーネントをレンダリングするにはタグを大文字で始める必要があります。** つまり、`<Something />`は`createElement(Something)`と同等ですが、`<something />`（小文字）は`createElement('something')`（文字列であることに注意）と同等であり、組み込みのHTMLタグとして扱われます。
 
-* You should only **pass children as multiple arguments to `createElement` if they are all statically known,** like `createElement('h1', {}, child1, child2, child3)`. If your children are dynamic, pass the entire array as the third argument: `createElement('ul', {}, listItems)`. This ensures that React will [warn you about missing `key`s](/learn/rendering-lists#keeping-list-items-in-order-with-key) for any dynamic lists. For static lists this is not necessary because they never reorder.
+* **すべての子が静的に知られている場合にのみ、複数の引数として`createElement`に子を渡す**必要があります。例えば、`createElement('h1', {}, child1, child2, child3)`のように。子が動的である場合、配列全体を3番目の引数として渡します：`createElement('ul', {}, listItems)`。これにより、Reactは動的リストの欠落している`key`について[警告します](/learn/rendering-lists#keeping-list-items-in-order-with-key)。静的リストの場合、再順序付けされないためこれは必要ありません。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Creating an element without JSX {/*creating-an-element-without-jsx*/}
+### JSXなしで要素を作成する {/*creating-an-element-without-jsx*/}
 
-If you don't like [JSX](/learn/writing-markup-with-jsx) or can't use it in your project, you can use `createElement` as an alternative.
+[JSX](/learn/writing-markup-with-jsx)が好きでない場合や、プロジェクトで使用できない場合、`createElement`を代替として使用できます。
 
-To create an element without JSX, call `createElement` with some <CodeStep step={1}>type</CodeStep>, <CodeStep step={2}>props</CodeStep>, and <CodeStep step={3}>children</CodeStep>:
+JSXなしで要素を作成するには、いくつかの<CodeStep step={1}>type</CodeStep>、<CodeStep step={2}>props</CodeStep>、および<CodeStep step={3}>children</CodeStep>を使用して`createElement`を呼び出します：
 
 ```js [[1, 5, "'h1'"], [2, 6, "{ className: 'greeting' }"], [3, 7, "'Hello ',"], [3, 8, "createElement('i', null, name),"], [3, 9, "'. Welcome!'"]]
 import { createElement } from 'react';
@@ -87,7 +87,7 @@ function Greeting({ name }) {
 }
 ```
 
-The <CodeStep step={3}>children</CodeStep> are optional, and you can pass as many as you need (the example above has three children). This code will display a `<h1>` header with a greeting. For comparison, here is the same example rewritten with JSX:
+<CodeStep step={3}>children</CodeStep>はオプションであり、必要に応じていくつでも渡すことができます（上記の例では3つの子があります）。このコードは挨拶の`<h1>`ヘッダーを表示します。比較のために、同じ例をJSXで書き直したものを以下に示します：
 
 ```js [[1, 3, "h1"], [2, 3, "className=\\"greeting\\""], [3, 4, "Hello <i>{name}</i>. Welcome!"], [1, 5, "h1"]]
 function Greeting({ name }) {
@@ -99,7 +99,7 @@ function Greeting({ name }) {
 }
 ```
 
-To render your own React component, pass a function like `Greeting` as the <CodeStep step={1}>type</CodeStep> instead of a string like `'h1'`:
+独自のReactコンポーネントをレンダリングするには、文字列の代わりに<CodeStep step={1}>type</CodeStep>として`Greeting`のような関数を渡します：
 
 ```js [[1, 2, "Greeting"], [2, 2, "{ name: 'Taylor' }"]]
 export default function App() {
@@ -107,7 +107,7 @@ export default function App() {
 }
 ```
 
-With JSX, it would look like this:
+JSXを使用すると、次のようになります：
 
 ```js [[1, 2, "Greeting"], [2, 2, "name=\\"Taylor\\""]]
 export default function App() {
@@ -115,7 +115,7 @@ export default function App() {
 }
 ```
 
-Here is a complete example written with `createElement`:
+以下は`createElement`を使用して書かれた完全な例です：
 
 <Sandpack>
 
@@ -149,7 +149,7 @@ export default function App() {
 
 </Sandpack>
 
-And here is the same example written using JSX:
+そして、JSXを使用して書かれた同じ例がこちらです：
 
 <Sandpack>
 
@@ -176,16 +176,16 @@ export default function App() {
 
 </Sandpack>
 
-Both coding styles are fine, so you can use whichever one you prefer for your project. The main benefit of using JSX compared to `createElement` is that it's easy to see which closing tag corresponds to which opening tag.
+どちらのコーディングスタイルも問題ないので、プロジェクトに適したものを使用できます。`createElement`と比較してJSXを使用する主な利点は、どの閉じタグがどの開きタグに対応しているかを簡単に確認できることです。
 
 <DeepDive>
 
-#### What is a React element, exactly? {/*what-is-a-react-element-exactly*/}
+#### React要素とは正確には何ですか？ {/*what-is-a-react-element-exactly*/}
 
-An element is a lightweight description of a piece of the user interface. For example, both `<Greeting name="Taylor" />` and `createElement(Greeting, { name: 'Taylor' })` produce an object like this:
+要素は、ユーザーインターフェイスの一部の軽量な説明です。例えば、`<Greeting name="Taylor" />`と`createElement(Greeting, { name: 'Taylor' })`の両方が次のようなオブジェクトを生成します：
 
 ```js
-// Slightly simplified
+// 少し簡略化
 {
   type: Greeting,
   props: {
@@ -196,10 +196,10 @@ An element is a lightweight description of a piece of the user interface. For ex
 }
 ```
 
-**Note that creating this object does not render the `Greeting` component or create any DOM elements.**
+**このオブジェクトを作成することは、`Greeting`コンポーネントをレンダリングしたり、DOM要素を作成したりすることではないことに注意してください。**
 
-A React element is more like a description--an instruction for React to later render the `Greeting` component. By returning this object from your `App` component, you tell React what to do next.
+React要素は、`Greeting`コンポーネントを後でレンダリングするための説明、つまり指示のようなものです。このオブジェクトを`App`コンポーネントから返すことで、Reactに次に何をすべきかを指示します。
 
-Creating elements is extremely cheap so you don't need to try to optimize or avoid it.
+要素の作成は非常に安価なので、最適化や回避を試みる必要はありません。
 
 </DeepDive>

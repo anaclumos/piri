@@ -5,19 +5,19 @@ canary: true
 
 <Canary>
 
-The `useActionState` Hook is currently only available in React's Canary and experimental channels. Learn more about [release channels here](/community/versioning-policy#all-release-channels). In addition, you need to use a framework that supports [React Server Components](/reference/rsc/use-client) to get the full benefit of `useActionState`.
+`useActionState`フックは現在、ReactのCanaryおよび実験的なチャンネルでのみ利用可能です。[リリースチャンネルについてはこちら](/community/versioning-policy#all-release-channels)をご覧ください。さらに、`useActionState`の完全な利点を得るためには、[React Server Components](/reference/rsc/use-client)をサポートするフレームワークを使用する必要があります。
 
 </Canary>
 
 <Note>
 
-In earlier React Canary versions, this API was part of React DOM and called `useFormState`.
+以前のReact Canaryバージョンでは、このAPIはReact DOMの一部であり、`useFormState`と呼ばれていました。
 
 </Note>
 
 <Intro>
 
-`useActionState` is a Hook that allows you to update state based on the result of a form action.
+`useActionState`は、フォームアクションの結果に基づいて状態を更新するためのフックです。
 
 ```js
 const [state, formAction] = useActionState(fn, initialState, permalink?);
@@ -29,13 +29,13 @@ const [state, formAction] = useActionState(fn, initialState, permalink?);
 
 ---
 
-## Reference {/*reference*/}
+## 参照 {/*reference*/}
 
 ### `useActionState(action, initialState, permalink?)` {/*useactionstate*/}
 
 {/* TODO T164397693: link to actions documentation once it exists */}
 
-Call `useActionState` at the top level of your component to create component state that is updated [when a form action is invoked](/reference/react-dom/components/form). You pass `useActionState` an existing form action function as well as an initial state, and it returns a new action that you use in your form, along with the latest form state. The latest form state is also passed to the function that you provided.
+`useActionState`をコンポーネントのトップレベルで呼び出して、[フォームアクションが呼び出されたとき](/reference/react-dom/components/form)に更新されるコンポーネントの状態を作成します。`useActionState`には既存のフォームアクション関数と初期状態を渡し、新しいアクションと最新のフォーム状態を返します。最新のフォーム状態は、提供した関数にも渡されます。
 
 ```js
 import { useActionState } from "react";
@@ -55,39 +55,39 @@ function StatefulForm({}) {
 }
 ```
 
-The form state is the value returned by the action when the form was last submitted. If the form has not yet been submitted, it is the initial state that you pass.
+フォーム状態は、フォームが最後に送信されたときにアクションによって返された値です。フォームがまだ送信されていない場合、それは渡した初期状態です。
 
-If used with a Server Action, `useActionState` allows the server's response from submitting the form to be shown even before hydration has completed.
+サーバーアクションと一緒に使用すると、`useActionState`はフォームの送信からのサーバーの応答を、ハイドレーションが完了する前に表示することができます。
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `fn`: The function to be called when the form is submitted or button pressed. When the function is called, it will receive the previous state of the form (initially the `initialState` that you pass, subsequently its previous return value) as its initial argument, followed by the arguments that a form action normally receives.
-* `initialState`: The value you want the state to be initially. It can be any serializable value. This argument is ignored after the action is first invoked.
-* **optional** `permalink`: A string containing the unique page URL that this form modifies. For use on pages with dynamic content (eg: feeds) in conjunction with progressive enhancement: if `fn` is a [server action](/reference/rsc/use-server) and the form is submitted before the JavaScript bundle loads, the browser will navigate to the specified permalink URL, rather than the current page's URL. Ensure that the same form component is rendered on the destination page (including the same action `fn` and `permalink`) so that React knows how to pass the state through. Once the form has been hydrated, this parameter has no effect.
+* `fn`: フォームが送信されたりボタンが押されたりしたときに呼び出される関数。この関数が呼び出されると、フォームの前の状態（最初は渡した`initialState`、その後は前回の戻り値）が最初の引数として渡され、その後に通常のフォームアクションが受け取る引数が続きます。
+* `initialState`: 状態を初期化したい値。シリアライズ可能な任意の値を指定できます。この引数はアクションが最初に呼び出された後は無視されます。
+* **オプション** `permalink`: このフォームが変更する一意のページURLを含む文字列。動的コンテンツ（例：フィード）を持つページでプログレッシブエンハンスメントと一緒に使用するために：`fn`が[サーバーアクション](/reference/rsc/use-server)であり、JavaScriptバンドルが読み込まれる前にフォームが送信された場合、ブラウザは現在のページのURLではなく、指定されたパーマリンクURLに移動します。Reactが状態を渡す方法を知るために、同じフォームコンポーネント（同じアクション`fn`と`permalink`を含む）が宛先ページにレンダリングされていることを確認してください。フォームがハイドレートされた後、このパラメータは効果を持ちません。
 
 {/* TODO T164397693: link to serializable values docs once it exists */}
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`useActionState` returns an array with exactly two values:
+`useActionState`は、正確に2つの値を持つ配列を返します：
 
-1. The current state. During the first render, it will match the `initialState` you have passed. After the action is invoked, it will match the value returned by the action.
-2. A new action that you can pass as the `action` prop to your `form` component or `formAction` prop to any `button` component within the form.
+1. 現在の状態。最初のレンダリング時には、渡した`initialState`と一致します。アクションが呼び出された後は、アクションによって返された値と一致します。
+2. フォームコンポーネントの`action`プロップや、フォーム内の任意の`button`コンポーネントの`formAction`プロップとして渡すことができる新しいアクション。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* When used with a framework that supports React Server Components, `useActionState` lets you make forms interactive before JavaScript has executed on the client. When used without Server Components, it is equivalent to component local state.
-* The function passed to `useActionState` receives an extra argument, the previous or initial state, as its first argument. This makes its signature different than if it were used directly as a form action without using `useActionState`.
+* React Server Componentsをサポートするフレームワークと一緒に使用すると、`useActionState`はクライアントでJavaScriptが実行される前にフォームをインタラクティブにすることができます。Server Componentsを使用しない場合、それはコンポーネントのローカル状態と同等です。
+* `useActionState`に渡される関数は、最初の引数として前のまたは初期の状態を受け取ります。これにより、そのシグネチャは`useActionState`を使用せずに直接フォームアクションとして使用された場合とは異なります。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Using information returned by a form action {/*using-information-returned-by-a-form-action*/}
+### フォームアクションによって返される情報の使用 {/*using-information-returned-by-a-form-action*/}
 
-Call `useActionState` at the top level of your component to access the return value of an action from the last time a form was submitted.
+`useActionState`をコンポーネントのトップレベルで呼び出して、フォームが最後に送信されたときのアクションの戻り値にアクセスします。
 
 ```js [[1, 5, "state"], [2, 5, "formAction"], [3, 5, "action"], [4, 5, "null"], [2, 8, "formAction"]]
 import { useActionState } from 'react';
@@ -104,14 +104,14 @@ function MyComponent() {
 }
 ```
 
-`useActionState` returns an array with exactly two items:
+`useActionState`は、正確に2つのアイテムを持つ配列を返します：
 
-1. The <CodeStep step={1}>current state</CodeStep> of the form, which is initially set to the <CodeStep step={4}>initial state</CodeStep> you provided, and after the form is submitted is set to the return value of the <CodeStep step={3}>action</CodeStep> you provided.
-2. A <CodeStep step={2}>new action</CodeStep> that you pass to `<form>` as its `action` prop.
+1. フォームの<CodeStep step={1}>現在の状態</CodeStep>。これは最初に提供した<CodeStep step={4}>初期状態</CodeStep>に設定され、フォームが送信された後は提供した<CodeStep step={3}>アクション</CodeStep>の戻り値に設定されます。
+2. `<form>`にその`action`プロップとして渡す<CodeStep step={2}>新しいアクション</CodeStep>。
 
-When the form is submitted, the <CodeStep step={3}>action</CodeStep> function that you provided will be called. Its return value will become the new <CodeStep step={1}>current state</CodeStep> of the form.
+フォームが送信されると、提供した<CodeStep step={3}>アクション</CodeStep>関数が呼び出されます。その戻り値はフォームの新しい<CodeStep step={1}>現在の状態</CodeStep>になります。
 
-The <CodeStep step={3}>action</CodeStep> that you provide will also receive a new first argument, namely the <CodeStep step={1}>current state</CodeStep> of the form. The first time the form is submitted, this will be the <CodeStep step={4}>initial state</CodeStep> you provided, while with subsequent submissions, it will be the return value from the last time the action was called. The rest of the arguments are the same as if `useActionState` had not been used.
+提供した<CodeStep step={3}>アクション</CodeStep>は、フォームの<CodeStep step={1}>現在の状態</CodeStep>という新しい最初の引数も受け取ります。フォームが最初に送信されたとき、これは提供した<CodeStep step={4}>初期状態</CodeStep>であり、その後の送信では、アクションが最後に呼び出されたときの戻り値になります。その他の引数は、`useActionState`が使用されていない場合と同じです。
 
 ```js [[3, 1, "action"], [1, 1, "currentState"]]
 function action(currentState, formData) {
@@ -120,11 +120,11 @@ function action(currentState, formData) {
 }
 ```
 
-<Recipes titleText="Display information after submitting a form" titleId="display-information-after-submitting-a-form">
+<Recipes titleText="フォーム送信後の情報表示" titleId="display-information-after-submitting-a-form">
 
-#### Display form errors {/*display-form-errors*/}
+#### フォームエラーの表示 {/*display-form-errors*/}
 
-To display messages such as an error message or toast that's returned by a Server Action, wrap the action in a call to `useActionState`.
+サーバーアクションによって返されるエラーメッセージやトーストなどのメッセージを表示するには、アクションを`useActionState`の呼び出しでラップします。
 
 <Sandpack>
 
@@ -194,9 +194,9 @@ form button {
 
 <Solution />
 
-#### Display structured information after submitting a form {/*display-structured-information-after-submitting-a-form*/}
+#### フォーム送信後の構造化情報の表示 {/*display-structured-information-after-submitting-a-form*/}
 
-The return value from a Server Action can be any serializable value. For example, it could be an object that includes a boolean indicating whether the action was successful, an error message, or updated information.
+サーバーアクションの戻り値は、任意のシリアライズ可能な値にすることができます。例えば、アクションが成功したかどうかを示すブール値、エラーメッセージ、または更新された情報を含むオブジェクトにすることができます。
 
 <Sandpack>
 
@@ -283,11 +283,11 @@ form button {
 
 </Recipes>
 
-## Troubleshooting {/*troubleshooting*/}
+## トラブルシューティング {/*troubleshooting*/}
 
-### My action can no longer read the submitted form data {/*my-action-can-no-longer-read-the-submitted-form-data*/}
+### アクションが送信されたフォームデータを読み取れなくなった {/*my-action-can-no-longer-read-the-submitted-form-data*/}
 
-When you wrap an action with `useActionState`, it gets an extra argument *as its first argument*. The submitted form data is therefore its *second* argument instead of its first as it would usually be. The new first argument that gets added is the current state of the form.
+アクションを`useActionState`でラップすると、それは*最初の引数*として追加の引数を受け取ります。送信されたフォームデータは通常の最初の引数ではなく、*2番目の引数*になります。追加された最初の引数は、フォームの現在の状態です。
 
 ```js
 function action(currentState, formData) {

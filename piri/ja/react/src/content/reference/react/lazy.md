@@ -4,7 +4,7 @@ title: lazy
 
 <Intro>
 
-`lazy` lets you defer loading component's code until it is rendered for the first time.
+`lazy`を使用すると、コンポーネントのコードを初めてレンダリングされるまで遅延させることができます。
 
 ```js
 const SomeComponent = lazy(load)
@@ -16,11 +16,11 @@ const SomeComponent = lazy(load)
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `lazy(load)` {/*lazy*/}
 
-Call `lazy` outside your components to declare a lazy-loaded React component:
+`lazy`をコンポーネントの外で呼び出して、遅延読み込みされるReactコンポーネントを宣言します：
 
 ```js
 import { lazy } from 'react';
@@ -28,41 +28,41 @@ import { lazy } from 'react';
 const MarkdownPreview = lazy(() => import('./MarkdownPreview.js'));
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `load`: A function that returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) or another *thenable* (a Promise-like object with a `then` method). React will not call `load` until the first time you attempt to render the returned component. After React first calls `load`, it will wait for it to resolve, and then render the resolved value's `.default` as a React component. Both the returned Promise and the Promise's resolved value will be cached, so React will not call `load` more than once. If the Promise rejects, React will `throw` the rejection reason for the nearest Error Boundary to handle.
+* `load`: [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)または他の*thenable*（`then`メソッドを持つPromiseのようなオブジェクト）を返す関数。Reactは返されたコンポーネントを初めてレンダリングしようとするまで`load`を呼び出しません。Reactが最初に`load`を呼び出した後、それが解決するのを待ち、解決された値の`.default`をReactコンポーネントとしてレンダリングします。返されたPromiseとPromiseの解決された値はキャッシュされるため、Reactは`load`を一度しか呼び出しません。Promiseが拒否された場合、Reactは最も近いエラーバウンダリが処理するために拒否理由を`throw`します。
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`lazy` returns a React component you can render in your tree. While the code for the lazy component is still loading, attempting to render it will *suspend.* Use [`<Suspense>`](/reference/react/Suspense) to display a loading indicator while it's loading.
-
----
-
-### `load` function {/*load*/}
-
-#### Parameters {/*load-parameters*/}
-
-`load` receives no parameters.
-
-#### Returns {/*load-returns*/}
-
-You need to return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) or some other *thenable* (a Promise-like object with a `then` method). It needs to eventually resolve to an object whose `.default` property is a valid React component type, such as a function, [`memo`](/reference/react/memo), or a [`forwardRef`](/reference/react/forwardRef) component.
+`lazy`はツリー内でレンダリングできるReactコンポーネントを返します。遅延コンポーネントのコードがまだ読み込まれている間、それをレンダリングしようとすると*サスペンド*します。読み込み中にローディングインジケーターを表示するには、[`<Suspense>`](/reference/react/Suspense)を使用します。
 
 ---
 
-## Usage {/*usage*/}
+### `load`関数 {/*load*/}
 
-### Lazy-loading components with Suspense {/*suspense-for-code-splitting*/}
+#### パラメータ {/*load-parameters*/}
 
-Usually, you import components with the static [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) declaration:
+`load`はパラメータを受け取りません。
+
+#### 戻り値 {/*load-returns*/}
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)または他の*thenable*（`then`メソッドを持つPromiseのようなオブジェクト）を返す必要があります。最終的に`.default`プロパティが有効なReactコンポーネントタイプ（関数、[`memo`](/reference/react/memo)、または[`forwardRef`](/reference/react/forwardRef)コンポーネントなど）であるオブジェクトに解決される必要があります。
+
+---
+
+## 使用法 {/*usage*/}
+
+### Suspenseを使用したコンポーネントの遅延読み込み {/*suspense-for-code-splitting*/}
+
+通常、コンポーネントは静的な[`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)宣言でインポートします：
 
 ```js
 import MarkdownPreview from './MarkdownPreview.js';
 ```
 
-To defer loading this component's code until it's rendered for the first time, replace this import with:
+このコンポーネントのコードの読み込みを初めてレンダリングされるまで遅延させるには、このインポートを次のように置き換えます：
 
 ```js
 import { lazy } from 'react';
@@ -70,18 +70,18 @@ import { lazy } from 'react';
 const MarkdownPreview = lazy(() => import('./MarkdownPreview.js'));
 ```
 
-This code relies on [dynamic `import()`,](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) which might require support from your bundler or framework. Using this pattern requires that the lazy component you're importing was exported as the `default` export.
+このコードは[動的`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import)に依存しており、バンドラーやフレームワークのサポートが必要な場合があります。このパターンを使用するには、インポートする遅延コンポーネントが`default`エクスポートとしてエクスポートされている必要があります。
 
-Now that your component's code loads on demand, you also need to specify what should be displayed while it is loading. You can do this by wrapping the lazy component or any of its parents into a [`<Suspense>`](/reference/react/Suspense) boundary:
+コンポーネントのコードがオンデマンドで読み込まれるようになったので、読み込み中に表示する内容も指定する必要があります。これを行うには、遅延コンポーネントまたはその親のいずれかを[`<Suspense>`](/reference/react/Suspense)バウンダリでラップします：
 
 ```js {1,4}
 <Suspense fallback={<Loading />}>
-  <h2>Preview</h2>
+  <h2>プレビュー</h2>
   <MarkdownPreview />
  </Suspense>
 ```
 
-In this example, the code for `MarkdownPreview` won't be loaded until you attempt to render it. If `MarkdownPreview` hasn't loaded yet, `Loading` will be shown in its place. Try ticking the checkbox:
+この例では、`MarkdownPreview`のコードはレンダリングしようとするまで読み込まれません。`MarkdownPreview`がまだ読み込まれていない場合、その代わりに`Loading`が表示されます。チェックボックスをオンにしてみてください：
 
 <Sandpack>
 
@@ -99,12 +99,12 @@ export default function MarkdownEditor() {
       <textarea value={markdown} onChange={e => setMarkdown(e.target.value)} />
       <label>
         <input type="checkbox" checked={showPreview} onChange={e => setShowPreview(e.target.checked)} />
-        Show preview
+        プレビューを表示
       </label>
       <hr />
       {showPreview && (
         <Suspense fallback={<Loading />}>
-          <h2>Preview</h2>
+          <h2>プレビュー</h2>
           <MarkdownPreview markdown={markdown} />
         </Suspense>
       )}
@@ -112,7 +112,7 @@ export default function MarkdownEditor() {
   );
 }
 
-// Add a fixed delay so you can see the loading state
+// デモのために固定遅延を追加
 function delayForDemo(promise) {
   return new Promise(resolve => {
     setTimeout(resolve, 2000);
@@ -122,7 +122,7 @@ function delayForDemo(promise) {
 
 ```js src/Loading.js
 export default function Loading() {
-  return <p><i>Loading...</i></p>;
+  return <p><i>読み込み中...</i></p>;
 }
 ```
 
@@ -175,34 +175,34 @@ body {
 
 </Sandpack>
 
-This demo loads with an artificial delay. The next time you untick and tick the checkbox, `Preview` will be cached, so there will be no loading state. To see the loading state again, click "Reset" on the sandbox.
+このデモは人工的な遅延で読み込まれます。次回チェックボックスをオフにして再度オンにすると、`Preview`はキャッシュされるため、読み込み状態は表示されません。読み込み状態を再度表示するには、サンドボックスで「リセット」をクリックしてください。
 
-[Learn more about managing loading states with Suspense.](/reference/react/Suspense)
+[Suspenseを使用した読み込み状態の管理について詳しく学ぶ。](/reference/react/Suspense)
 
 ---
 
-## Troubleshooting {/*troubleshooting*/}
+## トラブルシューティング {/*troubleshooting*/}
 
-### My `lazy` component's state gets reset unexpectedly {/*my-lazy-components-state-gets-reset-unexpectedly*/}
+### `lazy`コンポーネントの状態が予期せずリセットされる {/*my-lazy-components-state-gets-reset-unexpectedly*/}
 
-Do not declare `lazy` components *inside* other components:
+他のコンポーネント*内*で`lazy`コンポーネントを宣言しないでください：
 
 ```js {4-5}
 import { lazy } from 'react';
 
 function Editor() {
-  // 🔴 Bad: This will cause all state to be reset on re-renders
+  // 🔴 悪い例: これにより再レンダリング時にすべての状態がリセットされます
   const MarkdownPreview = lazy(() => import('./MarkdownPreview.js'));
   // ...
 }
 ```
 
-Instead, always declare them at the top level of your module:
+代わりに、常にモジュールのトップレベルで宣言してください：
 
 ```js {3-4}
 import { lazy } from 'react';
 
-// ✅ Good: Declare lazy components outside of your components
+// ✅ 良い例: コンポーネントの外で遅延コンポーネントを宣言します
 const MarkdownPreview = lazy(() => import('./MarkdownPreview.js'));
 
 function Editor() {

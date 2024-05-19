@@ -4,22 +4,22 @@ title: experimental_useEffectEvent
 
 <Wip>
 
-**This API is experimental and is not available in a stable version of React yet.**
+**このAPIは実験的なものであり、まだ安定版のReactでは利用できません。**
 
-You can try it by upgrading React packages to the most recent experimental version:
+Reactパッケージを最新の実験版にアップグレードすることで試すことができます：
 
 - `react@experimental`
 - `react-dom@experimental`
 - `eslint-plugin-react-hooks@experimental`
 
-Experimental versions of React may contain bugs. Don't use them in production.
+Reactの実験版にはバグが含まれている可能性があります。プロダクション環境では使用しないでください。
 
 </Wip>
 
 
 <Intro>
 
-`useEffectEvent` is a React Hook that lets you extract non-reactive logic into an [Effect Event.](/learn/separating-events-from-effects#declaring-an-effect-event)
+`useEffectEvent`は、非反応的なロジックを[Effect Event](/learn/separating-events-from-effects#declaring-an-effect-event)に抽出するためのReact Hookです。
 
 ```js
 const onSomething = useEffectEvent(callback)

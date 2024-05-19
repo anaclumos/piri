@@ -1,35 +1,35 @@
 ---
-title: Escape Hatches
+title: エスケープハッチ
 ---
 
 <Intro>
 
-Some of your components may need to control and synchronize with systems outside of React. For example, you might need to focus an input using the browser API, play and pause a video player implemented without React, or connect and listen to messages from a remote server. In this chapter, you'll learn the escape hatches that let you "step outside" React and connect to external systems. Most of your application logic and data flow should not rely on these features.
+いくつかのコンポーネントは、Reactの外部システムと制御および同期する必要があるかもしれません。例えば、ブラウザAPIを使用して入力にフォーカスを当てたり、Reactを使用せずに実装されたビデオプレーヤーを再生・一時停止したり、リモートサーバーからのメッセージを接続してリスニングする必要があるかもしれません。この章では、Reactの外に「ステップアウト」して外部システムに接続するためのエスケープハッチを学びます。アプリケーションのロジックとデータフローの大部分は、これらの機能に依存しないようにするべきです。
 
 </Intro>
 
 <YouWillLearn isChapter={true}>
 
-* [How to "remember" information without re-rendering](/learn/referencing-values-with-refs)
-* [How to access DOM elements managed by React](/learn/manipulating-the-dom-with-refs)
-* [How to synchronize components with external systems](/learn/synchronizing-with-effects)
-* [How to remove unnecessary Effects from your components](/learn/you-might-not-need-an-effect)
-* [How an Effect's lifecycle is different from a component's](/learn/lifecycle-of-reactive-effects)
-* [How to prevent some values from re-triggering Effects](/learn/separating-events-from-effects)
-* [How to make your Effect re-run less often](/learn/removing-effect-dependencies)
-* [How to share logic between components](/learn/reusing-logic-with-custom-hooks)
+* [再レンダリングせずに情報を「記憶」する方法](/learn/referencing-values-with-refs)
+* [Reactが管理するDOM要素にアクセスする方法](/learn/manipulating-the-dom-with-refs)
+* [コンポーネントを外部システムと同期する方法](/learn/synchronizing-with-effects)
+* [コンポーネントから不要なエフェクトを削除する方法](/learn/you-might-not-need-an-effect)
+* [エフェクトのライフサイクルがコンポーネントのライフサイクルと異なる点](/learn/lifecycle-of-reactive-effects)
+* [一部の値がエフェクトを再トリガーしないようにする方法](/learn/separating-events-from-effects)
+* [エフェクトの再実行頻度を減らす方法](/learn/removing-effect-dependencies)
+* [コンポーネント間でロジックを共有する方法](/learn/reusing-logic-with-custom-hooks)
 
 </YouWillLearn>
 
-## Referencing values with refs {/*referencing-values-with-refs*/}
+## Refsを使って値を参照する {/*referencing-values-with-refs*/}
 
-When you want a component to "remember" some information, but you don't want that information to [trigger new renders](/learn/render-and-commit), you can use a *ref*:
+コンポーネントに何らかの情報を「記憶」させたいが、その情報が[新しいレンダリングをトリガーしない](/learn/render-and-commit)ようにしたい場合、*ref*を使用できます：
 
 ```js
 const ref = useRef(0);
 ```
 
-Like state, refs are retained by React between re-renders. However, setting state re-renders a component. Changing a ref does not! You can access the current value of that ref through the `ref.current` property.
+状態と同様に、refsは再レンダリング間でReactによって保持されます。しかし、状態を設定するとコンポーネントが再レンダリングされますが、refを変更しても再レンダリングされません！`ref.current`プロパティを通じてそのrefの現在の値にアクセスできます。
 
 <Sandpack>
 
@@ -54,17 +54,17 @@ export default function Counter() {
 
 </Sandpack>
 
-A ref is like a secret pocket of your component that React doesn't track. For example, you can use refs to store [timeout IDs](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#return_value), [DOM elements](https://developer.mozilla.org/en-US/docs/Web/API/Element), and other objects that don't impact the component's rendering output.
+refは、Reactが追跡しないコンポーネントの秘密のポケットのようなものです。例えば、refsを使用して[タイムアウトID](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#return_value)、[DOM要素](https://developer.mozilla.org/en-US/docs/Web/API/Element)、およびコンポーネントのレンダリング出力に影響を与えない他のオブジェクトを保存できます。
 
 <LearnMore path="/learn/referencing-values-with-refs">
 
-Read **[Referencing Values with Refs](/learn/referencing-values-with-refs)** to learn how to use refs to remember information.
+**[Refsを使って値を参照する](/learn/referencing-values-with-refs)**を読んで、情報を記憶するためのrefsの使用方法を学びましょう。
 
 </LearnMore>
 
-## Manipulating the DOM with refs {/*manipulating-the-dom-with-refs*/}
+## Refsを使ってDOMを操作する {/*manipulating-the-dom-with-refs*/}
 
-React automatically updates the DOM to match your render output, so your components won't often need to manipulate it. However, sometimes you might need access to the DOM elements managed by React—for example, to focus a node, scroll to it, or measure its size and position. There is no built-in way to do those things in React, so you will need a ref to the DOM node. For example, clicking the button will focus the input using a ref:
+Reactは自動的にDOMをレンダリング出力に一致させるため、コンポーネントがDOMを操作する必要はあまりありません。しかし、時にはReactが管理するDOM要素にアクセスする必要があるかもしれません。例えば、ノードにフォーカスを当てたり、スクロールしたり、そのサイズや位置を測定したりする場合です。Reactにはこれらのことを行うための組み込みの方法はないため、DOMノードへのrefが必要です。例えば、ボタンをクリックすると、refを使用して入力にフォーカスが当たります：
 
 <Sandpack>
 
@@ -93,15 +93,15 @@ export default function Form() {
 
 <LearnMore path="/learn/manipulating-the-dom-with-refs">
 
-Read **[Manipulating the DOM with Refs](/learn/manipulating-the-dom-with-refs)** to learn how to access DOM elements managed by React.
+**[Refsを使ってDOMを操作する](/learn/manipulating-the-dom-with-refs)**を読んで、Reactが管理するDOM要素にアクセスする方法を学びましょう。
 
 </LearnMore>
 
-## Synchronizing with Effects {/*synchronizing-with-effects*/}
+## エフェクトと同期する {/*synchronizing-with-effects*/}
 
-Some components need to synchronize with external systems. For example, you might want to control a non-React component based on the React state, set up a server connection, or send an analytics log when a component appears on the screen. Unlike event handlers, which let you handle particular events, *Effects* let you run some code after rendering. Use them to synchronize your component with a system outside of React.
+いくつかのコンポーネントは外部システムと同期する必要があります。例えば、Reactの状態に基づいて非Reactコンポーネントを制御したり、サーバー接続を設定したり、コンポーネントが画面に表示されたときに分析ログを送信したりする場合です。イベントハンドラとは異なり、特定のイベントを処理することができるエフェクトは、レンダリング後にコードを実行することができます。これらを使用して、コンポーネントをReactの外部システムと同期させます。
 
-Press Play/Pause a few times and see how the video player stays synchronized to the `isPlaying` prop value:
+再生/一時停止を数回押して、ビデオプレーヤーが`isPlaying`プロップ値に同期していることを確認してください：
 
 <Sandpack>
 
@@ -145,7 +145,7 @@ video { width: 250px; }
 
 </Sandpack>
 
-Many Effects also "clean up" after themselves. For example, an Effect that sets up a connection to a chat server should return a *cleanup function* that tells React how to disconnect your component from that server:
+多くのエフェクトは自分自身を「クリーンアップ」します。例えば、チャットサーバーへの接続を設定するエフェクトは、コンポーネントをそのサーバーから切断する方法をReactに伝える*クリーンアップ関数*を返すべきです：
 
 <Sandpack>
 
@@ -165,7 +165,7 @@ export default function ChatRoom() {
 
 ```js src/chat.js
 export function createConnection() {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
       console.log('✅ Connecting...');
@@ -183,30 +183,30 @@ input { display: block; margin-bottom: 20px; }
 
 </Sandpack>
 
-In development, React will immediately run and clean up your Effect one extra time. This is why you see `"✅ Connecting..."` printed twice. This ensures that you don't forget to implement the cleanup function.
+開発中、Reactはエフェクトを一度余分に実行してクリーンアップします。これにより、クリーンアップ関数の実装を忘れないようにします。
 
 <LearnMore path="/learn/synchronizing-with-effects">
 
-Read **[Synchronizing with Effects](/learn/synchronizing-with-effects)** to learn how to synchronize components with external systems.
+**[エフェクトと同期する](/learn/synchronizing-with-effects)**を読んで、コンポーネントを外部システムと同期させる方法を学びましょう。
 
 </LearnMore>
 
-## You Might Not Need An Effect {/*you-might-not-need-an-effect*/}
+## エフェクトが不要な場合 {/*you-might-not-need-an-effect*/}
 
-Effects are an escape hatch from the React paradigm. They let you "step outside" of React and synchronize your components with some external system. If there is no external system involved (for example, if you want to update a component's state when some props or state change), you shouldn't need an Effect. Removing unnecessary Effects will make your code easier to follow, faster to run, and less error-prone.
+エフェクトはReactのパラダイムからのエスケープハッチです。これにより、Reactの外に「ステップアウト」してコンポーネントを外部システムと同期させることができます。外部システムが関与しない場合（例えば、プロップや状態が変わったときにコンポーネントの状態を更新したい場合）、エフェクトは必要ありません。不要なエフェクトを削除することで、コードが読みやすくなり、実行が速くなり、エラーが少なくなります。
 
-There are two common cases in which you don't need Effects:
-- **You don't need Effects to transform data for rendering.**
-- **You don't need Effects to handle user events.**
+エフェクトが不要な一般的なケースは2つあります：
+- **レンダリングのためにデータを変換するためにエフェクトは不要です。**
+- **ユーザーイベントを処理するためにエフェクトは不要です。**
 
-For example, you don't need an Effect to adjust some state based on other state:
+例えば、他の状態に基づいて状態を調整するためにエフェクトは不要です：
 
 ```js {5-9}
 function Form() {
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Swift');
 
-  // 🔴 Avoid: redundant state and unnecessary Effect
+  // 🔴 避けるべき：冗長な状態と不要なエフェクト
   const [fullName, setFullName] = useState('');
   useEffect(() => {
     setFullName(firstName + ' ' + lastName);
@@ -215,31 +215,31 @@ function Form() {
 }
 ```
 
-Instead, calculate as much as you can while rendering:
+代わりに、レンダリング中にできるだけ多くを計算します：
 
 ```js {4-5}
 function Form() {
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Swift');
-  // ✅ Good: calculated during rendering
+  // ✅ 良い：レンダリング中に計算
   const fullName = firstName + ' ' + lastName;
   // ...
 }
 ```
 
-However, you *do* need Effects to synchronize with external systems. 
+ただし、外部システムと同期するためにはエフェクトが必要です。
 
 <LearnMore path="/learn/you-might-not-need-an-effect">
 
-Read **[You Might Not Need an Effect](/learn/you-might-not-need-an-effect)** to learn how to remove unnecessary Effects.
+**[エフェクトが不要な場合](/learn/you-might-not-need-an-effect)**を読んで、不要なエフェクトを削除する方法を学びましょう。
 
 </LearnMore>
 
-## Lifecycle of reactive effects {/*lifecycle-of-reactive-effects*/}
+## リアクティブエフェクトのライフサイクル {/*lifecycle-of-reactive-effects*/}
 
-Effects have a different lifecycle from components. Components may mount, update, or unmount. An Effect can only do two things: to start synchronizing something, and later to stop synchronizing it. This cycle can happen multiple times if your Effect depends on props and state that change over time.
+エフェクトはコンポーネントとは異なるライフサイクルを持ちます。コンポーネントはマウント、更新、アンマウントすることがあります。エフェクトは2つのことしかできません：何かを同期し始めることと、それを後で同期を停止することです。このサイクルは、エフェクトが時間とともに変化するプロップや状態に依存している場合、複数回発生することがあります。
 
-This Effect depends on the value of the `roomId` prop. Props are *reactive values,* which means they can change on a re-render. Notice that the Effect *re-synchronizes* (and re-connects to the server) if `roomId` changes:
+このエフェクトは`roomId`プロップの値に依存しています。プロップは*リアクティブな値*であり、再レンダリング時に変更されることがあります。`roomId`が変更されると、エフェクトが再同期（およびサーバーに再接続）することに注意してください：
 
 <Sandpack>
 
@@ -283,7 +283,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
       console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
@@ -302,25 +302,25 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-React provides a linter rule to check that you've specified your Effect's dependencies correctly. If you forget to specify `roomId` in the list of dependencies in the above example, the linter will find that bug automatically.
+Reactは、エフェクトの依存関係を正しく指定したかどうかをチェックするリンタールールを提供します。上記の例で依存関係リストに`roomId`を指定し忘れた場合、リンターはそのバグを自動的に見つけます。
 
 <LearnMore path="/learn/lifecycle-of-reactive-effects">
 
-Read **[Lifecycle of Reactive Events](/learn/lifecycle-of-reactive-effects)** to learn how an Effect's lifecycle is different from a component's.
+**[リアクティブエフェクトのライフサイクル](/learn/lifecycle-of-reactive-effects)**を読んで、エフェクトのライフサイクルがコンポーネントのライフサイクルとどのように異なるかを学びましょう。
 
 </LearnMore>
 
-## Separating events from Effects {/*separating-events-from-effects*/}
+## イベントとエフェクトを分離する {/*separating-events-from-effects*/}
 
 <Wip>
 
-This section describes an **experimental API that has not yet been released** in a stable version of React.
+このセクションでは、**まだ安定版のReactでリリースされていない実験的なAPI**について説明します。
 
 </Wip>
 
-Event handlers only re-run when you perform the same interaction again. Unlike event handlers, Effects re-synchronize if any of the values they read, like props or state, are different than during last render. Sometimes, you want a mix of both behaviors: an Effect that re-runs in response to some values but not others.
+イベントハンドラは、同じ操作を再度実行したときにのみ再実行されます。イベントハンドラとは異なり、エフェクトは、プロップや状態など、最後のレンダリング時と異なる値がある場合に再同期します。時には、両方の動作を混ぜ合わせたものが必要です：一部の値に応じて再実行されるエフェクトと、他の値には応じないエフェクトです。
 
-All code inside Effects is *reactive.* It will run again if some reactive value it reads has changed due to a re-render. For example, this Effect will re-connect to the chat if either `roomId` or `theme` have changed:
+エフェクト内のすべてのコードは*リアクティブ*です。再レンダリングによって読み取られたリアクティブな値が変更された場合、再度実行されます。例えば、このエフェクトは`roomId`または`theme`が変更された場合に再接続します：
 
 <Sandpack>
 
@@ -397,7 +397,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   let connectedCallback;
   let timeout;
   return {
@@ -435,7 +435,7 @@ export function showNotification(message, theme) {
     gravity: 'top',
     position: 'right',
     style: {
-      background: theme === 'dark' ? 'black' : 'white',
+      background:theme === 'dark' ? 'black' : 'white',
       color: theme === 'dark' ? 'white' : 'black',
     },
   }).showToast();
@@ -448,7 +448,7 @@ label { display: block; margin-top: 10px; }
 
 </Sandpack>
 
-This is not ideal. You want to re-connect to the chat only if the `roomId` has changed. Switching the `theme` shouldn't re-connect to the chat! Move the code reading `theme` out of your Effect into an *Effect Event*:
+これは理想的ではありません。`roomId`が変更された場合にのみチャットに再接続したいのです。`theme`を切り替えるとチャットに再接続する必要はありません！`theme`を読み取るコードをエフェクトから*エフェクトイベント*に移動します：
 
 <Sandpack>
 
@@ -530,7 +530,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   let connectedCallback;
   let timeout;
   return {
@@ -581,19 +581,19 @@ label { display: block; margin-top: 10px; }
 
 </Sandpack>
 
-Code inside Effect Events isn't reactive, so changing the `theme` no longer makes your Effect re-connect.
+エフェクトイベント内のコードはリアクティブではないため、`theme`を変更してもエフェクトが再接続されることはありません。
 
 <LearnMore path="/learn/separating-events-from-effects">
 
-Read **[Separating Events from Effects](/learn/separating-events-from-effects)** to learn how to prevent some values from re-triggering Effects.
+**[イベントとエフェクトを分離する](/learn/separating-events-from-effects)**を読んで、一部の値がエフェクトを再トリガーしないようにする方法を学びましょう。
 
 </LearnMore>
 
-## Removing Effect dependencies {/*removing-effect-dependencies*/}
+## エフェクトの依存関係を削除する {/*removing-effect-dependencies*/}
 
-When you write an Effect, the linter will verify that you've included every reactive value (like props and state) that the Effect reads in the list of your Effect's dependencies. This ensures that your Effect remains synchronized with the latest props and state of your component. Unnecessary dependencies may cause your Effect to run too often, or even create an infinite loop. The way you remove them depends on the case.
+エフェクトを書くとき、リンターはエフェクトが読み取るすべてのリアクティブな値（プロップや状態など）をエフェクトの依存関係リストに含めたかどうかを確認します。これにより、エフェクトがコンポーネントの最新のプロップと状態と同期し続けることが保証されます。不要な依存関係は、エフェクトが頻繁に実行されすぎたり、無限ループを引き起こしたりする可能性があります。依存関係を削除する方法はケースによって異なります。
 
-For example, this Effect depends on the `options` object which gets re-created every time you edit the input:
+例えば、このエフェクトは入力を編集するたびに再作成される`options`オブジェクトに依存しています：
 
 <Sandpack>
 
@@ -649,7 +649,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
       console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
@@ -668,7 +668,7 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-You don't want the chat to re-connect every time you start typing a message in that chat. To fix this problem, move creation of the `options` object inside the Effect so that the Effect only depends on the `roomId` string:
+チャットを再接続するたびにメッセージを入力し始めるのは望ましくありません。この問題を解決するために、`options`オブジェクトの作成をエフェクト内に移動し、エフェクトが`roomId`文字列にのみ依存するようにします：
 
 <Sandpack>
 
@@ -723,7 +723,7 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
       console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
@@ -742,19 +742,19 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-Notice that you didn't start by editing the dependency list to remove the `options` dependency. That would be wrong. Instead, you changed the surrounding code so that the dependency became *unnecessary.* Think of the dependency list as a list of all the reactive values used by your Effect's code. You don't intentionally choose what to put on that list. The list describes your code. To change the dependency list, change the code.
+依存関係リストを編集して`options`依存関係を削除することから始めるのではありません。それは間違いです。代わりに、依存関係が*不要*になるように周囲のコードを変更します。依存関係リストは、エフェクトのコードで使用されるすべてのリアクティブな値のリストと考えてください。意図的にそのリストに何を入れるかを選択するのではありません。リストはコードを説明します。依存関係リストを変更するには、コードを変更します。
 
 <LearnMore path="/learn/removing-effect-dependencies">
 
-Read **[Removing Effect Dependencies](/learn/removing-effect-dependencies)** to learn how to make your Effect re-run less often.
+**[エフェクトの依存関係を削除する](/learn/removing-effect-dependencies)**を読んで、エフェクトの再実行頻度を減らす方法を学びましょう。
 
 </LearnMore>
 
-## Reusing logic with custom Hooks {/*reusing-logic-with-custom-hooks*/}
+## カスタムフックを使ってロジックを再利用する {/*reusing-logic-with-custom-hooks*/}
 
-React comes with built-in Hooks like `useState`, `useContext`, and `useEffect`. Sometimes, you’ll wish that there was a Hook for some more specific purpose: for example, to fetch data, to keep track of whether the user is online, or to connect to a chat room. To do this, you can create your own Hooks for your application's needs.
+Reactには`useState`、`useContext`、`useEffect`などの組み込みフックがあります。時には、データを取得したり、ユーザーがオンラインかどうかを追跡したり、チャットルームに接続したりするための特定の目的のフックが欲しいと思うことがあります。これを行うために、アプリケーションのニーズに合わせて独自のフックを作成できます。
 
-In this example, the `usePointerPosition` custom Hook tracks the cursor position, while `useDelayedValue` custom Hook returns a value that's "lagging behind" the value you passed by a certain number of milliseconds. Move the cursor over the sandbox preview area to see a moving trail of dots following the cursor:
+この例では、`usePointerPosition`カスタムフックがカーソル位置を追跡し、`useDelayedValue`カスタムフックが指定されたミリ秒数だけ遅れて渡された値を返します。サンドボックスのプレビューエリア上でカーソルを移動させると、カーソルを追いかける点のトレイルが表示されます：
 
 <Sandpack>
 
@@ -835,14 +835,14 @@ body { min-height: 300px; }
 
 </Sandpack>
 
-You can create custom Hooks, compose them together, pass data between them, and reuse them between components. As your app grows, you will write fewer Effects by hand because you'll be able to reuse custom Hooks you already wrote. There are also many excellent custom Hooks maintained by the React community.
+カスタムフックを作成し、それらを組み合わせ、データを渡し、コンポーネント間で再利用することができます。アプリが成長するにつれて、手動でエフェクトを書くことが少なくなり、既に書いたカスタムフックを再利用できるようになります。また、Reactコミュニティによって維持されている多くの優れたカスタムフックもあります。
 
 <LearnMore path="/learn/reusing-logic-with-custom-hooks">
 
-Read **[Reusing Logic with Custom Hooks](/learn/reusing-logic-with-custom-hooks)** to learn how to share logic between components.
+**[カスタムフックを使ってロジックを再利用する](/learn/reusing-logic-with-custom-hooks)**を読んで、コンポーネント間でロジックを共有する方法を学びましょう。
 
 </LearnMore>
 
-## What's next? {/*whats-next*/}
+## 次は何ですか？ {/*whats-next*/}
 
-Head over to [Referencing Values with Refs](/learn/referencing-values-with-refs) to start reading this chapter page by page!
+[Refsを使って値を参照する](/learn/referencing-values-with-refs)に進んで、この章をページごとに読み始めましょう！

@@ -1,11 +1,11 @@
 ---
-title: Invalid ARIA Prop Warning
+title: 無効なARIAプロップ警告
 ---
 
-This warning will fire if you attempt to render a DOM element with an `aria-*` prop that does not exist in the Web Accessibility Initiative (WAI) Accessible Rich Internet Application (ARIA) [specification](https://www.w3.org/TR/wai-aria-1.1/#states_and_properties).
+この警告は、Web Accessibility Initiative (WAI) Accessible Rich Internet Application (ARIA) [仕様](https://www.w3.org/TR/wai-aria-1.1/#states_and_properties)に存在しない `aria-*` プロパティを使用してDOM要素をレンダリングしようとした場合に発生します。
 
-1. If you feel that you are using a valid prop, check the spelling carefully. `aria-labelledby` and `aria-activedescendant` are often misspelled.
+1. 有効なプロパティを使用していると感じる場合は、スペルを慎重に確認してください。`aria-labelledby` や `aria-activedescendant` はよくスペルミスされます。
 
-2. If you wrote `aria-role`, you may have meant `role`.
+2. `aria-role` と書いた場合、`role` を意味している可能性があります。
 
-3. Otherwise, if you're on the latest version of React DOM and verified that you're using a valid property name listed in the ARIA specification, please [report a bug](https://github.com/facebook/react/issues/new/choose).
+3. それ以外の場合、最新バージョンのReact DOMを使用しており、ARIA仕様に記載されている有効なプロパティ名を使用していることを確認した場合は、[バグを報告](https://github.com/facebook/react/issues/new/choose)してください。

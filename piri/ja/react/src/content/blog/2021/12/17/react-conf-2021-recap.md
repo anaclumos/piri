@@ -1,160 +1,160 @@
 ---
-title: "React Conf 2021 Recap"
+title: React Conf 2021 まとめ
 author: Jesslyn Tannady and Rick Hanlon
 date: 2021/12/17
-description: Last week we hosted our 6th React Conf. In previous years, we've used the React Conf stage to deliver industry changing announcements such as React Native and React Hooks. This year, we shared our multi-platform vision for React, starting with the release of React 18 and gradual adoption of concurrent features.
+description: 先週、私たちは第6回React Confを開催しました。過去の年では、React Confのステージを使用して、React NativeやReact Hooksなどの業界を変える発表を行ってきました。今年は、React 18のリリースと並行機能の段階的な採用から始まる、Reactのマルチプラットフォームビジョンを共有しました。
 ---
 
-December 17, 2021 by [Jesslyn Tannady](https://twitter.com/jtannady) and [Rick Hanlon](https://twitter.com/rickhanlonii)
+2021年12月17日 [Jesslyn Tannady](https://twitter.com/jtannady) と [Rick Hanlon](https://twitter.com/rickhanlonii)
 
 ---
 
 <Intro>
 
-Last week we hosted our 6th React Conf. In previous years, we've used the React Conf stage to deliver industry changing announcements such as [_React Native_](https://engineering.fb.com/2015/03/26/android/react-native-bringing-modern-web-techniques-to-mobile/) and [_React Hooks_](https://reactjs.org/docs/hooks-intro.html). This year, we shared our multi-platform vision for React, starting with the release of React 18 and gradual adoption of concurrent features.
+先週、私たちは第6回React Confを開催しました。過去の年では、React Confのステージを利用して、[_React Native_](https://engineering.fb.com/2015/03/26/android/react-native-bringing-modern-web-techniques-to-mobile/) や [_React Hooks_](https://reactjs.org/docs/hooks-intro.html) など、業界を変える発表を行ってきました。今年は、React 18のリリースと並行機能の段階的な採用から始まる、Reactのマルチプラットフォームビジョンを共有しました。
 
 </Intro>
 
 ---
 
-This was the first time React Conf was hosted online, and it was streamed for free, translated to 8 different languages. Participants from all over the world joined our conference Discord and the replay event for accessibility in all timezones. Over 50,000 people registered, with over 60,000 views of 19 talks, and 5,000 participants in Discord across both events.
+今回のReact Confは初めてオンラインで開催され、無料でストリーミングされ、8つの異なる言語に翻訳されました。世界中の参加者が私たちのカンファレンスDiscordと、全タイムゾーンでのアクセスを可能にするリプレイイベントに参加しました。50,000人以上が登録し、19の講演が60,000回以上視聴され、両イベントで5,000人がDiscordに参加しました。
 
-All the talks are [available to stream online](https://www.youtube.com/watch?v=FZ0cG47msEk&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa).
+すべての講演は[オンラインでストリーミング可能](https://www.youtube.com/watch?v=FZ0cG47msEk&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa)です。
 
-Here’s a summary of what was shared on stage:
+ステージで共有された内容の概要は以下の通りです：
 
-## React 18 and concurrent features {/*react-18-and-concurrent-features*/}
+## React 18と並行機能 {/*react-18-and-concurrent-features*/}
 
-In the keynote, we shared our vision for the future of React starting with React 18.
+基調講演では、React 18から始まるReactの未来のビジョンを共有しました。
 
-React 18 adds the long-awaited concurrent renderer and updates to Suspense without any major breaking changes. Apps can upgrade to React 18 and begin gradually adopting concurrent features with the amount of effort on par with any other major release.
+React 18は、長らく待ち望まれていた並行レンダラーと、重大な破壊的変更なしにSuspenseの更新を追加します。アプリはReact 18にアップグレードし、他の主要リリースと同程度の労力で並行機能を段階的に採用し始めることができます。
 
-**This means there is no concurrent mode, only concurrent features.**
+**これは、並行モードが存在せず、並行機能のみが存在することを意味します。**
 
-In the keynote, we also shared our vision for Suspense, Server Components, new React working groups, and our long-term many-platform vision for React Native.
+基調講演では、Suspense、Server Components、新しいReactワーキンググループ、そしてReact Nativeの長期的な多プラットフォームビジョンについても共有しました。
 
-Watch the full keynote from [Andrew Clark](https://twitter.com/acdlite), [Juan Tejada](https://twitter.com/_jstejada), [Lauren Tan](https://twitter.com/potetotes), and [Rick Hanlon](https://twitter.com/rickhanlonii) here:
+[Andrew Clark](https://twitter.com/acdlite)、[Juan Tejada](https://twitter.com/_jstejada)、[Lauren Tan](https://twitter.com/potetotes)、[Rick Hanlon](https://twitter.com/rickhanlonii)による基調講演の全編はこちらでご覧ください：
 
 <YouTubeIframe src="https://www.youtube.com/embed/FZ0cG47msEk" />
 
-## React 18 for Application Developers {/*react-18-for-application-developers*/}
+## アプリケーション開発者向けのReact 18 {/*react-18-for-application-developers*/}
 
-In the keynote, we also announced that the React 18 RC is available to try now. Pending further feedback, this is the exact version of React that we will publish to stable early next year.
+基調講演では、React 18 RCが現在試用可能であることも発表しました。さらなるフィードバックを待って、これは来年初めに安定版として公開する予定のReactの正確なバージョンです。
 
-To try the React 18 RC, upgrade your dependencies:
+React 18 RCを試すには、依存関係をアップグレードしてください：
 
 ```bash
 npm install react@rc react-dom@rc
 ```
 
-and switch to the new `createRoot` API:
+そして新しい `createRoot` APIに切り替えます：
 
 ```js
-// before
+// 以前
 const container = document.getElementById('root');
 ReactDOM.render(<App />, container);
 
-// after
+// 以後
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 root.render(<App/>);
 ```
 
-For a demo of upgrading to React 18, see [Shruti Kapoor](https://twitter.com/shrutikapoor08)’s talk here:
+React 18へのアップグレードのデモについては、[Shruti Kapoor](https://twitter.com/shrutikapoor08)の講演をご覧ください：
 
 <YouTubeIframe src="https://www.youtube.com/embed/ytudH8je5ko" />
 
-## Streaming Server Rendering with Suspense {/*streaming-server-rendering-with-suspense*/}
+## Suspenseを使用したストリーミングサーバーレンダリング {/*streaming-server-rendering-with-suspense*/}
 
-React 18 also includes improvements to server-side rendering performance using Suspense.
+React 18には、Suspenseを使用したサーバーサイドレンダリングのパフォーマンス向上も含まれています。
 
-Streaming server rendering lets you generate HTML from React components on the server, and stream that HTML to your users. In React 18, you can use `Suspense` to break down your app into smaller independent units which can be streamed independently of each other without blocking the rest of the app. This means users will see your content sooner and be able to start interacting with it much faster.
+ストリーミングサーバーレンダリングでは、サーバー上でReactコンポーネントからHTMLを生成し、そのHTMLをユーザーにストリーミングすることができます。React 18では、`Suspense`を使用してアプリをより小さな独立したユニットに分割し、それぞれを他の部分をブロックせずに独立してストリーミングすることができます。これにより、ユーザーはコンテンツを早く見ることができ、より早く操作を開始することができます。
 
-For a deep dive, see [Shaundai Person](https://twitter.com/shaundai)’s talk here:
+詳細については、[Shaundai Person](https://twitter.com/shaundai)の講演をご覧ください：
 
 <YouTubeIframe src="https://www.youtube.com/embed/pj5N-Khihgc" />
 
-## The first React working group {/*the-first-react-working-group*/}
+## 最初のReactワーキンググループ {/*the-first-react-working-group*/}
 
-For React 18, we created our first Working Group to collaborate with a panel of experts, developers, library maintainers, and educators. Together we worked to create our gradual adoption strategy and refine new APIs such as `useId`, `useSyncExternalStore`, and `useInsertionEffect`.
+React 18のために、専門家、開発者、ライブラリメンテナー、教育者のパネルと協力するための最初のワーキンググループを作成しました。共に、段階的な採用戦略を作成し、`useId`、`useSyncExternalStore`、`useInsertionEffect`などの新しいAPIを洗練しました。
 
-For an overview of this work, see [Aakansha' Doshi](https://twitter.com/aakansha1216)'s talk:
+この作業の概要については、[Aakansha' Doshi](https://twitter.com/aakansha1216)の講演をご覧ください：
 
 <YouTubeIframe src="https://www.youtube.com/embed/qn7gRClrC9U" />
 
-## React Developer Tooling {/*react-developer-tooling*/}
+## React開発者ツール {/*react-developer-tooling*/}
 
-To support the new features in this release, we also announced the newly formed React DevTools team and a new Timeline Profiler to help developers debug their React apps.
+このリリースの新機能をサポートするために、新しく結成されたReact DevToolsチームと、Reactアプリのデバッグを支援する新しいタイムラインプロファイラーを発表しました。
 
-For more information and a demo of new DevTools features, see [Brian Vaughn](https://twitter.com/brian_d_vaughn)’s talk:
+新しいDevTools機能の詳細とデモについては、[Brian Vaughn](https://twitter.com/brian_d_vaughn)の講演をご覧ください：
 
 <YouTubeIframe src="https://www.youtube.com/embed/oxDfrke8rZg" />
 
-## React without memo {/*react-without-memo*/}
+## memoなしのReact {/*react-without-memo*/}
 
-Looking further into the future, [Xuan Huang (黄玄)](https://twitter.com/Huxpro) shared an update from our React Labs research into an auto-memoizing compiler. Check out this talk for more information and a demo of the compiler prototype:
+将来を見据えて、[Xuan Huang (黄玄)](https://twitter.com/Huxpro)が自動メモ化コンパイラに関するReact Labsの研究の最新情報を共有しました。詳細とコンパイラプロトタイプのデモについては、この講演をご覧ください：
 
 <YouTubeIframe src="https://www.youtube.com/embed/lGEMwh32soc" />
 
-## React docs keynote {/*react-docs-keynote*/}
+## Reactドキュメント基調講演 {/*react-docs-keynote*/}
 
-[Rachel Nabors](https://twitter.com/rachelnabors) kicked off a section of talks about learning and designing with React with a keynote about our investment in React's new docs ([now shipped as react.dev](/blog/2023/03/16/introducing-react-dev)):
+[Rachel Nabors](https://twitter.com/rachelnabors)は、Reactの新しいドキュメントへの投資についての基調講演で、Reactを使った学習とデザインに関する一連の講演を開始しました（[現在はreact.devとして提供されています](/blog/2023/03/16/introducing-react-dev)）：
 
 <YouTubeIframe src="https://www.youtube.com/embed/mneDaMYOKP8" />
 
-## And more... {/*and-more*/}
+## その他... {/*and-more*/}
 
-**We also heard talks on learning and designing with React:**
+**Reactを使った学習とデザインに関する講演もありました：**
 
-* Debbie O'Brien: [Things I learnt from the new React docs](https://youtu.be/-7odLW_hG7s).
-* Sarah Rainsberger: [Learning in the Browser](https://youtu.be/5X-WEQflCL0).
-* Linton Ye: [The ROI of Designing with React](https://youtu.be/7cPWmID5XAk).
-* Delba de Oliveira: [Interactive playgrounds with React](https://youtu.be/zL8cz2W0z34).
+* Debbie O'Brien: [新しいReactドキュメントから学んだこと](https://youtu.be/-7odLW_hG7s)。
+* Sarah Rainsberger: [ブラウザでの学習](https://youtu.be/5X-WEQflCL0)。
+* Linton Ye: [Reactを使ったデザインのROI](https://youtu.be/7cPWmID5XAk)。
+* Delba de Oliveira: [Reactを使ったインタラクティブなプレイグラウンド](https://youtu.be/zL8cz2W0z34)。
 
-**Talks from the Relay, React Native, and PyTorch teams:**
+**Relay、React Native、PyTorchチームからの講演：**
 
-* Robert Balicki: [Re-introducing Relay](https://youtu.be/lhVGdErZuN4).
-* Eric Rozell and Steven Moyes: [React Native Desktop](https://youtu.be/9L4FFrvwJwY).
-* Roman Rädle: [On-device Machine Learning for React Native](https://youtu.be/NLj73vrc2I8)
+* Robert Balicki: [Relayの再紹介](https://youtu.be/lhVGdErZuN4)。
+* Eric RozellとSteven Moyes: [React Native Desktop](https://youtu.be/9L4FFrvwJwY)。
+* Roman Rädle: [React Nativeのオンデバイス機械学習](https://youtu.be/NLj73vrc2I8)
 
-**And talks from the community on accessibility, tooling, and Server Components:**
+**アクセシビリティ、ツール、Server Componentsに関するコミュニティからの講演：**
 
-* Daishi Kato: [React 18 for External Store Libraries](https://youtu.be/oPfSC5bQPR8).
-* Diego Haz: [Building Accessible Components in React 18](https://youtu.be/dcm8fjBfro8).
-* Tafu Nakazaki: [Accessible Japanese Form Components with React](https://youtu.be/S4a0QlsH0pU).
-* Lyle Troxell: [UI tools for artists](https://youtu.be/b3l4WxipFsE).
-* Helen Lin: [Hydrogen + React 18](https://youtu.be/HS6vIYkSNks).
+* Daishi Kato: [外部ストアライブラリ向けのReact 18](https://youtu.be/oPfSC5bQPR8)。
+* Diego Haz: [React 18でアクセシブルなコンポーネントを構築する](https://youtu.be/dcm8fjBfro8)。
+* Tafu Nakazaki: [Reactを使ったアクセシブルな日本語フォームコンポーネント](https://youtu.be/S4a0QlsH0pU)。
+* Lyle Troxell: [アーティスト向けのUIツール](https://youtu.be/b3l4WxipFsE)。
+* Helen Lin: [Hydrogen + React 18](https://youtu.be/HS6vIYkSNks)。
 
-## Thank you {/*thank-you*/}
+## ありがとう {/*thank-you*/}
 
-This was our first year planning a conference ourselves, and we have a lot of people to thank.
+今年は初めて自分たちでカンファレンスを計画し、多くの人々に感謝しています。
 
-First, thanks to all of our speakers [Aakansha Doshi](https://twitter.com/aakansha1216), [Andrew Clark](https://twitter.com/acdlite), [Brian Vaughn](https://twitter.com/brian_d_vaughn), [Daishi Kato](https://twitter.com/dai_shi), [Debbie O'Brien](https://twitter.com/debs_obrien), [Delba de Oliveira](https://twitter.com/delba_oliveira), [Diego Haz](https://twitter.com/diegohaz), [Eric Rozell](https://twitter.com/EricRozell), [Helen Lin](https://twitter.com/wizardlyhel), [Juan Tejada](https://twitter.com/_jstejada), [Lauren Tan](https://twitter.com/potetotes), [Linton Ye](https://twitter.com/lintonye), [Lyle Troxell](https://twitter.com/lyle), [Rachel Nabors](https://twitter.com/rachelnabors), [Rick Hanlon](https://twitter.com/rickhanlonii), [Robert Balicki](https://twitter.com/StatisticsFTW), [Roman Rädle](https://twitter.com/raedle), [Sarah Rainsberger](https://twitter.com/sarah11918), [Shaundai Person](https://twitter.com/shaundai), [Shruti Kapoor](https://twitter.com/shrutikapoor08), [Steven Moyes](https://twitter.com/moyessa), [Tafu Nakazaki](https://twitter.com/hawaiiman0), and  [Xuan Huang (黄玄)](https://twitter.com/Huxpro).
+まず、すべてのスピーカーに感謝します：[Aakansha Doshi](https://twitter.com/aakansha1216)、[Andrew Clark](https://twitter.com/acdlite)、[Brian Vaughn](https://twitter.com/brian_d_vaughn)、[Daishi Kato](https://twitter.com/dai_shi)、[Debbie O'Brien](https://twitter.com/debs_obrien)、[Delba de Oliveira](https://twitter.com/delba_oliveira)、[Diego Haz](https://twitter.com/diegohaz)、[Eric Rozell](https://twitter.com/EricRozell)、[Helen Lin](https://twitter.com/wizardlyhel)、[Juan Tejada](https://twitter.com/_jstejada)、[Lauren Tan](https://twitter.com/potetotes)、[Linton Ye](https://twitter.com/lintonye)、[Lyle Troxell](https://twitter.com/lyle)、[Rachel Nabors](https://twitter.com/rachelnabors)、[Rick Hanlon](https://twitter.com/rickhanlonii)、[Robert Balicki](https://twitter.com/StatisticsFTW)、[Roman Rädle](https://twitter.com/raedle)、[Sarah Rainsberger](https://twitter.com/sarah11918)、[Shaundai Person](https://twitter.com/shaundai)、[Shruti Kapoor](https://twitter.com/shrutikapoor08)、[Steven Moyes](https://twitter.com/moyessa)、[Tafu Nakazaki](https://twitter.com/hawaiiman0)、そして [Xuan Huang (黄玄)](https://twitter.com/Huxpro)。
 
-Thanks to everyone who helped provide feedback on talks including [Andrew Clark](https://twitter.com/acdlite), [Dan Abramov](https://twitter.com/dan_abramov), [Dave McCabe](https://twitter.com/mcc_abe), [Eli White](https://twitter.com/Eli_White), [Joe Savona](https://twitter.com/en_JS),  [Lauren Tan](https://twitter.com/potetotes), [Rachel Nabors](https://twitter.com/rachelnabors), and [Tim Yung](https://twitter.com/yungsters).
+講演にフィードバックを提供してくれたすべての人に感謝します：[Andrew Clark](https://twitter.com/acdlite)、[Dan Abramov](https://twitter.com/dan_abramov)、[Dave McCabe](https://twitter.com/mcc_abe)、[Eli White](https://twitter.com/Eli_White)、[Joe Savona](https://twitter.com/en_JS)、[Lauren Tan](https://twitter.com/potetotes)、[Rachel Nabors](https://twitter.com/rachelnabors)、そして[Tim Yung](https://twitter.com/yungsters)。
 
-Thanks to [Lauren Tan](https://twitter.com/potetotes) for setting up the conference Discord and serving as our Discord admin.
+カンファレンスDiscordの設定とDiscord管理者としての役割を果たしてくれた[Lauren Tan](https://twitter.com/potetotes)に感謝します。
 
-Thanks to [Seth Webster](https://twitter.com/sethwebster) for feedback on overall direction and making sure we were focused on diversity and inclusion.
+全体の方向性に関するフィードバックを提供し、多様性と包括性に焦点を当てるようにしてくれた[Seth Webster](https://twitter.com/sethwebster)に感謝します。
 
-Thanks to [Rachel Nabors](https://twitter.com/rachelnabors) for spearheading our moderation effort, and [Aisha Blake](https://twitter.com/AishaBlake) for creating our moderation guide, leading our moderation team, training the translators and moderators, and helping to moderate both events.
+モデレーションの取り組みを先導してくれた[Rachel Nabors](https://twitter.com/rachelnabors)と、モデレーションガイドを作成し、モデレーションチームを率い、翻訳者とモデレーターのトレーニングを行い、両イベントのモデレーションを支援してくれた[Aisha Blake](https://twitter.com/AishaBlake)に感謝します。
 
-Thanks to our moderators [Jesslyn Tannady](https://twitter.com/jtannady), [Suzie Grange](https://twitter.com/missuze), [Becca Bailey](https://twitter.com/beccaliz), [Luna Wei](https://twitter.com/lunaleaps), [Joe Previte](https://twitter.com/jsjoeio), [Nicola Corti](https://twitter.com/Cortinico), [Gijs Weterings](https://twitter.com/gweterings), [Claudio Procida](https://twitter.com/claudiopro), Julia Neumann, Mengdi Chen, Jean Zhang, Ricky Li, and [Xuan Huang (黄玄)](https://twitter.com/Huxpro).
+モデレーターの[Jesslyn Tannady](https://twitter.com/jtannady)、[Suzie Grange](https://twitter.com/missuze)、[Becca Bailey](https://twitter.com/beccaliz)、[Luna Wei](https://twitter.com/lunaleaps)、[Joe Previte](https://twitter.com/jsjoeio)、[Nicola Corti](https://twitter.com/Cortinico)、[Gijs Weterings](https://twitter.com/gweterings)、[Claudio Procida](https://twitter.com/claudiopro)、Julia Neumann、Mengdi Chen、Jean Zhang、Ricky Li、そして[Xuan Huang (黄玄)](https://twitter.com/Huxpro)に感謝します。
 
-Thanks to [Manjula Dube](https://twitter.com/manjula_dube), [Sahil Mhapsekar](https://twitter.com/apheri0), and Vihang Patel from [React India](https://www.reactindia.io/), and [Jasmine Xie](https://twitter.com/jasmine_xby), [QiChang Li](https://twitter.com/QCL15), and [YanLun Li](https://twitter.com/anneincoding) from [React China](https://twitter.com/ReactChina) for helping moderate our replay event and keep it engaging for the community.
+リプレイイベントのモデレーションを支援し、コミュニティにとって魅力的なものにしてくれた[Manjula Dube](https://twitter.com/manjula_dube)、[Sahil Mhapsekar](https://twitter.com/apheri0)、Vihang Patel（[React India](https://www.reactindia.io/)）、[Jasmine Xie](https://twitter.com/jasmine_xby)、[QiChang Li](https://twitter.com/QCL15)、[YanLun Li](https://twitter.com/anneincoding)（[React China](https://twitter.com/ReactChina)）に感謝します。
 
-Thanks to Vercel for publishing their [Virtual Event Starter Kit](https://vercel.com/virtual-event-starter-kit), which the conference website was built on, and to [Lee Robinson](https://twitter.com/leeerob) and [Delba de Oliveira](https://twitter.com/delba_oliveira) for sharing their experience running Next.js Conf.
+カンファレンスウェブサイトを構築した[Virtual Event Starter Kit](https://vercel.com/virtual-event-starter-kit)を公開してくれたVercel、そしてNext.js Confの運営経験を共有してくれた[Lee Robinson](https://twitter.com/leeerob)と[Delba de Oliveira](https://twitter.com/delba_oliveira)に感謝します。
 
-Thanks to [Leah Silber](https://twitter.com/wifelette) for sharing her experience running conferences, learnings from running [RustConf](https://rustconf.com/), and for her book [Event Driven](https://leanpub.com/eventdriven/) and the advice it contains for running conferences.
+カンファレンスの運営経験を共有し、[RustConf](https://rustconf.com/)の運営からの学びを提供し、カンファレンス運営に関するアドバイスを含む彼女の本[Event Driven](https://leanpub.com/eventdriven/)に感謝します。
 
-Thanks to [Kevin Lewis](https://twitter.com/_phzn) and [Rachel Nabors](https://twitter.com/rachelnabors) for sharing their experience running Women of React Conf.
+Women of React Confの運営経験を共有してくれた[Kevin Lewis](https://twitter.com/_phzn)と[Rachel Nabors](https://twitter.com/rachelnabors)に感謝します。
 
-Thanks to [Aakansha Doshi](https://twitter.com/aakansha1216), [Laurie Barth](https://twitter.com/laurieontech), [Michael Chan](https://twitter.com/chantastic), and [Shaundai Person](https://twitter.com/shaundai) for their advice and ideas throughout planning.
+計画中にアドバイスとアイデアを提供してくれた[Aakansha Doshi](https://twitter.com/aakansha1216)、[Laurie Barth](https://twitter.com/laurieontech)、[Michael Chan](https://twitter.com/chantastic)、そして[Shaundai Person](https://twitter.com/shaundai)に感謝します。
 
-Thanks to [Dan Lebowitz](https://twitter.com/lebo) for help designing and building the conference website and tickets.
+カンファレンスウェブサイトとチケットのデザインと構築を手伝ってくれた[Dan Lebowitz](https://twitter.com/lebo)に感謝します。
 
-Thanks to Laura Podolak Waddell, Desmond Osei-Acheampong, Mark Rossi, Josh Toberman and others on the Facebook Video Productions team for recording the videos for the Keynote and Meta employee talks.
+基調講演とMeta社員の講演のビデオを録画してくれたFacebook Video ProductionsチームのLaura Podolak Waddell、Desmond Osei-Acheampong、Mark Rossi、Josh Toberman、その他のメンバーに感謝します。
 
-Thanks to our partner HitPlay for helping to organize the conference, editing all the videos in the stream, translating all the talks, and moderating the Discord in multiple languages.
+カンファレンスの組織、ストリーム内のすべてのビデオの編集、すべての講演の翻訳、複数の言語でのDiscordのモデレーションを支援してくれたパートナーHitPlayに感謝します。
 
-Finally, thanks to all of our participants for making this a great React Conf!
+最後に、素晴らしいReact Confを作り上げてくれたすべての参加者に感謝します！

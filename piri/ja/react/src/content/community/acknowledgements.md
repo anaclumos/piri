@@ -4,13 +4,13 @@ title: Acknowledgements
 
 <Intro>
 
-React was originally created by [Jordan Walke.](https://github.com/jordwalke) Today, React has a [dedicated full-time team working on it](/community/team), as well as over a thousand [open source contributors.](https://github.com/facebook/react/blob/main/AUTHORS)
+Reactは元々[Jordan Walke](https://github.com/jordwalke)によって作成されました。現在、Reactには[専任のフルタイムチームが取り組んでおり](/community/team)、また千人以上の[オープンソースの貢献者](https://github.com/facebook/react/blob/main/AUTHORS)がいます。
 
 </Intro>
 
-## Past contributors {/*past-contributors*/}
+## 過去の貢献者 {/*past-contributors*/}
 
-We'd like to recognize a few people who have made significant contributions to React and its documentation in the past and have helped maintain them over the years:
+Reactとそのドキュメントに過去に重要な貢献をし、長年にわたり維持してきた数名の方々を紹介します：
 
 * [Almero Steyn](https://github.com/AlmeroSteyn)
 * [Andreas Svensson](https://github.com/syranide)
@@ -57,15 +57,15 @@ We'd like to recognize a few people who have made significant contributions to R
 * [Tim Yung](https://github.com/yungsters)
 * [Xuan Huang](https://github.com/huxpro)
 
-This list is not exhaustive.
+このリストは完全ではありません。
 
-We'd like to give special thanks to [Tom Occhino](https://github.com/tomocchino) and [Adam Wolff](https://github.com/wolffiex) for their guidance and support over the years. We are also thankful to all the volunteers who [translated React into other languages.](https://translations.reactjs.org/)
+また、[Tom Occhino](https://github.com/tomocchino)と[Adam Wolff](https://github.com/wolffiex)に、長年にわたる指導とサポートに特別な感謝を捧げます。さらに、Reactを[他の言語に翻訳してくれた](https://translations.reactjs.org/)すべてのボランティアにも感謝しています。
 
-## Additional Thanks {/*additional-thanks*/}
+## 追加の感謝 {/*additional-thanks*/}
 
-Additionally, we're grateful to:
+さらに、以下の方々にも感謝しています：
 
-* [Jeff Barczewski](https://github.com/jeffbski) for allowing us to use the `react` package name on npm
-* [Christopher Aue](https://christopheraue.net/) for letting us use the reactjs.com domain name and the [@reactjs](https://twitter.com/reactjs) username on Twitter
-* [ProjectMoon](https://github.com/ProjectMoon) for letting us use the [flux](https://www.npmjs.com/package/flux) package name on npm
-* Shane Anderson for allowing us to use the [react](https://github.com/react) org on GitHub
+* npmで`react`パッケージ名を使用させてくれた[Jeff Barczewski](https://github.com/jeffbski)
+* reactjs.comドメイン名とTwitterの[@reactjs](https://twitter.com/reactjs)ユーザー名を使用させてくれた[Christopher Aue](https://christopheraue.net/)
+* npmで[flux](https://www.npmjs.com/package/flux)パッケージ名を使用させてくれた[ProjectMoon](https://github.com/ProjectMoon)
+* GitHubで[react](https://github.com/react)オーガニゼーションを使用させてくれたShane Anderson

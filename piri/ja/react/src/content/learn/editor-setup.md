@@ -1,62 +1,62 @@
 ---
-title: Editor Setup
+title: エディタのセットアップ
 ---
 
 <Intro>
 
-A properly configured editor can make code clearer to read and faster to write. It can even help you catch bugs as you write them! If this is your first time setting up an editor or you're looking to tune up your current editor, we have a few recommendations.
+適切に設定されたエディタは、コードを読みやすくし、書く速度を速めることができます。さらには、コードを書いている最中にバグを見つける手助けもしてくれます！これが初めてのエディタ設定である場合や、現在のエディタを調整したい場合には、いくつかの推奨事項があります。
 
 </Intro>
 
 <YouWillLearn>
 
-* What the most popular editors are
-* How to format your code automatically
+* 最も人気のあるエディタは何か
+* コードを自動的にフォーマットする方法
 
 </YouWillLearn>
 
-## Your editor {/*your-editor*/}
+## あなたのエディタ {/*your-editor*/}
 
-[VS Code](https://code.visualstudio.com/) is one of the most popular editors in use today. It has a large marketplace of extensions and integrates well with popular services like GitHub. Most of the features listed below can be added to VS Code as extensions as well, making it highly configurable!
+[VS Code](https://code.visualstudio.com/) は、今日最も人気のあるエディタの一つです。大規模な拡張機能のマーケットプレイスがあり、GitHubのような人気のサービスともうまく統合されています。以下に挙げるほとんどの機能は、VS Codeに拡張機能として追加することができるため、非常にカスタマイズ可能です！
 
-Other popular text editors used in the React community include:
+Reactコミュニティで使用されている他の人気のテキストエディタには以下のものがあります：
 
-* [WebStorm](https://www.jetbrains.com/webstorm/) is an integrated development environment designed specifically for JavaScript.
-* [Sublime Text](https://www.sublimetext.com/) has support for JSX and TypeScript, [syntax highlighting](https://stackoverflow.com/a/70960574/458193) and autocomplete built in.
-* [Vim](https://www.vim.org/) is a highly configurable text editor built to make creating and changing any kind of text very efficient. It is included as "vi" with most UNIX systems and with Apple OS X.
+* [WebStorm](https://www.jetbrains.com/webstorm/) は、JavaScript専用に設計された統合開発環境です。
+* [Sublime Text](https://www.sublimetext.com/) は、JSXとTypeScriptをサポートし、[シンタックスハイライト](https://stackoverflow.com/a/70960574/458193)とオートコンプリートが組み込まれています。
+* [Vim](https://www.vim.org/) は、あらゆる種類のテキストを効率的に作成および変更するために設計された高度にカスタマイズ可能なテキストエディタです。ほとんどのUNIXシステムおよびApple OS Xには「vi」として含まれています。
 
-## Recommended text editor features {/*recommended-text-editor-features*/}
+## 推奨されるテキストエディタの機能 {/*recommended-text-editor-features*/}
 
-Some editors come with these features built in, but others might require adding an extension. Check to see what support your editor of choice provides to be sure!
+一部のエディタにはこれらの機能が組み込まれていますが、他のエディタでは拡張機能を追加する必要があるかもしれません。選んだエディタがどのようなサポートを提供しているかを確認してみてください！
 
-### Linting {/*linting*/}
+### リンティング {/*linting*/}
 
-Code linters find problems in your code as you write, helping you fix them early. [ESLint](https://eslint.org/) is a popular, open source linter for JavaScript. 
+コードリンターは、コードを書いている最中に問題を見つけ、早期に修正する手助けをします。[ESLint](https://eslint.org/) は、JavaScript用の人気のあるオープンソースのリンターです。
 
-* [Install ESLint with the recommended configuration for React](https://www.npmjs.com/package/eslint-config-react-app) (be sure you have [Node installed!](https://nodejs.org/en/download/current/))
-* [Integrate ESLint in VSCode with the official extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+* [React用の推奨設定でESLintをインストール](https://www.npmjs.com/package/eslint-config-react-app)（[Nodeをインストールしていることを確認してください！](https://nodejs.org/en/download/current/)）
+* [公式拡張機能を使用してVSCodeにESLintを統合](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-**Make sure that you've enabled all the [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) rules for your project.** They are essential and catch the most severe bugs early. The recommended [`eslint-config-react-app`](https://www.npmjs.com/package/eslint-config-react-app) preset already includes them.
+**プロジェクトに対してすべての[`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks)ルールを有効にしていることを確認してください。** これらは重要で、最も重大なバグを早期にキャッチします。推奨される[`eslint-config-react-app`](https://www.npmjs.com/package/eslint-config-react-app)プリセットにはすでに含まれています。
 
-### Formatting {/*formatting*/}
+### フォーマット {/*formatting*/}
 
-The last thing you want to do when sharing your code with another contributor is get into a discussion about [tabs vs spaces](https://www.google.com/search?q=tabs+vs+spaces)! Fortunately, [Prettier](https://prettier.io/) will clean up your code by reformatting it to conform to preset, configurable rules. Run Prettier, and all your tabs will be converted to spaces—and your indentation, quotes, etc will also all be changed to conform to the configuration. In the ideal setup, Prettier will run when you save your file, quickly making these edits for you.
+他のコントリビューターとコードを共有する際に、[タブとスペース](https://www.google.com/search?q=tabs+vs+spaces)について議論するのは避けたいものです。幸いなことに、[Prettier](https://prettier.io/) は、事前設定されたルールに従ってコードを再フォーマットすることで、コードをきれいにしてくれます。Prettierを実行すると、すべてのタブがスペースに変換され、インデントや引用符なども設定に従って変更されます。理想的な設定では、ファイルを保存する際にPrettierが実行され、これらの編集が迅速に行われます。
 
-You can install the [Prettier extension in VSCode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) by following these steps:
+以下の手順に従って、[VSCodeにPrettier拡張機能をインストール](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)できます：
 
-1. Launch VS Code
-2. Use Quick Open (press Ctrl/Cmd+P)
-3. Paste in `ext install esbenp.prettier-vscode`
-4. Press Enter
+1. VS Codeを起動
+2. クイックオープンを使用（Ctrl/Cmd+Pを押す）
+3. `ext install esbenp.prettier-vscode`を貼り付ける
+4. Enterを押す
 
-#### Formatting on save {/*formatting-on-save*/}
+#### 保存時のフォーマット {/*formatting-on-save*/}
 
-Ideally, you should format your code on every save. VS Code has settings for this!
+理想的には、コードを保存するたびにフォーマットするべきです。VS Codeにはこのための設定があります！
 
-1. In VS Code, press `CTRL/CMD + SHIFT + P`.
-2. Type "settings"
-3. Hit Enter
-4. In the search bar, type "format on save"
-5. Be sure the "format on save" option is ticked!
+1. VS Codeで、`CTRL/CMD + SHIFT + P`を押す
+2. 「設定」と入力
+3. Enterを押す
+4. 検索バーに「保存時にフォーマット」と入力
+5. 「保存時にフォーマット」オプションがチェックされていることを確認
 
-> If your ESLint preset has formatting rules, they may conflict with Prettier. We recommend disabling all formatting rules in your ESLint preset using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) so that ESLint is *only* used for catching logical mistakes. If you want to enforce that files are formatted before a pull request is merged, use [`prettier --check`](https://prettier.io/docs/en/cli.html#--check) for your continuous integration.
+> ESLintプリセットにフォーマットルールが含まれている場合、Prettierと競合する可能性があります。ESLintが論理的なミスをキャッチするためだけに使用されるように、[`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier)を使用してESLintプリセットのすべてのフォーマットルールを無効にすることをお勧めします。プルリクエストがマージされる前にファイルがフォーマットされていることを強制するには、継続的インテグレーションのために[`prettier --check`](https://prettier.io/docs/en/cli.html#--check)を使用してください。

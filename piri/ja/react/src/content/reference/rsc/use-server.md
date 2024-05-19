@@ -1,19 +1,19 @@
 ---
-title: "'use server'"
-titleForTitleTag: "'use server' directive"
+title: 'use server'
+titleForTitleTag: 'use server' directive
 canary: true
 ---
 
 <Canary>
 
-`'use server'` is needed only if you're [using React Server Components](/learn/start-a-new-react-project#bleeding-edge-react-frameworks) or building a library compatible with them.
+`'use server'`は、[React Server Componentsを使用している](/learn/start-a-new-react-project#bleeding-edge-react-frameworks)場合や、それに対応するライブラリを構築している場合にのみ必要です。
 
 </Canary>
 
 
 <Intro>
 
-`'use server'` marks server-side functions that can be called from client-side code.
+`'use server'`は、クライアント側のコードから呼び出せるサーバー側の関数をマークします。
 
 </Intro>
 
@@ -21,11 +21,11 @@ canary: true
 
 ---
 
-## Reference {/*reference*/}
+## 参照 {/*reference*/}
 
 ### `'use server'` {/*use-server*/}
 
-Add `'use server'` at the top of an async function body to mark the function as callable by the client. We call these functions _Server Actions_.
+非同期関数の本体の先頭に`'use server'`を追加して、クライアントから呼び出せる関数としてマークします。これらの関数を_サーバーアクション_と呼びます。
 
 ```js {2}
 async function addToCart(data) {
@@ -34,77 +34,74 @@ async function addToCart(data) {
 }
 ```
 
-When calling a Server Action on the client, it will make a network request to the server that includes a serialized copy of any arguments passed. If the Server Action returns a value, that value will be serialized and returned to the client.
+クライアントでサーバーアクションを呼び出すと、渡された引数のシリアライズされたコピーを含むネットワークリクエストがサーバーに送信されます。サーバーアクションが値を返す場合、その値はシリアライズされてクライアントに返されます。
 
-Instead of individually marking functions with `'use server'`, you can add the directive to the top of a file to mark all exports within that file as Server Actions that can be used anywhere, including imported in client code.
+個々の関数に`'use server'`をマークする代わりに、ファイルの先頭にディレクティブを追加して、そのファイル内のすべてのエクスポートをサーバーアクションとしてマークし、クライアントコードでインポートして使用することができます。
 
-#### Caveats {/*caveats*/}
-* `'use server'` must be at the very beginning of their function or module; above any other code including imports (comments above directives are OK). They must be written with single or double quotes, not backticks.
-* `'use server'` can only be used in server-side files. The resulting Server Actions can be passed to Client Components through props. See supported [types for serialization](#serializable-parameters-and-return-values).
-* To import a Server Action from [client code](/reference/rsc/use-client), the directive must be used on a module level.
-* Because the underlying network calls are always asynchronous, `'use server'` can only be used on async functions.
-* Always treat arguments to Server Actions as untrusted input and authorize any mutations. See [security considerations](#security).
-* Server Actions should be called in a [Transition](/reference/react/useTransition). Server Actions passed to [`<form action>`](/reference/react-dom/components/form#props) or [`formAction`](/reference/react-dom/components/input#props) will automatically be called in a transition.
-* Server Actions are designed for mutations that update server-side state; they are not recommended for data fetching. Accordingly, frameworks implementing Server Actions typically process one action at a time and do not have a way to cache the return value.
+#### 注意点 {/*caveats*/}
+* `'use server'`は、関数またはモジュールの非常に先頭に配置する必要があります。他のコード（インポートを含む）の上に配置してください（ディレクティブの上のコメントはOKです）。シングルクォートまたはダブルクォートで記述する必要があり、バックティックは使用できません。
+* `'use server'`はサーバー側のファイルでのみ使用できます。結果として得られるサーバーアクションは、プロップスを通じてクライアントコンポーネントに渡すことができます。シリアライズのサポートされている[型](#serializable-parameters-and-return-values)を参照してください。
+* [クライアントコード](/reference/rsc/use-client)からサーバーアクションをインポートするには、モジュールレベルでディレクティブを使用する必要があります。
+* 基本的にネットワーク呼び出しは常に非同期であるため、`'use server'`は非同期関数でのみ使用できます。
+* サーバーアクションの引数は信頼できない入力として扱い、すべての変更を認証してください。[セキュリティの考慮事項](#security)を参照してください。
+* サーバーアクションは、サーバー側の状態を更新するための変更に設計されています。データフェッチには推奨されません。したがって、サーバーアクションを実装するフレームワークは通常、一度に1つのアクションを処理し、返り値をキャッシュする方法はありません。
 
-### Security considerations {/*security*/}
+### セキュリティの考慮事項 {/*security*/}
 
-Arguments to Server Actions are fully client-controlled. For security, always treat them as untrusted input, and make sure to validate and escape arguments as appropriate.
+サーバーアクションの引数は完全にクライアントによって制御されます。セキュリティのために、常に信頼できない入力として扱い、適切に引数を検証およびエスケープしてください。
 
-In any Server Action, make sure to validate that the logged-in user is allowed to perform that action.
+サーバーアクションでは、ログインしているユーザーがそのアクションを実行する権限があることを確認してください。
 
 <Wip>
 
-To prevent sending sensitive data from a Server Action, there are experimental taint APIs to prevent unique values and objects from being passed to client code.
+サーバーアクションから機密データを送信しないようにするために、クライアントコードに一意の値やオブジェクトを渡すことを防ぐ実験的な汚染APIがあります。
 
-See [experimental_taintUniqueValue](/reference/react/experimental_taintUniqueValue) and [experimental_taintObjectReference](/reference/react/experimental_taintObjectReference).
+[experimental_taintUniqueValue](/reference/react/experimental_taintUniqueValue)および[experimental_taintObjectReference](/reference/react/experimental_taintObjectReference)を参照してください。
 
 </Wip>
 
-### Serializable arguments and return values {/*serializable-parameters-and-return-values*/}
+### シリアライズ可能な引数と返り値 {/*serializable-parameters-and-return-values*/}
 
-As client code calls the Server Action over the network, any arguments passed will need to be serializable.
+クライアントコードがネットワークを介してサーバーアクションを呼び出すため、渡される引数はシリアライズ可能である必要があります。
 
-Here are supported types for Server Action arguments:
+サーバーアクションの引数としてサポートされている型は次のとおりです：
 
-* Primitives
+* プリミティブ
 	* [string](https://developer.mozilla.org/en-US/docs/Glossary/String)
 	* [number](https://developer.mozilla.org/en-US/docs/Glossary/Number)
 	* [bigint](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 	* [boolean](https://developer.mozilla.org/en-US/docs/Glossary/Boolean)
 	* [undefined](https://developer.mozilla.org/en-US/docs/Glossary/Undefined)
 	* [null](https://developer.mozilla.org/en-US/docs/Glossary/Null)
-	* [symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol), only symbols registered in the global Symbol registry via [`Symbol.for`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for)
-* Iterables containing serializable values
+	* [symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)、[`Symbol.for`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for)を介してグローバルシンボルレジストリに登録されたシンボルのみ
+* シリアライズ可能な値を含むイテラブル
 	* [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 	* [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 	* [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 	* [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
-	* [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) and [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+	* [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)および[ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 * [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
-* [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) instances
-* Plain [objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object): those created with [object initializers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer), with serializable properties
-* Functions that are Server Actions
+* [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)インスタンス
+* シリアライズ可能なプロパティを持つプレーン[オブジェクト](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)：[オブジェクト初期化子](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)で作成されたもの
+* サーバーアクションである関数
 * [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Notably, these are not supported:
-* React elements, or [JSX](/learn/writing-markup-with-jsx)
-* Functions, including component functions or any other function that is not a Server Action
-* [Classes](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Classes_in_JavaScript)
-* Objects that are instances of any class (other than the built-ins mentioned) or objects with [a null prototype](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)
-* Symbols not registered globally, ex. `Symbol('my new symbol')`
+特に、次のものはサポートされていません：
+* React要素、または[JSX](/learn/writing-markup-with-jsx)
+* 関数、コンポーネント関数やサーバーアクションでない他の関数を含む
+* [クラス](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Classes_in_JavaScript)
+* 任意のクラスのインスタンスであるオブジェクト（上記の組み込み以外）や[nullプロトタイプ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)を持つオブジェクト
+
+サポートされているシリアライズ可能な返り値は、境界クライアントコンポーネントの[シリアライズ可能なプロップス](/reference/rsc/use-client#passing-props-from-server-to-client-components)と同じです。
 
 
-Supported serializable return values are the same as [serializable props](/reference/rsc/use-client#passing-props-from-server-to-client-components) for a boundary Client Component.
+## 使用法 {/*usage*/}
 
+### フォームでのサーバーアクション {/*server-actions-in-forms*/}
 
-## Usage {/*usage*/}
+サーバーアクションの最も一般的な使用例は、データを変更するサーバー関数を呼び出すことです。ブラウザでは、[HTMLフォーム要素](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)は、ユーザーが変更を送信するための伝統的なアプローチです。React Server Componentsでは、Reactは[フォーム](/reference/react-dom/components/form)でのサーバーアクションのためのファーストクラスサポートを導入します。
 
-### Server Actions in forms {/*server-actions-in-forms*/}
-
-The most common use case of Server Actions will be calling server functions that mutate data. On the browser, the [HTML form element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) is the traditional approach for a user to submit a mutation. With React Server Components, React introduces first-class support for Server Actions in [forms](/reference/react-dom/components/form).
-
-Here is a form that allows a user to request a username.
+以下は、ユーザーがユーザー名をリクエストできるフォームです。
 
 ```js [[1, 3, "formData"]]
 // App.js
@@ -125,15 +122,15 @@ export default function App() {
 }
 ```
 
-In this example `requestUsername` is a Server Action passed to a `<form>`. When a user submits this form, there is a network request to the server function `requestUsername`. When calling a Server Action in a form, React will supply the form's <CodeStep step={1}>[FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)</CodeStep> as the first argument to the Server Action.
+この例では、`requestUsername`は`<form>`に渡されたサーバーアクションです。ユーザーがこのフォームを送信すると、サーバー関数`requestUsername`へのネットワークリクエストが行われます。フォームでサーバーアクションを呼び出すと、Reactはフォームの<CodeStep step={1}>[FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)</CodeStep>をサーバーアクションの最初の引数として提供します。
 
-By passing a Server Action to the form `action`, React can [progressively enhance](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement) the form. This means that forms can be submitted before the JavaScript bundle is loaded.
+サーバーアクションをフォームの`action`に渡すことで、Reactはフォームを[プログレッシブエンハンスメント](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)できます。これは、JavaScriptバンドルが読み込まれる前にフォームを送信できることを意味します。
 
-#### Handling return values in forms {/*handling-return-values*/}
+#### フォームでの返り値の処理 {/*handling-return-values*/}
 
-In the username request form, there might be the chance that a username is not available. `requestUsername` should tell us if it fails or not.
+ユーザー名リクエストフォームでは、ユーザー名が利用できない可能性があります。`requestUsername`は失敗したかどうかを教えてくれるべきです。
 
-To update the UI based on the result of a Server Action while supporting progressive enhancement, use [`useActionState`](/reference/react/useActionState).
+プログレッシブエンハンスメントをサポートしながら、サーバーアクションの結果に基づいてUIを更新するには、[`useActionState`](/reference/react/useActionState)を使用します。
 
 ```js
 // requestUsername.js
@@ -171,13 +168,13 @@ function UsernameForm() {
 }
 ```
 
-Note that like most Hooks, `useActionState` can only be called in <CodeStep step={1}>[client code](/reference/rsc/use-client)</CodeStep>.
+ほとんどのHooksと同様に、`useActionState`は<CodeStep step={1}>[クライアントコード](/reference/rsc/use-client)</CodeStep>でのみ呼び出すことができることに注意してください。
 
-### Calling a Server Action outside of `<form>` {/*calling-a-server-action-outside-of-form*/}
+### `<form>`の外でサーバーアクションを呼び出す {/*calling-a-server-action-outside-of-form*/}
 
-Server Actions are exposed server endpoints and can be called anywhere in client code.
+サーバーアクションはサーバーエンドポイントとして公開され、クライアントコードのどこからでも呼び出すことができます。
 
-When using a Server Action outside of a [form](/reference/react-dom/components/form), call the Server Action in a [Transition](/reference/react/useTransition), which allows you to display a loading indicator, show [optimistic state updates](/reference/react/useOptimistic), and handle unexpected errors. Forms will automatically wrap Server Actions in transitions.
+[フォーム](/reference/react-dom/components/form)の外でサーバーアクションを使用する場合、サーバーアクションを[トランジション](/reference/react/useTransition)で呼び出します。これにより、ローディングインジケーターを表示したり、[楽観的な状態更新](/reference/react/useOptimistic)を表示したり、予期しないエラーを処理したりできます。フォームは自動的にサーバーアクションをトランジションでラップします。
 
 ```js {9-12}
 import incrementLike from './actions';
@@ -214,4 +211,4 @@ export default async function incrementLike() {
 }
 ```
 
-To read a Server Action return value, you'll need to `await` the promise returned.
+サーバーアクションの返り値を読み取るには、返されたプロミスを`await`する必要があります。

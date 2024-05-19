@@ -1,9 +1,9 @@
 ---
-title: Rules of React
+title: React のルール
 ---
 
 <Intro>
-Just as different programming languages have their own ways of expressing concepts, React has its own idioms — or rules — for how to express patterns in a way that is easy to understand and yields high-quality applications.
+異なるプログラミング言語がそれぞれの概念を表現する方法を持っているように、Reactもパターンを理解しやすく、高品質なアプリケーションを生み出すための独自の慣用表現（またはルール）を持っています。
 </Intro>
 
 <InlineToc />
@@ -11,42 +11,41 @@ Just as different programming languages have their own ways of expressing concep
 ---
 
 <Note>
-To learn more about expressing UIs with React, we recommend reading [Thinking in React](/learn/thinking-in-react).
+ReactでUIを表現する方法について詳しく知りたい場合は、[Thinking in React](/learn/thinking-in-react)を読むことをお勧めします。
 </Note>
 
-This section describes the rules you need to follow to write idiomatic React code. Writing idiomatic React code can help you write well organized, safe, and composable applications. These properties make your app more resilient to changes and makes it easier to work with other developers, libraries, and tools.
+このセクションでは、慣用的なReactコードを書くために従うべきルールについて説明します。慣用的なReactコードを書くことは、整理された、安全で、再利用可能なアプリケーションを書くのに役立ちます。これらの特性は、アプリを変更に強くし、他の開発者、ライブラリ、ツールと一緒に作業するのを容易にします。
 
-These rules are known as the **Rules of React**. They are rules – and not just guidelines – in the sense that if they are broken, your app likely has bugs. Your code also becomes unidiomatic and harder to understand and reason about.
+これらのルールは**Reactのルール**として知られています。これらはガイドラインではなくルールであり、破るとアプリにバグが発生する可能性が高くなります。また、コードが非慣用的になり、理解しにくく、論理的に考えにくくなります。
 
-We strongly recommend using [Strict Mode](/reference/react/StrictMode) alongside React's [ESLint plugin](https://www.npmjs.com/package/eslint-plugin-react-hooks) to help your codebase follow the Rules of React. By following the Rules of React, you'll be able to find and address these bugs and keep your application maintainable.
-
----
-
-## Components and Hooks must be pure {/*components-and-hooks-must-be-pure*/}
-
-[Purity in Components and Hooks](/reference/rules/components-and-hooks-must-be-pure) is a key rule of React that makes your app predictable, easy to debug, and allows React to automatically optimize your code.
-
-* [Components must be idempotent](/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent) – React components are assumed to always return the same output with respect to their inputs – props, state, and context.
-* [Side effects must run outside of render](/reference/rules/components-and-hooks-must-be-pure#side-effects-must-run-outside-of-render) – Side effects should not run in render, as React can render components multiple times to create the best possible user experience.
-* [Props and state are immutable](/reference/rules/components-and-hooks-must-be-pure#props-and-state-are-immutable) – A component’s props and state are immutable snapshots with respect to a single render. Never mutate them directly.
-* [Return values and arguments to Hooks are immutable](/reference/rules/components-and-hooks-must-be-pure#return-values-and-arguments-to-hooks-are-immutable) – Once values are passed to a Hook, you should not modify them. Like props in JSX, values become immutable when passed to a Hook.
-* [Values are immutable after being passed to JSX](/reference/rules/components-and-hooks-must-be-pure#values-are-immutable-after-being-passed-to-jsx) – Don’t mutate values after they’ve been used in JSX. Move the mutation before the JSX is created.
+Reactの[ESLintプラグイン](https://www.npmjs.com/package/eslint-plugin-react-hooks)と一緒に[Strict Mode](/reference/react/StrictMode)を使用することを強くお勧めします。Reactのルールに従うことで、これらのバグを見つけて対処し、アプリケーションを保守可能に保つことができます。
 
 ---
 
-## React calls Components and Hooks {/*react-calls-components-and-hooks*/}
+## コンポーネントとフックは純粋でなければならない {/*components-and-hooks-must-be-pure*/}
 
-[React is responsible for rendering components and hooks when necessary to optimize the user experience.](/reference/rules/react-calls-components-and-hooks) It is declarative: you tell React what to render in your component’s logic, and React will figure out how best to display it to your user.
+[コンポーネントとフックの純粋性](/reference/rules/components-and-hooks-must-be-pure)は、アプリを予測可能にし、デバッグを容易にし、Reactがコードを自動的に最適化できるようにするための重要なルールです。
 
-* [Never call component functions directly](/reference/rules/react-calls-components-and-hooks#never-call-component-functions-directly) – Components should only be used in JSX. Don’t call them as regular functions.
-* [Never pass around hooks as regular values](/reference/rules/react-calls-components-and-hooks#never-pass-around-hooks-as-regular-values) – Hooks should only be called inside of components. Never pass it around as a regular value.
+* [コンポーネントは冪等でなければならない](/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent) – Reactコンポーネントは、入力（props、state、context）に対して常に同じ出力を返すと仮定されます。
+* [副作用はレンダーの外で実行されなければならない](/reference/rules/components-and-hooks-must-be-pure#side-effects-must-run-outside-of-render) – 副作用はレンダー内で実行されるべきではありません。Reactは最適なユーザー体験を提供するためにコンポーネントを複数回レンダーすることがあります。
+* [Propsとstateは不変である](/reference/rules/components-and-hooks-must-be-pure#props-and-state-are-immutable) – コンポーネントのpropsとstateは、単一のレンダーに対して不変のスナップショットです。直接変更しないでください。
+* [フックへの戻り値と引数は不変である](/reference/rules/components-and-hooks-must-be-pure#return-values-and-arguments-to-hooks-are-immutable) – 一度フックに渡された値は変更しないでください。JSXのpropsのように、フックに渡された値は不変になります。
+* [JSXに渡された後の値は不変である](/reference/rules/components-and-hooks-must-be-pure#values-are-immutable-after-being-passed-to-jsx) – JSXに使用された後の値を変更しないでください。変更はJSXが作成される前に行ってください。
 
 ---
 
-## Rules of Hooks {/*rules-of-hooks*/}
+## Reactはコンポーネントとフックを呼び出す {/*react-calls-components-and-hooks*/}
 
-Hooks are defined using JavaScript functions, but they represent a special type of reusable UI logic with restrictions on where they can be called. You need to follow the [Rules of Hooks](/reference/rules/rules-of-hooks) when using them.
+[Reactはユーザー体験を最適化するために必要に応じてコンポーネントとフックをレンダーします。](/reference/rules/react-calls-components-and-hooks) これは宣言的です：コンポーネントのロジックで何をレンダーするかをReactに伝え、Reactはそれをユーザーに最適な形で表示する方法を見つけます。
 
-* [Only call Hooks at the top level](/reference/rules/rules-of-hooks#only-call-hooks-at-the-top-level) – Don’t call Hooks inside loops, conditions, or nested functions. Instead, always use Hooks at the top level of your React function, before any early returns.
-* [Only call Hooks from React functions](/reference/rules/rules-of-hooks#only-call-hooks-from-react-functions) – Don’t call Hooks from regular JavaScript functions.
+* [コンポーネント関数を直接呼び出さない](/reference/rules/react-calls-components-and-hooks#never-call-component-functions-directly) – コンポーネントはJSXでのみ使用されるべきです。通常の関数として呼び出さないでください。
+* [フックを通常の値として渡さない](/reference/rules/react-calls-components-and-hooks#never-pass-around-hooks-as-regular-values) – フックはコンポーネント内でのみ呼び出されるべきです。通常の値として渡さないでください。
 
+---
+
+## フックのルール {/*rules-of-hooks*/}
+
+フックはJavaScript関数を使用して定義されますが、呼び出し場所に制限がある特別な種類の再利用可能なUIロジックを表します。フックを使用する際には[フックのルール](/reference/rules/rules-of-hooks)に従う必要があります。
+
+* [フックはトップレベルでのみ呼び出す](/reference/rules/rules-of-hooks#only-call-hooks-at-the-top-level) – ループ、条件、ネストされた関数内でフックを呼び出さないでください。代わりに、React関数のトップレベルで、早期リターンの前にフックを常に使用してください。
+* [フックはReact関数からのみ呼び出す](/reference/rules/rules-of-hooks#only-call-hooks-from-react-functions) – 通常のJavaScript関数からフックを呼び出さないでください。

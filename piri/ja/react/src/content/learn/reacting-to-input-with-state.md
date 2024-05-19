@@ -1,37 +1,37 @@
 ---
-title: Reacting to Input with State
+title: 入力に対する反応と状態
 ---
 
 <Intro>
 
-React provides a declarative way to manipulate the UI. Instead of manipulating individual pieces of the UI directly, you describe the different states that your component can be in, and switch between them in response to the user input. This is similar to how designers think about the UI.
+ReactはUIを操作するための宣言的な方法を提供します。UIの個々の部分を直接操作するのではなく、コンポーネントが取り得るさまざまな状態を記述し、ユーザー入力に応じてそれらの間を切り替えます。これはデザイナーがUIを考える方法に似ています。
 
 </Intro>
 
 <YouWillLearn>
 
-* How declarative UI programming differs from imperative UI programming
-* How to enumerate the different visual states your component can be in
-* How to trigger the changes between the different visual states from code
+* 宣言的UIプログラミングが命令的UIプログラミングとどのように異なるか
+* コンポーネントが取り得るさまざまな視覚的状態を列挙する方法
+* コードからさまざまな視覚的状態の間の変更を引き起こす方法
 
 </YouWillLearn>
 
-## How declarative UI compares to imperative {/*how-declarative-ui-compares-to-imperative*/}
+## 宣言的UIと命令的UIの比較 {/*how-declarative-ui-compares-to-imperative*/}
 
-When you design UI interactions, you probably think about how the UI *changes* in response to user actions. Consider a form that lets the user submit an answer:
+UIのインタラクションを設計する際、ユーザーのアクションに応じてUIがどのように*変化するか*を考えることが多いでしょう。例えば、ユーザーが回答を送信できるフォームを考えてみましょう：
 
-* When you type something into the form, the "Submit" button **becomes enabled.**
-* When you press "Submit", both the form and the button **become disabled,** and a spinner **appears.**
-* If the network request succeeds, the form **gets hidden,** and the "Thank you" message **appears.**
-* If the network request fails, an error message **appears,** and the form **becomes enabled** again.
+* フォームに何かを入力すると、「送信」ボタンが**有効になります。**
+* 「送信」を押すと、フォームとボタンの両方が**無効になり、**スピナーが**表示されます。**
+* ネットワークリクエストが成功すると、フォームが**非表示になり、**「ありがとう」メッセージが**表示されます。**
+* ネットワークリクエストが失敗すると、エラーメッセージが**表示され、**フォームが再び**有効になります。**
 
-In **imperative programming,** the above corresponds directly to how you implement interaction. You have to write the exact instructions to manipulate the UI depending on what just happened. Here's another way to think about this: imagine riding next to someone in a car and telling them turn by turn where to go.
+**命令的プログラミング**では、上記はインタラクションを実装する方法に直接対応します。何が起こったかに応じてUIを操作するための正確な指示を書かなければなりません。これを別の方法で考えてみましょう：車の隣に座っている人に、どこに行くかを一つ一つ指示することを想像してください。
 
-<Illustration src="/images/docs/illustrations/i_imperative-ui-programming.png"  alt="In a car driven by an anxious-looking person representing JavaScript, a passenger orders the driver to execute a sequence of complicated turn by turn navigations." />
+<Illustration src="/images/docs/illustrations/i_imperative-ui-programming.png"  alt="JavaScriptを表す不安そうな人が運転する車の中で、乗客が運転手に複雑な道順を一つ一つ指示している。" />
 
-They don't know where you want to go, they just follow your commands. (And if you get the directions wrong, you end up in the wrong place!) It's called *imperative* because you have to "command" each element, from the spinner to the button, telling the computer *how* to update the UI.
+彼らはあなたがどこに行きたいのかを知りません、ただあなたの指示に従うだけです。（そして、もし指示を間違えれば、間違った場所に行ってしまいます！）これは*命令的*と呼ばれます。なぜなら、スピナーからボタンまで各要素に*どのように*UIを更新するかを「命令」しなければならないからです。
 
-In this example of imperative UI programming, the form is built *without* React. It only uses the browser [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model):
+この命令的UIプログラミングの例では、フォームはReactを使わずに構築されています。ブラウザの[DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)のみを使用しています：
 
 <Sandpack>
 
@@ -131,37 +131,37 @@ body { font-family: sans-serif; margin: 20px; padding: 0; }
 
 </Sandpack>
 
-Manipulating the UI imperatively works well enough for isolated examples, but it gets exponentially more difficult to manage in more complex systems. Imagine updating a page full of different forms like this one. Adding a new UI element or a new interaction would require carefully checking all existing code to make sure you haven't introduced a bug (for example, forgetting to show or hide something).
+UIを命令的に操作することは、孤立した例では十分に機能しますが、より複雑なシステムでは管理が指数関数的に難しくなります。このようなフォームがたくさんあるページを更新することを想像してみてください。新しいUI要素や新しいインタラクションを追加するには、既存のコードを慎重にチェックして、バグを導入していないことを確認する必要があります（例えば、何かを表示または非表示にするのを忘れるなど）。
 
-React was built to solve this problem.
+Reactはこの問題を解決するために作られました。
 
-In React, you don't directly manipulate the UI--meaning you don't enable, disable, show, or hide components directly. Instead, you **declare what you want to show,** and React figures out how to update the UI. Think of getting into a taxi and telling the driver where you want to go instead of telling them exactly where to turn. It's the driver's job to get you there, and they might even know some shortcuts you haven't considered!
+Reactでは、UIを直接操作することはありません。つまり、コンポーネントを直接有効化、無効化、表示、非表示にすることはありません。代わりに、**表示したいものを宣言し、**ReactがUIをどのように更新するかを判断します。タクシーに乗って運転手に行きたい場所を伝えるのと同じように、どこで曲がるかを正確に指示するのではなく、運転手に目的地を伝えるだけです。運転手の仕事はあなたをそこに連れて行くことであり、あなたが考慮していないショートカットを知っているかもしれません！
 
-<Illustration src="/images/docs/illustrations/i_declarative-ui-programming.png" alt="In a car driven by React, a passenger asks to be taken to a specific place on the map. React figures out how to do that." />
+<Illustration src="/images/docs/illustrations/i_declarative-ui-programming.png" alt="Reactが運転する車の中で、乗客が特定の場所に連れて行ってほしいと頼んでいる。Reactがそれをどうやって行うかを考える。" />
 
-## Thinking about UI declaratively {/*thinking-about-ui-declaratively*/}
+## 宣言的にUIを考える {/*thinking-about-ui-declaratively*/}
 
-You've seen how to implement a form imperatively above. To better understand how to think in React, you'll walk through reimplementing this UI in React below:
+上記でフォームを命令的に実装する方法を見ました。Reactで考える方法をよりよく理解するために、以下でこのUIをReactで再実装する手順を見ていきます：
 
-1. **Identify** your component's different visual states
-2. **Determine** what triggers those state changes
-3. **Represent** the state in memory using `useState`
-4. **Remove** any non-essential state variables
-5. **Connect** the event handlers to set the state
+1. コンポーネントのさまざまな視覚的状態を**特定する**
+2. それらの状態変化を引き起こすトリガーを**決定する**
+3. `useState`を使用して状態をメモリに**表現する**
+4. 不要な状態変数を**削除する**
+5. イベントハンドラを状態設定に**接続する**
 
-### Step 1: Identify your component's different visual states {/*step-1-identify-your-components-different-visual-states*/}
+### ステップ1: コンポーネントのさまざまな視覚的状態を特定する {/*step-1-identify-your-components-different-visual-states*/}
 
-In computer science, you may hear about a ["state machine"](https://en.wikipedia.org/wiki/Finite-state_machine) being in one of several “states”. If you work with a designer, you may have seen mockups for different "visual states". React stands at the intersection of design and computer science, so both of these ideas are sources of inspiration.
+コンピュータサイエンスでは、["状態機械"](https://en.wikipedia.org/wiki/Finite-state_machine)がいくつかの「状態」の一つにあると聞くことがあります。デザイナーと協力する場合、さまざまな「視覚的状態」のモックアップを見たことがあるかもしれません。Reactはデザインとコンピュータサイエンスの交差点に位置しているため、これらのアイデアの両方がインスピレーションの源となります。
 
-First, you need to visualize all the different "states" of the UI the user might see:
+まず、ユーザーが見る可能性のあるUIのさまざまな「状態」を視覚化する必要があります：
 
-* **Empty**: Form has a disabled "Submit" button.
-* **Typing**: Form has an enabled "Submit" button.
-* **Submitting**: Form is completely disabled. Spinner is shown.
-* **Success**: "Thank you" message is shown instead of a form.
-* **Error**: Same as Typing state, but with an extra error message.
+* **空**: フォームには無効な「送信」ボタンがあります。
+* **入力中**: フォームには有効な「送信」ボタンがあります。
+* **送信中**: フォームは完全に無効です。スピナーが表示されます。
+* **成功**: フォームの代わりに「ありがとう」メッセージが表示されます。
+* **エラー**: 入力中の状態と同じですが、追加のエラーメッセージがあります。
 
-Just like a designer, you'll want to "mock up" or create "mocks" for the different states before you add logic. For example, here is a mock for just the visual part of the form. This mock is controlled by a prop called `status` with a default value of `'empty'`:
+デザイナーのように、ロジックを追加する前にさまざまな状態の「モックアップ」または「モック」を作成したいと思うでしょう。例えば、ここではフォームの視覚的部分だけのモックがあります。このモックはデフォルト値が`'empty'`の`status`というプロップによって制御されています：
 
 <Sandpack>
 
@@ -192,7 +192,7 @@ export default function Form({
 
 </Sandpack>
 
-You could call that prop anything you like, the naming is not important. Try editing `status = 'empty'` to `status = 'success'` to see the success message appear. Mocking lets you quickly iterate on the UI before you wire up any logic. Here is a more fleshed out prototype of the same component, still "controlled" by the `status` prop:
+そのプロップの名前は何でも構いません、名前は重要ではありません。`status = 'empty'`を`status = 'success'`に編集して成功メッセージが表示されるのを試してみてください。モックを作成することで、ロジックを接続する前にUIを迅速に反復することができます。ここでは、同じコンポーネントのより詳細なプロトタイプを示します。まだ`status`プロップによって「制御」されています：
 
 <Sandpack>
 
@@ -240,9 +240,9 @@ export default function Form({
 
 <DeepDive>
 
-#### Displaying many visual states at once {/*displaying-many-visual-states-at-once*/}
+#### 多くの視覚的状態を一度に表示する {/*displaying-many-visual-states-at-once*/}
 
-If a component has a lot of visual states, it can be convenient to show them all on one page:
+コンポーネントに多くの視覚的状態がある場合、それらを一つのページに表示するのが便利です：
 
 <Sandpack>
 
@@ -307,83 +307,84 @@ body { margin: 0; }
 
 </Sandpack>
 
-Pages like this are often called "living styleguides" or "storybooks".
+このようなページは「リビングスタイルガイド」や「ストーリーブック」と呼ばれることがよくあります。
 
 </DeepDive>
 
-### Step 2: Determine what triggers those state changes {/*step-2-determine-what-triggers-those-state-changes*/}
+### ステップ2: それらの状態変化を引き起こすトリガーを決定する {/*step-2-determine-what-triggers-those-state-changes*/}
 
-You can trigger state updates in response to two kinds of inputs:
+状態更新を引き起こす入力には2種類あります：
 
-* **Human inputs,** like clicking a button, typing in a field, navigating a link.
-* **Computer inputs,** like a network response arriving, a timeout completing, an image loading.
+* **人間の入力**：ボタンをクリックする、フィールドに入力する、リンクをナビゲートするなど。
+* **コンピュータの入力**：ネットワーク応答が到着する、タイムアウトが完了する、画像が読み込まれるなど。
 
 <IllustrationBlock>
-  <Illustration caption="Human inputs" alt="A finger." src="/images/docs/illustrations/i_inputs1.png" />
-  <Illustration caption="Computer inputs" alt="Ones and zeroes." src="/images/docs/illustrations/i_inputs2.png" />
+  <Illustration caption="人間の入力" alt="指。" src="/images/docs/illustrations/i_inputs1.png" />
+  <Illustration caption="コンピュータの入力" alt="1と0。" src="/images/docs/illustrations/i_inputs2.png" />
 </IllustrationBlock>
 
-In both cases, **you must set [state variables](/learn/state-a-components-memory#anatomy-of-usestate) to update the UI.** For the form you're developing, you will need to change state in response to a few different inputs:
+どちらの場合も、**UIを更新するために[状態変数](/learn/state-a-components-memory#anatomy-of-usestate)を設定する必要があります。** 開発中のフォームでは、いくつかの異なる入力に応じて状態を変更する必要があります：
 
-* **Changing the text input** (human) should switch it from the *Empty* state to the *Typing* state or back, depending on whether the text box is empty or not.
-* **Clicking the Submit button** (human) should switch it to the *Submitting* state.
-* **Successful network response** (computer) should switch it to the *Success* state.
-* **Failed network response** (computer) should switch it to the *Error* state with the matching error message.
+* **テキスト入力の変更**（人間）は、テキストボックスが空かどうかに応じて*空*状態から*入力中*状態またはその逆に切り替える必要があります。
+* **送信ボタンのクリック**（人間）は、*送信中*状態に切り替える必要があります。
+* **成功したネットワーク応答**（コンピュータ）は、*成功*状態に切り替える必要があります。
+* **失敗したネットワーク応答**（コンピュータ）は、対応するエラーメッセージとともに*エラー*状態に切り替える必要があります。
 
 <Note>
 
-Notice that human inputs often require [event handlers](/learn/responding-to-events)!
+人間の入力はしばしば[イベントハンドラ](/learn/responding-to-events)を必要とすることに注意してください！
 
 </Note>
 
-To help visualize this flow, try drawing each state on paper as a labeled circle, and each change between two states as an arrow. You can sketch out many flows this way and sort out bugs long before implementation.
+このフローを視覚化するために、各状態をラベル付きの円として紙に描き、2つの状態間の各変更を矢印として描いてみてください。このように多くのフローをスケッチし、実装前にバグを解決することができます。
 
 <DiagramGroup>
 
-<Diagram name="responding_to_input_flow" height={350} width={688} alt="Flow chart moving left to right with 5 nodes. The first node labeled 'empty' has one edge labeled 'start typing' connected to a node labeled 'typing'. That node has one edge labeled 'press submit' connected to a node labeled 'submitting', which has two edges. The left edge is labeled 'network error' connecting to a node labeled 'error'. The right edge is labeled 'network success' connecting to a node labeled 'success'.">
+<Diagram name="responding_to_input_flow" height={350} width={688} alt="左から右に移動するフローチャートで、5つのノードがあります。最初のノードは「empty」とラベル付けされており、「start typing」とラベル付けされたエッジが「typing」とラベル付けされたノードに接続されています。そのノードには「press submit」とラベル付けされたエッジがあり、「submitting」とラベル付けされたノードに接続されています。このノードには2つのエッジがあります。左のエッジは「network error」とラベル付けされ、「error」とラベル付けされたノードに接続されています。右のエッジは「network success」とラベル付けされ、「success」とラベル付けされたノードに接続されています。">
 
-Form states
+フォームの状態
 
 </Diagram>
 
 </DiagramGroup>
 
-### Step 3: Represent the state in memory with `useState` {/*step-3-represent-the-state-in-memory-with-usestate*/}
+### ステップ3: `useState`で状態をメモリに表現する {/*step-3-represent-the-state-in-memory-with-usestate*/}
 
-Next you'll need to represent the visual states of your component in memory with [`useState`.](/reference/react/useState) Simplicity is key: each piece of state is a "moving piece", and **you want as few "moving pieces" as possible.** More complexity leads to more bugs!
+次に、コンポーネントの視覚的状態を[`useState`](/reference/react/useState)でメモリに表現する必要があります。シンプルさが鍵です：各状態は「動く部分」であり、**「動く部分」をできるだけ少なくしたい**のです。複雑さが増すとバグが増えます！
 
-Start with the state that *absolutely must* be there. For example, you'll need to store the `answer` for the input, and the `error` (if it exists) to store the last error:
+まず、*絶対に必要な*状態から始めます。例えば、入力の`answer`と、最後のエラーを保存するための`error`が必要です：
 
 ```js
 const [answer, setAnswer] = useState('');
 const [error, setError] = useState(null);
 ```
 
-Then, you'll need a state variable representing which one of the visual states that you want to display. There's usually more than a single way to represent that in memory, so you'll need to experiment with it.
+次に、表示したい視覚的状態を表す状態変数が必要です。これをメモリに表現する方法は通常複数ありますので、試行錯誤が必要です。
 
-If you struggle to think of the best way immediately, start by adding enough state that you're *definitely* sure that all the possible visual states are covered:
+最適な方法をすぐに思いつかない場合は、すべての可能な視覚的状態がカバーされていることを*確実に*するために十分な状態を追加することから始めます：
 
 ```js
 const [isEmpty, setIsEmpty] = useState(true);
 const [isTyping, setIsTyping] = useState(false);
 const [isSubmitting, setIsSubmitting] = useState(false);
 const [isSuccess, setIsSuccess] = useState(false);
-const [isError, setIsError] = useState(false);
+const [isError,
+setIsError] = useState(false);
 ```
 
-Your first idea likely won't be the best, but that's ok--refactoring state is a part of the process!
+最初のアイデアはおそらく最良ではありませんが、それで構いません。状態のリファクタリングはプロセスの一部です！
 
-### Step 4: Remove any non-essential state variables {/*step-4-remove-any-non-essential-state-variables*/}
+### ステップ4: 不要な状態変数を削除する {/*step-4-remove-any-non-essential-state-variables*/}
 
-You want to avoid duplication in the state content so you're only tracking what is essential. Spending a little time on refactoring your state structure will make your components easier to understand, reduce duplication, and avoid unintended meanings. Your goal is to **prevent the cases where the state in memory doesn't represent any valid UI that you'd want a user to see.** (For example, you never want to show an error message and disable the input at the same time, or the user won't be able to correct the error!)
+状態の内容の重複を避けることで、追跡する必要があるのは本質的なものだけになります。状態構造のリファクタリングに少し時間をかけることで、コンポーネントが理解しやすくなり、重複が減り、意図しない意味を避けることができます。目標は、**メモリ内の状態がユーザーに見せたい有効なUIを表さない場合を防ぐことです。**（例えば、エラーメッセージを表示し、同時に入力を無効にすると、ユーザーはエラーを修正できなくなります！）
 
-Here are some questions you can ask about your state variables:
+状態変数について以下の質問をすることができます：
 
-* **Does this state cause a paradox?** For example, `isTyping` and `isSubmitting` can't both be `true`. A paradox usually means that the state is not constrained enough. There are four possible combinations of two booleans, but only three correspond to valid states. To remove the "impossible" state, you can combine these into a `status` that must be one of three values: `'typing'`, `'submitting'`, or `'success'`.
-* **Is the same information available in another state variable already?** Another paradox: `isEmpty` and `isTyping` can't be `true` at the same time. By making them separate state variables, you risk them going out of sync and causing bugs. Fortunately, you can remove `isEmpty` and instead check `answer.length === 0`.
-* **Can you get the same information from the inverse of another state variable?** `isError` is not needed because you can check `error !== null` instead.
+* **この状態は矛盾を引き起こしますか？** 例えば、`isTyping`と`isSubmitting`は同時に`true`にはなりません。矛盾は通常、状態が十分に制約されていないことを意味します。2つのブール値の組み合わせは4つありますが、有効な状態に対応するのは3つだけです。「不可能な」状態を取り除くために、これらを`status`に統合し、3つの値のいずれかでなければならないようにします：`'typing'`、`'submitting'`、または`'success'`。
+* **同じ情報が既に他の状態変数にありますか？** もう一つの矛盾：`isEmpty`と`isTyping`は同時に`true`にはなりません。これらを別々の状態変数にすることで、同期が取れずバグを引き起こすリスクがあります。幸いなことに、`isEmpty`を削除し、代わりに`answer.length === 0`をチェックすることができます。
+* **他の状態変数の逆から同じ情報を得ることができますか？** `isError`は必要ありません。代わりに`error !== null`をチェックすることができます。
 
-After this clean-up, you're left with 3 (down from 7!) *essential* state variables:
+このクリーンアップの後、7つから3つの*本質的な*状態変数が残ります：
 
 ```js
 const [answer, setAnswer] = useState('');
@@ -391,19 +392,19 @@ const [error, setError] = useState(null);
 const [status, setStatus] = useState('typing'); // 'typing', 'submitting', or 'success'
 ```
 
-You know they are essential, because you can't remove any of them without breaking the functionality.
+これらが本質的であることがわかります。なぜなら、どれかを削除すると機能が壊れるからです。
 
 <DeepDive>
 
-#### Eliminating “impossible” states with a reducer {/*eliminating-impossible-states-with-a-reducer*/}
+#### リデューサーで「不可能な」状態を排除する {/*eliminating-impossible-states-with-a-reducer*/}
 
-These three variables are a good enough representation of this form's state. However, there are still some intermediate states that don't fully make sense. For example, a non-null `error` doesn't make sense when `status` is `'success'`. To model the state more precisely, you can [extract it into a reducer.](/learn/extracting-state-logic-into-a-reducer) Reducers let you unify multiple state variables into a single object and consolidate all the related logic!
+これらの3つの変数は、このフォームの状態を十分に表現しています。しかし、まだ完全には意味をなさない中間状態がいくつかあります。例えば、`status`が`'success'`のときに非nullの`error`は意味をなしません。状態をより正確にモデル化するために、[リデューサーに抽出することができます。](/learn/extracting-state-logic-into-a-reducer) リデューサーを使用すると、複数の状態変数を単一のオブジェクトに統一し、関連するロジックを統合することができます！
 
 </DeepDive>
 
-### Step 5: Connect the event handlers to set state {/*step-5-connect-the-event-handlers-to-set-state*/}
+### ステップ5: イベントハンドラを状態設定に接続する {/*step-5-connect-the-event-handlers-to-set-state*/}
 
-Lastly, create event handlers that update the state. Below is the final form, with all event handlers wired up:
+最後に、状態を更新するイベントハンドラを作成します。以下は、すべてのイベントハンドラが接続された最終的なフォームです：
 
 <Sandpack>
 
@@ -485,29 +486,27 @@ function submitForm(answer) {
 
 </Sandpack>
 
-Although this code is longer than the original imperative example, it is much less fragile. Expressing all interactions as state changes lets you later introduce new visual states without breaking existing ones. It also lets you change what should be displayed in each state without changing the logic of the interaction itself.
+このコードは元の命令的な例よりも長いですが、はるかに壊れにくいです。すべてのインタラクションを状態変更として表現することで、新しい視覚的状態を導入しても既存のものを壊すことなく、各状態で表示する内容を変更することができます。
 
 <Recap>
 
-* Declarative programming means describing the UI for each visual state rather than micromanaging the UI (imperative).
-* When developing a component:
-  1. Identify all its visual states.
-  2. Determine the human and computer triggers for state changes.
-  3. Model the state with `useState`.
-  4. Remove non-essential state to avoid bugs and paradoxes.
-  5. Connect the event handlers to set state.
+* 宣言的プログラミングは、UIを細かく管理する（命令的）代わりに、各視覚的状態のUIを記述することを意味します。
+* コンポーネントを開発する際には：
+  1. すべての視覚的状態を特定する。
+  2. 状態変化の人間とコンピュータのトリガーを決定する。
+  3. `useState`で状態をモデル化する。
+  4. バグや矛盾を避けるために不要な状態を削除する。
+  5. イベントハンドラを状態設定に接続する。
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Add and remove a CSS class {/*add-and-remove-a-css-class*/}
+#### CSSクラスの追加と削除 {/*add-and-remove-a-css-class*/}
 
-Make it so that clicking on the picture *removes* the `background--active` CSS class from the outer `<div>`, but *adds* the `picture--active` class to the `<img>`. Clicking the background again should restore the original CSS classes.
+画像をクリックすると、外側の`<div>`から`background--active` CSSクラスが*削除*され、`<img>`に`picture--active`クラスが*追加*されるようにします。背景を再度クリックすると、元のCSSクラスが復元されるようにします。
 
-Visually, you should expect that clicking on the picture removes the purple background and highlights the picture border. Clicking outside the picture highlights the background, but removes the picture border highlight.
+視覚的には、画像をクリックすると紫の背景が削除され、画像の境界線が強調表示されることを期待します。画像の外側をクリックすると背景が強調表示されますが、画像の境界線の強調表示は削除されます。
 
 <Sandpack>
 
@@ -557,14 +556,14 @@ body { margin: 0; padding: 0; height: 250px; }
 
 <Solution>
 
-This component has two visual states: when the image is active, and when the image is inactive:
+このコンポーネントには2つの視覚的状態があります：画像がアクティブな場合と、画像が非アクティブな場合です：
 
-* When the image is active, the CSS classes are `background` and `picture picture--active`.
-* When the image is inactive, the CSS classes are `background background--active` and `picture`.
+* 画像がアクティブな場合、CSSクラスは`background`と`picture picture--active`です。
+* 画像が非アクティブな場合、CSSクラスは`background background--active`と`picture`です。
 
-A single boolean state variable is enough to remember whether the image is active. The original task was to remove or add CSS classes. However, in React you need to *describe* what you want to see rather than *manipulate* the UI elements. So you need to calculate both CSS classes based on the current state. You also need to [stop the propagation](/learn/responding-to-events#stopping-propagation) so that clicking the image doesn't register as a click on the background.
+単一のブール状態変数で画像がアクティブかどうかを記憶するのに十分です。元のタスクはCSSクラスを削除または追加することでした。しかし、ReactではUI要素を*操作*するのではなく、表示したいものを*記述*する必要があります。したがって、現在の状態に基づいて両方のCSSクラスを計算する必要があります。また、画像をクリックしても背景のクリックとして登録されないように[伝播を停止](/learn/responding-to-events#stopping-propagation)する必要があります。
 
-Verify that this version works by clicking the image and then outside of it:
+このバージョンが機能することを確認するために、画像をクリックしてからその外側をクリックしてみてください：
 
 <Sandpack>
 
@@ -631,7 +630,7 @@ body { margin: 0; padding: 0; height: 250px; }
 
 </Sandpack>
 
-Alternatively, you could return two separate chunks of JSX:
+または、2つの別々のJSXチャンクを返すこともできます：
 
 <Sandpack>
 
@@ -698,13 +697,13 @@ body { margin: 0; padding: 0; height: 250px; }
 
 </Sandpack>
 
-Keep in mind that if two different JSX chunks describe the same tree, their nesting (first `<div>` → first `<img>`) has to line up. Otherwise, toggling `isActive` would recreate the whole tree below and [reset its state.](/learn/preserving-and-resetting-state) This is why, if a similar JSX tree gets returned in both cases, it is better to write them as a single piece of JSX.
+同じツリーを記述する2つの異なるJSXチャンクがある場合、そのネスト（最初の`<div>`→最初の`<img>`）が一致する必要があることを覚えておいてください。そうしないと、`isActive`を切り替えると、下のツリー全体が再作成され、[状態がリセットされます。](/learn/preserving-and-resetting-state) そのため、似たようなJSXツリーが両方の場合に返される場合、それらを単一のJSXチャンクとして書く方が良いです。
 
 </Solution>
 
-#### Profile editor {/*profile-editor*/}
+#### プロフィールエディタ {/*profile-editor*/}
 
-Here is a small form implemented with plain JavaScript and DOM. Play with it to understand its behavior:
+ここに、プレーンなJavaScriptとDOMで実装された小さなフォームがあります。その動作を理解するために試してみてください：
 
 <Sandpack>
 
@@ -801,11 +800,11 @@ label { display: block; margin-bottom: 20px; }
 
 </Sandpack>
 
-This form switches between two modes: in the editing mode, you see the inputs, and in the viewing mode, you only see the result. The button label changes between "Edit" and "Save" depending on the mode you're in. When you change the inputs, the welcome message at the bottom updates in real time.
+このフォームは2つのモードを切り替えます：編集モードでは入力が表示され、表示モードでは結果のみが表示されます。ボタンのラベルは、現在のモードに応じて「編集」と「保存」の間で変わります。入力を変更すると、下部のウェルカムメッセージがリアルタイムで更新されます。
 
-Your task is to reimplement it in React in the sandbox below. For your convenience, the markup was already converted to JSX, but you'll need to make it show and hide the inputs like the original does.
+次のサンドボックスでReactで再実装するのが課題です。マークアップはすでにJSXに変換されていますが、元のように入力を表示および非表示にする必要があります。
 
-Make sure that it updates the text at the bottom, too!
+また、下部のテキストも更新されるようにしてください！
 
 <Sandpack>
 
@@ -840,9 +839,9 @@ label { display: block; margin-bottom: 20px; }
 
 <Solution>
 
-You will need two state variables to hold the input values: `firstName` and `lastName`. You're also going to need an `isEditing` state variable that holds whether to display the inputs or not. You should _not_ need a `fullName` variable because the full name can always be calculated from the `firstName` and the `lastName`.
+入力値を保持するために2つの状態変数が必要です：`firstName`と`lastName`。また、入力を表示するかどうかを保持する`isEditing`状態変数も必要です。`fullName`変数は必要ありません。なぜなら、フルネームは常に`firstName`と`lastName`から計算できるからです。
 
-Finally, you should use [conditional rendering](/learn/conditional-rendering) to show or hide the inputs depending on `isEditing`.
+最後に、`isEditing`に応じて入力を表示または非表示にするために[条件付きレンダリング](/learn/conditional-rendering)を使用する必要があります。
 
 <Sandpack>
 
@@ -900,13 +899,13 @@ label { display: block; margin-bottom: 20px; }
 
 </Sandpack>
 
-Compare this solution to the original imperative code. How are they different?
+このソリューションを元の命令的なコードと比較してみてください。どのように異なっていますか？
 
 </Solution>
 
-#### Refactor the imperative solution without React {/*refactor-the-imperative-solution-without-react*/}
+#### Reactを使わずに命令的なソリューションをリファクタリングする {/*refactor-the-imperative-solution-without-react*/}
 
-Here is the original sandbox from the previous challenge, written imperatively without React:
+以下は前のチャレンジからの元のサンドボックスで、Reactを使わずに命令的に書かれています：
 
 <Sandpack>
 
@@ -1003,9 +1002,9 @@ label { display: block; margin-bottom: 20px; }
 
 </Sandpack>
 
-Imagine React didn't exist. Can you refactor this code in a way that makes the logic less fragile and more similar to the React version? What would it look like if the state was explicit, like in React?
+Reactが存在しなかったと想像してみてください。このコードをリファクタリングして、ロジックをより壊れにくくし、Reactバージョンに似たものにすることができますか？状態が明示的である場合、どのように見えるでしょうか？
 
-If you're struggling to think where to start, the stub below already has most of the structure in place. If you start here, fill in the missing logic in the `updateDOM` function. (Refer to the original code where needed.)
+どこから始めればよいか悩んでいる場合は、以下のスタブにはすでにほとんどの構造が含まれています。ここから始める場合、`updateDOM`関数の不足しているロジックを埋めてください。（必要に応じて元のコードを参照してください。）
 
 <Sandpack>
 
@@ -1112,7 +1111,7 @@ label { display: block; margin-bottom: 20px; }
 
 <Solution>
 
-The missing logic included toggling the display of inputs and content, and updating the labels:
+不足しているロジックには、入力とコンテンツの表示の切り替え、およびラベルの更新が含まれていました：
 
 <Sandpack>
 
@@ -1229,7 +1228,7 @@ label { display: block; margin-bottom: 20px; }
 
 </Sandpack>
 
-The `updateDOM` function you wrote shows what React does under the hood when you set the state. (However, React also avoids touching the DOM for properties that have not changed since the last time they were set.)
+あなたが書いた`updateDOM`関数は、状態を設定したときにReactが内部で行うことを示しています。（ただし、Reactは前回設定されたプロパティが変更されていない場合、そのDOMを触らないようにします。）
 
 </Solution>
 

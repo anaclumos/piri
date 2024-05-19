@@ -4,13 +4,13 @@ title: createRef
 
 <Pitfall>
 
-`createRef` is mostly used for [class components.](/reference/react/Component) Function components typically rely on [`useRef`](/reference/react/useRef) instead.
+`createRef`는 주로 [클래스 컴포넌트](/reference/react/Component)에서 사용됩니다. 함수 컴포넌트는 일반적으로 [`useRef`](/reference/react/useRef)를 대신 사용합니다.
 
 </Pitfall>
 
 <Intro>
 
-`createRef` creates a [ref](/learn/referencing-values-with-refs) object which can contain arbitrary value.
+`createRef`는 임의의 값을 포함할 수 있는 [ref](/learn/referencing-values-with-refs) 객체를 생성합니다.
 
 ```js
 class MyInput extends Component {
@@ -29,7 +29,7 @@ class MyInput extends Component {
 
 ### `createRef()` {/*createref*/}
 
-Call `createRef` to declare a [ref](/learn/referencing-values-with-refs) inside a [class component.](/reference/react/Component)
+[클래스 컴포넌트](/reference/react/Component) 내부에 [ref](/learn/referencing-values-with-refs)를 선언하려면 `createRef`를 호출하세요.
 
 ```js
 import { createRef, Component } from 'react';
@@ -40,31 +40,31 @@ class MyComponent extends Component {
   // ...
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
 #### Parameters {/*parameters*/}
 
-`createRef` takes no parameters.
+`createRef`는 매개변수를 받지 않습니다.
 
 #### Returns {/*returns*/}
 
-`createRef` returns an object with a single property:
+`createRef`는 단일 속성을 가진 객체를 반환합니다:
 
-* `current`: Initially, it's set to the `null`. You can later set it to something else. If you pass the ref object to React as a `ref` attribute to a JSX node, React will set its `current` property.
+* `current`: 초기에는 `null`로 설정됩니다. 나중에 다른 값으로 설정할 수 있습니다. ref 객체를 JSX 노드의 `ref` 속성으로 React에 전달하면, React는 `current` 속성을 설정합니다.
 
 #### Caveats {/*caveats*/}
 
-* `createRef` always returns a *different* object. It's equivalent to writing `{ current: null }` yourself.
-* In a function component, you probably want [`useRef`](/reference/react/useRef) instead which always returns the same object.
-* `const ref = useRef()` is equivalent to `const [ref, _] = useState(() => createRef(null))`.
+* `createRef`는 항상 *다른* 객체를 반환합니다. 이는 `{ current: null }`을 직접 작성하는 것과 동일합니다.
+* 함수 컴포넌트에서는 항상 동일한 객체를 반환하는 [`useRef`](/reference/react/useRef)를 사용하는 것이 좋습니다.
+* `const ref = useRef()`는 `const [ref, _] = useState(() => createRef(null))`와 동일합니다.
 
 ---
 
 ## Usage {/*usage*/}
 
-### Declaring a ref in a class component {/*declaring-a-ref-in-a-class-component*/}
+### 클래스 컴포넌트에서 ref 선언하기 {/*declaring-a-ref-in-a-class-component*/}
 
-To declare a ref inside a [class component,](/reference/react/Component) call `createRef` and assign its result to a class field:
+[클래스 컴포넌트](/reference/react/Component) 내부에 ref를 선언하려면 `createRef`를 호출하고 그 결과를 클래스 필드에 할당하세요:
 
 ```js {4}
 import { Component, createRef } from 'react';
@@ -76,7 +76,7 @@ class Form extends Component {
 }
 ```
 
-If you now pass `ref={this.inputRef}` to an `<input>` in your JSX, React will populate `this.inputRef.current` with the input DOM node. For example, here is how you make a button that focuses the input:
+이제 JSX에서 `<input>`에 `ref={this.inputRef}`를 전달하면, React는 `this.inputRef.current`를 input DOM 노드로 채웁니다. 예를 들어, 입력란에 포커스를 맞추는 버튼을 만드는 방법은 다음과 같습니다:
 
 <Sandpack>
 
@@ -107,7 +107,7 @@ export default class Form extends Component {
 
 <Pitfall>
 
-`createRef` is mostly used for [class components.](/reference/react/Component) Function components typically rely on [`useRef`](/reference/react/useRef) instead.
+`createRef`는 주로 [클래스 컴포넌트](/reference/react/Component)에서 사용됩니다. 함수 컴포넌트는 일반적으로 [`useRef`](/reference/react/useRef)를 대신 사용합니다.
 
 </Pitfall>
 
@@ -115,9 +115,9 @@ export default class Form extends Component {
 
 ## Alternatives {/*alternatives*/}
 
-### Migrating from a class with `createRef` to a function with `useRef` {/*migrating-from-a-class-with-createref-to-a-function-with-useref*/}
+### `createRef`를 사용하는 클래스에서 `useRef`를 사용하는 함수로 마이그레이션하기 {/*migrating-from-a-class-with-createref-to-a-function-with-useref*/}
 
-We recommend using function components instead of [class components](/reference/react/Component) in new code. If you have some existing class components using `createRef`, here is how you can convert them. This is the original code:
+새로운 코드에서는 [클래스 컴포넌트](/reference/react/Component) 대신 함수 컴포넌트를 사용하는 것을 권장합니다. `createRef`를 사용하는 기존 클래스 컴포넌트가 있다면, 다음과 같이 변환할 수 있습니다. 이것이 원래 코드입니다:
 
 <Sandpack>
 
@@ -146,7 +146,7 @@ export default class Form extends Component {
 
 </Sandpack>
 
-When you [convert this component from a class to a function,](/reference/react/Component#alternatives) replace calls to `createRef` with calls to [`useRef`:](/reference/react/useRef)
+이 컴포넌트를 [클래스에서 함수로 변환할 때,](/reference/react/Component#alternatives) `createRef` 호출을 [`useRef`](/reference/react/useRef) 호출로 대체하세요:
 
 <Sandpack>
 

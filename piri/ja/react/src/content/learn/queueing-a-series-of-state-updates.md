@@ -1,23 +1,23 @@
 ---
-title: Queueing a Series of State Updates
+title: 一連の状態更新のキューイング
 ---
 
 <Intro>
 
-Setting a state variable will queue another render. But sometimes you might want to perform multiple operations on the value before queueing the next render. To do this, it helps to understand how React batches state updates.
+状態変数を設定すると、別のレンダーがキューに入ります。しかし、次のレンダーをキューに入れる前に値に対して複数の操作を行いたい場合があります。これを行うには、Reactが状態更新をどのようにバッチ処理するかを理解することが役立ちます。
 
 </Intro>
 
 <YouWillLearn>
 
-* What "batching" is and how React uses it to process multiple state updates
-* How to apply several updates to the same state variable in a row
+* 「バッチ処理」とは何か、そしてReactがそれを使用して複数の状態更新を処理する方法
+* 同じ状態変数に対して連続して複数の更新を適用する方法
 
 </YouWillLearn>
 
-## React batches state updates {/*react-batches-state-updates*/}
+## Reactは状態更新をバッチ処理します {/*react-batches-state-updates*/}
 
-You might expect that clicking the "+3" button will increment the counter three times because it calls `setNumber(number + 1)` three times:
+`setNumber(number + 1)`を3回呼び出すため、「+3」ボタンをクリックするとカウンターが3回インクリメントされると期待するかもしれません：
 
 <Sandpack>
 
@@ -47,7 +47,7 @@ h1 { display: inline-block; margin: 10px; width: 30px; text-align: center; }
 
 </Sandpack>
 
-However, as you might recall from the previous section, [each render's state values are fixed](/learn/state-as-a-snapshot#rendering-takes-a-snapshot-in-time), so the value of `number` inside the first render's event handler is always `0`, no matter how many times you call `setNumber(1)`:
+しかし、前のセクションから思い出すかもしれませんが、[各レンダーの状態値は固定されています](/learn/state-as-a-snapshot#rendering-takes-a-snapshot-in-time)ので、最初のレンダーのイベントハンドラー内の`number`の値は常に`0`です。何回`setNumber(1)`を呼び出しても同じです：
 
 ```js
 setNumber(0 + 1);
@@ -55,21 +55,21 @@ setNumber(0 + 1);
 setNumber(0 + 1);
 ```
 
-But there is one other factor at play here. **React waits until *all* code in the event handlers has run before processing your state updates.** This is why the re-render only happens *after* all these `setNumber()` calls.
+しかし、ここにはもう一つの要因があります。**Reactはイベントハンドラー内のすべてのコードが実行されるまで状態更新を処理しません。** これが、これらの`setNumber()`呼び出しの後にのみ再レンダーが発生する理由です。
 
-This might remind you of a waiter taking an order at the restaurant. A waiter doesn't run to the kitchen at the mention of your first dish! Instead, they let you finish your order, let you make changes to it, and even take orders from other people at the table.
+これはレストランで注文を取るウェイターを思い出させるかもしれません。ウェイターは最初の料理の言及でキッチンに走ることはありません！ 代わりに、注文が完了するのを待ち、変更を加えることを許し、テーブルの他の人からの注文も受けます。
 
-<Illustration src="/images/docs/illustrations/i_react-batching.png"  alt="An elegant cursor at a restaurant places and order multiple times with React, playing the part of the waiter. After she calls setState() multiple times, the waiter writes down the last one she requested as her final order." />
+<Illustration src="/images/docs/illustrations/i_react-batching.png"  alt="レストランで注文を複数回行うエレガントなカーソルがReactの役割を果たし、ウェイターの役割を果たします。彼女がsetState()を複数回呼び出した後、ウェイターは彼女が最後に要求したものを最終注文として書き留めます。" />
 
-This lets you update multiple state variables--even from multiple components--without triggering too many [re-renders.](/learn/render-and-commit#re-renders-when-state-updates) But this also means that the UI won't be updated until _after_ your event handler, and any code in it, completes. This behavior, also known as **batching,** makes your React app run much faster. It also avoids dealing with confusing "half-finished" renders where only some of the variables have been updated.
+これにより、複数の状態変数を更新することができ、[再レンダー](/learn/render-and-commit#re-renders-when-state-updates)が多すぎることを防ぎます。しかし、これはまた、イベントハンドラーとその中のコードが完了するまでUIが更新されないことを意味します。この動作は**バッチ処理**とも呼ばれ、Reactアプリをより高速に実行させます。また、変数の一部だけが更新された「半完成」のレンダーに対処する必要がなくなります。
 
-**React does not batch across *multiple* intentional events like clicks**--each click is handled separately. Rest assured that React only does batching when it's generally safe to do. This ensures that, for example, if the first button click disables a form, the second click would not submit it again.
+**Reactは複数の意図的なイベント（クリックなど）をまたいでバッチ処理を行いません**—各クリックは個別に処理されます。Reactは一般的に安全である場合にのみバッチ処理を行うので安心してください。例えば、最初のボタンクリックがフォームを無効にした場合、2回目のクリックは再度送信しません。
 
-## Updating the same state multiple times before the next render {/*updating-the-same-state-multiple-times-before-the-next-render*/}
+## 次のレンダーの前に同じ状態を複数回更新する {/*updating-the-same-state-multiple-times-before-the-next-render*/}
 
-It is an uncommon use case, but if you would like to update the same state variable multiple times before the next render, instead of passing the *next state value* like `setNumber(number + 1)`, you can pass a *function* that calculates the next state based on the previous one in the queue, like `setNumber(n => n + 1)`. It is a way to tell React to "do something with the state value" instead of just replacing it.
+これは一般的ではないユースケースですが、次のレンダーの前に同じ状態変数を複数回更新したい場合、`setNumber(number + 1)`のように次の状態値を渡す代わりに、`setNumber(n => n + 1)`のように前のキュー内の状態に基づいて次の状態を計算する*関数*を渡すことができます。これはReactに「状態値で何かをする」ように指示する方法です。
 
-Try incrementing the counter now:
+カウンターをインクリメントしてみてください：
 
 <Sandpack>
 
@@ -99,10 +99,10 @@ h1 { display: inline-block; margin: 10px; width: 30px; text-align: center; }
 
 </Sandpack>
 
-Here, `n => n + 1` is called an **updater function.** When you pass it to a state setter:
+ここで、`n => n + 1`は**アップデータ関数**と呼ばれます。これを状態セッターに渡すと：
 
-1. React queues this function to be processed after all the other code in the event handler has run.
-2. During the next render, React goes through the queue and gives you the final updated state.
+1. Reactはこの関数をイベントハンドラー内の他のすべてのコードが実行された後に処理するためにキューに入れます。
+2. 次のレンダー中に、Reactはキューを通過し、最終的な更新された状態を提供します。
 
 ```js
 setNumber(n => n + 1);
@@ -110,26 +110,26 @@ setNumber(n => n + 1);
 setNumber(n => n + 1);
 ```
 
-Here's how React works through these lines of code while executing the event handler:
+Reactがイベントハンドラーを実行しながらこれらのコード行をどのように処理するかを見てみましょう：
 
-1. `setNumber(n => n + 1)`: `n => n + 1` is a function. React adds it to a queue.
-1. `setNumber(n => n + 1)`: `n => n + 1` is a function. React adds it to a queue.
-1. `setNumber(n => n + 1)`: `n => n + 1` is a function. React adds it to a queue.
+1. `setNumber(n => n + 1)`: `n => n + 1`は関数です。Reactはこれをキューに追加します。
+1. `setNumber(n => n + 1)`: `n => n + 1`は関数です。Reactはこれをキューに追加します。
+1. `setNumber(n => n + 1)`: `n => n + 1`は関数です。Reactはこれをキューに追加します。
 
-When you call `useState` during the next render, React goes through the queue. The previous `number` state was `0`, so that's what React passes to the first updater function as the `n` argument. Then React takes the return value of your previous updater function and passes it to the next updater as `n`, and so on:
+次のレンダー中に`useState`を呼び出すと、Reactはキューを通過します。前の`number`状態は`0`だったので、それがReactが最初のアップデータ関数に`n`引数として渡すものです。次に、Reactは前のアップデータ関数の戻り値を取り、それを次のアップデータに`n`として渡します。
 
-|  queued update | `n` | returns |
+|  キューに入れた更新 | `n` | 戻り値 |
 |--------------|---------|-----|
 | `n => n + 1` | `0` | `0 + 1 = 1` |
 | `n => n + 1` | `1` | `1 + 1 = 2` |
 | `n => n + 1` | `2` | `2 + 1 = 3` |
 
-React stores `3` as the final result and returns it from `useState`.
+Reactは最終結果として`3`を保存し、それを`useState`から返します。
 
-This is why clicking "+3" in the above example correctly increments the value by 3.
-### What happens if you update state after replacing it {/*what-happens-if-you-update-state-after-replacing-it*/}
+これが、上記の例で「+3」をクリックすると値が正しく3増加する理由です。
+### 状態を置き換えた後に状態を更新するとどうなるか {/*what-happens-if-you-update-state-after-replacing-it*/}
 
-What about this event handler? What do you think `number` will be in the next render?
+このイベントハンドラーはどうでしょうか？次のレンダーで`number`はどうなると思いますか？
 
 ```js
 <button onClick={() => {
@@ -152,7 +152,7 @@ export default function Counter() {
       <button onClick={() => {
         setNumber(number + 5);
         setNumber(n => n + 1);
-      }}>Increase the number</button>
+      }}>数を増やす</button>
     </>
   )
 }
@@ -165,29 +165,29 @@ h1 { display: inline-block; margin: 10px; width: 30px; text-align: center; }
 
 </Sandpack>
 
-Here's what this event handler tells React to do:
+このイベントハンドラーがReactに指示する内容は次のとおりです：
 
-1. `setNumber(number + 5)`: `number` is `0`, so `setNumber(0 + 5)`. React adds *"replace with `5`"* to its queue.
-2. `setNumber(n => n + 1)`: `n => n + 1` is an updater function. React adds *that function* to its queue.
+1. `setNumber(number + 5)`: `number`は`0`なので、`setNumber(0 + 5)`。Reactは「`5`に置き換える」をキューに追加します。
+2. `setNumber(n => n + 1)`: `n => n + 1`はアップデータ関数です。Reactはその関数をキューに追加します。
 
-During the next render, React goes through the state queue:
+次のレンダー中に、Reactは状態キューを通過します：
 
-|   queued update       | `n` | returns |
+|   キューに入れた更新       | `n` | 戻り値 |
 |--------------|---------|-----|
-| "replace with `5`" | `0` (unused) | `5` |
+| "replace with `5`" | `0` (未使用) | `5` |
 | `n => n + 1` | `5` | `5 + 1 = 6` |
 
-React stores `6` as the final result and returns it from `useState`. 
+Reactは最終結果として`6`を保存し、それを`useState`から返します。 
 
 <Note>
 
-You may have noticed that `setState(5)` actually works like `setState(n => 5)`, but `n` is unused!
+`setState(5)`は実際には`setState(n => 5)`のように機能しますが、`n`は未使用です！
 
 </Note>
 
-### What happens if you replace state after updating it {/*what-happens-if-you-replace-state-after-updating-it*/}
+### 状態を更新した後に状態を置き換えるとどうなるか {/*what-happens-if-you-replace-state-after-updating-it*/}
 
-Let's try one more example. What do you think `number` will be in the next render?
+もう一つの例を試してみましょう。次のレンダーで`number`はどうなると思いますか？
 
 ```js
 <button onClick={() => {
@@ -212,7 +212,7 @@ export default function Counter() {
         setNumber(number + 5);
         setNumber(n => n + 1);
         setNumber(42);
-      }}>Increase the number</button>
+      }}>数を増やす</button>
     </>
   )
 }
@@ -225,32 +225,32 @@ h1 { display: inline-block; margin: 10px; width: 30px; text-align: center; }
 
 </Sandpack>
 
-Here's how React works through these lines of code while executing this event handler:
+Reactがこのイベントハンドラーを実行しながらこれらのコード行をどのように処理するかを見てみましょう：
 
-1. `setNumber(number + 5)`: `number` is `0`, so `setNumber(0 + 5)`. React adds *"replace with `5`"* to its queue.
-2. `setNumber(n => n + 1)`: `n => n + 1` is an updater function. React adds *that function* to its queue.
-3. `setNumber(42)`: React adds *"replace with `42`"* to its queue.
+1. `setNumber(number + 5)`: `number`は`0`なので、`setNumber(0 + 5)`。Reactは「`5`に置き換える」をキューに追加します。
+2. `setNumber(n => n + 1)`: `n => n + 1`はアップデータ関数です。Reactはその関数をキューに追加します。
+3. `setNumber(42)`: Reactは「`42`に置き換える」をキューに追加します。
 
-During the next render, React goes through the state queue:
+次のレンダー中に、Reactは状態キューを通過します：
 
-|   queued update       | `n` | returns |
+|   キューに入れた更新       | `n` | 戻り値 |
 |--------------|---------|-----|
-| "replace with `5`" | `0` (unused) | `5` |
+| "replace with `5`" | `0` (未使用) | `5` |
 | `n => n + 1` | `5` | `5 + 1 = 6` |
-| "replace with `42`" | `6` (unused) | `42` |
+| "replace with `42`" | `6` (未使用) | `42` |
 
-Then React stores `42` as the final result and returns it from `useState`.
+次にReactは最終結果として`42`を保存し、それを`useState`から返します。
 
-To summarize, here's how you can think of what you're passing to the `setNumber` state setter:
+要約すると、`setNumber`状態セッターに渡すものを次のように考えることができます：
 
-* **An updater function** (e.g. `n => n + 1`) gets added to the queue.
-* **Any other value** (e.g. number `5`) adds "replace with `5`" to the queue, ignoring what's already queued.
+* **アップデータ関数**（例：`n => n + 1`）はキューに追加されます。
+* **その他の値**（例：数値`5`）は「`5`に置き換える」をキューに追加し、既にキューにあるものを無視します。
 
-After the event handler completes, React will trigger a re-render. During the re-render, React will process the queue. Updater functions run during rendering, so **updater functions must be [pure](/learn/keeping-components-pure)** and only *return* the result. Don't try to set state from inside of them or run other side effects. In Strict Mode, React will run each updater function twice (but discard the second result) to help you find mistakes.
+イベントハンドラーが完了した後、Reactは再レンダーをトリガーします。再レンダー中に、Reactはキューを処理します。アップデータ関数はレンダリング中に実行されるため、**アップデータ関数は[純粋](/learn/keeping-components-pure)**でなければならず、結果を*返す*だけです。内部から状態を設定したり、他の副作用を実行しようとしないでください。Strict Modeでは、Reactは各アップデータ関数を2回実行します（ただし2回目の結果は破棄されます）ので、ミスを見つけるのに役立ちます。
 
-### Naming conventions {/*naming-conventions*/}
+### 命名規則 {/*naming-conventions*/}
 
-It's common to name the updater function argument by the first letters of the corresponding state variable:
+アップデータ関数の引数を対応する状態変数の最初の文字で命名するのが一般的です：
 
 ```js
 setEnabled(e => !e);
@@ -258,13 +258,13 @@ setLastName(ln => ln.reverse());
 setFriendCount(fc => fc * 2);
 ```
 
-If you prefer more verbose code, another common convention is to repeat the full state variable name, like `setEnabled(enabled => !enabled)`, or to use a prefix like `setEnabled(prevEnabled => !prevEnabled)`.
+より冗長なコードを好む場合、もう一つの一般的な規則は、状態変数名を繰り返すことです。例えば、`setEnabled(enabled => !enabled)`や、`setEnabled(prevEnabled => !prevEnabled)`のようにプレフィックスを使用することです。
 
 <Recap>
 
-* Setting state does not change the variable in the existing render, but it requests a new render.
-* React processes state updates after event handlers have finished running. This is called batching.
-* To update some state multiple times in one event, you can use `setNumber(n => n + 1)` updater function.
+* 状態を設定しても既存のレンダー内の変数は変更されませんが、新しいレンダーを要求します。
+* Reactはイベントハンドラーが実行を終了した後に状態更新を処理します。これをバッチ処理と呼びます。
+* 一つのイベントで複数回状態を更新するには、`setNumber(n => n + 1)`アップデータ関数を使用できます。
 
 </Recap>
 
@@ -272,13 +272,13 @@ If you prefer more verbose code, another common convention is to repeat the full
 
 <Challenges>
 
-#### Fix a request counter {/*fix-a-request-counter*/}
+#### リクエストカウンターを修正する {/*fix-a-request-counter*/}
 
-You're working on an art marketplace app that lets the user submit multiple orders for an art item at the same time. Each time the user presses the "Buy" button, the "Pending" counter should increase by one. After three seconds, the "Pending" counter should decrease, and the "Completed" counter should increase.
+アートアイテムの複数の注文を同時にユーザーが送信できるアートマーケットプレイスアプリに取り組んでいます。ユーザーが「購入」ボタンを押すたびに、「保留中」カウンターが1増加する必要があります。3秒後に「保留中」カウンターが減少し、「完了」カウンターが増加します。
 
-However, the "Pending" counter does not behave as intended. When you press "Buy", it decreases to `-1` (which should not be possible!). And if you click fast twice, both counters seem to behave unpredictably.
+しかし、「保留中」カウンターは意図した通りに動作しません。「購入」を押すと、`-1`に減少します（これは不可能なはずです！）。そして、素早く2回クリックすると、両方のカウンターが予測不可能に動作するようです。
 
-Why does this happen? Fix both counters.
+なぜこれが起こるのでしょうか？両方のカウンターを修正してください。
 
 <Sandpack>
 
@@ -305,7 +305,7 @@ export default function RequestTracker() {
         Completed: {completed}
       </h3>
       <button onClick={handleClick}>
-        Buy     
+        購入     
       </button>
     </>
   );
@@ -322,7 +322,7 @@ function delay(ms) {
 
 <Solution>
 
-Inside the `handleClick` event handler, the values of `pending` and `completed` correspond to what they were at the time of the click event. For the first render, `pending` was `0`, so `setPending(pending - 1)` becomes `setPending(-1)`, which is wrong. Since you want to *increment* or *decrement* the counters, rather than set them to a concrete value determined during the click, you can instead pass the updater functions:
+`handleClick`イベントハンドラー内では、`pending`と`completed`の値はクリックイベント時のもので対応しています。最初のレンダーでは、`pending`は`0`だったので、`setPending(pending - 1)`は`setPending(-1)`となり、これは間違っています。カウンターを*インクリメント*または*デクリメント*したいので、クリック時に決定された具体的な値を設定するのではなく、アップデータ関数を渡すことができます：
 
 <Sandpack>
 
@@ -349,7 +349,7 @@ export default function RequestTracker() {
         Completed: {completed}
       </h3>
       <button onClick={handleClick}>
-        Buy     
+        購入     
       </button>
     </>
   );
@@ -364,23 +364,21 @@ function delay(ms) {
 
 </Sandpack>
 
-This ensures that when you increment or decrement a counter, you do it in relation to its *latest* state rather than what the state was at the time of the click.
+これにより、カウンターをインクリメントまたはデクリメントする際に、クリック時の状態ではなく*最新の*状態に対して行うことが保証されます</Solution>
 
-</Solution>
+#### 状態キューを自分で実装する {/*implement-the-state-queue-yourself*/}
 
-#### Implement the state queue yourself {/*implement-the-state-queue-yourself*/}
+このチャレンジでは、Reactの一部をゼロから再実装します！それほど難しくはありません。
 
-In this challenge, you will reimplement a tiny part of React from scratch! It's not as hard as it sounds.
+サンドボックスのプレビューをスクロールしてください。**4つのテストケース**が表示されます。これらは、このページで見た例に対応しています。あなたのタスクは、`getFinalState`関数を実装して、それぞれのケースに対して正しい結果を返すことです。正しく実装すれば、4つのテストすべてがパスするはずです。
 
-Scroll through the sandbox preview. Notice that it shows **four test cases.** They correspond to the examples you've seen earlier on this page. Your task is to implement the `getFinalState` function so that it returns the correct result for each of those cases. If you implement it correctly, all four tests should pass.
+2つの引数を受け取ります：`baseState`は初期状態（例えば`0`）、`queue`は追加された順に数値（例えば`5`）とアップデータ関数（例えば`n => n + 1`）の混合を含む配列です。
 
-You will receive two arguments: `baseState` is the initial state (like `0`), and the `queue` is an array which contains a mix of numbers (like `5`) and updater functions (like `n => n + 1`) in the order they were added.
-
-Your task is to return the final state, just like the tables on this page show!
+あなたのタスクは、最終的な状態を返すことです。このページの表が示すように！
 
 <Hint>
 
-If you're feeling stuck, start with this code structure:
+行き詰まった場合は、このコード構造から始めてください：
 
 ```js
 export function getFinalState(baseState, queue) {
@@ -388,9 +386,9 @@ export function getFinalState(baseState, queue) {
 
   for (let update of queue) {
     if (typeof update === 'function') {
-      // TODO: apply the updater function
+      // TODO: アップデータ関数を適用する
     } else {
-      // TODO: replace the state
+      // TODO: 状態を置き換える
     }
   }
 
@@ -398,7 +396,7 @@ export function getFinalState(baseState, queue) {
 }
 ```
 
-Fill out the missing lines!
+欠けている行を埋めてください！
 
 </Hint>
 
@@ -408,7 +406,7 @@ Fill out the missing lines!
 export function getFinalState(baseState, queue) {
   let finalState = baseState;
 
-  // TODO: do something with the queue...
+  // TODO: キューで何かをする...
 
   return finalState;
 }
@@ -495,7 +493,7 @@ function TestCase({
 
 <Solution>
 
-This is the exact algorithm described on this page that React uses to calculate the final state:
+これは、このページで説明されているReactが最終状態を計算するために使用する正確なアルゴリズムです：
 
 <Sandpack>
 
@@ -505,10 +503,10 @@ export function getFinalState(baseState, queue) {
 
   for (let update of queue) {
     if (typeof update === 'function') {
-      // Apply the updater function.
+      // アップデータ関数を適用する
       finalState = update(finalState);
     } else {
-      // Replace the next state.
+      // 次の状態を置き換える
       finalState = update;
     }
   }
@@ -596,7 +594,7 @@ function TestCase({
 
 </Sandpack>
 
-Now you know how this part of React works!
+これでReactのこの部分がどのように機能するかがわかりました！
 
 </Solution>
 

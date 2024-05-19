@@ -4,7 +4,7 @@ title: useId
 
 <Intro>
 
-`useId` is a React Hook for generating unique IDs that can be passed to accessibility attributes.
+`useId`는 접근성 속성에 전달할 수 있는 고유 ID를 생성하기 위한 React Hook입니다.
 
 ```js
 const id = useId()
@@ -16,11 +16,11 @@ const id = useId()
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `useId()` {/*useid*/}
 
-Call `useId` at the top level of your component to generate a unique ID:
+고유 ID를 생성하기 위해 컴포넌트의 최상위 레벨에서 `useId`를 호출하세요:
 
 ```js
 import { useId } from 'react';
@@ -30,35 +30,35 @@ function PasswordField() {
   // ...
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
-#### Parameters {/*parameters*/}
+#### 매개변수 {/*parameters*/}
 
-`useId` does not take any parameters.
+`useId`는 매개변수를 받지 않습니다.
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-`useId` returns a unique ID string associated with this particular `useId` call in this particular component.
+`useId`는 이 특정 컴포넌트의 이 특정 `useId` 호출과 관련된 고유 ID 문자열을 반환합니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* `useId` is a Hook, so you can only call it **at the top level of your component** or your own Hooks. You can't call it inside loops or conditions. If you need that, extract a new component and move the state into it.
+* `useId`는 Hook이므로 **컴포넌트의 최상위 레벨** 또는 자체 Hook에서만 호출할 수 있습니다. 루프나 조건문 내에서 호출할 수 없습니다. 그런 경우에는 새로운 컴포넌트를 추출하고 상태를 그 안으로 이동하세요.
 
-* `useId` **should not be used to generate keys** in a list. [Keys should be generated from your data.](/learn/rendering-lists#where-to-get-your-key)
+* `useId`는 **목록에서 키를 생성하는 데 사용해서는 안 됩니다**. [키는 데이터에서 생성되어야 합니다.](/learn/rendering-lists#where-to-get-your-key)
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
 <Pitfall>
 
-**Do not call `useId` to generate keys in a list.** [Keys should be generated from your data.](/learn/rendering-lists#where-to-get-your-key)
+**목록에서 키를 생성하기 위해 `useId`를 호출하지 마세요.** [키는 데이터에서 생성되어야 합니다.](/learn/rendering-lists#where-to-get-your-key)
 
 </Pitfall>
 
-### Generating unique IDs for accessibility attributes {/*generating-unique-ids-for-accessibility-attributes*/}
+### 접근성 속성을 위한 고유 ID 생성 {/*generating-unique-ids-for-accessibility-attributes*/}
 
-Call `useId` at the top level of your component to generate a unique ID:
+고유 ID를 생성하기 위해 컴포넌트의 최상위 레벨에서 `useId`를 호출하세요:
 
 ```js [[1, 4, "passwordHintId"]]
 import { useId } from 'react';
@@ -68,7 +68,7 @@ function PasswordField() {
   // ...
 ```
 
-You can then pass the <CodeStep step={1}>generated ID</CodeStep> to different attributes:
+그런 다음 <CodeStep step={1}>생성된 ID</CodeStep>를 다양한 속성에 전달할 수 있습니다:
 
 ```js [[1, 2, "passwordHintId"], [1, 3, "passwordHintId"]]
 <>
@@ -77,11 +77,11 @@ You can then pass the <CodeStep step={1}>generated ID</CodeStep> to different at
 </>
 ```
 
-**Let's walk through an example to see when this is useful.**
+**이것이 유용한 경우를 예제로 살펴보겠습니다.**
 
-[HTML accessibility attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) like [`aria-describedby`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-describedby) let you specify that two tags are related to each other. For example, you can specify that an element (like an input) is described by another element (like a paragraph).
+[HTML 접근성 속성](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)인 [`aria-describedby`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-describedby)와 같은 속성은 두 태그가 서로 관련이 있음을 지정할 수 있게 해줍니다. 예를 들어, 입력 요소와 같은 요소가 단락과 같은 다른 요소에 의해 설명된다고 지정할 수 있습니다.
 
-In regular HTML, you would write it like this:
+일반 HTML에서는 다음과 같이 작성합니다:
 
 ```html {5,8}
 <label>
@@ -92,11 +92,11 @@ In regular HTML, you would write it like this:
   />
 </label>
 <p id="password-hint">
-  The password should contain at least 18 characters
+  비밀번호는 최소 18자 이상이어야 합니다
 </p>
 ```
 
-However, hardcoding IDs like this is not a good practice in React. A component may be rendered more than once on the page--but IDs have to be unique! Instead of hardcoding an ID, generate a unique ID with `useId`:
+그러나 React에서는 이렇게 ID를 하드코딩하는 것은 좋은 방법이 아닙니다. 컴포넌트는 페이지에 여러 번 렌더링될 수 있지만, ID는 고유해야 합니다! ID를 하드코딩하는 대신 `useId`로 고유 ID를 생성하세요:
 
 ```js {4,11,14}
 import { useId } from 'react';
@@ -113,14 +113,14 @@ function PasswordField() {
         />
       </label>
       <p id={passwordHintId}>
-        The password should contain at least 18 characters
+        비밀번호는 최소 18자 이상이어야 합니다
       </p>
     </>
   );
 }
 ```
 
-Now, even if `PasswordField` appears multiple times on the screen, the generated IDs won't clash.
+이제 `PasswordField`가 화면에 여러 번 나타나더라도 생성된 ID가 충돌하지 않습니다.
 
 <Sandpack>
 
@@ -139,7 +139,7 @@ function PasswordField() {
         />
       </label>
       <p id={passwordHintId}>
-        The password should contain at least 18 characters
+        비밀번호는 최소 18자 이상이어야 합니다
       </p>
     </>
   );
@@ -148,9 +148,9 @@ function PasswordField() {
 export default function App() {
   return (
     <>
-      <h2>Choose password</h2>
+      <h2>비밀번호 선택</h2>
       <PasswordField />
-      <h2>Confirm password</h2>
+      <h2>비밀번호 확인</h2>
       <PasswordField />
     </>
   );
@@ -163,33 +163,33 @@ input { margin: 5px; }
 
 </Sandpack>
 
-[Watch this video](https://www.youtube.com/watch?v=0dNzNcuEuOo) to see the difference in the user experience with assistive technologies.
+[이 비디오를 시청하세요](https://www.youtube.com/watch?v=0dNzNcuEuOo) 보조 기술을 사용하는 사용자 경험의 차이를 확인할 수 있습니다.
 
 <Pitfall>
 
-With [server rendering](/reference/react-dom/server), **`useId` requires an identical component tree on the server and the client**. If the trees you render on the server and the client don't match exactly, the generated IDs won't match.
+[서버 렌더링](/reference/react-dom/server)과 함께, **`useId`는 서버와 클라이언트에서 동일한 컴포넌트 트리를 필요로 합니다**. 서버와 클라이언트에서 렌더링된 트리가 정확히 일치하지 않으면 생성된 ID가 일치하지 않습니다.
 
 </Pitfall>
 
 <DeepDive>
 
-#### Why is useId better than an incrementing counter? {/*why-is-useid-better-than-an-incrementing-counter*/}
+#### 왜 useId가 증가하는 카운터보다 나은가요? {/*why-is-useid-better-than-an-incrementing-counter*/}
 
-You might be wondering why `useId` is better than incrementing a global variable like `nextId++`.
+`useId`가 `nextId++`와 같은 전역 변수를 증가시키는 것보다 왜 나은지 궁금할 수 있습니다.
 
-The primary benefit of `useId` is that React ensures that it works with [server rendering.](/reference/react-dom/server) During server rendering, your components generate HTML output. Later, on the client, [hydration](/reference/react-dom/client/hydrateRoot) attaches your event handlers to the generated HTML. For hydration to work, the client output must match the server HTML.
+`useId`의 주요 이점은 React가 [서버 렌더링](/reference/react-dom/server)과 함께 작동하도록 보장한다는 것입니다. 서버 렌더링 동안, 컴포넌트는 HTML 출력을 생성합니다. 나중에 클라이언트에서 [하이드레이션](/reference/react-dom/client/hydrateRoot)은 생성된 HTML에 이벤트 핸들러를 연결합니다. 하이드레이션이 작동하려면 클라이언트 출력이 서버 HTML과 일치해야 합니다.
 
-This is very difficult to guarantee with an incrementing counter because the order in which the Client Components are hydrated may not match the order in which the server HTML was emitted. By calling `useId`, you ensure that hydration will work, and the output will match between the server and the client.
+클라이언트 컴포넌트가 하이드레이션되는 순서가 서버 HTML이 출력된 순서와 일치하지 않을 수 있기 때문에 증가하는 카운터로 이를 보장하는 것은 매우 어렵습니다. `useId`를 호출함으로써 하이드레이션이 작동하고, 서버와 클라이언트 간의 출력이 일치하도록 보장할 수 있습니다.
 
-Inside React, `useId` is generated from the "parent path" of the calling component. This is why, if the client and the server tree are the same, the "parent path" will match up regardless of rendering order.
+React 내부에서 `useId`는 호출하는 컴포넌트의 "부모 경로"에서 생성됩니다. 이것이 클라이언트와 서버 트리가 동일한 경우, 렌더링 순서와 상관없이 "부모 경로"가 일치하는 이유입니다.
 
 </DeepDive>
 
 ---
 
-### Generating IDs for several related elements {/*generating-ids-for-several-related-elements*/}
+### 여러 관련 요소에 대한 ID 생성 {/*generating-ids-for-several-related-elements*/}
 
-If you need to give IDs to multiple related elements, you can call `useId` to generate a shared prefix for them: 
+여러 관련 요소에 ID를 부여해야 하는 경우, `useId`를 호출하여 공유 접두사를 생성할 수 있습니다:
 
 <Sandpack>
 
@@ -200,10 +200,10 @@ export default function Form() {
   const id = useId();
   return (
     <form>
-      <label htmlFor={id + '-firstName'}>First Name:</label>
+      <label htmlFor={id + '-firstName'}>이름:</label>
       <input id={id + '-firstName'} type="text" />
       <hr />
-      <label htmlFor={id + '-lastName'}>Last Name:</label>
+      <label htmlFor={id + '-lastName'}>성:</label>
       <input id={id + '-lastName'} type="text" />
     </form>
   );
@@ -216,13 +216,13 @@ input { margin: 5px; }
 
 </Sandpack>
 
-This lets you avoid calling `useId` for every single element that needs a unique ID.
+이렇게 하면 고유 ID가 필요한 모든 요소에 대해 `useId`를 호출할 필요가 없습니다.
 
 ---
 
-### Specifying a shared prefix for all generated IDs {/*specifying-a-shared-prefix-for-all-generated-ids*/}
+### 생성된 모든 ID에 대한 공유 접두사 지정 {/*specifying-a-shared-prefix-for-all-generated-ids*/}
 
-If you render multiple independent React applications on a single page, pass `identifierPrefix` as an option to your [`createRoot`](/reference/react-dom/client/createRoot#parameters) or [`hydrateRoot`](/reference/react-dom/client/hydrateRoot) calls. This ensures that the IDs generated by the two different apps never clash because every identifier generated with `useId` will start with the distinct prefix you've specified.
+단일 페이지에 여러 독립적인 React 애플리케이션을 렌더링하는 경우, [`createRoot`](/reference/react-dom/client/createRoot#parameters) 또는 [`hydrateRoot`](/reference/react-dom/client/hydrateRoot) 호출에 옵션으로 `identifierPrefix`를 전달하세요. 이렇게 하면 두 개의 다른 앱에서 생성된 ID가 충돌하지 않도록 보장할 수 있습니다. `useId`로 생성된 모든 식별자는 지정한 고유 접두사로 시작합니다.
 
 <Sandpack>
 
@@ -253,7 +253,7 @@ function PasswordField() {
         />
       </label>
       <p id={passwordHintId}>
-        The password should contain at least 18 characters
+        비밀번호는 최소 18자 이상이어야 합니다
       </p>
     </>
   );
@@ -262,7 +262,7 @@ function PasswordField() {
 export default function App() {
   return (
     <>
-      <h2>Choose password</h2>
+      <h2>비밀번호 선택</h2>
       <PasswordField />
     </>
   );
@@ -305,12 +305,12 @@ input { margin: 5px; }
 
 ---
 
-### Using the same ID prefix on the client and the server {/*using-the-same-id-prefix-on-the-client-and-the-server*/}
+### 클라이언트와 서버에서 동일한 ID 접두사 사용 {/*using-the-same-id-prefix-on-the-client-and-the-server*/}
 
-If you [render multiple independent React apps on the same page](#specifying-a-shared-prefix-for-all-generated-ids), and some of these apps are server-rendered, make sure that the `identifierPrefix` you pass to the [`hydrateRoot`](/reference/react-dom/client/hydrateRoot) call on the client side is the same as the `identifierPrefix` you pass to the [server APIs](/reference/react-dom/server) such as [`renderToPipeableStream`.](/reference/react-dom/server/renderToPipeableStream)
+[단일 페이지에 여러 독립적인 React 앱을 렌더링하는 경우](#specifying-a-shared-prefix-for-all-generated-ids), 이들 앱 중 일부가 서버 렌더링된 경우, 클라이언트 측의 [`hydrateRoot`](/reference/react-dom/client/hydrateRoot) 호출에 전달하는 `identifierPrefix`가 [서버 API](/reference/react-dom/server)인 [`renderToPipeableStream`](/reference/react-dom/server/renderToPipeableStream) 등에 전달하는 `identifierPrefix`와 동일한지 확인하세요.
 
 ```js
-// Server
+// 서버
 import { renderToPipeableStream } from 'react-dom/server';
 
 const { pipe } = renderToPipeableStream(
@@ -320,7 +320,7 @@ const { pipe } = renderToPipeableStream(
 ```
 
 ```js
-// Client
+// 클라이언트
 import { hydrateRoot } from 'react-dom/client';
 
 const domNode = document.getElementById('root');
@@ -331,4 +331,4 @@ const root = hydrateRoot(
 );
 ```
 
-You do not need to pass `identifierPrefix` if you only have one React app on the page.
+페이지에 React 앱이 하나만 있는 경우 `identifierPrefix`를 전달할 필요가 없습니다.

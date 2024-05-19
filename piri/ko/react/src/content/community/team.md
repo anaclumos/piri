@@ -1,103 +1,103 @@
 ---
-title: "Meet the Team"
+title: 팀 소개
 ---
 
 <Intro>
 
-React development is led by a dedicated team working full time at Meta. It also receives contributions from people all over the world.
+React 개발은 Meta에서 전담 팀이 주도하고 있습니다. 또한 전 세계 사람들의 기여를 받고 있습니다.
 
 </Intro>
 
 ## React Core {/*react-core*/}
 
-The React Core team members work full time on the core component APIs, the engine that powers React DOM and React Native, React DevTools, and the React documentation website.
+React Core 팀원들은 React DOM과 React Native를 구동하는 엔진, React DevTools, 그리고 React 문서 웹사이트의 핵심 구성 요소 API에 전념하여 풀타임으로 일하고 있습니다.
 
-Current members of the React team are listed in alphabetical order below.
+현재 React 팀의 멤버들은 아래에 알파벳 순서로 나열되어 있습니다.
 
-<TeamMember name="Andrew Clark" permalink="andrew-clark" photo="/images/team/acdlite.jpg" github="acdlite" twitter="acdlite" threads="acdlite" title="Engineer at Vercel">
-    Andrew got started with web development by making sites with WordPress, and eventually tricked himself into doing JavaScript. His favorite pastime is karaoke. Andrew is either a Disney villain or a Disney princess, depending on the day.
+<TeamMember name="Andrew Clark" permalink="andrew-clark" photo="/images/team/acdlite.jpg" github="acdlite" twitter="acdlite" threads="acdlite" title="Vercel의 엔지니어">
+    Andrew는 WordPress로 사이트를 만들면서 웹 개발을 시작했고, 결국 JavaScript를 하게 되었습니다. 그의 가장 좋아하는 취미는 노래방입니다. Andrew는 그날의 기분에 따라 디즈니 악당이 되기도 하고 디즈니 공주가 되기도 합니다.
 </TeamMember>
 
-<TeamMember name="Dan Abramov" permalink="dan-abramov" photo="/images/team/gaearon.jpg" github="gaearon" twitter="dan_abramov2" title="Independent Engineer">
-    Dan got into programming after he accidentally discovered Visual Basic inside Microsoft PowerPoint. He has found his true calling in turning [Sebastian](#sebastian-markbåge)'s tweets into long-form blog posts. Dan occasionally wins at Fortnite by hiding in a bush until the game ends.
+<TeamMember name="Dan Abramov" permalink="dan-abramov" photo="/images/team/gaearon.jpg" github="gaearon" twitter="dan_abramov2" title="독립 엔지니어">
+    Dan은 Microsoft PowerPoint에서 Visual Basic을 우연히 발견한 후 프로그래밍에 빠졌습니다. 그는 [Sebastian](#sebastian-markbåge)의 트윗을 장문의 블로그 게시물로 바꾸는 데 진정한 소명을 찾았습니다. Dan은 때때로 Fortnite에서 게임이 끝날 때까지 덤불 속에 숨어서 승리합니다.
 </TeamMember>
 
-<TeamMember name="Eli White" permalink="eli-white" photo="/images/team/eli-white.jpg" github="TheSavior" twitter="Eli_White" threads="elicwhite" title="Engineering Manager at Meta">
-    Eli got into programming after he got suspended from middle school for hacking. He has been working on React and React Native since 2017. He enjoys eating treats, especially ice cream and apple pie. You can find Eli trying quirky activities like parkour, indoor skydiving, and aerial silks.
+<TeamMember name="Eli White" permalink="eli-white" photo="/images/team/eli-white.jpg" github="TheSavior" twitter="Eli_White" threads="elicwhite" title="Meta의 엔지니어링 매니저">
+    Eli는 중학교에서 해킹으로 정학을 당한 후 프로그래밍에 빠졌습니다. 그는 2017년부터 React와 React Native에서 일해왔습니다. 그는 특히 아이스크림과 애플 파이를 좋아합니다. Eli는 파쿠르, 실내 스카이다이빙, 공중 실크와 같은 독특한 활동을 시도하는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Jack Pope" permalink="jack-pope" photo="/images/team/jack-pope.jpg" github="jackpope" personal="jackpope.me" title="Engineer at Meta">
-    Shortly after being introduced to AutoHotkey, Jack had written scripts to automate everything he could think of. When reaching limitations there, he dove headfirst into web app development and hasn't looked back. Most recently, Jack worked on the web platform at Instagram before moving to React. His favorite programming language is JSX.
+<TeamMember name="Jack Pope" permalink="jack-pope" photo="/images/team/jack-pope.jpg" github="jackpope" personal="jackpope.me" title="Meta의 엔지니어">
+    Jack은 AutoHotkey를 접한 후 생각할 수 있는 모든 것을 자동화하는 스크립트를 작성했습니다. 그 한계를 느낀 후, 그는 웹 앱 개발에 뛰어들었고 뒤돌아보지 않았습니다. 최근에는 Instagram의 웹 플랫폼에서 일하다가 React로 옮겼습니다. 그의 가장 좋아하는 프로그래밍 언어는 JSX입니다.
 </TeamMember>
 
-<TeamMember name="Jason Bonta" permalink="jason-bonta" photo="/images/team/jasonbonta.jpg" threads="someextent" title="Engineering Manager at Meta">
-    Jason abandoned embedded C for a career in front-end engineering and never looked back. Armed with esoteric CSS knowledge and a passion for beautiful UI, Jason joined Facebook in 2010, where he now feels privileged to have seen JavaScript development come of age. Though he may not understand how `for...of` loops work, he loves getting to work with brilliant people on projects that enable amazing UX.
+<TeamMember name="Jason Bonta" permalink="jason-bonta" photo="/images/team/jasonbonta.jpg" threads="someextent" title="Meta의 엔지니어링 매니저">
+    Jason은 임베디드 C를 포기하고 프론트엔드 엔지니어링 경력을 쌓기 시작했습니다. 그는 난해한 CSS 지식과 아름다운 UI에 대한 열정을 가지고 2010년에 Facebook에 합류했으며, JavaScript 개발이 성숙해지는 것을 지켜볼 수 있는 특권을 누리고 있습니다. 비록 `for...of` 루프가 어떻게 작동하는지 이해하지 못할지라도, 그는 놀라운 UX를 가능하게 하는 프로젝트에서 뛰어난 사람들과 함께 일하는 것을 좋아합니다.
 </TeamMember>
 
-<TeamMember name="Joe Savona" permalink="joe-savona" photo="/images/team/joe.jpg" github="josephsavona" twitter="en_JS" threads="joesavona" title="Engineer at Meta">
-    Joe was planning to major in math and philosophy but got into computer science after writing physics simulations in Matlab. Prior to React, he worked on Relay, RSocket.js, and the Skip programming language. While he’s not building some sort of reactive system he enjoys running, studying Japanese, and spending time with his family.
+<TeamMember name="Joe Savona" permalink="joe-savona" photo="/images/team/joe.jpg" github="josephsavona" twitter="en_JS" threads="joesavona" title="Meta의 엔지니어">
+    Joe는 수학과 철학을 전공할 계획이었지만 Matlab에서 물리 시뮬레이션을 작성한 후 컴퓨터 과학에 빠졌습니다. React 이전에는 Relay, RSocket.js, Skip 프로그래밍 언어에서 일했습니다. 반응형 시스템을 구축하지 않을 때는 달리기, 일본어 공부, 가족과 시간을 보내는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Josh Story" permalink="josh-story" photo="/images/team/josh.jpg" github="gnoff" twitter="joshcstory" title="Engineer at Vercel">
-    Josh majored in Mathematics and discovered programming while in college. His first professional developer job was to program insurance rate calculations in Microsoft Excel, the paragon of Reactive Programming which must be why he now works on React. In between that time Josh has been an IC, Manager, and Executive at a few startups. outside of work he likes to push his limits with cooking.
+<TeamMember name="Josh Story" permalink="josh-story" photo="/images/team/josh.jpg" github="gnoff" twitter="joshcstory" title="Vercel의 엔지니어">
+    Josh는 수학을 전공했고 대학에서 프로그래밍을 발견했습니다. 그의 첫 번째 직업은 Microsoft Excel에서 보험 요율 계산을 프로그래밍하는 것이었으며, 이는 그가 현재 React에서 일하는 이유일 것입니다. 그 사이에 Josh는 몇몇 스타트업에서 IC, 매니저, 임원으로 일했습니다. 업무 외에는 요리에 도전하는 것을 좋아합니다.
 </TeamMember>
 
-<TeamMember name="Lauren Tan" permalink="lauren-tan" photo="/images/team/lauren.jpg" github="poteto" twitter="potetotes" threads="potetotes" personal="no.lol" title="Engineer at Meta">
-    Lauren's programming career peaked when she first discovered the `<marquee>` tag. She’s been chasing that high ever since. She studied Finance instead of CS in college, so she learned to code using Excel instead of Java. Lauren enjoys dropping cheeky memes in chat, playing video games with her partner, and petting her dog Zelda.
+<TeamMember name="Lauren Tan" permalink="lauren-tan" photo="/images/team/lauren.jpg" github="poteto" twitter="potetotes" threads="potetotes" personal="no.lol" title="Meta의 엔지니어">
+    Lauren의 프로그래밍 경력은 `<marquee>` 태그를 처음 발견했을 때 절정에 달했습니다. 그녀는 그 이후로 그 기쁨을 쫓고 있습니다. 대학에서 CS 대신 금융을 전공했기 때문에 Excel을 사용하여 코딩을 배웠습니다. Lauren은 채팅에 장난스러운 밈을 떨어뜨리고, 파트너와 비디오 게임을 하고, 그녀의 개 Zelda를 쓰다듬는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Luna Wei" permalink="luna-wei" photo="/images/team/luna-wei.jpg" github="lunaleaps" twitter="lunaleaps" threads="lunaleaps" title="Engineer at Meta">
-    Luna first learnt the fundamentals of python at the age of 6 from her father. Since then, she has been unstoppable. Luna aspires to be a gen z, and the road to success is paved with environmental advocacy, urban gardening and lots of quality time with her Voo-Doo’d (as pictured).
+<TeamMember name="Luna Wei" permalink="luna-wei" photo="/images/team/luna-wei.jpg" github="lunaleaps" twitter="lunaleaps" threads="lunaleaps" title="Meta의 엔지니어">
+    Luna는 6살 때 아버지로부터 파이썬의 기초를 배웠습니다. 그 이후로 그녀는 멈추지 않았습니다. Luna는 Z세대가 되기를 열망하며, 성공으로 가는 길은 환경 보호, 도시 정원 가꾸기, 그리고 많은 품질 시간으로 가득 차 있습니다.
 </TeamMember>
 
-<TeamMember name="Matt Carroll" permalink="matt-carroll" photo="/images/team/matt-carroll.png" github="mattcarrollcode" twitter="mattcarrollcode" threads="mattcarrollcode" title="Developer Advocate at Meta">
-    Matt stumbled into coding, and since then, has become enamored with creating things in communities that can’t be created alone. Prior to React, he worked on YouTube, the Google Assistant, Fuchsia, and Google Cloud AI and Evernote. When he's not trying to make better developer tools he enjoys the mountains, jazz, and spending time with his family.
+<TeamMember name="Matt Carroll" permalink="matt-carroll" photo="/images/team/matt-carroll.png" github="mattcarrollcode" twitter="mattcarrollcode" threads="mattcarrollcode" title="Meta의 개발자 옹호자">
+    Matt는 코딩에 우연히 빠져들었고, 그 이후로 혼자서는 만들 수 없는 것들을 커뮤니티에서 만드는 것에 매료되었습니다. React 이전에는 YouTube, Google Assistant, Fuchsia, Google Cloud AI 및 Evernote에서 일했습니다. 더 나은 개발자 도구를 만들려고 하지 않을 때는 산, 재즈, 가족과 시간을 보내는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Mofei Zhang" permalink="mofei-zhang" photo="/images/team/mofei-zhang.png" github="mofeiZ" threads="z_mofei" title="Engineer at Meta">
-    Mofei started programming when she realized it can help her cheat in video games. She focused on operating systems in undergrad / grad school, but now finds herself happily tinkering on React. Outside of work, she enjoys debugging bouldering problems and planning her next backpacking trip(s).
+<TeamMember name="Mofei Zhang" permalink="mofei-zhang" photo="/images/team/mofei-zhang.png" github="mofeiZ" threads="z_mofei" title="Meta의 엔지니어">
+    Mofei는 비디오 게임에서 치트하는 데 도움이 될 수 있다는 것을 깨달았을 때 프로그래밍을 시작했습니다. 학부/대학원에서 운영 체제를 전공했지만, 지금은 React에서 행복하게 작업하고 있습니다. 업무 외에는 볼더링 문제를 디버깅하고 다음 배낭 여행을 계획하는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Noah Lemen" permalink="noah-lemen" photo="/images/team/noahlemen.jpg" github="noahlemen" twitter="noahlemen" threads="noahlemen" personal="noahle.men" title="Engineer at Meta">
-    Noah’s interest in UI programming sparked during his education in music technology at NYU. At Meta, he's worked on internal tools, browsers, web performance, and is currently focused on React. Outside of work, Noah can be found tinkering with synthesizers or spending time with his cat.
+<TeamMember name="Noah Lemen" permalink="noah-lemen" photo="/images/team/noahlemen.jpg" github="noahlemen" twitter="noahlemen" threads="noahlemen" personal="noahle.men" title="Meta의 엔지니어">
+    Noah는 NYU에서 음악 기술을 공부하면서 UI 프로그래밍에 대한 관심을 갖게 되었습니다. Meta에서 그는 내부 도구, 브라우저, 웹 성능에 대해 작업했으며 현재는 React에 집중하고 있습니다. 업무 외에는 신디사이저를 만지작거리거나 고양이와 시간을 보내는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Rick Hanlon" permalink="rick-hanlon" photo="/images/team/rickhanlonii.jpg" github="rickhanlonii" twitter="rickhanlonii" threads="rickhanlonii" personal="rickhanlon.codes" title="Engineer at Meta">
-    Ricky majored in theoretical math and somehow found himself on the React Native team for a couple years before joining the React team. When he's not programming you can find him snowboarding, biking, climbing, golfing, or closing GitHub issues that do not match the issue template.
+<TeamMember name="Rick Hanlon" permalink="rick-hanlon" photo="/images/team/rickhanlonii.jpg" github="rickhanlonii" twitter="rickhanlonii" threads="rickhanlonii" personal="rickhanlon.codes" title="Meta의 엔지니어">
+    Ricky는 이론 수학을 전공했으며 몇 년 동안 React Native 팀에 있다가 React 팀에 합류했습니다. 프로그래밍을 하지 않을 때는 스노보드, 자전거 타기, 등반, 골프를 하거나 이슈 템플릿과 일치하지 않는 GitHub 이슈를 닫는 것을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Ruslan Lesiutin" permalink="ruslan-lesiutin" photo="/images/team/lesiutin.jpg" github="hoxyq" twitter="ruslanlesiutin" threads="lesiutin" title="Engineer at Meta">
-    Ruslan's introduction to UI programming started when he was a kid by manually editing HTML templates for his custom gaming forums. Somehow, he ended up majoring in Computer Science. He enjoys music, games, and memes. Mostly memes.
+<TeamMember name="Ruslan Lesiutin" permalink="ruslan-lesiutin" photo="/images/team/lesiutin.jpg" github="hoxyq" twitter="ruslanlesiutin" threads="lesiutin" title="Meta의 엔지니어">
+    Ruslan의 UI 프로그래밍 소개는 어린 시절 커스텀 게임 포럼을 위해 HTML 템플릿을 수동으로 편집하면서 시작되었습니다. 그는 컴퓨터 과학을 전공하게 되었습니다. 그는 음악, 게임, 밈을 즐깁니다. 주로 밈.
 </TeamMember>
 
-<TeamMember name="Sathya Gunasekaran " permalink="sathya-gunasekaran" photo="/images/team/sathya.jpg" github="gsathya" twitter="_gsathya" threads="gsathya.03" title="Engineer at Meta">
-    Sathya hated the Dragon Book in school but somehow ended up working on compilers all his career. When he's not compiling React components, he's either drinking coffee or eating yet another Dosa.
+<TeamMember name="Sathya Gunasekaran " permalink="sathya-gunasekaran" photo="/images/team/sathya.jpg" github="gsathya" twitter="_gsathya" threads="gsathya.03" title="Meta의 엔지니어">
+    Sathya는 학교에서 Dragon Book을 싫어했지만, 경력 내내 컴파일러 작업을 하게 되었습니다. React 컴포넌트를 컴파일하지 않을 때는 커피를 마시거나 또 다른 도사를 먹고 있습니다.
 </TeamMember>
 
-<TeamMember name="Sebastian Markbåge" permalink="sebastian-markbåge" photo="/images/team/sebmarkbage.jpg" github="sebmarkbage" twitter="sebmarkbage" threads="sebmarkbage" title="Engineer at Vercel">
-    Sebastian majored in psychology. He's usually quiet. Even when he says something, it often doesn't make sense to the rest of us until a few months later. The correct way to pronounce his surname is "mark-boa-geh" but he settled for "mark-beige" out of pragmatism -- and that's how he approaches React.
+<TeamMember name="Sebastian Markbåge" permalink="sebastian-markbåge" photo="/images/team/sebmarkbage.jpg" github="sebmarkbage" twitter="sebmarkbage" threads="sebmarkbage" title="Vercel의 엔지니어">
+    Sebastian은 심리학을 전공했습니다. 그는 보통 조용합니다. 무언가를 말할 때도, 몇 달 후에야 다른 사람들이 이해할 수 있는 경우가 많습니다. 그의 성을 올바르게 발음하는 방법은 "mark-boa-geh"이지만, 실용성을 위해 "mark-beige"로 정착했으며, React에 접근하는 방식도 그렇습니다.
 </TeamMember>
 
-<TeamMember name="Sebastian Silbermann" permalink="sebastian-silbermann" photo="/images/team/sebsilbermann.jpg" github="eps1lon" twitter="sebsilbermann" threads="sebsilbermann" title="Engineer at Vercel">
-    Sebastian learned programming to make the browser games he played during class more enjoyable. Eventually this lead to contributing to as much open source code as possible. Outside of coding he's busy making sure people don't confuse him with the other Sebastians and Zilberman of the React community.
+<TeamMember name="Sebastian Silbermann" permalink="sebastian-silbermann" photo="/images/team/sebsilbermann.jpg" github="eps1lon" twitter="sebsilbermann" threads="sebsilbermann" title="Vercel의 엔지니어">
+    Sebastian은 수업 중에 즐기던 브라우저 게임을 더 재미있게 만들기 위해 프로그래밍을 배웠습니다. 결국 이는 가능한 한 많은 오픈 소스 코드에 기여하는 것으로 이어졌습니다. 코딩 외에는 사람들이 그를 다른 Sebastian들과 Zilberman과 혼동하지 않도록 하는 데 바쁩니다.
 </TeamMember>
 
-<TeamMember name="Seth Webster" permalink="seth-webster" photo="/images/team/seth.jpg" github="sethwebster" twitter="sethwebster" threads="sethwebster" personal="sethwebster.com" title="Engineering Manager at Meta">
-    Seth started programming as a kid growing up in Tucson, AZ. After school, he was bitten by the music bug and was a touring musician for about 10 years before returning to *work*, starting with Intuit. In his spare time, he loves [taking pictures](https://www.sethwebster.com) and flying for animal rescues in the northeastern United States.
+<TeamMember name="Seth Webster" permalink="seth-webster" photo="/images/team/seth.jpg" github="sethwebster" twitter="sethwebster" threads="sethwebster" personal="sethwebster.com" title="Meta의 엔지니어링 매니저">
+    Seth는 애리조나 투손에서 자라면서 어린 시절 프로그래밍을 시작했습니다. 학교를 마친 후, 그는 음악에 빠져 약 10년 동안 투어 뮤지션으로 활동하다가 Intuit에서 일을 시작했습니다. 여가 시간에는 [사진 찍기](https://www.sethwebster.com)와 미국 북동부에서 동물 구조를 위한 비행을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Sophie Alpert" permalink="sophie-alpert" photo="/images/team/sophiebits.jpg" github="sophiebits" twitter="sophiebits" threads="sophiebits" personal="sophiebits.com" title="Independent Engineer">
-    Four days after React was released, Sophie rewrote the entirety of her then-current project to use it, which she now realizes was perhaps a bit reckless. After she became the project's #1 committer, she wondered why she wasn't getting paid by Facebook like everyone else was and joined the team officially to lead React through its adolescent years. Though she quit that job years ago, somehow she's still in the team's group chats and “providing value”.
+<TeamMember name="Sophie Alpert" permalink="sophie-alpert" photo="/images/team/sophiebits.jpg" github="sophiebits" twitter="sophiebits" threads="sophiebits" personal="sophiebits.com" title="독립 엔지니어">
+    React가 출시된 지 4일 만에 Sophie는 당시 프로젝트 전체를 React로 다시 작성했으며, 지금은 그것이 다소 무모했음을 깨닫고 있습니다. 프로젝트의 #1 커미터가 된 후, 그녀는 왜 다른 사람들처럼 Facebook에서 급여를 받지 않는지 궁금해하며 공식적으로 팀에 합류하여 React의 청소년기를 이끌었습니다. 몇 년 전 그 직장을 그만두었지만, 여전히 팀의 그룹 채팅에 참여하고 "가치를 제공"하고 있습니다.
 </TeamMember>
 
-<TeamMember name="Tianyu Yao" permalink="tianyu-yao" photo="/images/team/tianyu.jpg" github="tyao1" twitter="tianyu0" title="Engineer at Meta">
-    Tianyu’s interest in computers started as a kid because he loves video games. So he majored in computer science and still plays childish games like League of Legends. When he is not in front of a computer, he enjoys playing with his two kittens, hiking and kayaking.
+<TeamMember name="Tianyu Yao" permalink="tianyu-yao" photo="/images/team/tianyu.jpg" github="tyao1" twitter="tianyu0" title="Meta의 엔지니어">
+    Tianyu는 어릴 때 비디오 게임을 좋아해서 컴퓨터에 관심을 갖게 되었습니다. 그래서 컴퓨터 과학을 전공했고 여전히 League of Legends와 같은 유치한 게임을 합니다. 컴퓨터 앞에 있지 않을 때는 두 마리의 새끼 고양이와 놀거나 하이킹, 카약을 즐깁니다.
 </TeamMember>
 
-<TeamMember name="Yuzhi Zheng" permalink="yuzhi-zheng" photo="/images/team/yuzhi.jpg" github="yuzhi" twitter="yuzhiz" threads="yuzhiz" title="Engineering Manager at Meta">
-    Yuzhi studied Computer Science in school. She liked the instant gratification of seeing code come to life without having to physically be in a laboratory. Now she’s a manager in the React org. Before management, she used to work on the Relay data fetching framework. In her spare time, Yuzhi enjoys optimizing her life via gardening and home improvement projects.
+<TeamMember name="Yuzhi Zheng" permalink="yuzhi-zheng" photo="/images/team/yuzhi.jpg" github="yuzhi" twitter="yuzhiz" threads="yuzhiz" title="Meta의 엔지니어링 매니저">
+    Yuzhi는 학교에서 컴퓨터 과학을 공부했습니다. 그녀는 실험실에 물리적으로 있지 않고도 코드를 실현하는 즉각적인 만족감을 좋아했습니다. 이제 그녀는 React 조직의 매니저입니다. 관리직 이전에는 Relay 데이터 페칭 프레임워크에서 일했습니다. 여가 시간에는 정원 가꾸기와 주택 개선 프로젝트를 통해 삶을 최적화하는 것을 즐깁니다.
 </TeamMember>
 
-## Past contributors {/*past-contributors*/}
+## 과거 기여자들 {/*past-contributors*/}
 
-You can find the past team members and other people who significantly contributed to React over the years on the [acknowledgements](/community/acknowledgements) page.
+과거 팀원들과 수년에 걸쳐 React에 크게 기여한 다른 사람들은 [감사 페이지](/community/acknowledgements)에서 찾을 수 있습니다.

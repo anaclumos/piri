@@ -1,30 +1,30 @@
 ---
-title: Adding Interactivity
+title: インタラクティビティの追加
 ---
 
 <Intro>
 
-Some things on the screen update in response to user input. For example, clicking an image gallery switches the active image. In React, data that changes over time is called *state.* You can add state to any component, and update it as needed. In this chapter, you'll learn how to write components that handle interactions, update their state, and display different output over time.
+画面上のいくつかの要素はユーザー入力に応じて更新されます。例えば、画像ギャラリーをクリックするとアクティブな画像が切り替わります。Reactでは、時間とともに変化するデータを*state*と呼びます。stateはどのコンポーネントにも追加でき、必要に応じて更新できます。この章では、インタラクションを処理し、stateを更新し、時間とともに異なる出力を表示するコンポーネントの書き方を学びます。
 
 </Intro>
 
 <YouWillLearn isChapter={true}>
 
-* [How to handle user-initiated events](/learn/responding-to-events)
-* [How to make components "remember" information with state](/learn/state-a-components-memory)
-* [How React updates the UI in two phases](/learn/render-and-commit)
-* [Why state doesn't update right after you change it](/learn/state-as-a-snapshot)
-* [How to queue multiple state updates](/learn/queueing-a-series-of-state-updates)
-* [How to update an object in state](/learn/updating-objects-in-state)
-* [How to update an array in state](/learn/updating-arrays-in-state)
+* [ユーザーが開始したイベントの処理方法](/learn/responding-to-events)
+* [stateを使ってコンポーネントが情報を「記憶」する方法](/learn/state-a-components-memory)
+* [ReactがUIを2つのフェーズで更新する方法](/learn/render-and-commit)
+* [stateが変更直後に更新されない理由](/learn/state-as-a-snapshot)
+* [複数のstate更新をキューに入れる方法](/learn/queueing-a-series-of-state-updates)
+* [state内のオブジェクトを更新する方法](/learn/updating-objects-in-state)
+* [state内の配列を更新する方法](/learn/updating-arrays-in-state)
 
 </YouWillLearn>
 
 ## Responding to events {/*responding-to-events*/}
 
-React lets you add *event handlers* to your JSX. Event handlers are your own functions that will be triggered in response to user interactions like clicking, hovering, focusing on form inputs, and so on.
+Reactでは、JSXに*イベントハンドラー*を追加できます。イベントハンドラーは、クリック、ホバー、フォーム入力のフォーカスなどのユーザーインタラクションに応じてトリガーされる独自の関数です。
 
-Built-in components like `<button>` only support built-in browser events like `onClick`. However, you can also create your own components, and give their event handler props any application-specific names that you like.
+`<button>`のような組み込みコンポーネントは、`onClick`のような組み込みのブラウザイベントのみをサポートします。しかし、独自のコンポーネントを作成し、イベントハンドラープロップに任意のアプリケーション固有の名前を付けることもできます。
 
 <Sandpack>
 
@@ -68,22 +68,22 @@ button { margin-right: 10px; }
 
 <LearnMore path="/learn/responding-to-events">
 
-Read **[Responding to Events](/learn/responding-to-events)** to learn how to add event handlers.
+**[Responding to Events](/learn/responding-to-events)**を読んで、イベントハンドラーの追加方法を学びましょう。
 
 </LearnMore>
 
 ## State: a component's memory {/*state-a-components-memory*/}
 
-Components often need to change what's on the screen as a result of an interaction. Typing into the form should update the input field, clicking "next" on an image carousel should change which image is displayed, clicking "buy" puts a product in the shopping cart. Components need to "remember" things: the current input value, the current image, the shopping cart. In React, this kind of component-specific memory is called *state.*
+コンポーネントは、インタラクションの結果として画面上の内容を変更する必要があることがよくあります。フォームに入力すると入力フィールドが更新され、画像カルーセルの「次へ」をクリックすると表示される画像が変わり、「購入」をクリックすると商品がショッピングカートに入ります。コンポーネントは、現在の入力値、現在の画像、ショッピングカートなどを「記憶」する必要があります。Reactでは、このようなコンポーネント固有のメモリを*state*と呼びます。
 
-You can add state to a component with a [`useState`](/reference/react/useState) Hook. *Hooks* are special functions that let your components use React features (state is one of those features). The `useState` Hook lets you declare a state variable. It takes the initial state and returns a pair of values: the current state, and a state setter function that lets you update it.
+[`useState`](/reference/react/useState)フックを使用してコンポーネントにstateを追加できます。*フック*は、コンポーネントがReactの機能（stateはその機能の1つ）を使用できるようにする特別な関数です。`useState`フックはstate変数を宣言することができます。初期stateを受け取り、現在のstateとそれを更新するためのstateセッター関数のペアを返します。
 
 ```js
 const [index, setIndex] = useState(0);
 const [showMore, setShowMore] = useState(false);
 ```
 
-Here is how an image gallery uses and updates state on click:
+ここでは、画像ギャラリーがクリック時にstateを使用して更新する方法を示します：
 
 <Sandpack>
 
@@ -229,19 +229,19 @@ button {
 
 <LearnMore path="/learn/state-a-components-memory">
 
-Read **[State: A Component's Memory](/learn/state-a-components-memory)** to learn how to remember a value and update it on interaction.
+**[State: A Component's Memory](/learn/state-a-components-memory)**を読んで、値を記憶し、インタラクション時に更新する方法を学びましょう。
 
 </LearnMore>
 
 ## Render and commit {/*render-and-commit*/}
 
-Before your components are displayed on the screen, they must be rendered by React. Understanding the steps in this process will help you think about how your code executes and explain its behavior.
+コンポーネントが画面に表示される前に、Reactによってレンダリングされる必要があります。このプロセスのステップを理解することで、コードの実行方法を考え、その動作を説明するのに役立ちます。
 
-Imagine that your components are cooks in the kitchen, assembling tasty dishes from ingredients. In this scenario, React is the waiter who puts in requests from customers and brings them their orders. This process of requesting and serving UI has three steps:
+コンポーネントがキッチンで材料から美味しい料理を作る料理人だと想像してください。このシナリオでは、Reactは顧客からのリクエストを受け取り、それを注文として持ってくるウェイターです。このUIのリクエストと提供のプロセスには3つのステップがあります：
 
-1. **Triggering** a render (delivering the diner's order to the kitchen)
-2. **Rendering** the component (preparing the order in the kitchen)
-3. **Committing** to the DOM (placing the order on the table)
+1. レンダリングの**トリガー**（ダイナーの注文をキッチンに届ける）
+2. コンポーネントの**レンダリング**（キッチンで注文を準備する）
+3. DOMへの**コミット**（テーブルに注文を置く）
 
 <IllustrationBlock sequential>
   <Illustration caption="Trigger" alt="React as a server in a restaurant, fetching orders from the users and delivering them to the Component Kitchen." src="/images/docs/illustrations/i_render-and-commit1.png" />
@@ -251,21 +251,21 @@ Imagine that your components are cooks in the kitchen, assembling tasty dishes f
 
 <LearnMore path="/learn/render-and-commit">
 
-Read **[Render and Commit](/learn/render-and-commit)** to learn the lifecycle of a UI update.
+**[Render and Commit](/learn/render-and-commit)**を読んで、UI更新のライフサイクルを学びましょう。
 
 </LearnMore>
 
 ## State as a snapshot {/*state-as-a-snapshot*/}
 
-Unlike regular JavaScript variables, React state behaves more like a snapshot. Setting it does not change the state variable you already have, but instead triggers a re-render. This can be surprising at first!
+通常のJavaScript変数とは異なり、Reactのstateはスナップショットのように動作します。stateを設定しても既存のstate変数は変更されず、代わりに再レンダリングがトリガーされます。これは最初は驚くかもしれません！
 
 ```js
 console.log(count);  // 0
-setCount(count + 1); // Request a re-render with 1
-console.log(count);  // Still 0!
+setCount(count + 1); // 1で再レンダリングをリクエスト
+console.log(count);  // まだ0！
 ```
 
-This behavior help you avoid subtle bugs. Here is a little chat app. Try to guess what happens if you press "Send" first and *then* change the recipient to Bob. Whose name will appear in the `alert` five seconds later?
+この動作は微妙なバグを回避するのに役立ちます。ここに小さなチャットアプリがあります。「送信」を押してから受信者をボブに変更した場合、5秒後に`alert`に表示される名前は誰でしょうか？
 
 <Sandpack>
 
@@ -314,13 +314,13 @@ label, textarea { margin-bottom: 10px; display: block; }
 
 <LearnMore path="/learn/state-as-a-snapshot">
 
-Read **[State as a Snapshot](/learn/state-as-a-snapshot)** to learn why state appears "fixed" and unchanging inside the event handlers.
+**[State as a Snapshot](/learn/state-as-a-snapshot)**を読んで、stateがイベントハンドラー内で「固定」されて変化しないように見える理由を学びましょう。
 
 </LearnMore>
 
 ## Queueing a series of state updates {/*queueing-a-series-of-state-updates*/}
 
-This component is buggy: clicking "+3" increments the score only once.
+このコンポーネントにはバグがあります：「+3」をクリックしてもスコアが一度しか増えません。
 
 <Sandpack>
 
@@ -354,7 +354,7 @@ button { display: inline-block; margin: 10px; font-size: 20px; }
 
 </Sandpack>
 
-[State as a Snapshot](/learn/state-as-a-snapshot) explains why this is happening. Setting state requests a new re-render, but does not change it in the already running code. So `score` continues to be `0` right after you call `setScore(score + 1)`.
+[State as a Snapshot](/learn/state-as-a-snapshot)は、これがなぜ起こるのかを説明しています。stateを設定すると新しい再レンダリングがリクエストされますが、既に実行中のコードでは変更されません。そのため、`score`は`setScore(score + 1)`を呼び出した直後も`0`のままです。
 
 ```js
 console.log(score);  // 0
@@ -366,7 +366,7 @@ setScore(score + 1); // setScore(0 + 1);
 console.log(score);  // 0
 ```
 
-You can fix this by passing an *updater function* when setting state. Notice how replacing `setScore(score + 1)` with `setScore(s => s + 1)` fixes the "+3" button. This lets you queue multiple state updates.
+stateを設定する際に*アップデータ関数*を渡すことでこれを修正できます。`setScore(score + 1)`を`setScore(s => s + 1)`に置き換えると、「+3」ボタンが修正されることに注目してください。これにより、複数のstate更新をキューに入れることができます。
 
 <Sandpack>
 
@@ -402,15 +402,15 @@ button { display: inline-block; margin: 10px; font-size: 20px; }
 
 <LearnMore path="/learn/queueing-a-series-of-state-updates">
 
-Read **[Queueing a Series of State Updates](/learn/queueing-a-series-of-state-updates)** to learn how to queue a sequence of state updates.
+**[Queueing a Series of State Updates](/learn/queueing-a-series-of-state-updates)**を読んで、state更新のシーケンスをキューに入れる方法を学びましょう。
 
 </LearnMore>
 
 ## Updating objects in state {/*updating-objects-in-state*/}
 
-State can hold any kind of JavaScript value, including objects. But you shouldn't change objects and arrays that you hold in the React state directly. Instead, when you want to update an object and array, you need to create a new one (or make a copy of an existing one), and then update the state to use that copy.
+stateにはオブジェクトを含む任意のJavaScript値を保持できます。しかし、Reactのstateに保持しているオブジェクトや配列を直接変更してはいけません。代わりに、オブジェクトや配列を更新したい場合は、新しいものを作成するか、既存のものをコピーしてから、そのコピーを使用するようにstateを更新する必要があります。
 
-Usually, you will use the `...` spread syntax to copy objects and arrays that you want to change. For example, updating a nested object could look like this:
+通常、変更したいオブジェクトや配列をコピーするために`...`スプレッド構文を使用します。例えば、ネストされたオブジェクトを更新する場合は次のようになります：
 
 <Sandpack>
 
@@ -518,7 +518,7 @@ img { width: 200px; height: 200px; }
 
 </Sandpack>
 
-If copying objects in code gets tedious, you can use a library like [Immer](https://github.com/immerjs/use-immer) to reduce repetitive code:
+コードでオブジェクトをコピーするのが面倒な場合は、[Immer](https://github.com/immerjs/use-immer)のようなライブラリを使用して繰り返しのコードを減らすことができます：
 
 <Sandpack>
 
@@ -633,13 +633,13 @@ img { width: 200px; height: 200px; }
 
 <LearnMore path="/learn/updating-objects-in-state">
 
-Read **[Updating Objects in State](/learn/updating-objects-in-state)** to learn how to update objects correctly.
+**[Updating Objects in State](/learn/updating-objects-in-state)**を読んで、オブジェクトを正しく更新する方法を学びましょう。
 
 </LearnMore>
 
 ## Updating arrays in state {/*updating-arrays-in-state*/}
 
-Arrays are another type of mutable JavaScript objects you can store in state and should treat as read-only. Just like with objects, when you want to update an array stored in state, you need to create a new one (or make a copy of an existing one), and then set state to use the new array:
+配列は、stateに格納できるもう一つの可変JavaScriptオブジェクトのタイプであり、読み取り専用として扱うべきです。オブジェクトと同様に、stateに格納された配列を更新したい場合は、新しいものを作成するか、既存のものをコピーしてから、新しい配列を使用するようにstateを設定する必要があります：
 
 <Sandpack>
 
@@ -705,7 +705,7 @@ function ItemList({ artworks, onToggle }) {
 
 </Sandpack>
 
-If copying arrays in code gets tedious, you can use a library like [Immer](https://github.com/immerjs/use-immer) to reduce repetitive code:
+コードで配列をコピーするのが面倒な場合は、[Immer](https://github.com/immerjs/use-immer)のようなライブラリを使用して繰り返しのコードを減らすことができます：
 
 <Sandpack>
 
@@ -789,12 +789,12 @@ function ItemList({ artworks, onToggle }) {
 
 <LearnMore path="/learn/updating-arrays-in-state">
 
-Read **[Updating Arrays in State](/learn/updating-arrays-in-state)** to learn how to update arrays correctly.
+**[Updating Arrays in State](/learn/updating-arrays-in-state)**を読んで、配列を正しく更新する方法を学びましょう。
 
 </LearnMore>
 
 ## What's next? {/*whats-next*/}
 
-Head over to [Responding to Events](/learn/responding-to-events) to start reading this chapter page by page!
+[Responding to Events](/learn/responding-to-events)に進んで、この章をページごとに読み始めましょう！
 
-Or, if you're already familiar with these topics, why not read about [Managing State](/learn/managing-state)?
+または、これらのトピックにすでに精通している場合は、[Managing State](/learn/managing-state)について読んでみてください。

@@ -4,7 +4,7 @@ title: useEffect
 
 <Intro>
 
-`useEffect` is a React Hook that lets you [synchronize a component with an external system.](/learn/synchronizing-with-effects)
+`useEffect`は、コンポーネントを外部システムと同期させるためのReact Hookです。[外部システムとコンポーネントを同期させる](/learn/synchronizing-with-effects)
 
 ```js
 useEffect(setup, dependencies?)
@@ -16,11 +16,11 @@ useEffect(setup, dependencies?)
 
 ---
 
-## Reference {/*reference*/}
+## 参照 {/*reference*/}
 
 ### `useEffect(setup, dependencies?)` {/*useeffect*/}
 
-Call `useEffect` at the top level of your component to declare an Effect:
+Effectを宣言するために、コンポーネントのトップレベルで`useEffect`を呼び出します：
 
 ```js
 import { useEffect } from 'react';
@@ -40,43 +40,43 @@ function ChatRoom({ roomId }) {
 }
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `setup`: The function with your Effect's logic. Your setup function may also optionally return a *cleanup* function. When your component is added to the DOM, React will run your setup function. After every re-render with changed dependencies, React will first run the cleanup function (if you provided it) with the old values, and then run your setup function with the new values. After your component is removed from the DOM, React will run your cleanup function.
- 
-* **optional** `dependencies`: The list of all reactive values referenced inside of the `setup` code. Reactive values include props, state, and all the variables and functions declared directly inside your component body. If your linter is [configured for React](/learn/editor-setup#linting), it will verify that every reactive value is correctly specified as a dependency. The list of dependencies must have a constant number of items and be written inline like `[dep1, dep2, dep3]`. React will compare each dependency with its previous value using the [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison. If you omit this argument, your Effect will re-run after every re-render of the component. [See the difference between passing an array of dependencies, an empty array, and no dependencies at all.](#examples-dependencies)
+* `setup`: Effectのロジックを含む関数。setup関数はオプションで*クリーンアップ*関数を返すこともできます。コンポーネントがDOMに追加されると、Reactはsetup関数を実行します。依存関係が変更された再レンダリングのたびに、Reactは最初に古い値でクリーンアップ関数（提供されている場合）を実行し、その後新しい値でsetup関数を実行します。コンポーネントがDOMから削除されると、Reactはクリーンアップ関数を実行します。
 
-#### Returns {/*returns*/}
+* **オプション** `dependencies`: `setup`コード内で参照されるすべてのリアクティブな値のリスト。リアクティブな値には、props、state、およびコンポーネント本体内で直接宣言されたすべての変数と関数が含まれます。リンターが[React用に設定されている](/learn/editor-setup#linting)場合、すべてのリアクティブな値が依存関係として正しく指定されていることを確認します。依存関係のリストは一定の項目数を持ち、`[dep1, dep2, dep3]`のようにインラインで書かれる必要があります。Reactは[`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)比較を使用して各依存関係を以前の値と比較します。この引数を省略すると、Effectはコンポーネントの再レンダリングごとに再実行されます。[依存関係の配列を渡す場合、空の配列を渡す場合、および依存関係をまったく渡さない場合の違いを参照してください。](#examples-dependencies)
 
-`useEffect` returns `undefined`.
+#### 戻り値 {/*returns*/}
 
-#### Caveats {/*caveats*/}
+`useEffect`は`undefined`を返します。
 
-* `useEffect` is a Hook, so you can only call it **at the top level of your component** or your own Hooks. You can't call it inside loops or conditions. If you need that, extract a new component and move the state into it.
+#### 注意点 {/*caveats*/}
 
-* If you're **not trying to synchronize with some external system,** [you probably don't need an Effect.](/learn/you-might-not-need-an-effect)
+* `useEffect`はHookであるため、**コンポーネントのトップレベル**または独自のHookでのみ呼び出すことができます。ループや条件内で呼び出すことはできません。その場合は、新しいコンポーネントを抽出し、stateをそこに移動します。
 
-* When Strict Mode is on, React will **run one extra development-only setup+cleanup cycle** before the first real setup. This is a stress-test that ensures that your cleanup logic "mirrors" your setup logic and that it stops or undoes whatever the setup is doing. If this causes a problem, [implement the cleanup function.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+* **外部システムと同期しようとしていない場合、** [Effectは必要ないかもしれません。](/learn/you-might-not-need-an-effect)
 
-* If some of your dependencies are objects or functions defined inside the component, there is a risk that they will **cause the Effect to re-run more often than needed.** To fix this, remove unnecessary [object](#removing-unnecessary-object-dependencies) and [function](#removing-unnecessary-function-dependencies) dependencies. You can also [extract state updates](#updating-state-based-on-previous-state-from-an-effect) and [non-reactive logic](#reading-the-latest-props-and-state-from-an-effect) outside of your Effect.
+* ストリクトモードがオンの場合、Reactは**最初の実際のセットアップの前に、開発専用の追加のセットアップ+クリーンアップサイクルを実行します。** これは、クリーンアップロジックがセットアップロジックを「ミラーリング」し、セットアップが行っていることを停止または元に戻すことを確認するためのストレステストです。これが問題を引き起こす場合は、[クリーンアップ関数を実装します。](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
 
-* If your Effect wasn't caused by an interaction (like a click), React will generally let the browser **paint the updated screen first before running your Effect.** If your Effect is doing something visual (for example, positioning a tooltip), and the delay is noticeable (for example, it flickers), replace `useEffect` with [`useLayoutEffect`.](/reference/react/useLayoutEffect)
+* 依存関係の一部がコンポーネント内で定義されたオブジェクトや関数である場合、それらが**必要以上にEffectを再実行させるリスクがあります。** これを修正するには、不要な[オブジェクト](#removing-unnecessary-object-dependencies)および[関数](#removing-unnecessary-function-dependencies)の依存関係を削除します。また、[stateの更新を抽出](#updating-state-based-on-previous-state-from-an-effect)し、[非リアクティブなロジック](#reading-the-latest-props-and-state-from-an-effect)をEffectの外に移動することもできます。
 
-* Even if your Effect was caused by an interaction (like a click), **the browser may repaint the screen before processing the state updates inside your Effect.** Usually, that's what you want. However, if you must block the browser from repainting the screen, you need to replace `useEffect` with [`useLayoutEffect`.](/reference/react/useLayoutEffect)
+* Effectがインタラクション（クリックなど）によって引き起こされなかった場合、Reactは一般的に**Effectを実行する前にブラウザが更新された画面を描画させます。** Effectが視覚的なことを行っている場合（例：ツールチップの位置決め）、遅延が目立つ場合（例：ちらつき）、`useEffect`を[`useLayoutEffect`](/reference/react/useLayoutEffect)に置き換えます。
 
-* Effects **only run on the client.** They don't run during server rendering.
+* Effectがインタラクション（クリックなど）によって引き起こされた場合でも、**ブラウザはEffect内のstate更新を処理する前に画面を再描画することがあります。** 通常、それが望ましい動作です。しかし、ブラウザが画面を再描画するのをブロックする必要がある場合は、`useEffect`を[`useLayoutEffect`](/reference/react/useLayoutEffect)に置き換える必要があります。
+
+* Effectは**クライアントでのみ実行されます。** サーバーレンダリング中には実行されません。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Connecting to an external system {/*connecting-to-an-external-system*/}
+### 外部システムへの接続 {/*connecting-to-an-external-system*/}
 
-Some components need to stay connected to the network, some browser API, or a third-party library, while they are displayed on the page. These systems aren't controlled by React, so they are called *external.*
+一部のコンポーネントは、ページに表示されている間、ネットワーク、ブラウザAPI、またはサードパーティライブラリに接続し続ける必要があります。これらのシステムはReactによって制御されていないため、*外部*と呼ばれます。
 
-To [connect your component to some external system,](/learn/synchronizing-with-effects) call `useEffect` at the top level of your component:
+[コンポーネントを外部システムに接続するために、](/learn/synchronizing-with-effects)コンポーネントのトップレベルで`useEffect`を呼び出します：
 
 ```js [[1, 8, "const connection = createConnection(serverUrl, roomId);"], [1, 9, "connection.connect();"], [2, 11, "connection.disconnect();"], [3, 13, "[serverUrl, roomId]"]]
 import { useEffect } from 'react';
@@ -96,45 +96,45 @@ function ChatRoom({ roomId }) {
 }
 ```
 
-You need to pass two arguments to `useEffect`:
+`useEffect`に2つの引数を渡す必要があります：
 
-1. A *setup function* with <CodeStep step={1}>setup code</CodeStep> that connects to that system.
-   - It should return a *cleanup function* with <CodeStep step={2}>cleanup code</CodeStep> that disconnects from that system.
-2. A <CodeStep step={3}>list of dependencies</CodeStep> including every value from your component used inside of those functions.
+1. そのシステムに接続する<CodeStep step={1}>セットアップコード</CodeStep>を含む*セットアップ関数*。
+   - そのシステムから切断する<CodeStep step={2}>クリーンアップコード</CodeStep>を含む*クリーンアップ関数*を返す必要があります。
+2. これらの関数内で使用されるコンポーネントのすべての値を含む<CodeStep step={3}>依存関係のリスト</CodeStep>。
 
-**React calls your setup and cleanup functions whenever it's necessary, which may happen multiple times:**
+**Reactは必要に応じてセットアップとクリーンアップ関数を呼び出します。これは複数回発生する可能性があります：**
 
-1. Your <CodeStep step={1}>setup code</CodeStep> runs when your component is added to the page *(mounts)*.
-2. After every re-render of your component where the <CodeStep step={3}>dependencies</CodeStep> have changed:
-   - First, your <CodeStep step={2}>cleanup code</CodeStep> runs with the old props and state.
-   - Then, your <CodeStep step={1}>setup code</CodeStep> runs with the new props and state.
-3. Your <CodeStep step={2}>cleanup code</CodeStep> runs one final time after your component is removed from the page *(unmounts).*
+1. コンポーネントがページに追加されたとき（*マウント*）、<CodeStep step={1}>セットアップコード</CodeStep>が実行されます。
+2. <CodeStep step={3}>依存関係</CodeStep>が変更されたコンポーネントの再レンダリングごとに：
+   - 最初に、古いpropsとstateで<CodeStep step={2}>クリーンアップコード</CodeStep>が実行されます。
+   - 次に、新しいpropsとstateで<CodeStep step={1}>セットアップコード</CodeStep>が実行されます。
+3. コンポーネントがページから削除された後（*アンマウント*）、<CodeStep step={2}>クリーンアップコード</CodeStep>が最後に実行されます。
 
-**Let's illustrate this sequence for the example above.**  
+**上記の例のシーケンスを説明しましょう。**  
 
-When the `ChatRoom` component above gets added to the page, it will connect to the chat room with the initial `serverUrl` and `roomId`. If either `serverUrl` or `roomId` change as a result of a re-render (say, if the user picks a different chat room in a dropdown), your Effect will *disconnect from the previous room, and connect to the next one.* When the `ChatRoom` component is removed from the page, your Effect will disconnect one last time.
+上記の`ChatRoom`コンポーネントがページに追加されると、初期の`serverUrl`と`roomId`でチャットルームに接続します。再レンダリングの結果として`serverUrl`または`roomId`が変更された場合（例えば、ユーザーがドロップダウンで別のチャットルームを選択した場合）、Effectは*前のルームから切断し、次のルームに接続します。* `ChatRoom`コンポーネントがページから削除されると、Effectは最後に切断します。
 
-**To [help you find bugs,](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) in development React runs <CodeStep step={1}>setup</CodeStep> and <CodeStep step={2}>cleanup</CodeStep> one extra time before the <CodeStep step={1}>setup</CodeStep>.** This is a stress-test that verifies your Effect's logic is implemented correctly. If this causes visible issues, your cleanup function is missing some logic. The cleanup function should stop or undo whatever the setup function was doing. The rule of thumb is that the user shouldn't be able to distinguish between the setup being called once (as in production) and a *setup* → *cleanup* → *setup* sequence (as in development). [See common solutions.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+**開発中にバグを見つけるために、Reactは<CodeStep step={1}>セットアップ</CodeStep>と<CodeStep step={2}>クリーンアップ</CodeStep>を最初の<CodeStep step={1}>セットアップ</CodeStep>の前に一度追加で実行します。** これは、Effectのロジックが正しく実装されていることを確認するためのストレステストです。これが目に見える問題を引き起こす場合、クリーンアップ関数にいくつかのロジックが欠けています。クリーンアップ関数は、セットアップ関数が行っていることを停止または元に戻す必要があります。基本的なルールは、ユーザーがセットアップが一度呼び出された場合（本番環境のように）と、*セットアップ* → *クリーンアップ* → *セットアップ*のシーケンス（開発環境のように）の間で区別できないようにすることです。[一般的な解決策を参照してください。](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
 
-**Try to [write every Effect as an independent process](/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process) and [think about a single setup/cleanup cycle at a time.](/learn/lifecycle-of-reactive-effects#thinking-from-the-effects-perspective)** It shouldn't matter whether your component is mounting, updating, or unmounting. When your cleanup logic correctly "mirrors" the setup logic, your Effect is resilient to running setup and cleanup as often as needed.
+**すべてのEffectを独立したプロセスとして書き、1回のセットアップ/クリーンアップサイクルを考えるようにしてください。** コンポーネントがマウント、更新、アンマウントされているかどうかは関係ありません。クリーンアップロジックがセットアップロジックを正しく「ミラーリング」している場合、Effectは必要に応じてセットアップとクリーンアップを実行することに対して堅牢です。
 
 <Note>
 
-An Effect lets you [keep your component synchronized](/learn/synchronizing-with-effects) with some external system (like a chat service). Here, *external system* means any piece of code that's not controlled by React, such as:
+Effectを使用すると、コンポーネントを外部システム（チャットサービスなど）と同期させることができます。ここで、*外部システム*とは、Reactによって制御されていないコードの部分を意味します。例えば：
 
-* A timer managed with <CodeStep step={1}>[`setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/setInterval)</CodeStep> and <CodeStep step={2}>[`clearInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval)</CodeStep>.
-* An event subscription using <CodeStep step={1}>[`window.addEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)</CodeStep> and <CodeStep step={2}>[`window.removeEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)</CodeStep>.
-* A third-party animation library with an API like <CodeStep step={1}>`animation.start()`</CodeStep> and <CodeStep step={2}>`animation.reset()`</CodeStep>.
+* <CodeStep step={1}>[`setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/setInterval)</CodeStep>と<CodeStep step={2}>[`clearInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval)</CodeStep>を使用して管理されるタイマー。
+* <CodeStep step={1}>[`window.addEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)</CodeStep>と<CodeStep step={2}>[`window.removeEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)</CodeStep>を使用したイベントサブスクリプション。
+* <CodeStep step={1}>`animation.start()`</CodeStep>と<CodeStep step={2}>`animation.reset()`</CodeStep>のようなAPIを持つサードパーティのアニメーションライブラリ。
 
-**If you're not connecting to any external system, [you probably don't need an Effect.](/learn/you-might-not-need-an-effect)**
+**外部システムに接続していない場合、Effectは必要ないかもしれません。** [Effectは必要ないかもしれません。](/learn/you-might-not-need-an-effect)
 
 </Note>
 
-<Recipes titleText="Examples of connecting to an external system" titleId="examples-connecting">
+<Recipes titleText="外部システムに接続する例" titleId="examples-connecting">
 
-#### Connecting to a chat server {/*connecting-to-a-chat-server*/}
+#### チャットサーバーへの接続 {/*connecting-to-a-chat-server*/}
 
-In this example, the `ChatRoom` component uses an Effect to stay connected to an external system defined in `chat.js`. Press "Open chat" to make the `ChatRoom` component appear. This sandbox runs in development mode, so there is an extra connect-and-disconnect cycle, as [explained here.](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) Try changing the `roomId` and `serverUrl` using the dropdown and the input, and see how the Effect re-connects to the chat. Press "Close chat" to see the Effect disconnect one last time.
+この例では、`ChatRoom`コンポーネントはEffectを使用して`chat.js`で定義された外部システムに接続し続けます。「チャットを開く」を押して`ChatRoom`コンポーネントを表示します。このサンドボックスは開発モードで実行されるため、[ここで説明されているように、](#examples-connecting)追加の接続と切断サイクルがあります。ドロップダウンと入力を使用して`roomId`と`serverUrl`を変更し、Effectがチャットに再接続する様子を確認してください。「チャットを閉じる」を押して、Effectが最後に切断する様子を確認してください。
 
 <Sandpack>
 
@@ -195,13 +195,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -216,9 +216,9 @@ button { margin-left: 10px; }
 
 <Solution />
 
-#### Listening to a global browser event {/*listening-to-a-global-browser-event*/}
+#### グローバルブラウザイベントのリスニング {/*listening-to-a-global-browser-event*/}
 
-In this example, the external system is the browser DOM itself. Normally, you'd specify event listeners with JSX, but you can't listen to the global [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window) object this way. An Effect lets you connect to the `window` object and listen to its events. Listening to the `pointermove` event lets you track the cursor (or finger) position and update the red dot to move with it.
+この例では、外部システムはブラウザのDOM自体です。通常、イベントリスナーはJSXで指定しますが、グローバルな[`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window)オブジェクトをこの方法でリスニングすることはできません。Effectを使用すると、`window`オブジェクトに接続し、そのイベントをリスニングできます。`pointermove`イベントをリスニングすることで、カーソル（または指）の位置を追跡し、赤い点がそれに合わせて移動するように更新します。
 
 <Sandpack>
 
@@ -265,9 +265,10 @@ body {
 
 <Solution />
 
-#### Triggering an animation {/*triggering-an-animation*/}
+#### アニメーションのトリガー {/*triggering-an-animation*/}
 
-In this example, the external system is the animation library in `animation.js`. It provides a JavaScript class called `FadeInAnimation` that takes a DOM node as an argument and exposes `start()` and `stop()` methods to control the animation. This component [uses a ref](/learn/manipulating-the-dom-with-refs) to access the underlying DOM node. The Effect reads the DOM node from the ref and automatically starts the animation for that node when the component appears.
+この例では、外部システムは`animation.js`のアニメーションライブラリです。これは、DOMノードを引数として受け取り、`start()`および`stop()`メソッドを公開する`FadeInAnimation`というJavaScriptクラスを提供します。このコンポーネントは、[refを使用して](/learn/manipulating-the-dom-with-refs)基礎となるDOMノードにアクセスします。
+EffectはrefからDOMノードを読み取り、コンポーネントが表示されるとそのノードのアニメーションを自動的に開始します。
 
 <Sandpack>
 
@@ -325,11 +326,11 @@ export class FadeInAnimation {
   start(duration) {
     this.duration = duration;
     if (this.duration === 0) {
-      // Jump to end immediately
+      // すぐに終了にジャンプ
       this.onProgress(1);
     } else {
       this.onProgress(0);
-      // Start animating
+      // アニメーションを開始
       this.startTime = performance.now();
       this.frameId = requestAnimationFrame(() => this.onFrame());
     }
@@ -339,7 +340,7 @@ export class FadeInAnimation {
     const progress = Math.min(timePassed / this.duration, 1);
     this.onProgress(progress);
     if (progress < 1) {
-      // We still have more frames to paint
+      // まだ描画するフレームが残っている
       this.frameId = requestAnimationFrame(() => this.onFrame());
     }
   }
@@ -364,9 +365,9 @@ html, body { min-height: 300px; }
 
 <Solution />
 
-#### Controlling a modal dialog {/*controlling-a-modal-dialog*/}
+#### モーダルダイアログの制御 {/*controlling-a-modal-dialog*/}
 
-In this example, the external system is the browser DOM. The `ModalDialog` component renders a [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) element. It uses an Effect to synchronize the `isOpen` prop to the [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) and [`close()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/close) method calls.
+この例では、外部システムはブラウザのDOMです。`ModalDialog`コンポーネントは[`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog)要素をレンダリングします。Effectを使用して、`isOpen`プロップを[`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal)および[`close()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/close)メソッド呼び出しに同期させます。
 
 <Sandpack>
 
@@ -424,9 +425,9 @@ body {
 
 <Solution />
 
-#### Tracking element visibility {/*tracking-element-visibility*/}
+#### 要素の可視性の追跡 {/*tracking-element-visibility*/}
 
-In this example, the external system is again the browser DOM. The `App` component displays a long list, then a `Box` component, and then another long list. Scroll the list down. Notice that when all of the `Box` component is fully visible in the viewport, the background color changes to black. To implement this, the `Box` component uses an Effect to manage an [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). This browser API notifies you when the DOM element is visible in the viewport.
+この例では、外部システムは再びブラウザのDOMです。`App`コンポーネントは長いリストを表示し、その後に`Box`コンポーネント、さらにもう一つの長いリストを表示します。リストを下にスクロールします。`Box`コンポーネントがビューポート内で完全に表示されると、背景色が黒に変わることに注意してください。これを実装するために、`Box`コンポーネントはEffectを使用して[`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)を管理します。このブラウザAPIは、DOM要素がビューポート内で表示されているかどうかを通知します。
 
 <Sandpack>
 
@@ -500,11 +501,11 @@ export default function Box() {
 
 ---
 
-### Wrapping Effects in custom Hooks {/*wrapping-effects-in-custom-hooks*/}
+### カスタムHookでEffectをラップする {/*wrapping-effects-in-custom-hooks*/}
 
-Effects are an ["escape hatch":](/learn/escape-hatches) you use them when you need to "step outside React" and when there is no better built-in solution for your use case. If you find yourself often needing to manually write Effects, it's usually a sign that you need to extract some [custom Hooks](/learn/reusing-logic-with-custom-hooks) for common behaviors your components rely on.
+Effectは["エスケープハッチ"](/learn/escape-hatches)です。Reactの組み込みソリューションがない場合に使用します。Effectを手動で頻繁に書く必要がある場合は、コンポーネントが依存する共通の動作のためにいくつかの[カスタムHook](/learn/reusing-logic-with-custom-hooks)を抽出する必要があることを示しています。
 
-For example, this `useChatRoom` custom Hook "hides" the logic of your Effect behind a more declarative API:
+例えば、この`useChatRoom`カスタムHookは、Effectのロジックをより宣言的なAPIの背後に「隠します」：
 
 ```js {1,11}
 function useChatRoom({ serverUrl, roomId }) {
@@ -520,7 +521,7 @@ function useChatRoom({ serverUrl, roomId }) {
 }
 ```
 
-Then you can use it from any component like this:
+次に、任意のコンポーネントからこのように使用できます：
 
 ```js {4-7}
 function ChatRoom({ roomId }) {
@@ -533,15 +534,15 @@ function ChatRoom({ roomId }) {
   // ...
 ```
 
-There are also many excellent custom Hooks for every purpose available in the React ecosystem.
+Reactエコシステムには、あらゆる目的のための優れたカスタムHookも多数あります。
 
-[Learn more about wrapping Effects in custom Hooks.](/learn/reusing-logic-with-custom-hooks)
+[カスタムHookでEffectをラップする方法について詳しく学びます。](/learn/reusing-logic-with-custom-hooks)
 
-<Recipes titleText="Examples of wrapping Effects in custom Hooks" titleId="examples-custom-hooks">
+<Recipes titleText="カスタムHookでEffectをラップする例" titleId="examples-custom-hooks">
 
-#### Custom `useChatRoom` Hook {/*custom-usechatroom-hook*/}
+#### カスタム`useChatRoom`Hook {/*custom-usechatroom-hook*/}
 
-This example is identical to one of the [earlier examples,](#examples-connecting) but the logic is extracted to a custom Hook.
+この例は、[以前の例の一つ](#examples-connecting)と同じですが、ロジックがカスタムHookに抽出されています。
 
 <Sandpack>
 
@@ -614,13 +615,13 @@ export function useChatRoom({ serverUrl, roomId }) {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -635,9 +636,9 @@ button { margin-left: 10px; }
 
 <Solution />
 
-#### Custom `useWindowListener` Hook {/*custom-usewindowlistener-hook*/}
+#### カスタム`useWindowListener`Hook {/*custom-usewindowlistener-hook*/}
 
-This example is identical to one of the [earlier examples,](#examples-connecting) but the logic is extracted to a custom Hook.
+この例は、[以前の例の一つ](#examples-connecting)と同じですが、ロジックがカスタムHookに抽出されています。
 
 <Sandpack>
 
@@ -692,9 +693,9 @@ body {
 
 <Solution />
 
-#### Custom `useIntersectionObserver` Hook {/*custom-useintersectionobserver-hook*/}
+#### カスタム`useIntersectionObserver`Hook {/*custom-useintersectionobserver-hook*/}
 
-This example is identical to one of the [earlier examples,](#examples-connecting) but the logic is partially extracted to a custom Hook.
+この例は、[以前の例の一つ](#examples-connecting)と同じですが、ロジックが部分的にカスタムHookに抽出されています。
 
 <Sandpack>
 
@@ -784,11 +785,11 @@ export function useIntersectionObserver(ref) {
 
 ---
 
-### Controlling a non-React widget {/*controlling-a-non-react-widget*/}
+### 非Reactウィジェットの制御 {/*controlling-a-non-react-widget*/}
 
-Sometimes, you want to keep an external system synchronized to some prop or state of your component.
+時々、コンポーネントのプロップやステートを外部システムに同期させたいことがあります。
 
-For example, if you have a third-party map widget or a video player component written without React, you can use an Effect to call methods on it that make its state match the current state of your React component. This Effect creates an instance of a `MapWidget` class defined in `map-widget.js`. When you change the `zoomLevel` prop of the `Map` component, the Effect calls the `setZoom()` on the class instance to keep it synchronized:
+例えば、サードパーティの地図ウィジェットやReactを使用せずに書かれたビデオプレーヤーコンポーネントがある場合、その状態をReactコンポーネントの現在の状態に一致させるためにメソッドを呼び出すEffectを使用できます。このEffectは、`map-widget.js`で定義された`MapWidget`クラスのインスタンスを作成します。`Map`コンポーネントの`zoomLevel`プロップを変更すると、Effectはクラスインスタンスの`setZoom()`を呼び出して同期を保ちます：
 
 <Sandpack>
 
@@ -888,15 +889,16 @@ button { margin: 5px; }
 
 </Sandpack>
 
-In this example, a cleanup function is not needed because the `MapWidget` class manages only the DOM node that was passed to it. After the `Map` React component is removed from the tree, both the DOM node and the `MapWidget` class instance will be automatically garbage-collected by the browser JavaScript engine.
+この例では、`MapWidget`クラスは渡されたDOMノードのみを管理するため、クリーンアップ関数は必要ありません
+。`Map` Reactコンポーネントがツリーから削除されると、DOMノードと`MapWidget`クラスインスタンスの両方がブラウザのJavaScriptエンジンによって自動的にガベージコレクションされます。
 
 ---
 
-### Fetching data with Effects {/*fetching-data-with-effects*/}
+### Effectを使用してデータを取得する {/*fetching-data-with-effects*/}
 
-You can use an Effect to fetch data for your component. Note that [if you use a framework,](/learn/start-a-new-react-project#production-grade-react-frameworks) using your framework's data fetching mechanism will be a lot more efficient than writing Effects manually.
+Effectを使用してコンポーネントのデータを取得することができます。フレームワークを使用している場合、フレームワークのデータ取得メカニズムを使用する方が、Effectを手動で書くよりも効率的です。
 
-If you want to fetch data from an Effect manually, your code might look like this:
+Effectを手動で使用してデータを取得したい場合、コードは次のようになります：
 
 ```js
 import { useState, useEffect } from 'react';
@@ -922,7 +924,7 @@ export default function Page() {
   // ...
 ```
 
-Note the `ignore` variable which is initialized to `false`, and is set to `true` during cleanup. This ensures [your code doesn't suffer from "race conditions":](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect) network responses may arrive in a different order than you sent them.
+`ignore`変数が`false`に初期化され、クリーンアップ中に`true`に設定されることに注意してください。これにより、ネットワーク応答が送信された順序と異なる順序で到着する可能性があるため、コードが「競合状態」に陥らないようにします。
 
 <Sandpack>
 
@@ -975,7 +977,7 @@ export async function fetchBio(person) {
 
 </Sandpack>
 
-You can also rewrite using the [`async` / `await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) syntax, but you still need to provide a cleanup function:
+`async` / `await`構文を使用して書き直すこともできますが、クリーンアップ関数を提供する必要があります：
 
 <Sandpack>
 
@@ -1031,50 +1033,50 @@ export async function fetchBio(person) {
 
 </Sandpack>
 
-Writing data fetching directly in Effects gets repetitive and makes it difficult to add optimizations like caching and server rendering later. [It's easier to use a custom Hook--either your own or maintained by the community.](/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks)
+Effect内でデータを直接取得するのは繰り返しが多く、後でキャッシュやサーバーレンダリングなどの最適化を追加するのが難しくなります。[カスタムHookを使用する方が簡単です。](/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks)
 
 <DeepDive>
 
-#### What are good alternatives to data fetching in Effects? {/*what-are-good-alternatives-to-data-fetching-in-effects*/}
+#### データ取得にEffectを使用する代替手段は何ですか？ {/*what-are-good-alternatives-to-data-fetching-in-effects*/}
 
-Writing `fetch` calls inside Effects is a [popular way to fetch data](https://www.robinwieruch.de/react-hooks-fetch-data/), especially in fully client-side apps. This is, however, a very manual approach and it has significant downsides:
+Effect内で`fetch`呼び出しを行うのは、特に完全にクライアントサイドのアプリでデータを取得する[人気のある方法](https://www.robinwieruch.de/react-hooks-fetch-data/)です。しかし、これは非常に手動のアプローチであり、以下のような重大な欠点があります：
 
-- **Effects don't run on the server.** This means that the initial server-rendered HTML will only include a loading state with no data. The client computer will have to download all JavaScript and render your app only to discover that now it needs to load the data. This is not very efficient.
-- **Fetching directly in Effects makes it easy to create "network waterfalls".** You render the parent component, it fetches some data, renders the child components, and then they start fetching their data. If the network is not very fast, this is significantly slower than fetching all data in parallel.
-- **Fetching directly in Effects usually means you don't preload or cache data.** For example, if the component unmounts and then mounts again, it would have to fetch the data again.
-- **It's not very ergonomic.** There's quite a bit of boilerplate code involved when writing `fetch` calls in a way that doesn't suffer from bugs like [race conditions.](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect)
+- **Effectはサーバー上で実行されません。** これは、初期のサーバーレンダリングされたHTMLがデータなしのローディング状態のみを含むことを意味します。クライアントコンピュータはすべてのJavaScriptをダウンロードし、アプリをレンダリングしてからデータをロードする必要があります。これは非常に効率的ではありません。
+- **Effect内で直接データを取得すると、「ネットワークウォーターフォール」を作成しやすくなります。** 親コンポーネントをレンダリングし、データを取得し、子コンポーネントをレンダリングし、それからデータを取得し始めます。ネットワークが非常に速くない場合、これはすべてのデータを並行して取得するよりもかなり遅くなります。
+- **Effect内で直接データを取得すると、データを事前ロードまたはキャッシュしないことがよくあります。** 例えば、コンポーネントがアンマウントされて再度マウントされると、再度データを取得する必要があります。
+- **あまりエルゴノミックではありません。** 競合状態のようなバグに悩まされないように`fetch`呼び出しを書くときには、かなりのボイラープレートコードが含まれます。
 
-This list of downsides is not specific to React. It applies to fetching data on mount with any library. Like with routing, data fetching is not trivial to do well, so we recommend the following approaches:
+これらの欠点はReactに特有のものではありません。マウント時にデータを取得することは、どのライブラリでも同様の問題があります。ルーティングと同様に、データ取得はうまく行うのが簡単ではないため、次のアプローチをお勧めします：
 
-- **If you use a [framework](/learn/start-a-new-react-project#production-grade-react-frameworks), use its built-in data fetching mechanism.** Modern React frameworks have integrated data fetching mechanisms that are efficient and don't suffer from the above pitfalls.
-- **Otherwise, consider using or building a client-side cache.** Popular open source solutions include [React Query](https://tanstack.com/query/latest/), [useSWR](https://swr.vercel.app/), and [React Router 6.4+.](https://beta.reactrouter.com/en/main/start/overview) You can build your own solution too, in which case you would use Effects under the hood but also add logic for deduplicating requests, caching responses, and avoiding network waterfalls (by preloading data or hoisting data requirements to routes).
+- **[フレームワーク](/learn/start-a-new-react-project#production-grade-react-frameworks)を使用している場合は、その組み込みのデータ取得メカニズムを使用してください。** モダンなReactフレームワークには、効率的で上記の欠点を持たないデータ取得メカニズムが統合されています。
+- **それ以外の場合は、クライアントサイドのキャッシュを使用または構築することを検討してください。** 人気のあるオープンソースソリューションには、[React Query](https://tanstack.com/query/latest/)、[useSWR](https://swr.vercel.app/)、および[React Router 6.4+](https://beta.reactrouter.com/en/main/start/overview)があります。独自のソリューションを構築することもできます。その場合、Effectを内部で使用しますが、リクエストの重複排除、レスポンスのキャッシュ、およびネットワークウォーターフォールの回避（データの事前ロードまたはルートへのデータ要件の引き上げ）などのロジックも追加します。
 
-You can continue fetching data directly in Effects if neither of these approaches suit you.
+これらのアプローチが適さない場合は、Effect内で直接データを取得し続けることができます。
 
 </DeepDive>
 
 ---
 
-### Specifying reactive dependencies {/*specifying-reactive-dependencies*/}
+### リアクティブな依存関係の指定 {/*specifying-reactive-dependencies*/}
 
-**Notice that you can't "choose" the dependencies of your Effect.** Every <CodeStep step={2}>reactive value</CodeStep> used by your Effect's code must be declared as a dependency. Your Effect's dependency list is determined by the surrounding code:
+**Effectの依存関係を「選択」することはできません。** Effectのコードで使用されるすべての<CodeStep step={2}>リアクティブな値</CodeStep>は依存関係として宣言する必要があります。Effectの依存関係リストは周囲のコードによって決まります：
 
 ```js [[2, 1, "roomId"], [2, 2, "serverUrl"], [2, 5, "serverUrl"], [2, 5, "roomId"], [2, 8, "serverUrl"], [2, 8, "roomId"]]
-function ChatRoom({ roomId }) { // This is a reactive value
-  const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // This is a reactive value too
+function ChatRoom({ roomId }) { // これはリアクティブな値です
+  const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // これもリアクティブな値です
 
   useEffect(() => {
-    const connection = createConnection(serverUrl, roomId); // This Effect reads these reactive values
+    const connection = createConnection(serverUrl, roomId); // このEffectはこれらのリアクティブな値を読み取ります
     connection.connect();
     return () => connection.disconnect();
-  }, [serverUrl, roomId]); // ✅ So you must specify them as dependencies of your Effect
+  }, [serverUrl, roomId]); // ✅ したがって、依存関係として指定する必要があります
   // ...
 }
 ```
 
-If either `serverUrl` or `roomId` change, your Effect will reconnect to the chat using the new values.
+`serverUrl`または`roomId`が変更されると、Effectは新しい値を使用してチャットに再接続します。
 
-**[Reactive values](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values) include props and all variables and functions declared directly inside of your component.** Since `roomId` and `serverUrl` are reactive values, you can't remove them from the dependencies. If you try to omit them and [your linter is correctly configured for React,](/learn/editor-setup#linting) the linter will flag this as a mistake you need to fix:
+**[リアクティブな値](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values)には、propsおよびコンポーネント内で直接宣言されたすべての変数と関数が含まれます。** `roomId`と`serverUrl`はリアクティブな値であるため、依存関係から削除することはできません。これを省略しようとすると、[React用に正しく設定されたリンター](/learn/editor-setup#linting)がこれを間違いとしてフラグを立てます：
 
 ```js {8}
 function ChatRoom({ roomId }) {
@@ -1084,73 +1086,73 @@ function ChatRoom({ roomId }) {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, []); // 🔴 React Hook useEffect has missing dependencies: 'roomId' and 'serverUrl'
+  }, []); // 🔴 React Hook useEffectには依存関係が不足しています: 'roomId'と'serverUrl'
   // ...
 }
 ```
 
-**To remove a dependency, you need to ["prove" to the linter that it *doesn't need* to be a dependency.](/learn/removing-effect-dependencies#removing-unnecessary-dependencies)** For example, you can move `serverUrl` out of your component to prove that it's not reactive and won't change on re-renders:
+**依存関係を削除するには、それが依存関係である必要がないことをリンターに「証明」する必要があります。** 例えば、`serverUrl`をコンポーネントの外に移動して、それがリアクティブではなく、再レンダリング時に変更されないことを証明できます：
 
 ```js {1,8}
-const serverUrl = 'https://localhost:1234'; // Not a reactive value anymore
+const serverUrl = 'https://localhost:1234'; // もはやリアクティブな値ではありません
 
 function ChatRoom({ roomId }) {
   useEffect(() => {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, [roomId]); // ✅ All dependencies declared
+  }, [roomId]); // ✅ すべての依存関係が宣言されています
   // ...
 }
 ```
 
-Now that `serverUrl` is not a reactive value (and can't change on a re-render), it doesn't need to be a dependency. **If your Effect's code doesn't use any reactive values, its dependency list should be empty (`[]`):**
+`serverUrl`がもはやリアクティブな値ではなく（再レンダリング時に変更されない）、依存関係である必要がなくなりました。**Effectのコードがリアクティブな値を使用しない場合、その依存関係リストは空（`[]`）である必要があります：**
 
 ```js {1,2,9}
-const serverUrl = 'https://localhost:1234'; // Not a reactive value anymore
-const roomId = 'music'; // Not a reactive value anymore
+const serverUrl = 'https://localhost:1234'; // もはやリアクティブな値ではありません
+const roomId = 'music'; // もはやリアクティブな値ではありません
 
 function ChatRoom() {
   useEffect(() => {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, []); // ✅ All dependencies declared
+  }, []); // ✅ すべての依存関係が宣言されています
   // ...
 }
 ```
 
-[An Effect with empty dependencies](/learn/lifecycle-of-reactive-effects#what-an-effect-with-empty-dependencies-means) doesn't re-run when any of your component's props or state change.
+[依存関係が空のEffect](/learn/lifecycle-of-reactive-effects#what-an-effect-with-empty-dependencies-means)は、コンポーネントのpropsやstateが変更されても再実行されません。
 
 <Pitfall>
 
-If you have an existing codebase, you might have some Effects that suppress the linter like this:
+既存のコードベースがある場合、次のようにリンターを抑制するEffectがあるかもしれません：
 
 ```js {3-4}
 useEffect(() => {
   // ...
-  // 🔴 Avoid suppressing the linter like this:
+  // 🔴 このようにリンターを抑制するのは避けてください：
   // eslint-ignore-next-line react-hooks/exhaustive-deps
 }, []);
 ```
 
-**When dependencies don't match the code, there is a high risk of introducing bugs.** By suppressing the linter, you "lie" to React about the values your Effect depends on. [Instead, prove they're unnecessary.](/learn/removing-effect-dependencies#removing-unnecessary-dependencies)
+**依存関係がコードと一致しない場合、バグを導入するリスクが高くなります。** リンターを抑制することで、Effectが依存する値についてReactに「嘘」をつくことになります。[代わりに、それらが不要であることを証明してください。](/learn/removing-effect-dependencies#removing-unnecessary-dependencies)
 
 </Pitfall>
 
-<Recipes titleText="Examples of passing reactive dependencies" titleId="examples-dependencies">
+<Recipes titleText="リアクティブな依存関係を渡す例" titleId="examples-dependencies">
 
-#### Passing a dependency array {/*passing-a-dependency-array*/}
+#### 依存関係の配列を渡す {/*passing-a-dependency-array*/}
 
-If you specify the dependencies, your Effect runs **after the initial render _and_ after re-renders with changed dependencies.**
+依存関係を指定すると、Effectは**初回レンダリング後および依存関係が変更された再レンダリング後に実行されます。**
 
 ```js {3}
 useEffect(() => {
   // ...
-}, [a, b]); // Runs again if a or b are different
+}, [a, b]); // aまたはbが異なる場合に再実行されます
 ```
 
-In the below example, `serverUrl` and `roomId` are [reactive values,](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values) so they both must be specified as dependencies. As a result, selecting a different room in the dropdown or editing the server URL input causes the chat to re-connect. However, since `message` isn't used in the Effect (and so it isn't a dependency), editing the message doesn't re-connect to the chat.
+以下の例では、`serverUrl`と`roomId`は[リアクティブな値](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values)であるため、両方とも依存関係として指定する必要があります。その結果、ドロップダウンで別のルームを選択したり、サーバーURLの入力を編集したりすると、チャットが再接続されます。ただし、`message`はEffectで使用されていないため（依存関係ではない）、メッセージを編集してもチャットは再接続されません。
 
 <Sandpack>
 
@@ -1216,13 +1218,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -1237,20 +1239,19 @@ button { margin-left: 5px; }
 
 <Solution />
 
-#### Passing an empty dependency array {/*passing-an-empty-dependency-array*/}
+#### 空の依存関係配列を渡す {/*passing-an-empty-dependency-array*/}
 
-If your Effect truly doesn't use any reactive values, it will only run **after the initial render.**
+Effectがリアクティブな値を使用しない場合、**初回レンダリング後にのみ実行されます。**
 
 ```js {3}
 useEffect(() => {
   // ...
-}, []); // Does not run again (except once in development)
+}, []); // 再実行されません（開発中に一度だけ実行されます）
 ```
 
-**Even with empty dependencies, setup and cleanup will [run one extra time in development](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) to help you find bugs.**
+**依存関係が空でも、バグを見つけるために開発中にセットアップとクリーンアップが[一度追加で実行されます。](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)**
 
-
-In this example, both `serverUrl` and `roomId` are hardcoded. Since they're declared outside the component, they are not reactive values, and so they aren't dependencies. The dependency list is empty, so the Effect doesn't re-run on re-renders.
+この例では、`serverUrl`と`roomId`の両方がハードコードされています。それらはコンポーネントの外で宣言されているため、リアクティブな値ではなく、依存関係ではありません。依存関係リストは空であり、Effectは再レンダリング時に再実行されません。
 
 <Sandpack>
 
@@ -1259,7 +1260,8 @@ import { useState, useEffect } from 'react';
 import { createConnection } from './chat.js';
 
 const serverUrl = 'https://localhost:1234';
-const roomId = 'music';
+const roomId
+= 'music';
 
 function ChatRoom() {
   const [message, setMessage] = useState('');
@@ -1297,13 +1299,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -1313,18 +1315,17 @@ export function createConnection(serverUrl, roomId) {
 
 <Solution />
 
+#### 依存関係配列をまったく渡さない場合 {/*passing-no-dependency-array-at-all*/}
 
-#### Passing no dependency array at all {/*passing-no-dependency-array-at-all*/}
-
-If you pass no dependency array at all, your Effect runs **after every single render (and re-render)** of your component.
+依存関係配列をまったく渡さない場合、Effectは**コンポーネントのすべてのレンダリング（および再レンダリング）後に実行されます。**
 
 ```js {3}
 useEffect(() => {
   // ...
-}); // Always runs again
+}); // 常に再実行されます
 ```
 
-In this example, the Effect re-runs when you change `serverUrl` and `roomId`, which is sensible. However, it *also* re-runs when you change the `message`, which is probably undesirable. This is why usually you'll specify the dependency array.
+この例では、`serverUrl`と`roomId`を変更するとEffectが再実行されますが、それは理にかなっています。しかし、`message`を変更するとEffectも再実行されますが、これはおそらく望ましくありません。このため、通常は依存関係配列を指定します。
 
 <Sandpack>
 
@@ -1342,7 +1343,7 @@ function ChatRoom({ roomId }) {
     return () => {
       connection.disconnect();
     };
-  }); // No dependency array at all
+  }); // 依存関係配列をまったく渡さない
 
   return (
     <>
@@ -1390,13 +1391,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -1415,9 +1416,9 @@ button { margin-left: 5px; }
 
 ---
 
-### Updating state based on previous state from an Effect {/*updating-state-based-on-previous-state-from-an-effect*/}
+### Effectから前のstateに基づいてstateを更新する {/*updating-state-based-on-previous-state-from-an-effect*/}
 
-When you want to update state based on previous state from an Effect, you might run into a problem:
+Effectから前のstateに基づいてstateを更新したい場合、問題が発生することがあります：
 
 ```js {6,9}
 function Counter() {
@@ -1425,17 +1426,17 @@ function Counter() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCount(count + 1); // You want to increment the counter every second...
+      setCount(count + 1); // 毎秒カウンターをインクリメントしたい...
     }, 1000)
     return () => clearInterval(intervalId);
-  }, [count]); // 🚩 ... but specifying `count` as a dependency always resets the interval.
+  }, [count]); // 🚩 ... しかし、`count`を依存関係として指定すると、常にインターバルがリセットされます。
   // ...
 }
 ```
 
-Since `count` is a reactive value, it must be specified in the list of dependencies. However, that causes the Effect to cleanup and setup again every time the `count` changes. This is not ideal. 
+`count`はリアクティブな値であるため、依存関係リストに指定する必要があります。しかし、それにより、`count`が変更されるたびにEffectがクリーンアップとセットアップを再度行うことになります。これは理想的ではありません。
 
-To fix this, [pass the `c => c + 1` state updater](/reference/react/useState#updating-state-based-on-the-previous-state) to `setCount`:
+これを修正するには、`setCount`に[`c => c + 1`のstateアップデーター](/reference/react/useState#updating-state-based-on-the-previous-state)を渡します：
 
 <Sandpack>
 
@@ -1447,10 +1448,10 @@ export default function Counter() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCount(c => c + 1); // ✅ Pass a state updater
+      setCount(c => c + 1); // ✅ stateアップデーターを渡します
     }, 1000);
     return () => clearInterval(intervalId);
-  }, []); // ✅ Now count is not a dependency
+  }, []); // ✅ これで`count`は依存関係ではありません
 
   return <h1>{count}</h1>;
 }
@@ -1470,14 +1471,13 @@ body {
 
 </Sandpack>
 
-Now that you're passing `c => c + 1` instead of `count + 1`, [your Effect no longer needs to depend on `count`.](/learn/removing-effect-dependencies#are-you-reading-some-state-to-calculate-the-next-state) As a result of this fix, it won't need to cleanup and setup the interval again every time the `count` changes.
+`count + 1`の代わりに`c => c + 1`を渡すことで、[Effectが`count`に依存する必要がなくなります。](/learn/removing-effect-dependencies#are-you-reading-some-state-to-calculate-the-next-state) この修正により、`count`が変更されるたびにインターバルをクリーンアップして再設定する必要がなくなります。
 
 ---
 
+### 不要なオブジェクト依存関係の削除 {/*removing-unnecessary-object-dependencies*/}
 
-### Removing unnecessary object dependencies {/*removing-unnecessary-object-dependencies*/}
-
-If your Effect depends on an object or a function created during rendering, it might run too often. For example, this Effect re-connects after every render because the `options` object is [different for every render:](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally)
+Effectがレンダリング中に作成されたオブジェクトや関数に依存している場合、頻繁に実行される可能性があります。例えば、このEffectは、`options`オブジェクトが[毎回異なるため、](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally)毎回再接続します：
 
 ```js {6-9,12,15}
 const serverUrl = 'https://localhost:1234';
@@ -1485,20 +1485,20 @@ const serverUrl = 'https://localhost:1234';
 function ChatRoom({ roomId }) {
   const [message, setMessage] = useState('');
 
-  const options = { // 🚩 This object is created from scratch on every re-render
+  const options = { // 🚩 このオブジェクトは毎回新しく作成されます
     serverUrl: serverUrl,
     roomId: roomId
   };
 
   useEffect(() => {
-    const connection = createConnection(options); // It's used inside the Effect
+    const connection = createConnection(options); // Effect内で使用されます
     connection.connect();
     return () => connection.disconnect();
-  }, [options]); // 🚩 As a result, these dependencies are always different on a re-render
+  }, [options]); // 🚩 その結果、これらの依存関係は毎回異なります
   // ...
 ```
 
-Avoid using an object created during rendering as a dependency. Instead, create the object inside the Effect:
+レンダリング中に作成されたオブジェクトを依存関係として使用するのは避けてください。代わりに、Effect内でオブジェクトを作成します：
 
 <Sandpack>
 
@@ -1553,13 +1553,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -1572,21 +1572,21 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-Now that you create the `options` object inside the Effect, the Effect itself only depends on the `roomId` string.
+これで、`options`オブジェクトをEffect内で作成するようになり、Effect自体は`roomId`文字列にのみ依存します。
 
-With this fix, typing into the input doesn't reconnect the chat. Unlike an object which gets re-created, a string like `roomId` doesn't change unless you set it to another value. [Read more about removing dependencies.](/learn/removing-effect-dependencies)
+この修正により、入力に文字を入力してもチャットが再接続されません。オブジェクトが再作成されるのとは異なり、`roomId`のような文字列は別の値に設定されない限り変更されません。[依存関係の削除について詳しく読む。](/learn/removing-effect-dependencies)
 
 ---
 
-### Removing unnecessary function dependencies {/*removing-unnecessary-function-dependencies*/}
+### 不要な関数依存関係の削除 {/*removing-unnecessary-function-dependencies*/}
 
-If your Effect depends on an object or a function created during rendering, it might run too often. For example, this Effect re-connects after every render because the `createOptions` function is [different for every render:](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally)
+Effectがレンダリング中に作成されたオブジェクトや関数に依存している場合、頻繁に実行される可能性があります。例えば、このEffectは、`createOptions`関数が[毎回異なるため、](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally)毎回再接続します：
 
 ```js {4-9,12,16}
 function ChatRoom({ roomId }) {
   const [message, setMessage] = useState('');
 
-  function createOptions() { // 🚩 This function is created from scratch on every re-render
+  function createOptions() { // 🚩 この関数は毎回新しく作成されます
     return {
       serverUrl: serverUrl,
       roomId: roomId
@@ -1594,17 +1594,17 @@ function ChatRoom({ roomId }) {
   }
 
   useEffect(() => {
-    const options = createOptions(); // It's used inside the Effect
+    const options = createOptions(); // Effect内で使用されます
     const connection = createConnection();
     connection.connect();
     return () => connection.disconnect();
-  }, [createOptions]); // 🚩 As a result, these dependencies are always different on a re-render
+  }, [createOptions]); // 🚩 その結果、これらの依存関係は毎回異なります
   // ...
 ```
 
-By itself, creating a function from scratch on every re-render is not a problem. You don't need to optimize that. However, if you use it as a dependency of your Effect, it will cause your Effect to re-run after every re-render.
+関数を毎回新しく作成すること自体は問題ではありません。それを最適化する必要はありません。しかし、依存関係として使用すると、毎回再レンダリング後にEffectが再実行されます。
 
-Avoid using a function created during rendering as a dependency. Instead, declare it inside the Effect:
+レンダリング中に作成された関数を依存関係として使用するのは避けてください。代わりに、Effect内で関数を宣言します：
 
 <Sandpack>
 
@@ -1663,13 +1663,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 実際の実装ではサーバーに接続します
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '"ルームに' + serverUrl + 'で接続中...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '"ルームから' + serverUrl + 'で切断されました');
     }
   };
 }
@@ -1682,32 +1682,32 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-Now that you define the `createOptions` function inside the Effect, the Effect itself only depends on the `roomId` string. With this fix, typing into the input doesn't reconnect the chat. Unlike a function which gets re-created, a string like `roomId` doesn't change unless you set it to another value. [Read more about removing dependencies.](/learn/removing-effect-dependencies)
+これで、`createOptions`関数をEffect内で定義するようになり、Effect自体は`roomId`文字列にのみ依存します。この修正により、入力に文字を入力してもチャットが再接続されません。関数が再作成されるのとは異なり、`roomId`のような文字列は別の値に設定されない限り変更されません。[依存関係の削除について詳しく読む。](/learn/removing-effect-dependencies)
 
 ---
 
-### Reading the latest props and state from an Effect {/*reading-the-latest-props-and-state-from-an-effect*/}
+### Effectから最新のpropsとstateを読み取る {/*reading-the-latest-props-and-state-from-an-effect*/}
 
 <Wip>
 
-This section describes an **experimental API that has not yet been released** in a stable version of React.
+このセクションでは、**まだリリースされていない実験的なAPI**について説明します。
 
 </Wip>
 
-By default, when you read a reactive value from an Effect, you have to add it as a dependency. This ensures that your Effect "reacts" to every change of that value. For most dependencies, that's the behavior you want.
+デフォルトでは、Effectからリアクティブな値を読み取ると、その値の変更に「反応」する必要があります。ほとんどの依存関係に対して、これは望ましい動作です。
 
-**However, sometimes you'll want to read the *latest* props and state from an Effect without "reacting" to them.** For example, imagine you want to log the number of the items in the shopping cart for every page visit:
+**しかし、時々、Effectから最新のpropsとstateを読み取りたいが、それに「反応」したくない場合があります。** 例えば、ページ訪問ごとにショッピングカート内のアイテム数をログに記録したいとします：
 
 ```js {3}
 function Page({ url, shoppingCart }) {
   useEffect(() => {
     logVisit(url, shoppingCart.length);
-  }, [url, shoppingCart]); // ✅ All dependencies declared
+  }, [url, shoppingCart]); // ✅ すべての依存関係が宣言されています
   // ...
 }
 ```
 
-**What if you want to log a new page visit after every `url` change, but *not* if only the `shoppingCart` changes?** You can't exclude `shoppingCart` from dependencies without breaking the [reactivity rules.](#specifying-reactive-dependencies) However, you can express that you *don't want* a piece of code to "react" to changes even though it is called from inside an Effect. [Declare an *Effect Event*](/learn/separating-events-from-effects#declaring-an-effect-event) with the [`useEffectEvent`](/reference/react/experimental_useEffectEvent) Hook, and move the code reading `shoppingCart` inside of it:
+**`url`の変更後に新しいページ訪問をログに記録したいが、`shoppingCart`が変更された場合には記録したくない場合はどうしますか？** 依存関係のルールを破ることなく`shoppingCart`を除外することはできません。しかし、Effect内のコードが変更に「反応」しないようにすることはできます。[`useEffectEvent`](/reference/react/experimental_useEffectEvent) Hookを使用して*Effectイベント*を宣言し、その中で`shoppingCart`を読み取るコードを移動します：
 
 ```js {2-4,7,8}
 function Page({ url, shoppingCart }) {
@@ -1717,23 +1717,22 @@ function Page({ url, shoppingCart }) {
 
   useEffect(() => {
     onVisit(url);
-  }, [url]); // ✅ All dependencies declared
+  }, [url]); // ✅ すべての依存関係が宣言されています
   // ...
 }
 ```
 
-**Effect Events are not reactive and must always be omitted from dependencies of your Effect.** This is what lets you put non-reactive code (where you can read the latest value of some props and state) inside of them. By reading `shoppingCart` inside of `onVisit`, you ensure that `shoppingCart` won't re-run your Effect.
+**Effectイベントはリアクティブではなく、Effectの依存関係から常に省略する必要があります。** これにより、非リアクティブなコード（propsとstateの最新の値を読み取ることができる）がその中に配置されます。`onVisit`内で`shoppingCart`を読み取ることで、`shoppingCart`がEffectを再実行しないようにします。
 
-[Read more about how Effect Events let you separate reactive and non-reactive code.](/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events)
-
+[Effectイベントがリアクティブなコードと非リアクティブなコードを分離する方法について詳しく読む。](/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events)
 
 ---
 
-### Displaying different content on the server and the client {/*displaying-different-content-on-the-server-and-the-client*/}
+### サーバーとクライアントで異なるコンテンツを表示する {/*displaying-different-content-on-the-server-and-the-client*/}
 
-If your app uses server rendering (either [directly](/reference/react-dom/server) or via a [framework](/learn/start-a-new-react-project#production-grade-react-frameworks)), your component will render in two different environments. On the server, it will render to produce the initial HTML. On the client, React will run the rendering code again so that it can attach your event handlers to that HTML. This is why, for [hydration](/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html) to work, your initial render output must be identical on the client and the server.
+アプリがサーバーレンダリングを使用している場合（[直接](/reference/react-dom/server)または[フレームワークを介して](/learn/start-a-new-react-project#production-grade-react-frameworks)）、コンポーネントは2つの異なる環境でレンダリングされます。サーバーでは、初期HTMLを生成するためにレンダリングされます。クライアントでは、Reactが再度レンダリングコードを実行し、そのHTMLにイベントハンドラをアタッチします。これは、[ハイドレーション](/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html)が機能するためには、初期レンダリング出力がクライアントとサーバーで同一である必要があります。
 
-In rare cases, you might need to display different content on the client. For example, if your app reads some data from [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), it can't possibly do that on the server. Here is how you could implement this:
+稀に、クライアントで異なるコンテンツを表示する必要がある場合があります。例えば、アプリが[`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)からデータを読み取る場合、サーバーではそれを行うことはできません。これを実装する方法は次のとおりです：
 
 ```js
 function MyComponent() {
@@ -1744,44 +1743,44 @@ function MyComponent() {
   }, []);
 
   if (didMount) {
-    // ... return client-only JSX ...
-  }  else {
-    // ... return initial JSX ...
+    // ... クライアント専用のJSXを返します ...
+  } else {
+    // ... 初期のJSXを返します ...
   }
 }
 ```
 
-While the app is loading, the user will see the initial render output. Then, when it's loaded and hydrated, your Effect will run and set `didMount` to `true`, triggering a re-render. This will switch to the client-only render output. Effects don't run on the server, so this is why `didMount` was `false` during the initial server render.
+アプリが読み込まれている間、ユーザーは初期レンダリング出力を見ます。その後、読み込みとハイドレーションが完了すると、Effectが実行され、`didMount`が`true`に設定され、再レンダリングがトリガーされます。これにより、クライアント専用のレンダリング出力に切り替わります。Effectはサーバー上では実行されないため、初期サーバーレンダリング中は`didMount`が`false`でした。
 
-Use this pattern sparingly. Keep in mind that users with a slow connection will see the initial content for quite a bit of time--potentially, many seconds--so you don't want to make jarring changes to your component's appearance. In many cases, you can avoid the need for this by conditionally showing different things with CSS.
-
----
-
-## Troubleshooting {/*troubleshooting*/}
-
-### My Effect runs twice when the component mounts {/*my-effect-runs-twice-when-the-component-mounts*/}
-
-When Strict Mode is on, in development, React runs setup and cleanup one extra time before the actual setup.
-
-This is a stress-test that verifies your Effect’s logic is implemented correctly. If this causes visible issues, your cleanup function is missing some logic. The cleanup function should stop or undo whatever the setup function was doing. The rule of thumb is that the user shouldn’t be able to distinguish between the setup being called once (as in production) and a setup → cleanup → setup sequence (as in development).
-
-Read more about [how this helps find bugs](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) and [how to fix your logic.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+このパターンは慎重に使用してください。接続が遅いユーザーは、初期コンテンツをかなりの時間（場合によっては数秒）見ることになるため、コンポーネントの外観に大きな変化を加えたくないでしょう。多くの場合、CSSを使用して異なるものを条件付きで表示することで、この必要性を回避できます。
 
 ---
 
-### My Effect runs after every re-render {/*my-effect-runs-after-every-re-render*/}
+## トラブルシューティング {/*troubleshooting*/}
 
-First, check that you haven't forgotten to specify the dependency array:
+### コンポーネントがマウントされたときにEffectが2回実行される {/*my-effect-runs-twice-when-the-component-mounts*/}
+
+ストリクトモードがオンの場合、開発中にReactはセットアップとクリーンアップを実際のセットアップの前に一度追加で実行します。
+
+これは、Effectのロジックが正しく実装されていることを確認するためのストレステストです。これが目に見える問題を引き起こす場合、クリーンアップ関数にいくつかのロジックが欠けています。クリーンアップ関数は、セットアップ関数が行っていることを停止または元に戻す必要があります。基本的なルールは、ユーザーがセットアップが一度呼び出された場合（本番環境のように）と、セットアップ → クリーンアップ → セットアップのシーケンス（開発環境のように）の間で区別できないようにすることです。
+
+[これがバグを見つけるのにどのように役立つか](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed)および[ロジックを修正する方法](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)について詳しく読む。
+
+---
+
+### Effectが毎回の再レンダリング後に実行される {/*my-effect-runs-after-every-re-render*/}
+
+まず、依存関係配列を指定し忘れていないか確認してください：
 
 ```js {3}
 useEffect(() => {
   // ...
-}); // 🚩 No dependency array: re-runs after every render!
+}); // 🚩 依存関係配列がない：毎回のレンダリング後に再実行されます！
 ```
 
-If you've specified the dependency array but your Effect still re-runs in a loop, it's because one of your dependencies is different on every re-render.
+依存関係配列を指定しているのにEffectがループで再実行される場合、それは依存関係の1つが毎回の再レンダリングで異なるためです。
 
-You can debug this problem by manually logging your dependencies to the console:
+この問題をデバッグするには、依存関係を手動でコンソールにログ出力します：
 
 ```js {5}
   useEffect(() => {
@@ -1791,58 +1790,58 @@ You can debug this problem by manually logging your dependencies to the console:
   console.log([serverUrl, roomId]);
 ```
 
-You can then right-click on the arrays from different re-renders in the console and select "Store as a global variable" for both of them. Assuming the first one got saved as `temp1` and the second one got saved as `temp2`, you can then use the browser console to check whether each dependency in both arrays is the same:
+異なる再レンダリングからの配列を右クリックして「グローバル変数として保存」を選択します。最初の配列が`temp1`として保存され、2番目の配列が`temp2`として保存されたと仮定すると、ブラウザのコンソールを使用して両方の配列の各依存関係が同じかどうかを確認できます：
 
 ```js
-Object.is(temp1[0], temp2[0]); // Is the first dependency the same between the arrays?
-Object.is(temp1[1], temp2[1]); // Is the second dependency the same between the arrays?
-Object.is(temp1[2], temp2[2]); // ... and so on for every dependency ...
+Object.is(temp1[0], temp2[0]); // 配列間の最初の依存関係は同じですか？
+Object.is(temp1[1], temp2[1]); // 配列間の2番目の依存関係は同じですか？
+Object.is(temp1[2], temp2[2]); // ... すべての依存関係について同様に ...
 ```
 
-When you find the dependency that is different on every re-render, you can usually fix it in one of these ways:
+毎回の再レンダリングで異なる依存関係を見つけたら、通常は次の方法のいずれかで修正できます：
 
-- [Updating state based on previous state from an Effect](#updating-state-based-on-previous-state-from-an-effect)
-- [Removing unnecessary object dependencies](#removing-unnecessary-object-dependencies)
-- [Removing unnecessary function dependencies](#removing-unnecessary-function-dependencies)
-- [Reading the latest props and state from an Effect](#reading-the-latest-props-and-state-from-an-effect)
+- [Effectから前のstateに基づいてstateを更新する](#updating-state-based-on-previous-state-from-an-effect)
+- [不要なオブジェクト依存関係の削除](#removing-unnecessary-object-dependencies)
+- [不要な関数依存関係の削除](#removing-unnecessary-function-dependencies)
+- [Effectから最新のpropsとstateを読み取る](#reading-the-latest-props-and-state-from-an-effect)
 
-As a last resort (if these methods didn't help), wrap its creation with [`useMemo`](/reference/react/useMemo#memoizing-a-dependency-of-another-hook) or [`useCallback`](/reference/react/useCallback#preventing-an-effect-from-firing-too-often) (for functions).
-
----
-
-### My Effect keeps re-running in an infinite cycle {/*my-effect-keeps-re-running-in-an-infinite-cycle*/}
-
-If your Effect runs in an infinite cycle, these two things must be true:
-
-- Your Effect is updating some state.
-- That state leads to a re-render, which causes the Effect's dependencies to change.
-
-Before you start fixing the problem, ask yourself whether your Effect is connecting to some external system (like DOM, network, a third-party widget, and so on). Why does your Effect need to set state? Does it synchronize with that external system? Or are you trying to manage your application's data flow with it?
-
-If there is no external system, consider whether [removing the Effect altogether](/learn/you-might-not-need-an-effect) would simplify your logic.
-
-If you're genuinely synchronizing with some external system, think about why and under what conditions your Effect should update the state. Has something changed that affects your component's visual output? If you need to keep track of some data that isn't used by rendering, a [ref](/reference/react/useRef#referencing-a-value-with-a-ref) (which doesn't trigger re-renders) might be more appropriate. Verify your Effect doesn't update the state (and trigger re-renders) more than needed.
-
-Finally, if your Effect is updating the state at the right time, but there is still a loop, it's because that state update leads to one of the Effect's dependencies changing. [Read how to debug dependency changes.](/reference/react/useEffect#my-effect-runs-after-every-re-render)
+最後の手段として（これらの方法が役立たなかった場合）、その作成を[`useMemo`](/reference/react/useMemo#memoizing-a-dependency-of-another-hook)または[`useCallback`](/reference/react/useCallback#preventing-an-effect-from-firing-too-often)（関数の場合）でラップします。
 
 ---
 
-### My cleanup logic runs even though my component didn't unmount {/*my-cleanup-logic-runs-even-though-my-component-didnt-unmount*/}
+### Effectが無限ループで再実行され続ける {/*my-effect-keeps-re-running-in-an-infinite-cycle*/}
 
-The cleanup function runs not only during unmount, but before every re-render with changed dependencies. Additionally, in development, React [runs setup+cleanup one extra time immediately after component mounts.](#my-effect-runs-twice-when-the-component-mounts)
+Effectが無限ループで実行される場合、次の2つのことが真実である必要があります：
 
-If you have cleanup code without corresponding setup code, it's usually a code smell:
+- Effectがstateを更新しています。
+- そのstateが再レンダリングを引き起こし、それがEffectの依存関係を変更します。
+
+問題を修正する前に、Effectが外部システム（DOM、ネットワーク、サードパーティのウィジェットなど）に接続しているかどうかを考えてください。Effectがstateを設定する必要があるのはなぜですか？それはその外部システムと同期していますか？それともアプリケーションのデータフローを管理しようとしていますか？
+
+外部システムがない場合、[Effectを完全に削除することが](/learn/you-might-not-need-an-effect)ロジックを簡素化するかどうかを検討してください。
+
+本当に外部システムと同期している場合、Effectがstateを更新する理由と条件について考えてください。何かが変更されてコンポーネントの視覚的な出力に影響を与えましたか？レンダリングに使用されないデータを追跡する必要がある場合、[ref](/reference/react/useRef#referencing-a-value-with-a-ref)（再レンダリングをトリガーしない）がより適切かもしれません。Effectが必要以上にstateを更新し（再レンダリングをトリガーし）ないことを確認してください。
+
+最後に、Effectが適切なタイミングでstateを更新しているが、それでもループが発生する場合、それはそのstateの更新がEffectの依存関係の1つを変更するためです。[依存関係の変更をデバッグする方法を読む。](/reference/react/useEffect#my-effect-runs-after-every-re-render)
+
+---
+
+### コンポーネントがアンマウントされていないのにクリーンアップロジックが実行される {/*my-cleanup-logic-runs-even-though-my-component-didnt-unmount*/}
+
+クリーンアップ関数はアンマウント時だけでなく、依存関係が変更された再レンダリングの前にも実行されます。さらに、開発中には、Reactが[コンポーネントのマウント直後にセットアップ+クリーンアップを一度追加で実行します。](#my-effect-runs-twice-when-the-component-mounts)
+
+クリーンアップコードに対応するセットアップコードがない場合、それは通常コードの臭いです：
 
 ```js {2-5}
 useEffect(() => {
-  // 🔴 Avoid: Cleanup logic without corresponding setup logic
+  // 🔴 対応するセットアップロジックのないクリーンアップロジックは避けてください
   return () => {
     doSomething();
   };
 }, []);
 ```
 
-Your cleanup logic should be "symmetrical" to the setup logic, and should stop or undo whatever setup did:
+クリーンアップロジックはセットアップロジックと「対称的」であり、セットアップが行ったことを停止または元に戻す必要があります：
 
 ```js {2-3,5}
   useEffect(() => {
@@ -1854,10 +1853,10 @@ Your cleanup logic should be "symmetrical" to the setup logic, and should stop o
   }, [serverUrl, roomId]);
 ```
 
-[Learn how the Effect lifecycle is different from the component's lifecycle.](/learn/lifecycle-of-reactive-effects#the-lifecycle-of-an-effect)
+[Effectのライフサイクルがコンポーネントのライフサイクルとどのように異なるかを学びます。](/learn/lifecycle-of-reactive-effects#the-lifecycle-of-an-effect)
 
 ---
 
-### My Effect does something visual, and I see a flicker before it runs {/*my-effect-does-something-visual-and-i-see-a-flicker-before-it-runs*/}
+### Effectが視覚的なことを行っている場合、実行前にちらつきが見える {/*my-effect-does-something-visual-and-i-see-a-flicker-before-it-runs*/}
 
-If your Effect must block the browser from [painting the screen,](/learn/render-and-commit#epilogue-browser-paint) replace `useEffect` with [`useLayoutEffect`](/reference/react/useLayoutEffect). Note that **this shouldn't be needed for the vast majority of Effects.** You'll only need this if it's crucial to run your Effect before the browser paint: for example, to measure and position a tooltip before the user sees it.
+Effectがブラウザの[画面描画をブロックする必要がある場合、](/learn/render-and-commit#epilogue-browser-paint) `useEffect`を[`useLayoutEffect`](/reference/react/useLayoutEffect)に置き換えます。これは、**ほとんどのEffectには必要ありません。** Effectをブラウザの描画前に実行する必要がある場合にのみ必要です。例えば、ツールチップを測定して位置決めする場合などです。

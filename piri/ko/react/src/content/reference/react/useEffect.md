@@ -4,7 +4,7 @@ title: useEffect
 
 <Intro>
 
-`useEffect` is a React Hook that lets you [synchronize a component with an external system.](/learn/synchronizing-with-effects)
+`useEffect`는 컴포넌트를 외부 시스템과 동기화할 수 있게 해주는 React Hook입니다. [컴포넌트를 외부 시스템과 동기화하는 방법에 대해 알아보세요.](/learn/synchronizing-with-effects)
 
 ```js
 useEffect(setup, dependencies?)
@@ -16,11 +16,11 @@ useEffect(setup, dependencies?)
 
 ---
 
-## Reference {/*reference*/}
+## 참고자료 {/*reference*/}
 
 ### `useEffect(setup, dependencies?)` {/*useeffect*/}
 
-Call `useEffect` at the top level of your component to declare an Effect:
+Effect를 선언하기 위해 컴포넌트의 최상위 레벨에서 `useEffect`를 호출하세요:
 
 ```js
 import { useEffect } from 'react';
@@ -40,43 +40,43 @@ function ChatRoom({ roomId }) {
 }
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
-#### Parameters {/*parameters*/}
+#### 매개변수 {/*parameters*/}
 
-* `setup`: The function with your Effect's logic. Your setup function may also optionally return a *cleanup* function. When your component is added to the DOM, React will run your setup function. After every re-render with changed dependencies, React will first run the cleanup function (if you provided it) with the old values, and then run your setup function with the new values. After your component is removed from the DOM, React will run your cleanup function.
+* `setup`: Effect의 로직을 담고 있는 함수입니다. setup 함수는 선택적으로 *cleanup* 함수를 반환할 수 있습니다. 컴포넌트가 DOM에 추가되면 React는 setup 함수를 실행합니다. 종속성이 변경된 상태로 다시 렌더링될 때마다 React는 먼저 cleanup 함수를 (제공된 경우) 이전 값으로 실행한 다음 새로운 값으로 setup 함수를 실행합니다. 컴포넌트가 DOM에서 제거되면 React는 cleanup 함수를 실행합니다.
  
-* **optional** `dependencies`: The list of all reactive values referenced inside of the `setup` code. Reactive values include props, state, and all the variables and functions declared directly inside your component body. If your linter is [configured for React](/learn/editor-setup#linting), it will verify that every reactive value is correctly specified as a dependency. The list of dependencies must have a constant number of items and be written inline like `[dep1, dep2, dep3]`. React will compare each dependency with its previous value using the [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison. If you omit this argument, your Effect will re-run after every re-render of the component. [See the difference between passing an array of dependencies, an empty array, and no dependencies at all.](#examples-dependencies)
+* **선택적** `dependencies`: `setup` 코드 내에서 참조된 모든 반응형 값의 목록입니다. 반응형 값에는 props, state, 그리고 컴포넌트 본문 내에서 직접 선언된 모든 변수와 함수가 포함됩니다. linter가 [React에 맞게 구성된 경우](/learn/editor-setup#linting), 모든 반응형 값이 종속성으로 올바르게 지정되었는지 확인합니다. 종속성 목록은 일정한 항목 수를 가져야 하며 `[dep1, dep2, dep3]`와 같이 인라인으로 작성되어야 합니다. React는 [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 비교를 사용하여 각 종속성을 이전 값과 비교합니다. 이 인수를 생략하면 컴포넌트가 다시 렌더링될 때마다 Effect가 다시 실행됩니다. [종속성 배열을 전달하는 것, 빈 배열을 전달하는 것, 종속성을 전혀 전달하지 않는 것의 차이를 확인하세요.](#examples-dependencies)
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-`useEffect` returns `undefined`.
+`useEffect`는 `undefined`를 반환합니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* `useEffect` is a Hook, so you can only call it **at the top level of your component** or your own Hooks. You can't call it inside loops or conditions. If you need that, extract a new component and move the state into it.
+* `useEffect`는 Hook이므로 **컴포넌트의 최상위 레벨** 또는 자체 Hook에서만 호출할 수 있습니다. 루프나 조건문 내에서 호출할 수 없습니다. 그런 경우, 새로운 컴포넌트를 추출하고 상태를 그 안으로 이동하세요.
 
-* If you're **not trying to synchronize with some external system,** [you probably don't need an Effect.](/learn/you-might-not-need-an-effect)
+* **외부 시스템과 동기화하려는 것이 아니라면,** [Effect가 필요하지 않을 가능성이 큽니다.](/learn/you-might-not-need-an-effect)
 
-* When Strict Mode is on, React will **run one extra development-only setup+cleanup cycle** before the first real setup. This is a stress-test that ensures that your cleanup logic "mirrors" your setup logic and that it stops or undoes whatever the setup is doing. If this causes a problem, [implement the cleanup function.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+* Strict Mode가 켜져 있으면 React는 **첫 번째 실제 setup 전에 개발 전용 setup+cleanup 사이클을 한 번 더 실행합니다.** 이는 cleanup 로직이 setup 로직을 "반영"하고 setup이 수행하는 작업을 중지하거나 취소하는지 확인하는 스트레스 테스트입니다. 이로 인해 문제가 발생하면 [cleanup 함수를 구현하세요.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
 
-* If some of your dependencies are objects or functions defined inside the component, there is a risk that they will **cause the Effect to re-run more often than needed.** To fix this, remove unnecessary [object](#removing-unnecessary-object-dependencies) and [function](#removing-unnecessary-function-dependencies) dependencies. You can also [extract state updates](#updating-state-based-on-previous-state-from-an-effect) and [non-reactive logic](#reading-the-latest-props-and-state-from-an-effect) outside of your Effect.
+* 종속성 중 일부가 컴포넌트 내에서 정의된 객체나 함수인 경우, **Effect가 필요 이상으로 자주 다시 실행될 위험이 있습니다.** 이를 해결하려면 불필요한 [객체](#removing-unnecessary-object-dependencies) 및 [함수](#removing-unnecessary-function-dependencies) 종속성을 제거하세요. 또한 [상태 업데이트를 추출](#updating-state-based-on-previous-state-from-an-effect)하고 [비반응형 로직을 Effect 외부로 이동](#reading-the-latest-props-and-state-from-an-effect)할 수 있습니다.
 
-* If your Effect wasn't caused by an interaction (like a click), React will generally let the browser **paint the updated screen first before running your Effect.** If your Effect is doing something visual (for example, positioning a tooltip), and the delay is noticeable (for example, it flickers), replace `useEffect` with [`useLayoutEffect`.](/reference/react/useLayoutEffect)
+* Effect가 상호작용(예: 클릭)으로 인해 발생하지 않은 경우, React는 일반적으로 **Effect를 실행하기 전에 업데이트된 화면을 먼저 브라우저에 그리도록 합니다.** Effect가 시각적인 작업을 수행하고(예: 툴팁 위치 지정) 지연이 눈에 띄는 경우(예: 깜박임), `useEffect`를 [`useLayoutEffect`](/reference/react/useLayoutEffect)로 교체하세요.
 
-* Even if your Effect was caused by an interaction (like a click), **the browser may repaint the screen before processing the state updates inside your Effect.** Usually, that's what you want. However, if you must block the browser from repainting the screen, you need to replace `useEffect` with [`useLayoutEffect`.](/reference/react/useLayoutEffect)
+* Effect가 상호작용(예: 클릭)으로 인해 발생한 경우에도 **브라우저는 Effect 내의 상태 업데이트를 처리하기 전에 화면을 다시 그릴 수 있습니다.** 일반적으로 이는 원하는 동작입니다. 그러나 브라우저가 화면을 다시 그리는 것을 차단해야 하는 경우, `useEffect`를 [`useLayoutEffect`](/reference/react/useLayoutEffect)로 교체해야 합니다.
 
-* Effects **only run on the client.** They don't run during server rendering.
+* Effect는 **클라이언트에서만 실행됩니다.** 서버 렌더링 중에는 실행되지 않습니다.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Connecting to an external system {/*connecting-to-an-external-system*/}
+### 외부 시스템에 연결하기 {/*connecting-to-an-external-system*/}
 
-Some components need to stay connected to the network, some browser API, or a third-party library, while they are displayed on the page. These systems aren't controlled by React, so they are called *external.*
+일부 컴포넌트는 페이지에 표시되는 동안 네트워크, 브라우저 API 또는 타사 라이브러리에 연결된 상태를 유지해야 합니다. 이러한 시스템은 React에 의해 제어되지 않으므로 *외부*라고 합니다.
 
-To [connect your component to some external system,](/learn/synchronizing-with-effects) call `useEffect` at the top level of your component:
+[컴포넌트를 외부 시스템에 연결하려면,](/learn/synchronizing-with-effects) 컴포넌트의 최상위 레벨에서 `useEffect`를 호출하세요:
 
 ```js [[1, 8, "const connection = createConnection(serverUrl, roomId);"], [1, 9, "connection.connect();"], [2, 11, "connection.disconnect();"], [3, 13, "[serverUrl, roomId]"]]
 import { useEffect } from 'react';
@@ -96,45 +96,45 @@ function ChatRoom({ roomId }) {
 }
 ```
 
-You need to pass two arguments to `useEffect`:
+`useEffect`에 두 가지 인수를 전달해야 합니다:
 
-1. A *setup function* with <CodeStep step={1}>setup code</CodeStep> that connects to that system.
-   - It should return a *cleanup function* with <CodeStep step={2}>cleanup code</CodeStep> that disconnects from that system.
-2. A <CodeStep step={3}>list of dependencies</CodeStep> including every value from your component used inside of those functions.
+1. 해당 시스템에 연결하는 <CodeStep step={1}>setup 코드</CodeStep>가 포함된 *setup 함수*.
+   - 해당 시스템에서 연결을 해제하는 <CodeStep step={2}>cleanup 코드</CodeStep>가 포함된 *cleanup 함수*를 반환해야 합니다.
+2. 해당 함수들 내에서 사용된 컴포넌트의 모든 값을 포함하는 <CodeStep step={3}>종속성 목록</CodeStep>.
 
-**React calls your setup and cleanup functions whenever it's necessary, which may happen multiple times:**
+**React는 필요할 때마다 setup 및 cleanup 함수를 호출합니다. 이는 여러 번 발생할 수 있습니다:**
 
-1. Your <CodeStep step={1}>setup code</CodeStep> runs when your component is added to the page *(mounts)*.
-2. After every re-render of your component where the <CodeStep step={3}>dependencies</CodeStep> have changed:
-   - First, your <CodeStep step={2}>cleanup code</CodeStep> runs with the old props and state.
-   - Then, your <CodeStep step={1}>setup code</CodeStep> runs with the new props and state.
-3. Your <CodeStep step={2}>cleanup code</CodeStep> runs one final time after your component is removed from the page *(unmounts).*
+1. 컴포넌트가 페이지에 추가될 때 *(mount)* <CodeStep step={1}>setup 코드</CodeStep>가 실행됩니다.
+2. <CodeStep step={3}>종속성</CodeStep>이 변경된 상태로 컴포넌트가 다시 렌더링될 때마다:
+   - 먼저, 이전 props와 state로 <CodeStep step={2}>cleanup 코드</CodeStep>가 실행됩니다.
+   - 그런 다음, 새로운 props와 state로 <CodeStep step={1}>setup 코드</CodeStep>가 실행됩니다.
+3. 컴포넌트가 페이지에서 제거될 때 *(unmount)* <CodeStep step={2}>cleanup 코드</CodeStep>가 마지막으로 실행됩니다.
 
-**Let's illustrate this sequence for the example above.**  
+**위 예제를 통해 이 순서를 설명해 보겠습니다.**  
 
-When the `ChatRoom` component above gets added to the page, it will connect to the chat room with the initial `serverUrl` and `roomId`. If either `serverUrl` or `roomId` change as a result of a re-render (say, if the user picks a different chat room in a dropdown), your Effect will *disconnect from the previous room, and connect to the next one.* When the `ChatRoom` component is removed from the page, your Effect will disconnect one last time.
+위의 `ChatRoom` 컴포넌트가 페이지에 추가되면 초기 `serverUrl`과 `roomId`로 채팅방에 연결됩니다. 드롭다운에서 사용자가 다른 채팅방을 선택하는 경우와 같이 다시 렌더링된 결과로 `serverUrl` 또는 `roomId`가 변경되면, Effect는 *이전 방에서 연결을 해제하고 다음 방에 연결합니다.* `ChatRoom` 컴포넌트가 페이지에서 제거되면, Effect는 마지막으로 연결을 해제합니다.
 
-**To [help you find bugs,](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) in development React runs <CodeStep step={1}>setup</CodeStep> and <CodeStep step={2}>cleanup</CodeStep> one extra time before the <CodeStep step={1}>setup</CodeStep>.** This is a stress-test that verifies your Effect's logic is implemented correctly. If this causes visible issues, your cleanup function is missing some logic. The cleanup function should stop or undo whatever the setup function was doing. The rule of thumb is that the user shouldn't be able to distinguish between the setup being called once (as in production) and a *setup* → *cleanup* → *setup* sequence (as in development). [See common solutions.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+**개발 중 버그를 찾기 위해, React는 <CodeStep step={1}>setup</CodeStep>과 <CodeStep step={2}>cleanup</CodeStep>을 첫 번째 <CodeStep step={1}>setup</CodeStep> 전에 한 번 더 실행합니다.** 이는 Effect의 로직이 올바르게 구현되었는지 확인하는 스트레스 테스트입니다. 이로 인해 문제가 발생하면, cleanup 함수에 일부 로직이 누락된 것입니다. cleanup 함수는 setup 함수가 수행하는 작업을 중지하거나 취소해야 합니다. 사용자가 setup이 한 번 호출된 것(프로덕션에서처럼)과 *setup* → *cleanup* → *setup* 시퀀스(개발에서처럼) 사이의 차이를 구별할 수 없어야 합니다. [일반적인 해결책을 확인하세요.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
 
-**Try to [write every Effect as an independent process](/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process) and [think about a single setup/cleanup cycle at a time.](/learn/lifecycle-of-reactive-effects#thinking-from-the-effects-perspective)** It shouldn't matter whether your component is mounting, updating, or unmounting. When your cleanup logic correctly "mirrors" the setup logic, your Effect is resilient to running setup and cleanup as often as needed.
+**모든 Effect를 독립적인 프로세스로 작성하고, 한 번에 하나의 setup/cleanup 사이클을 생각해 보세요.** 컴포넌트가 마운트, 업데이트 또는 언마운트되는지 여부는 중요하지 않습니다. cleanup 로직이 setup 로직을 올바르게 "반영"할 때, Effect는 필요한 만큼 setup 및 cleanup을 실행하는 데 강력합니다.
 
 <Note>
 
-An Effect lets you [keep your component synchronized](/learn/synchronizing-with-effects) with some external system (like a chat service). Here, *external system* means any piece of code that's not controlled by React, such as:
+Effect는 컴포넌트를 외부 시스템(예: 채팅 서비스)과 동기화할 수 있게 해줍니다. 여기서 *외부 시스템*이란 React에 의해 제어되지 않는 모든 코드를 의미합니다. 예를 들어:
 
-* A timer managed with <CodeStep step={1}>[`setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/setInterval)</CodeStep> and <CodeStep step={2}>[`clearInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval)</CodeStep>.
-* An event subscription using <CodeStep step={1}>[`window.addEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)</CodeStep> and <CodeStep step={2}>[`window.removeEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)</CodeStep>.
-* A third-party animation library with an API like <CodeStep step={1}>`animation.start()`</CodeStep> and <CodeStep step={2}>`animation.reset()`</CodeStep>.
+* <CodeStep step={1}>[`setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/setInterval)</CodeStep> 및 <CodeStep step={2}>[`clearInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval)</CodeStep>로 관리되는 타이머.
+* <CodeStep step={1}>[`window.addEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)</CodeStep> 및 <CodeStep step={2}>[`window.removeEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)</CodeStep>를 사용한 이벤트 구독.
+* <CodeStep step={1}>`animation.start()`</CodeStep> 및 <CodeStep step={2}>`animation.reset()`</CodeStep>과 같은 API를 가진 타사 애니메이션 라이브러리.
 
-**If you're not connecting to any external system, [you probably don't need an Effect.](/learn/you-might-not-need-an-effect)**
+**외부 시스템에 연결하지 않는 경우, [Effect가 필요하지 않을 가능성이 큽니다.](/learn/you-might-not-need-an-effect)**
 
 </Note>
 
-<Recipes titleText="Examples of connecting to an external system" titleId="examples-connecting">
+<Recipes titleText="외부 시스템에 연결하는 예제" titleId="examples-connecting">
 
-#### Connecting to a chat server {/*connecting-to-a-chat-server*/}
+#### 채팅 서버에 연결하기 {/*connecting-to-a-chat-server*/}
 
-In this example, the `ChatRoom` component uses an Effect to stay connected to an external system defined in `chat.js`. Press "Open chat" to make the `ChatRoom` component appear. This sandbox runs in development mode, so there is an extra connect-and-disconnect cycle, as [explained here.](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) Try changing the `roomId` and `serverUrl` using the dropdown and the input, and see how the Effect re-connects to the chat. Press "Close chat" to see the Effect disconnect one last time.
+이 예제에서 `ChatRoom` 컴포넌트는 `chat.js`에 정의된 외부 시스템에 연결된 상태를 유지하기 위해 Effect를 사용합니다. "Open chat"을 눌러 `ChatRoom` 컴포넌트를 나타나게 하세요. 이 샌드박스는 개발 모드에서 실행되므로, [여기서 설명한 대로](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) 추가 연결 및 연결 해제 사이클이 있습니다. 드롭다운과 입력을 사용하여 `roomId`와 `serverUrl`을 변경하고 Effect가 채팅에 다시 연결되는 것을 확인하세요. "Close chat"을 눌러 Effect가 마지막으로 연결을 해제하는 것을 확인하세요.
 
 <Sandpack>
 
@@ -195,13 +195,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
@@ -216,9 +216,9 @@ button { margin-left: 10px; }
 
 <Solution />
 
-#### Listening to a global browser event {/*listening-to-a-global-browser-event*/}
+#### 전역 브라우저 이벤트 수신하기 {/*listening-to-a-global-browser-event*/}
 
-In this example, the external system is the browser DOM itself. Normally, you'd specify event listeners with JSX, but you can't listen to the global [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window) object this way. An Effect lets you connect to the `window` object and listen to its events. Listening to the `pointermove` event lets you track the cursor (or finger) position and update the red dot to move with it.
+이 예제에서 외부 시스템은 브라우저 DOM 자체입니다. 일반적으로 JSX로 이벤트 리스너를 지정하지만, 전역 [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window) 객체에는 이렇게 할 수 없습니다. Effect를 사용하면 `window` 객체에 연결하고 그 이벤트를 수신할 수 있습니다. `pointermove` 이벤트를 수신하면 커서(또는 손가락) 위치를 추적하고 빨간 점이 함께 이동하도록 업데이트할 수 있습니다.
 
 <Sandpack>
 
@@ -265,9 +265,9 @@ body {
 
 <Solution />
 
-#### Triggering an animation {/*triggering-an-animation*/}
+#### 애니메이션 트리거하기 {/*triggering-an-animation*/}
 
-In this example, the external system is the animation library in `animation.js`. It provides a JavaScript class called `FadeInAnimation` that takes a DOM node as an argument and exposes `start()` and `stop()` methods to control the animation. This component [uses a ref](/learn/manipulating-the-dom-with-refs) to access the underlying DOM node. The Effect reads the DOM node from the ref and automatically starts the animation for that node when the component appears.
+이 예제에서 외부 시스템은 `animation.js`에 있는 애니메이션 라이브러리입니다. 이 라이브러리는 DOM 노드를 인수로 받아들이고 해당 노드를 제어하기 위해 `start()` 및 `stop()` 메서드를 노출하는 `FadeInAnimation`이라는 JavaScript 클래스를 제공합니다. 이 컴포넌트는 [ref를 사용하여](/learn/manipulating-the-dom-with-refs) 기본 DOM 노드에 접근합니다. Effect는 ref에서 DOM 노드를 읽고 컴포넌트가 나타날 때 해당 노드에 대한 애니메이션을 자동으로 시작합니다.
 
 <Sandpack>
 
@@ -325,11 +325,11 @@ export class FadeInAnimation {
   start(duration) {
     this.duration = duration;
     if (this.duration === 0) {
-      // Jump to end immediately
+      // 즉시 끝으로 이동
       this.onProgress(1);
     } else {
       this.onProgress(0);
-      // Start animating
+      // 애니메이션 시작
       this.startTime = performance.now();
       this.frameId = requestAnimationFrame(() => this.onFrame());
     }
@@ -339,14 +339,15 @@ export class FadeInAnimation {
     const progress = Math.min(timePassed / this.duration, 1);
     this.onProgress(progress);
     if (progress < 1) {
-      // We still have more frames to paint
+      // 아직 그릴 프레임이 더 있음
       this.frameId = requestAnimationFrame(() => this.onFrame());
     }
   }
   onProgress(progress) {
     this.node.style.opacity = progress;
   }
-  stop() {
+  stop
+() {
     cancelAnimationFrame(this.frameId);
     this.startTime = null;
     this.frameId = null;
@@ -364,9 +365,9 @@ html, body { min-height: 300px; }
 
 <Solution />
 
-#### Controlling a modal dialog {/*controlling-a-modal-dialog*/}
+#### 모달 다이얼로그 제어하기 {/*controlling-a-modal-dialog*/}
 
-In this example, the external system is the browser DOM. The `ModalDialog` component renders a [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) element. It uses an Effect to synchronize the `isOpen` prop to the [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) and [`close()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/close) method calls.
+이 예제에서 외부 시스템은 브라우저 DOM입니다. `ModalDialog` 컴포넌트는 [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) 요소를 렌더링합니다. Effect를 사용하여 `isOpen` prop을 [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) 및 [`close()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/close) 메서드 호출과 동기화합니다.
 
 <Sandpack>
 
@@ -424,9 +425,9 @@ body {
 
 <Solution />
 
-#### Tracking element visibility {/*tracking-element-visibility*/}
+#### 요소 가시성 추적하기 {/*tracking-element-visibility*/}
 
-In this example, the external system is again the browser DOM. The `App` component displays a long list, then a `Box` component, and then another long list. Scroll the list down. Notice that when all of the `Box` component is fully visible in the viewport, the background color changes to black. To implement this, the `Box` component uses an Effect to manage an [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). This browser API notifies you when the DOM element is visible in the viewport.
+이 예제에서 외부 시스템은 다시 브라우저 DOM입니다. `App` 컴포넌트는 긴 목록을 표시한 다음 `Box` 컴포넌트를 표시하고 다시 긴 목록을 표시합니다. 목록을 아래로 스크롤하세요. `Box` 컴포넌트가 뷰포트에 완전히 표시되면 배경색이 검은색으로 변경되는 것을 확인할 수 있습니다. 이를 구현하기 위해 `Box` 컴포넌트는 Effect를 사용하여 [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)를 관리합니다. 이 브라우저 API는 DOM 요소가 뷰포트에 표시될 때 알림을 제공합니다.
 
 <Sandpack>
 
@@ -500,11 +501,11 @@ export default function Box() {
 
 ---
 
-### Wrapping Effects in custom Hooks {/*wrapping-effects-in-custom-hooks*/}
+### Effect를 커스텀 Hook으로 감싸기 {/*wrapping-effects-in-custom-hooks*/}
 
-Effects are an ["escape hatch":](/learn/escape-hatches) you use them when you need to "step outside React" and when there is no better built-in solution for your use case. If you find yourself often needing to manually write Effects, it's usually a sign that you need to extract some [custom Hooks](/learn/reusing-logic-with-custom-hooks) for common behaviors your components rely on.
+Effect는 ["탈출구"](https://react.dev/learn/escape-hatches)입니다. React 외부로 "탈출"해야 하거나 특정 사용 사례에 대한 더 나은 내장 솔루션이 없을 때 사용합니다. 수동으로 Effect를 자주 작성해야 한다면, 이는 일반적으로 컴포넌트가 의존하는 공통 동작에 대한 [커스텀 Hook](/learn/reusing-logic-with-custom-hooks)을 추출해야 한다는 신호입니다.
 
-For example, this `useChatRoom` custom Hook "hides" the logic of your Effect behind a more declarative API:
+예를 들어, 이 `useChatRoom` 커스텀 Hook은 Effect의 로직을 더 선언적인 API 뒤에 "숨깁니다":
 
 ```js {1,11}
 function useChatRoom({ serverUrl, roomId }) {
@@ -520,7 +521,7 @@ function useChatRoom({ serverUrl, roomId }) {
 }
 ```
 
-Then you can use it from any component like this:
+그런 다음, 어떤 컴포넌트에서든 다음과 같이 사용할 수 있습니다:
 
 ```js {4-7}
 function ChatRoom({ roomId }) {
@@ -533,15 +534,15 @@ function ChatRoom({ roomId }) {
   // ...
 ```
 
-There are also many excellent custom Hooks for every purpose available in the React ecosystem.
+React 생태계에는 다양한 목적을 위한 훌륭한 커스텀 Hook이 많이 있습니다.
 
-[Learn more about wrapping Effects in custom Hooks.](/learn/reusing-logic-with-custom-hooks)
+[Effect를 커스텀 Hook으로 감싸는 방법에 대해 더 알아보세요.](/learn/reusing-logic-with-custom-hooks)
 
-<Recipes titleText="Examples of wrapping Effects in custom Hooks" titleId="examples-custom-hooks">
+<Recipes titleText="Effect를 커스텀 Hook으로 감싸는 예제" titleId="examples-custom-hooks">
 
-#### Custom `useChatRoom` Hook {/*custom-usechatroom-hook*/}
+#### 커스텀 `useChatRoom` Hook {/*custom-usechatroom-hook*/}
 
-This example is identical to one of the [earlier examples,](#examples-connecting) but the logic is extracted to a custom Hook.
+이 예제는 [이전 예제](#examples-connecting) 중 하나와 동일하지만, 로직이 커스텀 Hook으로 추출되었습니다.
 
 <Sandpack>
 
@@ -614,13 +615,13 @@ export function useChatRoom({ serverUrl, roomId }) {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
@@ -635,9 +636,9 @@ button { margin-left: 10px; }
 
 <Solution />
 
-#### Custom `useWindowListener` Hook {/*custom-usewindowlistener-hook*/}
+#### 커스텀 `useWindowListener` Hook {/*custom-usewindowlistener-hook*/}
 
-This example is identical to one of the [earlier examples,](#examples-connecting) but the logic is extracted to a custom Hook.
+이 예제는 [이전 예제](#examples-connecting) 중 하나와 동일하지만, 로직이 커스텀 Hook으로 추출되었습니다.
 
 <Sandpack>
 
@@ -692,9 +693,9 @@ body {
 
 <Solution />
 
-#### Custom `useIntersectionObserver` Hook {/*custom-useintersectionobserver-hook*/}
+#### 커스텀 `useIntersectionObserver` Hook {/*custom-useintersectionobserver-hook*/}
 
-This example is identical to one of the [earlier examples,](#examples-connecting) but the logic is partially extracted to a custom Hook.
+이 예제는 [이전 예제](#examples-connecting) 중 하나와 동일하지만, 로직이 부분적으로 커스텀 Hook으로 추출되었습니다.
 
 <Sandpack>
 
@@ -784,11 +785,11 @@ export function useIntersectionObserver(ref) {
 
 ---
 
-### Controlling a non-React widget {/*controlling-a-non-react-widget*/}
+### 비React 위젯 제어하기 {/*controlling-a-non-react-widget*/}
 
-Sometimes, you want to keep an external system synchronized to some prop or state of your component.
+때때로, 컴포넌트의 일부 prop 또는 state를 외부 시스템과 동기화하고 싶을 수 있습니다.
 
-For example, if you have a third-party map widget or a video player component written without React, you can use an Effect to call methods on it that make its state match the current state of your React component. This Effect creates an instance of a `MapWidget` class defined in `map-widget.js`. When you change the `zoomLevel` prop of the `Map` component, the Effect calls the `setZoom()` on the class instance to keep it synchronized:
+예를 들어, React 없이 작성된 타사 지도 위젯이나 비디오 플레이어 컴포넌트가 있는 경우, Effect를 사용하여 해당 클래스 인스턴스의 메서드를 호출하여 React 컴포넌트의 현재 상태와 일치시킬 수 있습니다. 이 Effect는 `map-widget.js`에 정의된 `MapWidget` 클래스의 인스턴스를 생성합니다. `Map` 컴포넌트의 `zoomLevel` prop을 변경하면, Effect는 클래스 인스턴스의 `setZoom()`을 호출하여 동기화 상태를 유지합니다:
 
 <Sandpack>
 
@@ -888,15 +889,15 @@ button { margin: 5px; }
 
 </Sandpack>
 
-In this example, a cleanup function is not needed because the `MapWidget` class manages only the DOM node that was passed to it. After the `Map` React component is removed from the tree, both the DOM node and the `MapWidget` class instance will be automatically garbage-collected by the browser JavaScript engine.
+이 예제에서는 `MapWidget` 클래스가 전달된 DOM 노드만 관리하기 때문에 cleanup 함수가 필요하지 않습니다. `Map` React 컴포넌트가 트리에서 제거된 후, DOM 노드와 `MapWidget` 클래스 인스턴스는 브라우저 JavaScript 엔진에 의해 자동으로 가비지 컬렉션됩니다.
 
 ---
 
-### Fetching data with Effects {/*fetching-data-with-effects*/}
+### Effect로 데이터 가져오기 {/*fetching-data-with-effects*/}
 
-You can use an Effect to fetch data for your component. Note that [if you use a framework,](/learn/start-a-new-react-project#production-grade-react-frameworks) using your framework's data fetching mechanism will be a lot more efficient than writing Effects manually.
+Effect를 사용하여 컴포넌트의 데이터를 가져올 수 있습니다. [프레임워크를 사용하는 경우,](/learn/start-a-new-react-project#production-grade-react-frameworks) 프레임워크의 데이터 가져오기 메커니즘을 사용하는 것이 Effect를 수동으로 작성하는 것보다 훨씬 효율적입니다.
 
-If you want to fetch data from an Effect manually, your code might look like this:
+Effect를 사용하여 데이터를 수동으로 가져오려면 다음과 같은 코드를 작성할 수 있습니다:
 
 ```js
 import { useState, useEffect } from 'react';
@@ -922,7 +923,7 @@ export default function Page() {
   // ...
 ```
 
-Note the `ignore` variable which is initialized to `false`, and is set to `true` during cleanup. This ensures [your code doesn't suffer from "race conditions":](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect) network responses may arrive in a different order than you sent them.
+`ignore` 변수가 `false`로 초기화되고 cleanup 중에 `true`로 설정되는 것을 주목하세요. 이는 [코드가 "경쟁 조건"](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect)으로 인해 문제가 발생하지 않도록 보장합니다. 네트워크 응답은 보낸 순서와 다른 순서로 도착할 수 있습니다.
 
 <Sandpack>
 
@@ -956,7 +957,8 @@ export default function Page() {
         <option value="Taylor">Taylor</option>
       </select>
       <hr />
-      <p><i>{bio ?? 'Loading...'}</i></p>
+      <p
+<i>{bio ?? 'Loading...'}</i></p>
     </>
   );
 }
@@ -975,7 +977,7 @@ export async function fetchBio(person) {
 
 </Sandpack>
 
-You can also rewrite using the [`async` / `await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) syntax, but you still need to provide a cleanup function:
+`async` / `await` 구문을 사용하여 다시 작성할 수도 있지만, 여전히 cleanup 함수를 제공해야 합니다:
 
 <Sandpack>
 
@@ -1031,50 +1033,50 @@ export async function fetchBio(person) {
 
 </Sandpack>
 
-Writing data fetching directly in Effects gets repetitive and makes it difficult to add optimizations like caching and server rendering later. [It's easier to use a custom Hook--either your own or maintained by the community.](/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks)
+Effect에서 직접 데이터를 가져오는 것은 반복적이며 나중에 캐싱 및 서버 렌더링과 같은 최적화를 추가하기 어렵게 만듭니다. [자체 커스텀 Hook 또는 커뮤니티에서 유지 관리하는 Hook을 사용하는 것이 더 쉽습니다.](/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks)
 
 <DeepDive>
 
-#### What are good alternatives to data fetching in Effects? {/*what-are-good-alternatives-to-data-fetching-in-effects*/}
+#### Effect에서 데이터 가져오기에 대한 좋은 대안은 무엇인가요? {/*what-are-good-alternatives-to-data-fetching-in-effects*/}
 
-Writing `fetch` calls inside Effects is a [popular way to fetch data](https://www.robinwieruch.de/react-hooks-fetch-data/), especially in fully client-side apps. This is, however, a very manual approach and it has significant downsides:
+Effect 내부에서 `fetch` 호출을 작성하는 것은 [데이터를 가져오는 인기 있는 방법](https://www.robinwieruch.de/react-hooks-fetch-data/)입니다. 특히 완전히 클라이언트 측 앱에서 그렇습니다. 그러나 이는 매우 수동적인 접근 방식이며 상당한 단점이 있습니다:
 
-- **Effects don't run on the server.** This means that the initial server-rendered HTML will only include a loading state with no data. The client computer will have to download all JavaScript and render your app only to discover that now it needs to load the data. This is not very efficient.
-- **Fetching directly in Effects makes it easy to create "network waterfalls".** You render the parent component, it fetches some data, renders the child components, and then they start fetching their data. If the network is not very fast, this is significantly slower than fetching all data in parallel.
-- **Fetching directly in Effects usually means you don't preload or cache data.** For example, if the component unmounts and then mounts again, it would have to fetch the data again.
-- **It's not very ergonomic.** There's quite a bit of boilerplate code involved when writing `fetch` calls in a way that doesn't suffer from bugs like [race conditions.](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect)
+- **Effect는 서버에서 실행되지 않습니다.** 이는 초기 서버 렌더링된 HTML이 데이터 없이 로딩 상태만 포함한다는 것을 의미합니다. 클라이언트 컴퓨터는 모든 JavaScript를 다운로드하고 앱을 렌더링한 후 데이터를 로드해야 한다는 것을 알게 됩니다. 이는 매우 비효율적입니다.
+- **Effect에서 직접 데이터를 가져오면 "네트워크 워터폴"을 쉽게 만들 수 있습니다.** 부모 컴포넌트를 렌더링하고 데이터를 가져오고 자식 컴포넌트를 렌더링한 후 자식 컴포넌트가 데이터를 가져오기 시작합니다. 네트워크가 매우 빠르지 않으면 이는 모든 데이터를 병렬로 가져오는 것보다 훨씬 느립니다.
+- **Effect에서 직접 데이터를 가져오면 데이터를 미리 로드하거나 캐시하지 않습니다.** 예를 들어, 컴포넌트가 언마운트된 후 다시 마운트되면 데이터를 다시 가져와야 합니다.
+- **매우 비효율적입니다.** 경쟁 조건과 같은 버그가 없는 방식으로 `fetch` 호출을 작성할 때 많은 보일러플레이트 코드가 포함됩니다.
 
-This list of downsides is not specific to React. It applies to fetching data on mount with any library. Like with routing, data fetching is not trivial to do well, so we recommend the following approaches:
+이러한 단점 목록은 React에만 국한되지 않습니다. 이는 모든 라이브러리에서 마운트 시 데이터를 가져오는 것에 적용됩니다. 라우팅과 마찬가지로 데이터 가져오기는 잘 수행하기가 쉽지 않으므로 다음 접근 방식을 권장합니다:
 
-- **If you use a [framework](/learn/start-a-new-react-project#production-grade-react-frameworks), use its built-in data fetching mechanism.** Modern React frameworks have integrated data fetching mechanisms that are efficient and don't suffer from the above pitfalls.
-- **Otherwise, consider using or building a client-side cache.** Popular open source solutions include [React Query](https://tanstack.com/query/latest/), [useSWR](https://swr.vercel.app/), and [React Router 6.4+.](https://beta.reactrouter.com/en/main/start/overview) You can build your own solution too, in which case you would use Effects under the hood but also add logic for deduplicating requests, caching responses, and avoiding network waterfalls (by preloading data or hoisting data requirements to routes).
+- **[프레임워크를 사용하는 경우,](/learn/start-a-new-react-project#production-grade-react-frameworks) 내장된 데이터 가져오기 메커니즘을 사용하세요.** 최신 React 프레임워크는 효율적이고 위의 단점이 없는 통합 데이터 가져오기 메커니즘을 가지고 있습니다.
+- **그렇지 않으면 클라이언트 측 캐시를 사용하거나 구축하는 것을 고려하세요.** 인기 있는 오픈 소스 솔루션으로는 [React Query](https://tanstack.com/query/latest/), [useSWR](https://swr.vercel.app/), [React Router 6.4+](https://beta.reactrouter.com/en/main/start/overview)가 있습니다. 자체 솔루션을 구축할 수도 있으며, 이 경우 Effect를 내부적으로 사용하지만 요청 중복 제거, 응답 캐싱 및 네트워크 워터폴 방지(데이터 미리 로드 또는 라우트로 데이터 요구사항을 올리는 방식)와 같은 로직을 추가합니다.
 
-You can continue fetching data directly in Effects if neither of these approaches suit you.
+이러한 접근 방식이 적합하지 않은 경우, Effect에서 직접 데이터를 계속 가져올 수 있습니다.
 
 </DeepDive>
 
 ---
 
-### Specifying reactive dependencies {/*specifying-reactive-dependencies*/}
+### 반응형 종속성 지정하기 {/*specifying-reactive-dependencies*/}
 
-**Notice that you can't "choose" the dependencies of your Effect.** Every <CodeStep step={2}>reactive value</CodeStep> used by your Effect's code must be declared as a dependency. Your Effect's dependency list is determined by the surrounding code:
+**Effect의 종속성을 "선택"할 수 없습니다.** Effect 코드에서 사용된 모든 <CodeStep step={2}>반응형 값</CodeStep>은 종속성으로 선언되어야 합니다. Effect의 종속성 목록은 주변 코드에 의해 결정됩니다:
 
 ```js [[2, 1, "roomId"], [2, 2, "serverUrl"], [2, 5, "serverUrl"], [2, 5, "roomId"], [2, 8, "serverUrl"], [2, 8, "roomId"]]
-function ChatRoom({ roomId }) { // This is a reactive value
-  const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // This is a reactive value too
+function ChatRoom({ roomId }) { // 이것은 반응형 값입니다
+  const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // 이것도 반응형 값입니다
 
   useEffect(() => {
-    const connection = createConnection(serverUrl, roomId); // This Effect reads these reactive values
+    const connection = createConnection(serverUrl, roomId); // 이 Effect는 이러한 반응형 값을 읽습니다
     connection.connect();
     return () => connection.disconnect();
-  }, [serverUrl, roomId]); // ✅ So you must specify them as dependencies of your Effect
+  }, [serverUrl, roomId]); // ✅ 따라서 종속성으로 지정해야 합니다
   // ...
 }
 ```
 
-If either `serverUrl` or `roomId` change, your Effect will reconnect to the chat using the new values.
+`serverUrl` 또는 `roomId`가 변경되면 Effect는 새로운 값으로 채팅에 다시 연결됩니다.
 
-**[Reactive values](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values) include props and all variables and functions declared directly inside of your component.** Since `roomId` and `serverUrl` are reactive values, you can't remove them from the dependencies. If you try to omit them and [your linter is correctly configured for React,](/learn/editor-setup#linting) the linter will flag this as a mistake you need to fix:
+**[반응형 값](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values)에는 props와 컴포넌트 내부에 직접 선언된 모든 변수와 함수가 포함됩니다.** `roomId`와 `serverUrl`은 반응형 값이므로 종속성에서 제거할 수 없습니다. 이를 생략하려고 하면 [React에 맞게 구성된 linter가](/learn/editor-setup#linting) 이를 실수로 간주하고 수정해야 한다고 경고할 것입니다:
 
 ```js {8}
 function ChatRoom({ roomId }) {
@@ -1084,73 +1086,73 @@ function ChatRoom({ roomId }) {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, []); // 🔴 React Hook useEffect has missing dependencies: 'roomId' and 'serverUrl'
+  }, []); // 🔴 React Hook useEffect에 누락된 종속성: 'roomId' 및 'serverUrl'
   // ...
 }
 ```
 
-**To remove a dependency, you need to ["prove" to the linter that it *doesn't need* to be a dependency.](/learn/removing-effect-dependencies#removing-unnecessary-dependencies)** For example, you can move `serverUrl` out of your component to prove that it's not reactive and won't change on re-renders:
+**종속성을 제거하려면, linter에게 해당 종속성이 필요하지 않다는 것을 "증명"해야 합니다.** 예를 들어, `serverUrl`을 컴포넌트 외부로 이동하여 반응형이 아니며 다시 렌더링 시 변경되지 않음을 증명할 수 있습니다:
 
 ```js {1,8}
-const serverUrl = 'https://localhost:1234'; // Not a reactive value anymore
+const serverUrl = 'https://localhost:1234'; // 더 이상 반응형 값이 아닙니다
 
 function ChatRoom({ roomId }) {
   useEffect(() => {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, [roomId]); // ✅ All dependencies declared
+  }, [roomId]); // ✅ 모든 종속성 선언됨
   // ...
 }
 ```
 
-Now that `serverUrl` is not a reactive value (and can't change on a re-render), it doesn't need to be a dependency. **If your Effect's code doesn't use any reactive values, its dependency list should be empty (`[]`):**
+이제 `serverUrl`이 반응형 값이 아니며(다시 렌더링 시 변경되지 않음) 종속성으로 지정할 필요가 없습니다. **Effect의 코드가 반응형 값을 사용하지 않는 경우, 종속성 목록은 비어 있어야 합니다(`[]`):**
 
 ```js {1,2,9}
-const serverUrl = 'https://localhost:1234'; // Not a reactive value anymore
-const roomId = 'music'; // Not a reactive value anymore
+const serverUrl = 'https://localhost:1234'; // 더 이상 반응형 값이 아닙니다
+const roomId = 'music'; // 더 이상 반응형 값이 아닙니다
 
 function ChatRoom() {
   useEffect(() => {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, []); // ✅ All dependencies declared
+  }, []); // ✅ 모든 종속성 선언됨
   // ...
 }
 ```
 
-[An Effect with empty dependencies](/learn/lifecycle-of-reactive-effects#what-an-effect-with-empty-dependencies-means) doesn't re-run when any of your component's props or state change.
+[종속성이 비어 있는 Effect](/learn/lifecycle-of-reactive-effects#what-an-effect-with-empty-dependencies-means)는 컴포넌트의 props 또는 state가 변경될 때 다시 실행되지 않습니다.
 
 <Pitfall>
 
-If you have an existing codebase, you might have some Effects that suppress the linter like this:
+기존 코드베이스가 있는 경우, 다음과 같이 linter를 억제하는 Effect가 있을 수 있습니다:
 
 ```js {3-4}
 useEffect(() => {
   // ...
-  // 🔴 Avoid suppressing the linter like this:
+  // 🔴 linter를 이렇게 억제하지 마세요:
   // eslint-ignore-next-line react-hooks/exhaustive-deps
 }, []);
 ```
 
-**When dependencies don't match the code, there is a high risk of introducing bugs.** By suppressing the linter, you "lie" to React about the values your Effect depends on. [Instead, prove they're unnecessary.](/learn/removing-effect-dependencies#removing-unnecessary-dependencies)
+**종속성이 코드와 일치하지 않으면 버그가 발생할 위험이 큽니다.** linter를 억제함으로써 Effect가 의존하는 값에 대해 React에게 "거짓말"을 하게 됩니다. [대신, 불필요함을 증명하세요.](/learn/removing-effect-dependencies#removing-unnecessary-dependencies)
 
 </Pitfall>
 
-<Recipes titleText="Examples of passing reactive dependencies" titleId="examples-dependencies">
+<Recipes titleText="반응형 종속성을 전달하는 예제" titleId="examples-dependencies">
 
-#### Passing a dependency array {/*passing-a-dependency-array*/}
+#### 종속성 배열 전달하기 {/*passing-a-dependency-array*/}
 
-If you specify the dependencies, your Effect runs **after the initial render _and_ after re-renders with changed dependencies.**
+종속성을 지정하면, Effect는 **초기 렌더링 후 _및_ 변경된 종속성으로 다시 렌더링된 후에 실행됩니다.**
 
 ```js {3}
 useEffect(() => {
   // ...
-}, [a, b]); // Runs again if a or b are different
+}, [a, b]); // a 또는 b가 다르면 다시 실행됩니다
 ```
 
-In the below example, `serverUrl` and `roomId` are [reactive values,](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values) so they both must be specified as dependencies. As a result, selecting a different room in the dropdown or editing the server URL input causes the chat to re-connect. However, since `message` isn't used in the Effect (and so it isn't a dependency), editing the message doesn't re-connect to the chat.
+아래 예제에서 `serverUrl`과 `roomId`는 [반응형 값](/learn/lifecycle-of-reactive-effects#effects-react-to-reactive-values)이므로 둘 다 종속성으로 지정해야 합니다. 결과적으로 드롭다운에서 다른 방을 선택하거나 서버 URL 입력을 편집하면 채팅이 다시 연결됩니다. 그러나 `message`는 Effect에서 사용되지 않으므로(따라서 종속성이 아님) 메시지를 편집해도 채팅이 다시 연결되지 않습니다.
 
 <Sandpack>
 
@@ -1216,13 +1218,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
@@ -1237,20 +1239,19 @@ button { margin-left: 5px; }
 
 <Solution />
 
-#### Passing an empty dependency array {/*passing-an-empty-dependency-array*/}
+#### 빈 종속성 배열 전달하기 {/*passing-an-empty-dependency-array*/}
 
-If your Effect truly doesn't use any reactive values, it will only run **after the initial render.**
+Effect가 반응형 값을 전혀 사용하지 않는 경우, **초기 렌더링 후에만 실행됩니다.**
 
 ```js {3}
 useEffect(() => {
   // ...
-}, []); // Does not run again (except once in development)
+}, []); // 다시 실행되지 않음(개발 중 한 번 제외)
 ```
 
-**Even with empty dependencies, setup and cleanup will [run one extra time in development](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) to help you find bugs.**
+**종속성이 비어 있어도, [개발 중 버그를 찾기 위해 setup과 cleanup이 한 번 더 실행됩니다.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)**
 
-
-In this example, both `serverUrl` and `roomId` are hardcoded. Since they're declared outside the component, they are not reactive values, and so they aren't dependencies. The dependency list is empty, so the Effect doesn't re-run on re-renders.
+이 예제에서 `serverUrl`과 `roomId`는 하드코딩되어 있습니다. 컴포넌트 외부에 선언되었기 때문에 반응형 값이 아니며 종속성이 아닙니다. 종속성 목록이 비어 있으므로 Effect는 다시 렌더링 시 다시 실행되지 않습니다.
 
 <Sandpack>
 
@@ -1297,13 +1298,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
@@ -1314,17 +1315,17 @@ export function createConnection(serverUrl, roomId) {
 <Solution />
 
 
-#### Passing no dependency array at all {/*passing-no-dependency-array-at-all*/}
+#### 종속성 배열을 전혀 전달하지 않기 {/*passing-no-dependency-array-at-all*/}
 
-If you pass no dependency array at all, your Effect runs **after every single render (and re-render)** of your component.
+종속성 배열을 전혀 전달하지 않으면, Effect는 **컴포넌트의 모든 렌더링(및 다시 렌더링) 후에 실행됩니다.**
 
 ```js {3}
 useEffect(() => {
   // ...
-}); // Always runs again
+}); // 항상 다시 실행됨
 ```
 
-In this example, the Effect re-runs when you change `serverUrl` and `roomId`, which is sensible. However, it *also* re-runs when you change the `message`, which is probably undesirable. This is why usually you'll specify the dependency array.
+이 예제에서, Effect는 `serverUrl`과 `roomId`를 변경할 때 다시 실행되므로 합리적입니다. 그러나 *또한* `message`를 변경할 때 다시 실행되므로 이는 아마도 바람직하지 않을 것입니다. 이 때문에 일반적으로 종속성 배열을 지정합니다.
 
 <Sandpack>
 
@@ -1342,7 +1343,7 @@ function ChatRoom({ roomId }) {
     return () => {
       connection.disconnect();
     };
-  }); // No dependency array at all
+  }); // 종속성 배열 없음
 
   return (
     <>
@@ -1390,20 +1391,21 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection(serverUrl, roomId) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
 ```
 
 ```css
-input { margin-bottom: 10px; }
+input { margin-bottom: 10
+px; }
 button { margin-left: 5px; }
 ```
 
@@ -1415,9 +1417,9 @@ button { margin-left: 5px; }
 
 ---
 
-### Updating state based on previous state from an Effect {/*updating-state-based-on-previous-state-from-an-effect*/}
+### Effect에서 이전 상태를 기반으로 상태 업데이트하기 {/*updating-state-based-on-previous-state-from-an-effect*/}
 
-When you want to update state based on previous state from an Effect, you might run into a problem:
+Effect에서 이전 상태를 기반으로 상태를 업데이트하려고 할 때 문제가 발생할 수 있습니다:
 
 ```js {6,9}
 function Counter() {
@@ -1425,17 +1427,17 @@ function Counter() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCount(count + 1); // You want to increment the counter every second...
+      setCount(count + 1); // 매 초마다 카운터를 증가시키고 싶지만...
     }, 1000)
     return () => clearInterval(intervalId);
-  }, [count]); // 🚩 ... but specifying `count` as a dependency always resets the interval.
+  }, [count]); // 🚩 ... `count`를 종속성으로 지정하면 항상 interval을 재설정합니다.
   // ...
 }
 ```
 
-Since `count` is a reactive value, it must be specified in the list of dependencies. However, that causes the Effect to cleanup and setup again every time the `count` changes. This is not ideal. 
+`count`는 반응형 값이므로 종속성 목록에 지정해야 합니다. 그러나 이는 `count`가 변경될 때마다 Effect가 cleanup 및 setup을 다시 실행하게 만듭니다. 이는 이상적이지 않습니다.
 
-To fix this, [pass the `c => c + 1` state updater](/reference/react/useState#updating-state-based-on-the-previous-state) to `setCount`:
+이를 해결하려면, `setCount`에 [상태 업데이트 함수 `c => c + 1`](/reference/react/useState#updating-state-based-on-the-previous-state)을 전달하세요:
 
 <Sandpack>
 
@@ -1447,10 +1449,10 @@ export default function Counter() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCount(c => c + 1); // ✅ Pass a state updater
+      setCount(c => c + 1); // ✅ 상태 업데이트 함수 전달
     }, 1000);
     return () => clearInterval(intervalId);
-  }, []); // ✅ Now count is not a dependency
+  }, []); // ✅ 이제 count는 종속성이 아님
 
   return <h1>{count}</h1>;
 }
@@ -1470,14 +1472,13 @@ body {
 
 </Sandpack>
 
-Now that you're passing `c => c + 1` instead of `count + 1`, [your Effect no longer needs to depend on `count`.](/learn/removing-effect-dependencies#are-you-reading-some-state-to-calculate-the-next-state) As a result of this fix, it won't need to cleanup and setup the interval again every time the `count` changes.
+이제 `count + 1` 대신 `c => c + 1`을 전달하므로, [Effect는 더 이상 `count`에 의존할 필요가 없습니다.](/learn/removing-effect-dependencies#are-you-reading-some-state-to-calculate-the-next-state) 이 수정의 결과로, `count`가 변경될 때마다 interval을 다시 설정할 필요가 없습니다.
 
 ---
 
+### 불필요한 객체 종속성 제거하기 {/*removing-unnecessary-object-dependencies*/}
 
-### Removing unnecessary object dependencies {/*removing-unnecessary-object-dependencies*/}
-
-If your Effect depends on an object or a function created during rendering, it might run too often. For example, this Effect re-connects after every render because the `options` object is [different for every render:](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally)
+Effect가 렌더링 중에 생성된 객체나 함수에 의존하는 경우, 너무 자주 실행될 수 있습니다. 예를 들어, 이 Effect는 `options` 객체가 [매 렌더링마다 다르기 때문에](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally) 매 렌더링 후에 다시 연결됩니다:
 
 ```js {6-9,12,15}
 const serverUrl = 'https://localhost:1234';
@@ -1485,20 +1486,20 @@ const serverUrl = 'https://localhost:1234';
 function ChatRoom({ roomId }) {
   const [message, setMessage] = useState('');
 
-  const options = { // 🚩 This object is created from scratch on every re-render
+  const options = { // 🚩 이 객체는 매 렌더링마다 새로 생성됩니다
     serverUrl: serverUrl,
     roomId: roomId
   };
 
   useEffect(() => {
-    const connection = createConnection(options); // It's used inside the Effect
+    const connection = createConnection(options); // Effect 내부에서 사용됩니다
     connection.connect();
     return () => connection.disconnect();
-  }, [options]); // 🚩 As a result, these dependencies are always different on a re-render
+  }, [options]); // 🚩 결과적으로, 이 종속성은 매 렌더링마다 다릅니다
   // ...
 ```
 
-Avoid using an object created during rendering as a dependency. Instead, create the object inside the Effect:
+렌더링 중에 생성된 객체를 종속성으로 사용하지 마세요. 대신, Effect 내부에서 객체를 생성하세요:
 
 <Sandpack>
 
@@ -1553,13 +1554,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
@@ -1572,21 +1573,21 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-Now that you create the `options` object inside the Effect, the Effect itself only depends on the `roomId` string.
+이제 `options` 객체를 Effect 내부에서 생성하므로, Effect 자체는 `roomId` 문자열에만 의존합니다.
 
-With this fix, typing into the input doesn't reconnect the chat. Unlike an object which gets re-created, a string like `roomId` doesn't change unless you set it to another value. [Read more about removing dependencies.](/learn/removing-effect-dependencies)
+이 수정으로, 입력에 타이핑해도 채팅이 다시 연결되지 않습니다. 객체와 달리 문자열인 `roomId`는 다른 값으로 설정되지 않는 한 변경되지 않습니다. [종속성 제거에 대해 더 알아보세요.](/learn/removing-effect-dependencies)
 
 ---
 
-### Removing unnecessary function dependencies {/*removing-unnecessary-function-dependencies*/}
+### 불필요한 함수 종속성 제거하기 {/*removing-unnecessary-function-dependencies*/}
 
-If your Effect depends on an object or a function created during rendering, it might run too often. For example, this Effect re-connects after every render because the `createOptions` function is [different for every render:](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally)
+Effect가 렌더링 중에 생성된 객체나 함수에 의존하는 경우, 너무 자주 실행될 수 있습니다. 예를 들어, 이 Effect는 `createOptions` 함수가 [매 렌더링마다 다르기 때문에](/learn/removing-effect-dependencies#does-some-reactive-value-change-unintentionally) 매 렌더링 후에 다시 연결됩니다:
 
 ```js {4-9,12,16}
 function ChatRoom({ roomId }) {
   const [message, setMessage] = useState('');
 
-  function createOptions() { // 🚩 This function is created from scratch on every re-render
+  function createOptions() { // 🚩 이 함수는 매 렌더링마다 새로 생성됩니다
     return {
       serverUrl: serverUrl,
       roomId: roomId
@@ -1594,17 +1595,17 @@ function ChatRoom({ roomId }) {
   }
 
   useEffect(() => {
-    const options = createOptions(); // It's used inside the Effect
+    const options = createOptions(); // Effect 내부에서 사용됩니다
     const connection = createConnection();
     connection.connect();
     return () => connection.disconnect();
-  }, [createOptions]); // 🚩 As a result, these dependencies are always different on a re-render
+  }, [createOptions]); // 🚩 결과적으로, 이 종속성은 매 렌더링마다 다릅니다
   // ...
 ```
 
-By itself, creating a function from scratch on every re-render is not a problem. You don't need to optimize that. However, if you use it as a dependency of your Effect, it will cause your Effect to re-run after every re-render.
+자체적으로, 매 렌더링마다 함수를 새로 생성하는 것은 문제가 아닙니다. 최적화할 필요는 없습니다. 그러나 이를 Effect의 종속성으로 사용하면, 매 렌더링 후에 Effect가 다시 실행됩니다.
 
-Avoid using a function created during rendering as a dependency. Instead, declare it inside the Effect:
+렌더링 중에 생성된 함수를 종속성으로 사용하지 마세요. 대신, Effect 내부에서 함수를 선언하세요:
 
 <Sandpack>
 
@@ -1663,13 +1664,13 @@ export default function App() {
 
 ```js src/chat.js
 export function createConnection({ serverUrl, roomId }) {
-  // A real implementation would actually connect to the server
+  // 실제 구현은 서버에 실제로 연결될 것입니다
   return {
     connect() {
-      console.log('✅ Connecting to "' + roomId + '" room at ' + serverUrl + '...');
+      console.log('✅ "' + roomId + '" 방에 ' + serverUrl + '에 연결 중...');
     },
     disconnect() {
-      console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+      console.log('❌ "' + roomId + '" 방에서 ' + serverUrl + ' 연결 해제됨');
     }
   };
 }
@@ -1682,32 +1683,32 @@ button { margin-left: 10px; }
 
 </Sandpack>
 
-Now that you define the `createOptions` function inside the Effect, the Effect itself only depends on the `roomId` string. With this fix, typing into the input doesn't reconnect the chat. Unlike a function which gets re-created, a string like `roomId` doesn't change unless you set it to another value. [Read more about removing dependencies.](/learn/removing-effect-dependencies)
+이제 `createOptions` 함수를 Effect 내부에서 정의하므로, Effect 자체는 `roomId` 문자열에만 의존합니다. 이 수정으로, 입력에 타이핑해도 채팅이 다시 연결되지 않습니다. 함수와 달리 문자열인 `roomId`는 다른 값으로 설정되지 않는 한 변경되지 않습니다. [종속성 제거에 대해 더 알아보세요.](/learn/removing-effect-dependencies)
 
 ---
 
-### Reading the latest props and state from an Effect {/*reading-the-latest-props-and-state-from-an-effect*/}
+### Effect에서 최신 props와 state 읽기 {/*reading-the-latest-props-and-state-from-an-effect*/}
 
 <Wip>
 
-This section describes an **experimental API that has not yet been released** in a stable version of React.
+이 섹션은 **아직 안정적인 React 버전에서 릴리스되지 않은 실험적 API**를 설명합니다.
 
 </Wip>
 
-By default, when you read a reactive value from an Effect, you have to add it as a dependency. This ensures that your Effect "reacts" to every change of that value. For most dependencies, that's the behavior you want.
+기본적으로, Effect에서 반응형 값을 읽을 때 해당 값을 종속성으로 추가해야 합니다. 이는 Effect가 해당 값의 모든 변경에 "반응"하도록 보장합니다. 대부분의 종속성에 대해 이는 원하는 동작입니다.
 
-**However, sometimes you'll want to read the *latest* props and state from an Effect without "reacting" to them.** For example, imagine you want to log the number of the items in the shopping cart for every page visit:
+**그러나 때로는 Effect에서 최신 props와 state를 "반응"하지 않고 읽고 싶을 때가 있습니다.** 예를 들어, 페이지 방문마다 쇼핑 카트의 항목 수를 기록하고 싶다고 가정해 보겠습니다:
 
 ```js {3}
 function Page({ url, shoppingCart }) {
   useEffect(() => {
     logVisit(url, shoppingCart.length);
-  }, [url, shoppingCart]); // ✅ All dependencies declared
+  }, [url, shoppingCart]); // ✅ 모든 종속성 선언됨
   // ...
 }
 ```
 
-**What if you want to log a new page visit after every `url` change, but *not* if only the `shoppingCart` changes?** You can't exclude `shoppingCart` from dependencies without breaking the [reactivity rules.](#specifying-reactive-dependencies) However, you can express that you *don't want* a piece of code to "react" to changes even though it is called from inside an Effect. [Declare an *Effect Event*](/learn/separating-events-from-effects#declaring-an-effect-event) with the [`useEffectEvent`](/reference/react/experimental_useEffectEvent) Hook, and move the code reading `shoppingCart` inside of it:
+**`url` 변경 후에만 새로운 페이지 방문을 기록하고 싶지만, `shoppingCart`만 변경된 경우에는 기록하지 않으려면 어떻게 해야 할까요?** [반응성 규칙을 깨지 않고](/learn/specifying-reactive-dependencies) `shoppingCart`를 종속성에서 제외할 수 없습니다. 그러나 Effect 내부에서 호출된 코드가 "반응"하지 않기를 원한다고 표현할 수 있습니다. [`useEffectEvent`](/reference/react/experimental_useEffectEvent) Hook을 사용하여 [Effect 이벤트를 선언하고,](/learn/separating-events-from-effects#declaring-an-effect-event) `shoppingCart`를 읽는 코드를 그 안에 이동하세요:
 
 ```js {2-4,7,8}
 function Page({ url, shoppingCart }) {
@@ -1717,23 +1718,22 @@ function Page({ url, shoppingCart }) {
 
   useEffect(() => {
     onVisit(url);
-  }, [url]); // ✅ All dependencies declared
+  }, [url]); // ✅ 모든 종속성 선언됨
   // ...
 }
 ```
 
-**Effect Events are not reactive and must always be omitted from dependencies of your Effect.** This is what lets you put non-reactive code (where you can read the latest value of some props and state) inside of them. By reading `shoppingCart` inside of `onVisit`, you ensure that `shoppingCart` won't re-run your Effect.
+**Effect 이벤트는 반응형이 아니며, Effect의 종속성에서 항상 생략해야 합니다.** 이는 비반응형 코드(일부 props와 state의 최신 값을 읽을 수 있는 코드)를 그 안에 넣을 수 있게 합니다. `onVisit` 내부에서 `shoppingCart`를 읽음으로써, `shoppingCart`가 Effect를 다시 실행하지 않도록 보장합니다.
 
-[Read more about how Effect Events let you separate reactive and non-reactive code.](/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events)
-
+[Effect 이벤트가 반응형 코드와 비반응형 코드를 분리할 수 있게 하는 방법에 대해 더 알아보세요.](/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events)
 
 ---
 
-### Displaying different content on the server and the client {/*displaying-different-content-on-the-server-and-the-client*/}
+### 서버와 클라이언트에서 다른 콘텐츠 표시하기 {/*displaying-different-content-on-the-server-and-the-client*/}
 
-If your app uses server rendering (either [directly](/reference/react-dom/server) or via a [framework](/learn/start-a-new-react-project#production-grade-react-frameworks)), your component will render in two different environments. On the server, it will render to produce the initial HTML. On the client, React will run the rendering code again so that it can attach your event handlers to that HTML. This is why, for [hydration](/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html) to work, your initial render output must be identical on the client and the server.
+앱이 서버 렌더링을 사용하는 경우([직접](/reference/react-dom/server) 또는 [프레임워크를 통해](/learn/start-a-new-react-project#production-grade-react-frameworks)), 컴포넌트는 두 가지 다른 환경에서 렌더링됩니다. 서버에서는 초기 HTML을 생성하기 위해 렌더링됩니다. 클라이언트에서는 React가 렌더링 코드를 다시 실행하여 이벤트 핸들러를 해당 HTML에 연결할 수 있도록 합니다. 이 때문에, [하이드레이션](/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html)이 작동하려면 초기 렌더링 출력이 클라이언트와 서버에서 동일해야 합니다.
 
-In rare cases, you might need to display different content on the client. For example, if your app reads some data from [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), it can't possibly do that on the server. Here is how you could implement this:
+드물게, 클라이언트에서 다른 콘텐츠를 표시해야 할 수 있습니다. 예를 들어, 앱이 [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)에서 일부 데이터를 읽는 경우, 서버에서는 이를 수행할 수 없습니다. 이를 구현하는 방법은 다음과 같습니다:
 
 ```js
 function MyComponent() {
@@ -1744,44 +1744,44 @@ function MyComponent() {
   }, []);
 
   if (didMount) {
-    // ... return client-only JSX ...
+    // ... 클라이언트 전용 JSX 반환 ...
   }  else {
-    // ... return initial JSX ...
+    // ... 초기 JSX 반환 ...
   }
 }
 ```
 
-While the app is loading, the user will see the initial render output. Then, when it's loaded and hydrated, your Effect will run and set `didMount` to `true`, triggering a re-render. This will switch to the client-only render output. Effects don't run on the server, so this is why `didMount` was `false` during the initial server render.
+앱이 로드되는 동안 사용자는 초기 렌더링 출력을 보게 됩니다. 그런 다음, 로드되고 하이드레이션되면 Effect가 실행되어 `didMount`를 `true`로 설정하고 다시 렌더링을 트리거합니다. 이렇게 하면 클라이언트 전용 렌더링 출력으로 전환됩니다. Effect는 서버에서 실행되지 않으므로 초기 서버 렌더링 동안 `didMount`는 `false`였습니다.
 
-Use this pattern sparingly. Keep in mind that users with a slow connection will see the initial content for quite a bit of time--potentially, many seconds--so you don't want to make jarring changes to your component's appearance. In many cases, you can avoid the need for this by conditionally showing different things with CSS.
-
----
-
-## Troubleshooting {/*troubleshooting*/}
-
-### My Effect runs twice when the component mounts {/*my-effect-runs-twice-when-the-component-mounts*/}
-
-When Strict Mode is on, in development, React runs setup and cleanup one extra time before the actual setup.
-
-This is a stress-test that verifies your Effect’s logic is implemented correctly. If this causes visible issues, your cleanup function is missing some logic. The cleanup function should stop or undo whatever the setup function was doing. The rule of thumb is that the user shouldn’t be able to distinguish between the setup being called once (as in production) and a setup → cleanup → setup sequence (as in development).
-
-Read more about [how this helps find bugs](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) and [how to fix your logic.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)
+이 패턴을 신중하게 사용하세요. 느린 연결을 가진 사용자는 초기 콘텐츠를 꽤 오랜 시간 동안 볼 수 있습니다. 잠재적으로 몇 초 동안, 따라서 컴포넌트의 외관을 급격히 변경하지 않도록 하세요. 많은 경우, CSS를 사용하여 다른 것을 조건부로 표시함으로써 이를 피할 수 있습니다.
 
 ---
 
-### My Effect runs after every re-render {/*my-effect-runs-after-every-re-render*/}
+## 문제 해결 {/*troubleshooting*/}
 
-First, check that you haven't forgotten to specify the dependency array:
+### 컴포넌트가 마운트될 때 Effect가 두 번 실행됩니다 {/*my-effect-runs-twice-when-the-component-mounts*/}
+
+Strict Mode가 켜져 있으면, 개발 중에 React는 setup과 cleanup을 실제 setup 전에 한 번 더 실행합니다.
+
+이는 Effect의 로직이 올바르게 구현되었는지 확인하는 스트레스 테스트입니다. 이로 인해 문제가 발생하면, cleanup 함수에 일부 로직이 누락된 것입니다. cleanup 함수는 setup 함수가 수행하는 작업을 중지하거나 취소해야 합니다. 사용자가 setup이 한 번 호출된 것(프로덕션에서처럼)과 setup → cleanup → setup 시퀀스(개발에서처럼) 사이의 차이를 구별할 수 없어야 합니다.
+
+[이것이 버그를 찾는 데 어떻게 도움이 되는지](/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed)와 [로직을 수정하는 방법](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development)에 대해 더 읽어보세요.
+
+---
+
+### Effect가 매번 다시 렌더링될 때마다 실행됩니다 {/*my-effect-runs-after-every-re-render*/}
+
+먼저 종속성 배열을 지정하는 것을 잊지 않았는지 확인하세요:
 
 ```js {3}
 useEffect(() => {
   // ...
-}); // 🚩 No dependency array: re-runs after every render!
+}); // 🚩 종속성 배열 없음: 매 렌더링 후에 다시 실행됨!
 ```
 
-If you've specified the dependency array but your Effect still re-runs in a loop, it's because one of your dependencies is different on every re-render.
+종속성 배열을 지정했지만 Effect가 여전히 루프에서 다시 실행되는 경우, 이는 종속성 중 하나가 매 렌더링마다 다르기 때문입니다.
 
-You can debug this problem by manually logging your dependencies to the console:
+이 문제를 디버그하려면 종속성을 수동으로 콘솔에 기록하세요:
 
 ```js {5}
   useEffect(() => {
@@ -1791,58 +1791,58 @@ You can debug this problem by manually logging your dependencies to the console:
   console.log([serverUrl, roomId]);
 ```
 
-You can then right-click on the arrays from different re-renders in the console and select "Store as a global variable" for both of them. Assuming the first one got saved as `temp1` and the second one got saved as `temp2`, you can then use the browser console to check whether each dependency in both arrays is the same:
+그런 다음, 콘솔에서 다른 렌더링의 배열을 마우스 오른쪽 버튼으로 클릭하고 "Store as a global variable"을 선택하여 두 배열을 저장할 수 있습니다. 첫 번째 배열이 `temp1`로 저장되고 두 번째 배열이 `temp2`로 저장되었다고 가정하면, 브라우저 콘솔을 사용하여 각 종속성이 두 배열 간에 동일한지 확인할 수 있습니다:
 
 ```js
-Object.is(temp1[0], temp2[0]); // Is the first dependency the same between the arrays?
-Object.is(temp1[1], temp2[1]); // Is the second dependency the same between the arrays?
-Object.is(temp1[2], temp2[2]); // ... and so on for every dependency ...
+Object.is(temp1[0], temp2[0]); // 배열 간 첫 번째 종속성이 동일한가요?
+Object.is(temp1[1], temp2[1]); // 배열 간 두 번째 종속성이 동일한가요?
+Object.is(temp1[2], temp2[2]); // ... 모든 종속성에 대해 계속 확인하세요 ...
 ```
 
-When you find the dependency that is different on every re-render, you can usually fix it in one of these ways:
+매 렌더링마다 다른 종속성을 찾으면, 다음 방법 중 하나로 이를 수정할 수 있습니다:
 
-- [Updating state based on previous state from an Effect](#updating-state-based-on-previous-state-from-an-effect)
-- [Removing unnecessary object dependencies](#removing-unnecessary-object-dependencies)
-- [Removing unnecessary function dependencies](#removing-unnecessary-function-dependencies)
-- [Reading the latest props and state from an Effect](#reading-the-latest-props-and-state-from-an-effect)
+- [Effect에서 이전 상태를 기반으로 상태 업데이트하기](#updating-state-based-on-previous-state-from-an-effect)
+- [불필요한 객체 종속성 제거하기](#removing-unnecessary-object-dependencies)
+- [불필요한 함수 종속성 제거하기](#removing-unnecessary-function-dependencies)
+- [Effect에서 최신 props와 state 읽기](#reading-the-latest-props-and-state-from-an-effect)
 
-As a last resort (if these methods didn't help), wrap its creation with [`useMemo`](/reference/react/useMemo#memoizing-a-dependency-of-another-hook) or [`useCallback`](/reference/react/useCallback#preventing-an-effect-from-firing-too-often) (for functions).
-
----
-
-### My Effect keeps re-running in an infinite cycle {/*my-effect-keeps-re-running-in-an-infinite-cycle*/}
-
-If your Effect runs in an infinite cycle, these two things must be true:
-
-- Your Effect is updating some state.
-- That state leads to a re-render, which causes the Effect's dependencies to change.
-
-Before you start fixing the problem, ask yourself whether your Effect is connecting to some external system (like DOM, network, a third-party widget, and so on). Why does your Effect need to set state? Does it synchronize with that external system? Or are you trying to manage your application's data flow with it?
-
-If there is no external system, consider whether [removing the Effect altogether](/learn/you-might-not-need-an-effect) would simplify your logic.
-
-If you're genuinely synchronizing with some external system, think about why and under what conditions your Effect should update the state. Has something changed that affects your component's visual output? If you need to keep track of some data that isn't used by rendering, a [ref](/reference/react/useRef#referencing-a-value-with-a-ref) (which doesn't trigger re-renders) might be more appropriate. Verify your Effect doesn't update the state (and trigger re-renders) more than needed.
-
-Finally, if your Effect is updating the state at the right time, but there is still a loop, it's because that state update leads to one of the Effect's dependencies changing. [Read how to debug dependency changes.](/reference/react/useEffect#my-effect-runs-after-every-re-render)
+마지막 수단으로(이 방법들이 도움이 되지 않는 경우), [`useMemo`](/reference/react/useMemo#memoizing-a-dependency-of-another-hook) 또는 [`useCallback`](/reference/react/useCallback#preventing-an-effect-from-firing-too-often)으로 생성 과정을 래핑하세요(함수의 경우).
 
 ---
 
-### My cleanup logic runs even though my component didn't unmount {/*my-cleanup-logic-runs-even-though-my-component-didnt-unmount*/}
+### Effect가 무한 루프에서 계속 실행됩니다 {/*my-effect-keeps-re-running-in-an-infinite-cycle*/}
 
-The cleanup function runs not only during unmount, but before every re-render with changed dependencies. Additionally, in development, React [runs setup+cleanup one extra time immediately after component mounts.](#my-effect-runs-twice-when-the-component-mounts)
+Effect가 무한 루프에서 실행되는 경우, 다음 두 가지가 사실이어야 합니다:
 
-If you have cleanup code without corresponding setup code, it's usually a code smell:
+- Effect가 일부 상태를 업데이트하고 있습니다.
+- 해당 상태가 다시 렌더링을 트리거하여 Effect의 종속성이 변경됩니다.
+
+문제를시작하기 전에, Effect가 외부 시스템(예: DOM, 네트워크, 타사 위젯 등)과 동기화되는지 생각해 보세요. Effect가 상태를 설정해야 하는 이유는 무엇인가요? 외부 시스템과 동기화되나요? 아니면 애플리케이션의 데이터 흐름을 관리하려고 하나요?
+
+외부 시스템이 없는 경우, [Effect를 제거하는 것이](/learn/you-might-not-need-an-effect) 로직을 단순화할 수 있는지 고려해 보세요.
+
+외부 시스템과 실제로 동기화되는 경우, Effect가 상태를 업데이트해야 하는 이유와 조건을 생각해 보세요. 컴포넌트의 시각적 출력에 영향을 미치는 무언가가 변경되었나요? 렌더링에 사용되지 않는 일부 데이터를 추적해야 하는 경우, [ref](/reference/react/useRef#referencing-a-value-with-a-ref) (렌더링을 트리거하지 않음)가 더 적절할 수 있습니다. Effect가 필요 이상으로 상태를 업데이트하지 않도록 확인하세요.
+
+마지막으로, Effect가 적절한 시점에 상태를 업데이트하지만 여전히 루프가 발생하는 경우, 이는 상태 업데이트가 Effect의 종속성 중 하나를 변경하기 때문입니다. [종속성 변경을 디버그하는 방법을 읽어보세요.](/reference/react/useEffect#my-effect-runs-after-every-re-render)
+
+---
+
+### 컴포넌트가 언마운트되지 않았는데도 cleanup 로직이 실행됩니다 {/*my-cleanup-logic-runs-even-though-my-component-didnt-unmount*/}
+
+cleanup 함수는 언마운트 시뿐만 아니라, 변경된 종속성으로 다시 렌더링되기 전에도 실행됩니다. 또한, 개발 중에는 React가 [컴포넌트가 마운트된 직후 setup+cleanup을 한 번 더 실행합니다.](#my-effect-runs-twice-when-the-component-mounts)
+
+setup 로직 없이 cleanup 로직만 있는 경우, 이는 일반적으로 코드 냄새입니다:
 
 ```js {2-5}
 useEffect(() => {
-  // 🔴 Avoid: Cleanup logic without corresponding setup logic
+  // 🔴 피하세요: setup 로직 없이 cleanup 로직만 있는 경우
   return () => {
     doSomething();
   };
 }, []);
 ```
 
-Your cleanup logic should be "symmetrical" to the setup logic, and should stop or undo whatever setup did:
+cleanup 로직은 setup 로직과 "대칭"이어야 하며, setup이 수행한 작업을 중지하거나 취소해야 합니다:
 
 ```js {2-3,5}
   useEffect(() => {
@@ -1854,10 +1854,10 @@ Your cleanup logic should be "symmetrical" to the setup logic, and should stop o
   }, [serverUrl, roomId]);
 ```
 
-[Learn how the Effect lifecycle is different from the component's lifecycle.](/learn/lifecycle-of-reactive-effects#the-lifecycle-of-an-effect)
+[Effect의 생명 주기가 컴포넌트의 생명 주기와 어떻게 다른지 알아보세요.](/learn/lifecycle-of-reactive-effects#the-lifecycle-of-an-effect)
 
 ---
 
-### My Effect does something visual, and I see a flicker before it runs {/*my-effect-does-something-visual-and-i-see-a-flicker-before-it-runs*/}
+### Effect가 시각적인 작업을 수행하는데, 실행되기 전에 깜박임이 보입니다 {/*my-effect-does-something-visual-and-i-see-a-flicker-before-it-runs*/}
 
-If your Effect must block the browser from [painting the screen,](/learn/render-and-commit#epilogue-browser-paint) replace `useEffect` with [`useLayoutEffect`](/reference/react/useLayoutEffect). Note that **this shouldn't be needed for the vast majority of Effects.** You'll only need this if it's crucial to run your Effect before the browser paint: for example, to measure and position a tooltip before the user sees it.
+Effect가 브라우저가 [화면을 그리는 것을 차단해야 하는 경우,](/learn/render-and-commit#epilogue-browser-paint) `useEffect`를 [`useLayoutEffect`](/reference/react/useLayoutEffect)로 교체하세요. 이는 대부분의 Effect에 필요하지 않습니다. Effect가 브라우저 페인트 전에 실행되어야 하는 경우에만 필요합니다. 예를 들어, 툴팁을 측정하고 위치를 지정해야 하는 경우입니다.

@@ -1,52 +1,52 @@
 ---
-title: Updating Arrays in State
+title: 状態の配列を更新する方法
 ---
 
 <Intro>
 
-Arrays are mutable in JavaScript, but you should treat them as immutable when you store them in state. Just like with objects, when you want to update an array stored in state, you need to create a new one (or make a copy of an existing one), and then set state to use the new array.
+JavaScriptの配列はミュータブルですが、状態に保存する際にはイミュータブルとして扱うべきです。オブジェクトと同様に、状態に保存された配列を更新したい場合は、新しい配列を作成する（または既存の配列をコピーする）必要があり、その後、新しい配列を使用するように状態を設定します。
 
 </Intro>
 
 <YouWillLearn>
 
-- How to add, remove, or change items in an array in React state
-- How to update an object inside of an array
-- How to make array copying less repetitive with Immer
+- Reactの状態で配列の項目を追加、削除、または変更する方法
+- 配列内のオブジェクトを更新する方法
+- Immerを使用して配列のコピーをより簡潔にする方法
 
 </YouWillLearn>
 
-## Updating arrays without mutation {/*updating-arrays-without-mutation*/}
+## ミューテーションなしで配列を更新する {/*updating-arrays-without-mutation*/}
 
-In JavaScript, arrays are just another kind of object. [Like with objects](/learn/updating-objects-in-state), **you should treat arrays in React state as read-only.** This means that you shouldn't reassign items inside an array like `arr[0] = 'bird'`, and you also shouldn't use methods that mutate the array, such as `push()` and `pop()`.
+JavaScriptでは、配列は単なるオブジェクトの一種です。[オブジェクトと同様に](/learn/updating-objects-in-state)、**Reactの状態にある配列は読み取り専用として扱うべきです。** これは、`arr[0] = 'bird'`のように配列内の項目を再割り当てしたり、`push()`や`pop()`のような配列をミューテートするメソッドを使用したりしないことを意味します。
 
-Instead, every time you want to update an array, you'll want to pass a *new* array to your state setting function. To do that, you can create a new array from the original array in your state by calling its non-mutating methods like `filter()` and `map()`. Then you can set your state to the resulting new array.
+代わりに、配列を更新するたびに、新しい配列を状態設定関数に渡す必要があります。そのためには、状態内の元の配列から非ミューテートメソッド（`filter()`や`map()`など）を呼び出して新しい配列を作成できます。その後、結果として得られる新しい配列に状態を設定します。
 
-Here is a reference table of common array operations. When dealing with arrays inside React state, you will need to avoid the methods in the left column, and instead prefer the methods in the right column:
+以下は一般的な配列操作のリファレンステーブルです。Reactの状態内で配列を扱う場合、左側の列のメソッドを避け、右側の列のメソッドを使用することをお勧めします：
 
-|           | avoid (mutates the array)           | prefer (returns a new array)                                        |
+|           | 避けるべき（配列をミューテートする） | 推奨（新しい配列を返す）                                        |
 | --------- | ----------------------------------- | ------------------------------------------------------------------- |
-| adding    | `push`, `unshift`                   | `concat`, `[...arr]` spread syntax ([example](#adding-to-an-array)) |
-| removing  | `pop`, `shift`, `splice`            | `filter`, `slice` ([example](#removing-from-an-array))              |
-| replacing | `splice`, `arr[i] = ...` assignment | `map` ([example](#replacing-items-in-an-array))                     |
-| sorting   | `reverse`, `sort`                   | copy the array first ([example](#making-other-changes-to-an-array)) |
+| 追加      | `push`, `unshift`                   | `concat`, `[...arr]` スプレッド構文 ([例](#adding-to-an-array)) |
+| 削除      | `pop`, `shift`, `splice`            | `filter`, `slice` ([例](#removing-from-an-array))              |
+| 置換      | `splice`, `arr[i] = ...` 代入       | `map` ([例](#replacing-items-in-an-array))                     |
+| ソート    | `reverse`, `sort`                   | まず配列をコピーする ([例](#making-other-changes-to-an-array)) |
 
-Alternatively, you can [use Immer](#write-concise-update-logic-with-immer) which lets you use methods from both columns.
+または、[Immerを使用](#write-concise-update-logic-with-immer)して、両方の列のメソッドを使用することもできます。
 
 <Pitfall>
 
-Unfortunately, [`slice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) and [`splice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) are named similarly but are very different:
+残念ながら、[`slice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)と[`splice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)は名前が似ていますが、非常に異なります：
 
-* `slice` lets you copy an array or a part of it.
-* `splice` **mutates** the array (to insert or delete items).
+* `slice`は配列全体またはその一部をコピーできます。
+* `splice`は配列を**ミューテート**します（項目を挿入または削除するため）。
 
-In React, you will be using `slice` (no `p`!) a lot more often because you don't want to mutate objects or arrays in state. [Updating Objects](/learn/updating-objects-in-state) explains what mutation is and why it's not recommended for state.
+Reactでは、`slice`（`p`なし！）を使用することがはるかに多くなります。なぜなら、状態内のオブジェクトや配列をミューテートしたくないからです。[オブジェクトの更新](/learn/updating-objects-in-state)は、ミューテーションが何であり、なぜ状態に対して推奨されないのかを説明しています。
 
 </Pitfall>
 
-### Adding to an array {/*adding-to-an-array*/}
+### 配列に追加する {/*adding-to-an-array*/}
 
-`push()` will mutate an array, which you don't want:
+`push()`は配列をミューテートするため、使用しないでください：
 
 <Sandpack>
 
@@ -88,18 +88,18 @@ button { margin-left: 5px; }
 
 </Sandpack>
 
-Instead, create a *new* array which contains the existing items *and* a new item at the end. There are multiple ways to do this, but the easiest one is to use the `...` [array spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals) syntax:
+代わりに、既存の項目*と*新しい項目を末尾に含む*新しい*配列を作成します。これを行う方法はいくつかありますが、最も簡単なのは`...` [配列スプレッド](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals)構文を使用することです：
 
 ```js
-setArtists( // Replace the state
-  [ // with a new array
-    ...artists, // that contains all the old items
-    { id: nextId++, name: name } // and one new item at the end
+setArtists( // 状態を置き換える
+  [ // 新しい配列で
+    ...artists, // すべての古い項目を含む
+    { id: nextId++, name: name } // 末尾に新しい項目を1つ追加
   ]
 );
 ```
 
-Now it works correctly:
+これで正しく動作します：
 
 <Sandpack>
 
@@ -141,20 +141,20 @@ button { margin-left: 5px; }
 
 </Sandpack>
 
-The array spread syntax also lets you prepend an item by placing it *before* the original `...artists`:
+配列スプレッド構文を使用すると、元の`...artists`の*前に*項目を配置することで、項目を先頭に追加することもできます：
 
 ```js
 setArtists([
   { id: nextId++, name: name },
-  ...artists // Put old items at the end
+  ...artists // 古い項目を末尾に配置
 ]);
 ```
 
-In this way, spread can do the job of both `push()` by adding to the end of an array and `unshift()` by adding to the beginning of an array. Try it in the sandbox above!
+このようにして、スプレッドは配列の末尾に追加する`push()`と、配列の先頭に追加する`unshift()`の両方の役割を果たすことができます。上記のサンドボックスで試してみてください！
 
-### Removing from an array {/*removing-from-an-array*/}
+### 配列から削除する {/*removing-from-an-array*/}
 
-The easiest way to remove an item from an array is to *filter it out*. In other words, you will produce a new array that will not contain that item. To do this, use the `filter` method, for example:
+配列から項目を削除する最も簡単な方法は、それを*フィルタリングする*ことです。つまり、その項目を含まない新しい配列を生成します。これを行うには、例えば`filter`メソッドを使用します：
 
 <Sandpack>
 
@@ -198,7 +198,7 @@ export default function List() {
 
 </Sandpack>
 
-Click the "Delete" button a few times, and look at its click handler.
+「Delete」ボタンを数回クリックし、そのクリックハンドラーを見てください。
 
 ```js
 setArtists(
@@ -206,13 +206,13 @@ setArtists(
 );
 ```
 
-Here, `artists.filter(a => a.id !== artist.id)` means "create an array that consists of those `artists` whose IDs are different from `artist.id`". In other words, each artist's "Delete" button will filter _that_ artist out of the array, and then request a re-render with the resulting array. Note that `filter` does not modify the original array.
+ここで、`artists.filter(a => a.id !== artist.id)`は「`artist.id`と異なるIDを持つ`artists`で構成される配列を作成する」ことを意味します。つまり、各アーティストの「Delete」ボタンはそのアーティストを配列からフィルタリングし、その結果の配列で再レンダリングを要求します。`filter`は元の配列を変更しないことに注意してください。
 
-### Transforming an array {/*transforming-an-array*/}
+### 配列を変換する {/*transforming-an-array*/}
 
-If you want to change some or all items of the array, you can use `map()` to create a **new** array. The function you will pass to `map` can decide what to do with each item, based on its data or its index (or both).
+配列の一部またはすべての項目を変更したい場合は、`map()`を使用して**新しい**配列を作成できます。`map`に渡す関数は、そのデータやインデックス（またはその両方）に基づいて各項目に対して何をするかを決定できます。
 
-In this example, an array holds coordinates of two circles and a square. When you press the button, it moves only the circles down by 50 pixels. It does this by producing a new array of data using `map()`:
+この例では、配列には2つの円と1つの四角形の座標が含まれています。ボタンを押すと、円だけが50ピクセル下に移動します。これは、`map()`を使用して新しいデータ配列を生成することで実現します：
 
 <Sandpack>
 
@@ -233,17 +233,17 @@ export default function ShapeEditor() {
   function handleClick() {
     const nextShapes = shapes.map(shape => {
       if (shape.type === 'square') {
-        // No change
+        // 変更なし
         return shape;
       } else {
-        // Return a new circle 50px below
+        // 50px下に新しい円を返す
         return {
           ...shape,
           y: shape.y + 50,
         };
       }
     });
-    // Re-render with the new array
+    // 新しい配列で再レンダリング
     setShapes(nextShapes);
   }
 
@@ -278,11 +278,11 @@ body { height: 300px; }
 
 </Sandpack>
 
-### Replacing items in an array {/*replacing-items-in-an-array*/}
+### 配列内の項目を置き換える {/*replacing-items-in-an-array*/}
 
-It is particularly common to want to replace one or more items in an array. Assignments like `arr[0] = 'bird'` are mutating the original array, so instead you'll want to use `map` for this as well.
+配列内の1つまたは複数の項目を置き換えたい場合は特に一般的です。`arr[0] = 'bird'`のような代入は元の配列をミューテートするため、これにも`map`を使用します。
 
-To replace an item, create a new array with `map`. Inside your `map` call, you will receive the item index as the second argument. Use it to decide whether to return the original item (the first argument) or something else:
+項目を置き換えるには、`map`を使用して新しい配列を作成します。`map`呼び出し内で、項目のインデックスを第2引数として受け取ります。これを使用して、元の項目（第1引数）を返すか、別のものを返すかを決定します：
 
 <Sandpack>
 
@@ -301,10 +301,10 @@ export default function CounterList() {
   function handleIncrementClick(index) {
     const nextCounters = counters.map((c, i) => {
       if (i === index) {
-        // Increment the clicked counter
+        // クリックされたカウンターをインクリメント
         return c + 1;
       } else {
-        // The rest haven't changed
+        // 残りは変更なし
         return c;
       }
     });
@@ -332,11 +332,11 @@ button { margin: 5px; }
 
 </Sandpack>
 
-### Inserting into an array {/*inserting-into-an-array*/}
+### 配列に挿入する {/*inserting-into-an-array*/}
 
-Sometimes, you may want to insert an item at a particular position that's neither at the beginning nor at the end. To do this, you can use the `...` array spread syntax together with the `slice()` method. The `slice()` method lets you cut a "slice" of the array. To insert an item, you will create an array that spreads the slice _before_ the insertion point, then the new item, and then the rest of the original array.
+時々、先頭でも末尾でもない特定の位置に項目を挿入したい場合があります。これを行うには、`...`配列スプレッド構文と`slice()`メソッドを組み合わせて使用します。`slice()`メソッドは配列の「スライス」を切り取ることができます。項目を挿入するには、挿入ポイント*前の*スライス、次に新しい項目、そして元の配列の残りを広げる配列を作成します。
 
-In this example, the Insert button always inserts at the index `1`:
+この例では、Insertボタンは常にインデックス`1`に挿入します：
 
 <Sandpack>
 
@@ -357,13 +357,13 @@ export default function List() {
   );
 
   function handleClick() {
-    const insertAt = 1; // Could be any index
+    const insertAt = 1; // 任意のインデックスに挿入可能
     const nextArtists = [
-      // Items before the insertion point:
+      // 挿入ポイント前の項目：
       ...artists.slice(0, insertAt),
-      // New item:
+      // 新しい項目：
       { id: nextId++, name: name },
-      // Items after the insertion point:
+      // 挿入ポイント後の項目：
       ...artists.slice(insertAt)
     ];
     setArtists(nextArtists);
@@ -396,13 +396,13 @@ button { margin-left: 5px; }
 
 </Sandpack>
 
-### Making other changes to an array {/*making-other-changes-to-an-array*/}
+### 配列に他の変更を加える {/*making-other-changes-to-an-array*/}
 
-There are some things you can't do with the spread syntax and non-mutating methods like `map()` and `filter()` alone. For example, you may want to reverse or sort an array. The JavaScript `reverse()` and `sort()` methods are mutating the original array, so you can't use them directly.
+スプレッド構文や`map()`や`filter()`のような非ミューテートメソッドだけではできないこともあります。例えば、配列を逆にしたり、ソートしたりすることがあるかもしれません。JavaScriptの`reverse()`や`sort()`メソッドは元の配列をミューテートするため、直接使用することはできません。
 
-**However, you can copy the array first, and then make changes to it.**
+**しかし、最初に配列をコピーしてから変更を加えることができます。**
 
-For example:
+例えば：
 
 <Sandpack>
 
@@ -441,25 +441,26 @@ export default function List() {
 
 </Sandpack>
 
-Here, you use the `[...list]` spread syntax to create a copy of the original array first. Now that you have a copy, you can use mutating methods like `nextList.reverse()` or `nextList.sort()`, or even assign individual items with `nextList[0] = "something"`.
+ここでは、最初に元の配列のコピーを作成するために`[...list]`スプレッド構文を使用しています。コピーを作成したので、`nextList.reverse()`や`nextList.sort()`のようなミューテートメソッドを使用したり、`nextList[0] = "something"`のように個々の項目を割り当てたりすることができます。
 
-However, **even if you copy an array, you can't mutate existing items _inside_ of it directly.** This is because copying is shallow--the new array will contain the same items as the original one. So if you modify an object inside the copied array, you are mutating the existing state. For example, code like this is a problem.
+しかし、**配列をコピーしても、直接その中の既存の項目をミューテートすることはできません。** これはコピーが浅いからです。新しい配列には元の配列と同じ項目が含まれます。そのため、コピーされた配列内のオブジェクトを変更すると、既存の状態をミューテートすることになります。例えば、次のようなコードは問題です。
 
 ```js
 const nextList = [...list];
-nextList[0].seen = true; // Problem: mutates list[0]
+nextList[0].seen = true; // 問題：list[0]をミューテート
 setList(nextList);
 ```
 
-Although `nextList` and `list` are two different arrays, **`nextList[0]` and `list[0]` point to the same object.** So by changing `nextList[0].seen`, you are also changing `list[0].seen`. This is a state mutation, which you should avoid! You can solve this issue in a similar way to [updating nested JavaScript objects](/learn/updating-objects-in-state#updating-a-nested-object)--by copying individual items you want to change instead of mutating them. Here's how.
+`nextList`と`list`は異なる配列ですが、**`nextList[0]`と`list[0]`は同じオブジェクトを指しています。** したがって、`nextList[0].seen`を変更すると、`list[0].seen`も変更されます。これは状態のミューテーションであり、避けるべきです！この問題は、[ネストされたJavaScriptオブジェクトを更新する](/learn/updating-objects-in-state#updating-a-nested-object)のと同
+じ方法で、変更したい個々の項目をコピーすることで解決できます。以下にその方法を示します。
 
-## Updating objects inside arrays {/*updating-objects-inside-arrays*/}
+## 配列内のオブジェクトを更新する {/*updating-objects-inside-arrays*/}
 
-Objects are not _really_ located "inside" arrays. They might appear to be "inside" in code, but each object in an array is a separate value, to which the array "points". This is why you need to be careful when changing nested fields like `list[0]`. Another person's artwork list may point to the same element of the array!
+オブジェクトは配列の「内部」に実際に存在するわけではありません。コード上では「内部」に見えるかもしれませんが、配列内の各オブジェクトは別々の値であり、配列はそれを「指し示している」だけです。これが、`list[0]`のようなネストされたフィールドを変更する際に注意が必要な理由です。別の人のアートワークリストが同じ配列要素を指しているかもしれません！
 
-**When updating nested state, you need to create copies from the point where you want to update, and all the way up to the top level.** Let's see how this works.
+**ネストされた状態を更新する際には、更新したいポイントからトップレベルまでコピーを作成する必要があります。** これがどのように機能するかを見てみましょう。
 
-In this example, two separate artwork lists have the same initial state. They are supposed to be isolated, but because of a mutation, their state is accidentally shared, and checking a box in one list affects the other list:
+この例では、2つの別々のアートワークリストが同じ初期状態を持っています。これらは独立しているはずですが、ミューテーションのために状態が誤って共有されており、1つのリストでチェックボックスをオンにすると、もう1つのリストにも影響を与えます：
 
 <Sandpack>
 
@@ -539,34 +540,34 @@ function ItemList({ artworks, onToggle }) {
 
 </Sandpack>
 
-The problem is in code like this:
+問題は次のようなコードにあります：
 
 ```js
 const myNextList = [...myList];
 const artwork = myNextList.find(a => a.id === artworkId);
-artwork.seen = nextSeen; // Problem: mutates an existing item
+artwork.seen = nextSeen; // 問題：既存の項目をミューテート
 setMyList(myNextList);
 ```
 
-Although the `myNextList` array itself is new, the *items themselves* are the same as in the original `myList` array. So changing `artwork.seen` changes the *original* artwork item. That artwork item is also in `yourList`, which causes the bug. Bugs like this can be difficult to think about, but thankfully they disappear if you avoid mutating state.
+`myNextList`配列自体は新しいものですが、*項目自体*は元の`myList`配列と同じです。したがって、`artwork.seen`を変更すると、*元の*アートワーク項目が変更されます。そのアートワーク項目は`yourList`にも含まれているため、バグが発生します。このようなバグは考えるのが難しいかもしれませんが、状態のミューテーションを避ければ消えます。
 
-**You can use `map` to substitute an old item with its updated version without mutation.**
+**`map`を使用して、ミューテーションなしで古い項目を更新されたバージョンに置き換えることができます。**
 
 ```js
 setMyList(myList.map(artwork => {
   if (artwork.id === artworkId) {
-    // Create a *new* object with changes
+    // 変更を加えた*新しい*オブジェクトを作成
     return { ...artwork, seen: nextSeen };
   } else {
-    // No changes
+    // 変更なし
     return artwork;
   }
 }));
 ```
 
-Here, `...` is the object spread syntax used to [create a copy of an object.](/learn/updating-objects-in-state#copying-objects-with-the-spread-syntax)
+ここで、`...`はオブジェクトスプレッド構文を使用して[オブジェクトのコピーを作成します。](/learn/updating-objects-in-state#copying-objects-with-the-spread-syntax)
 
-With this approach, none of the existing state items are being mutated, and the bug is fixed:
+このアプローチでは、既存の状態項目は一切ミューテートされず、バグが修正されます：
 
 <Sandpack>
 
@@ -589,10 +590,10 @@ export default function BucketList() {
   function handleToggleMyList(artworkId, nextSeen) {
     setMyList(myList.map(artwork => {
       if (artwork.id === artworkId) {
-        // Create a *new* object with changes
+        // 変更を加えた*新しい*オブジェクトを作成
         return { ...artwork, seen: nextSeen };
       } else {
-        // No changes
+        // 変更なし
         return artwork;
       }
     }));
@@ -601,10 +602,10 @@ export default function BucketList() {
   function handleToggleYourList(artworkId, nextSeen) {
     setYourList(yourList.map(artwork => {
       if (artwork.id === artworkId) {
-        // Create a *new* object with changes
+        // 変更を加えた*新しい*オブジェクトを作成
         return { ...artwork, seen: nextSeen };
       } else {
-        // No changes
+        // 変更なし
         return artwork;
       }
     }));
@@ -652,16 +653,16 @@ function ItemList({ artworks, onToggle }) {
 
 </Sandpack>
 
-In general, **you should only mutate objects that you have just created.** If you were inserting a *new* artwork, you could mutate it, but if you're dealing with something that's already in state, you need to make a copy.
+一般的に、**作成したばかりのオブジェクトのみをミューテートするべきです。** 新しいアートワークを挿入する場合はミューテートできますが、状態に既に存在するものを扱う場合はコピーを作成する必要があります。
 
-### Write concise update logic with Immer {/*write-concise-update-logic-with-immer*/}
+### Immerを使用して簡潔な更新ロジックを書く {/*write-concise-update-logic-with-immer*/}
 
-Updating nested arrays without mutation can get a little bit repetitive. [Just as with objects](/learn/updating-objects-in-state#write-concise-update-logic-with-immer):
+ミューテーションなしでネストされた配列を更新するのは少し繰り返しが多くなります。[オブジェクトと同様に](/learn/updating-objects-in-state#write-concise-update-logic-with-immer):
 
-- Generally, you shouldn't need to update state more than a couple of levels deep. If your state objects are very deep, you might want to [restructure them differently](/learn/choosing-the-state-structure#avoid-deeply-nested-state) so that they are flat.
-- If you don't want to change your state structure, you might prefer to use [Immer](https://github.com/immerjs/use-immer), which lets you write using the convenient but mutating syntax and takes care of producing the copies for you.
+- 一般的に、状態を2レベル以上深く更新する必要はありません。状態オブジェクトが非常に深い場合は、それらをフラットにするように[再構築することを検討してください](/learn/choosing-the-state-structure#avoid-deeply-nested-state)。
+- 状態構造を変更したくない場合は、[Immer](https://github.com/immerjs/use-immer)を使用することをお勧めします。これにより、便利なミューテーション構文を使用しながら、コピーを作成する作業を自動的に行ってくれます。
 
-Here is the Art Bucket List example rewritten with Immer:
+以下は、Immerを使用して書き直したArt Bucket Listの例です：
 
 <Sandpack>
 
@@ -762,7 +763,7 @@ function ItemList({ artworks, onToggle }) {
 
 </Sandpack>
 
-Note how with Immer, **mutation like `artwork.seen = nextSeen` is now okay:**
+Immerを使用すると、**`artwork.seen = nextSeen`のようなミューテーションが許容されます：**
 
 ```js
 updateMyTodos(draft => {
@@ -771,27 +772,25 @@ updateMyTodos(draft => {
 });
 ```
 
-This is because you're not mutating the _original_ state, but you're mutating a special `draft` object provided by Immer. Similarly, you can apply mutating methods like `push()` and `pop()` to the content of the `draft`.
+これは、元の状態をミューテートしているのではなく、Immerが提供する特別な`draft`オブジェクトをミューテートしているためです。同様に、`draft`の内容に対して`push()`や`pop()`のようなミューテーションメソッドを適用することもできます。
 
-Behind the scenes, Immer always constructs the next state from scratch according to the changes that you've done to the `draft`. This keeps your event handlers very concise without ever mutating state.
+裏では、Immerは常に`draft`に対して行った変更に基づいて次の状態をゼロから構築します。これにより、イベントハンドラーが非常に簡潔になり、状態をミューテートすることはありません。
 
 <Recap>
 
-- You can put arrays into state, but you can't change them.
-- Instead of mutating an array, create a *new* version of it, and update the state to it.
-- You can use the `[...arr, newItem]` array spread syntax to create arrays with new items.
-- You can use `filter()` and `map()` to create new arrays with filtered or transformed items.
-- You can use Immer to keep your code concise.
+- 配列を状態に入れることはできますが、変更することはできません。
+- 配列をミューテートする代わりに、その新しいバージョンを作成し、それに状態を設定します。
+- `[...arr, newItem]`配列スプレッド構文を使用して、新しい項目を含む配列を作成できます。
+- `filter()`や`map()`を使用して、フィルタリングまたは変換された項目を含む新しい配列を作成できます。
+- Immerを使用してコードを簡潔に保つことができます。
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Update an item in the shopping cart {/*update-an-item-in-the-shopping-cart*/}
+#### ショッピングカート内の項目を更新する {/*update-an-item-in-the-shopping-cart*/}
 
-Fill in the `handleIncreaseClick` logic so that pressing "+" increases the corresponding number:
+`handleIncreaseClick`ロジックを埋めて、"+"を押すと対応する数が増えるようにしてください：
 
 <Sandpack>
 
@@ -849,7 +848,7 @@ button { margin: 5px; }
 
 <Solution>
 
-You can use the `map` function to create a new array, and then use the `...` object spread syntax to create a copy of the changed object for the new array:
+`map`関数を使用して新しい配列を作成し、`...`オブジェクトスプレッド構文を使用して新しい配列の変更されたオブジェクトのコピーを作成できます：
 
 <Sandpack>
 
@@ -916,9 +915,9 @@ button { margin: 5px; }
 
 </Solution>
 
-#### Remove an item from the shopping cart {/*remove-an-item-from-the-shopping-cart*/}
+#### ショッピングカートから項目を削除する {/*remove-an-item-from-the-shopping-cart*/}
 
-This shopping cart has a working "+" button, but the "–" button doesn't do anything. You need to add an event handler to it so that pressing it decreases the `count` of the corresponding product. If you press "–" when the count is 1, the product should automatically get removed from the cart. Make sure it never shows 0.
+このショッピングカートには動作する「+」ボタンがありますが、「–」ボタンは何もしません。対応する商品の`count`を減らすイベントハンドラーを追加する必要があります。`count`が1のときに「–」を押すと、その商品は自動的にカートから削除されるべきです。0が表示されないようにしてください。
 
 <Sandpack>
 
@@ -988,7 +987,7 @@ button { margin: 5px; }
 
 <Solution>
 
-You can first use `map` to produce a new array, and then `filter` to remove products with a `count` set to `0`:
+まず`map`を使用して新しい配列を生成し、その後`filter`を使用して`count`が`0`に設定された商品を削除できます：
 
 <Sandpack>
 
@@ -1033,7 +1032,8 @@ export default function ShoppingCart() {
       if (product.id === productId) {
         return {
           ...product,
-          count: product.count - 1
+         
+count: product.count - 1
         };
       } else {
         return product;
@@ -1077,9 +1077,9 @@ button { margin: 5px; }
 
 </Solution>
 
-#### Fix the mutations using non-mutative methods {/*fix-the-mutations-using-non-mutative-methods*/}
+#### ミューテーションを非ミューテーションメソッドで修正する {/*fix-the-mutations-using-non-mutative-methods*/}
 
-In this example, all of the event handlers in `App.js` use mutation. As a result, editing and deleting todos doesn't work. Rewrite `handleAddTodo`, `handleChangeTodo`, and `handleDeleteTodo` to use the non-mutative methods:
+この例では、`App.js`内のすべてのイベントハンドラーがミューテーションを使用しています。その結果、ToDoの編集や削除が機能しません。`handleAddTodo`、`handleChangeTodo`、および`handleDeleteTodo`を非ミューテーションメソッドを使用して書き直してください：
 
 <Sandpack>
 
@@ -1242,7 +1242,7 @@ ul, li { margin: 0; padding: 0; }
 
 <Solution>
 
-In `handleAddTodo`, you can use the array spread syntax. In `handleChangeTodo`, you can create a new array with `map`. In `handleDeleteTodo`, you can create a new array with `filter`. Now the list works correctly:
+`handleAddTodo`では配列スプレッド構文を使用できます。`handleChangeTodo`では`map`を使用して新しい配列を作成できます。`handleDeleteTodo`では`filter`を使用して新しい配列を作成できます。これでリストが正しく動作します：
 
 <Sandpack>
 
@@ -1409,10 +1409,9 @@ ul, li { margin: 0; padding: 0; }
 
 </Solution>
 
+#### Immerを使用してミューテーションを修正する {/*fix-the-mutations-using-immer*/}
 
-#### Fix the mutations using Immer {/*fix-the-mutations-using-immer*/}
-
-This is the same example as in the previous challenge. This time, fix the mutations by using Immer. For your convenience, `useImmer` is already imported, so you need to change the `todos` state variable to use it.
+これは前のチャレンジと同じ例です。今回は、Immerを使用してミューテーションを修正してください。便利のために、`useImmer`はすでにインポートされているので、`todos`状態変数を使用するように変更する必要があります。
 
 <Sandpack>
 
@@ -1594,7 +1593,7 @@ ul, li { margin: 0; padding: 0; }
 
 <Solution>
 
-With Immer, you can write code in the mutative fashion, as long as you're only mutating parts of the `draft` that Immer gives you. Here, all mutations are performed on the `draft` so the code works:
+Immerを使用すると、`draft`に対してのみミューテーションを行う限り、ミューテーション方式でコードを書くことができます。ここでは、すべてのミューテーションが`draft`に対して行われているため、コードが機能します：
 
 <Sandpack>
 
@@ -1780,9 +1779,9 @@ ul, li { margin: 0; padding: 0; }
 
 </Sandpack>
 
-You can also mix and match the mutative and non-mutative approaches with Immer.
+Immerを使用すると、ミューテーション方式と非ミューテーション方式を組み合わせることもできます。
 
-For example, in this version `handleAddTodo` is implemented by mutating the Immer `draft`, while `handleChangeTodo` and `handleDeleteTodo` use the non-mutative `map` and `filter` methods:
+例えば、このバージョンでは`handleAddTodo`はImmerの`draft`をミューテートすることで実装されており、`handleChangeTodo`と`handleDeleteTodo`は非ミューテーションの`map`と`filter`メソッドを使用しています：
 
 <Sandpack>
 
@@ -1965,7 +1964,7 @@ ul, li { margin: 0; padding: 0; }
 
 </Sandpack>
 
-With Immer, you can pick the style that feels the most natural for each separate case.
+Immerを使用すると、各ケースに最も自然に感じるスタイルを選択できます。
 
 </Solution>
 

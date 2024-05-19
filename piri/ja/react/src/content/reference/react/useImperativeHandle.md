@@ -4,7 +4,7 @@ title: useImperativeHandle
 
 <Intro>
 
-`useImperativeHandle` is a React Hook that lets you customize the handle exposed as a [ref.](/learn/manipulating-the-dom-with-refs)
+`useImperativeHandle`は、[ref](/learn/manipulating-the-dom-with-refs)として公開されるハンドルをカスタマイズできるReact Hookです。
 
 ```js
 useImperativeHandle(ref, createHandle, dependencies?)
@@ -16,11 +16,11 @@ useImperativeHandle(ref, createHandle, dependencies?)
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `useImperativeHandle(ref, createHandle, dependencies?)` {/*useimperativehandle*/}
 
-Call `useImperativeHandle` at the top level of your component to customize the ref handle it exposes:
+`useImperativeHandle`をコンポーネントのトップレベルで呼び出して、公開されるrefハンドルをカスタマイズします：
 
 ```js
 import { forwardRef, useImperativeHandle } from 'react';
@@ -34,27 +34,27 @@ const MyInput = forwardRef(function MyInput(props, ref) {
   // ...
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `ref`: The `ref` you received as the second argument from the [`forwardRef` render function.](/reference/react/forwardRef#render-function)
+* `ref`: [`forwardRef`レンダーファンクション](/reference/react/forwardRef#render-function)から2番目の引数として受け取った`ref`。
 
-* `createHandle`: A function that takes no arguments and returns the ref handle you want to expose. That ref handle can have any type. Usually, you will return an object with the methods you want to expose.
+* `createHandle`: 引数を取らず、公開したいrefハンドルを返す関数。このrefハンドルは任意の型を持つことができます。通常、公開したいメソッドを持つオブジェクトを返します。
 
-* **optional** `dependencies`: The list of all reactive values referenced inside of the `createHandle` code. Reactive values include props, state, and all the variables and functions declared directly inside your component body. If your linter is [configured for React](/learn/editor-setup#linting), it will verify that every reactive value is correctly specified as a dependency. The list of dependencies must have a constant number of items and be written inline like `[dep1, dep2, dep3]`. React will compare each dependency with its previous value using the [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison. If a re-render resulted in a change to some dependency, or if you omitted this argument, your `createHandle` function will re-execute, and the newly created handle will be assigned to the ref.
+* **オプション** `dependencies`: `createHandle`コード内で参照されるすべてのリアクティブ値のリスト。リアクティブ値にはprops、state、およびコンポーネント本体内で直接宣言されたすべての変数と関数が含まれます。リンターが[React用に設定されている](/learn/editor-setup#linting)場合、すべてのリアクティブ値が依存関係として正しく指定されていることを確認します。依存関係のリストは一定の項目数を持ち、`[dep1, dep2, dep3]`のようにインラインで記述される必要があります。Reactは[`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)比較を使用して各依存関係を以前の値と比較します。再レンダリングによって依存関係の一部が変更された場合、またはこの引数を省略した場合、`createHandle`関数が再実行され、新しく作成されたハンドルがrefに割り当てられます。
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`useImperativeHandle` returns `undefined`.
+`useImperativeHandle`は`undefined`を返します。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Exposing a custom ref handle to the parent component {/*exposing-a-custom-ref-handle-to-the-parent-component*/}
+### 親コンポーネントにカスタムrefハンドルを公開する {/*exposing-a-custom-ref-handle-to-the-parent-component*/}
 
-By default, components don't expose their DOM nodes to parent components. For example, if you want the parent component of `MyInput` to [have access](/learn/manipulating-the-dom-with-refs) to the `<input>` DOM node, you have to opt in with [`forwardRef`:](/reference/react/forwardRef)
+デフォルトでは、コンポーネントは親コンポーネントにDOMノードを公開しません。例えば、`MyInput`の親コンポーネントが`<input>`DOMノードに[アクセスできるようにする](/learn/manipulating-the-dom-with-refs)には、[`forwardRef`](/reference/react/forwardRef)を使用してオプトインする必要があります：
 
 ```js {4}
 import { forwardRef } from 'react';
@@ -64,7 +64,7 @@ const MyInput = forwardRef(function MyInput(props, ref) {
 });
 ```
 
-With the code above, [a ref to `MyInput` will receive the `<input>` DOM node.](/reference/react/forwardRef#exposing-a-dom-node-to-the-parent-component) However, you can expose a custom value instead. To customize the exposed handle, call `useImperativeHandle` at the top level of your component:
+上記のコードでは、[`MyInput`のrefは`<input>`DOMノードを受け取ります。](/reference/react/forwardRef#exposing-a-dom-node-to-the-parent-component) しかし、カスタム値を公開することもできます。公開されるハンドルをカスタマイズするには、コンポーネントのトップレベルで`useImperativeHandle`を呼び出します：
 
 ```js {4-8}
 import { forwardRef, useImperativeHandle } from 'react';
@@ -80,9 +80,9 @@ const MyInput = forwardRef(function MyInput(props, ref) {
 });
 ```
 
-Note that in the code above, the `ref` is no longer forwarded to the `<input>`.
+上記のコードでは、`ref`はもはや`<input>`に転送されません。
 
-For example, suppose you don't want to expose the entire `<input>` DOM node, but you want to expose two of its methods: `focus` and `scrollIntoView`. To do this, keep the real browser DOM in a separate ref. Then use `useImperativeHandle` to expose a handle with only the methods that you want the parent component to call:
+例えば、`<input>`DOMノード全体を公開するのではなく、そのメソッドのうち2つ、`focus`と`scrollIntoView`を公開したいとします。これを行うには、実際のブラウザDOMを別のrefに保持し、`useImperativeHandle`を使用して親コンポーネントが呼び出したいメソッドのみを持つハンドルを公開します：
 
 ```js {7-14}
 import { forwardRef, useRef, useImperativeHandle } from 'react';
@@ -105,7 +105,7 @@ const MyInput = forwardRef(function MyInput(props, ref) {
 });
 ```
 
-Now, if the parent component gets a ref to `MyInput`, it will be able to call the `focus` and `scrollIntoView` methods on it. However, it will not have full access to the underlying `<input>` DOM node.
+これで、親コンポーネントが`MyInput`へのrefを取得すると、`focus`と`scrollIntoView`メソッドを呼び出すことができます。しかし、基礎となる`<input>`DOMノードへの完全なアクセスは持ちません。
 
 <Sandpack>
 
@@ -118,7 +118,7 @@ export default function Form() {
 
   function handleClick() {
     ref.current.focus();
-    // This won't work because the DOM node isn't exposed:
+    // DOMノードが公開されていないため、これは動作しません：
     // ref.current.style.opacity = 0.5;
   }
 
@@ -166,9 +166,9 @@ input {
 
 ---
 
-### Exposing your own imperative methods {/*exposing-your-own-imperative-methods*/}
+### 独自の命令的メソッドを公開する {/*exposing-your-own-imperative-methods*/}
 
-The methods you expose via an imperative handle don't have to match the DOM methods exactly. For example, this `Post` component exposes a `scrollAndFocusAddComment` method via an imperative handle. This lets the parent `Page` scroll the list of comments *and* focus the input field when you click the button:
+命令的ハンドルを介して公開するメソッドは、DOMメソッドと正確に一致する必要はありません。例えば、この`Post`コンポーネントは命令的ハンドルを介して`scrollAndFocusAddComment`メソッドを公開します。これにより、親の`Page`はボタンをクリックしたときにコメントリストをスクロールし*かつ*入力フィールドにフォーカスを当てることができます：
 
 <Sandpack>
 
@@ -281,8 +281,8 @@ export default AddComment;
 
 <Pitfall>
 
-**Do not overuse refs.** You should only use refs for *imperative* behaviors that you can't express as props: for example, scrolling to a node, focusing a node, triggering an animation, selecting text, and so on.
+**refsを過剰に使用しないでください。** refsは、ノードへのスクロール、ノードへのフォーカス、アニメーションのトリガー、テキストの選択など、propsとして表現できない*命令的*な動作にのみ使用するべきです。
 
-**If you can express something as a prop, you should not use a ref.** For example, instead of exposing an imperative handle like `{ open, close }` from a `Modal` component, it is better to take `isOpen` as a prop like `<Modal isOpen={isOpen} />`. [Effects](/learn/synchronizing-with-effects) can help you expose imperative behaviors via props.
+**何かをpropsとして表現できる場合、refを使用すべきではありません。** 例えば、`Modal`コンポーネントから`{ open, close }`のような命令的ハンドルを公開する代わりに、`<Modal isOpen={isOpen} />`のように`isOpen`をpropsとして受け取る方が良いです。[Effects](/learn/synchronizing-with-effects)は、propsを介して命令的な動作を公開するのに役立ちます。
 
 </Pitfall>

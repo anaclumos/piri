@@ -1,31 +1,31 @@
 ---
-title: Sharing State Between Components
+title: 컴포넌트 간 상태 공유
 ---
 
 <Intro>
 
-Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as *lifting state up,* and it's one of the most common things you will do writing React code.
+때때로 두 컴포넌트의 상태가 항상 함께 변경되기를 원할 때가 있습니다. 이를 위해 두 컴포넌트에서 상태를 제거하고, 가장 가까운 공통 부모로 이동한 다음 props를 통해 그들에게 전달합니다. 이것을 *상태 올리기*라고 하며, React 코드를 작성할 때 가장 일반적으로 수행하는 작업 중 하나입니다.
 
 </Intro>
 
 <YouWillLearn>
 
-- How to share state between components by lifting it up
-- What are controlled and uncontrolled components
+- 상태를 올려서 컴포넌트 간에 상태를 공유하는 방법
+- 제어 컴포넌트와 비제어 컴포넌트란 무엇인가
 
 </YouWillLearn>
 
-## Lifting state up by example {/*lifting-state-up-by-example*/}
+## 예제로 상태 올리기 {/*lifting-state-up-by-example*/}
 
-In this example, a parent `Accordion` component renders two separate `Panel`s:
+이 예제에서 부모 `Accordion` 컴포넌트는 두 개의 별도 `Panel`을 렌더링합니다:
 
 * `Accordion`
   - `Panel`
   - `Panel`
 
-Each `Panel` component has a boolean `isActive` state that determines whether its content is visible.
+각 `Panel` 컴포넌트는 내용이 보이는지 여부를 결정하는 boolean `isActive` 상태를 가지고 있습니다.
 
-Press the Show button for both panels:
+두 패널의 Show 버튼을 누르세요:
 
 <Sandpack>
 
@@ -73,59 +73,59 @@ h3, p { margin: 5px 0px; }
 
 </Sandpack>
 
-Notice how pressing one panel's button does not affect the other panel--they are independent.
+한 패널의 버튼을 누르는 것이 다른 패널에 영향을 미치지 않는 것을 주목하세요--그들은 독립적입니다.
 
 <DiagramGroup>
 
 <Diagram name="sharing_state_child" height={367} width={477} alt="Diagram showing a tree of three components, one parent labeled Accordion and two children labeled Panel. Both Panel components contain isActive with value false.">
 
-Initially, each `Panel`'s `isActive` state is `false`, so they both appear collapsed
+처음에는 각 `Panel`의 `isActive` 상태가 `false`이므로 둘 다 접혀 있습니다
 
 </Diagram>
 
 <Diagram name="sharing_state_child_clicked" height={367} width={480} alt="The same diagram as the previous, with the isActive of the first child Panel component highlighted indicating a click with the isActive value set to true. The second Panel component still contains value false." >
 
-Clicking either `Panel`'s button will only update that `Panel`'s `isActive` state alone
+어느 `Panel`의 버튼을 클릭하더라도 그 `Panel`의 `isActive` 상태만 업데이트됩니다
 
 </Diagram>
 
 </DiagramGroup>
 
-**But now let's say you want to change it so that only one panel is expanded at any given time.** With that design, expanding the second panel should collapse the first one. How would you do that?
+**하지만 이제 한 번에 하나의 패널만 확장되도록 변경하고 싶다고 가정해 봅시다.** 이 디자인에서는 두 번째 패널을 확장하면 첫 번째 패널이 접혀야 합니다. 어떻게 할 수 있을까요?
 
-To coordinate these two panels, you need to "lift their state up" to a parent component in three steps:
+이 두 패널을 조정하려면 세 단계로 상태를 부모 컴포넌트로 "올려야" 합니다:
 
-1. **Remove** state from the child components.
-2. **Pass** hardcoded data from the common parent.
-3. **Add** state to the common parent and pass it down together with the event handlers.
+1. **자식 컴포넌트에서** 상태를 제거합니다.
+2. **공통 부모로부터** 하드코딩된 데이터를 전달합니다.
+3. **공통 부모에** 상태를 추가하고 이벤트 핸들러와 함께 전달합니다.
 
-This will allow the `Accordion` component to coordinate both `Panel`s and only expand one at a time.
+이렇게 하면 `Accordion` 컴포넌트가 두 `Panel`을 조정하고 한 번에 하나만 확장할 수 있습니다.
 
-### Step 1: Remove state from the child components {/*step-1-remove-state-from-the-child-components*/}
+### 1단계: 자식 컴포넌트에서 상태 제거하기 {/*step-1-remove-state-from-the-child-components*/}
 
-You will give control of the `Panel`'s `isActive` to its parent component. This means that the parent component will pass `isActive` to `Panel` as a prop instead. Start by **removing this line** from the `Panel` component:
+`Panel`의 `isActive`를 부모 컴포넌트가 제어하도록 합니다. 이는 부모 컴포넌트가 `isActive`를 props로 `Panel`에 전달한다는 것을 의미합니다. 먼저 `Panel` 컴포넌트에서 **이 줄을 제거**합니다:
 
 ```js
 const [isActive, setIsActive] = useState(false);
 ```
 
-And instead, add `isActive` to the `Panel`'s list of props:
+그리고 대신 `isActive`를 `Panel`의 props 목록에 추가합니다:
 
 ```js
 function Panel({ title, children, isActive }) {
 ```
 
-Now the `Panel`'s parent component can *control* `isActive` by [passing it down as a prop.](/learn/passing-props-to-a-component) Conversely, the `Panel` component now has *no control* over the value of `isActive`--it's now up to the parent component!
+이제 `Panel`의 부모 컴포넌트는 [props로 전달하여](/learn/passing-props-to-a-component) `isActive`를 *제어*할 수 있습니다. 반대로, 이제 `Panel` 컴포넌트는 `isActive`의 값을 *제어할 수 없습니다*--이제 부모 컴포넌트에 달려 있습니다!
 
-### Step 2: Pass hardcoded data from the common parent {/*step-2-pass-hardcoded-data-from-the-common-parent*/}
+### 2단계: 공통 부모로부터 하드코딩된 데이터 전달하기 {/*step-2-pass-hardcoded-data-from-the-common-parent*/}
 
-To lift state up, you must locate the closest common parent component of *both* of the child components that you want to coordinate:
+상태를 올리려면 조정하려는 *두* 자식 컴포넌트의 가장 가까운 공통 부모 컴포넌트를 찾아야 합니다:
 
-* `Accordion` *(closest common parent)*
+* `Accordion` *(가장 가까운 공통 부모)*
   - `Panel`
   - `Panel`
 
-In this example, it's the `Accordion` component. Since it's above both panels and can control their props, it will become the "source of truth" for which panel is currently active. Make the `Accordion` component pass a hardcoded value of `isActive` (for example, `true`) to both panels:
+이 예제에서는 `Accordion` 컴포넌트입니다. 두 패널 위에 있으며 그들의 props를 제어할 수 있기 때문에 현재 활성화된 패널의 "진실의 원천"이 됩니다. `Accordion` 컴포넌트가 두 패널에 `isActive`의 하드코딩된 값을 전달하도록 합니다 (예: `true`):
 
 <Sandpack>
 
@@ -172,21 +172,21 @@ h3, p { margin: 5px 0px; }
 
 </Sandpack>
 
-Try editing the hardcoded `isActive` values in the `Accordion` component and see the result on the screen.
+`Accordion` 컴포넌트에서 하드코딩된 `isActive` 값을 편집하고 화면에서 결과를 확인해 보세요.
 
-### Step 3: Add state to the common parent {/*step-3-add-state-to-the-common-parent*/}
+### 3단계: 공통 부모에 상태 추가하기 {/*step-3-add-state-to-the-common-parent*/}
 
-Lifting state up often changes the nature of what you're storing as state.
+상태를 올리면 종종 저장하는 상태의 성격이 바뀝니다.
 
-In this case, only one panel should be active at a time. This means that the `Accordion` common parent component needs to keep track of *which* panel is the active one. Instead of a `boolean` value, it could use a number as the index of the active `Panel` for the state variable:
+이 경우, 한 번에 하나의 패널만 활성화되어야 합니다. 이는 `Accordion` 공통 부모 컴포넌트가 *어느* 패널이 활성화되어 있는지를 추적해야 함을 의미합니다. `boolean` 값 대신, 상태 변수로 활성 `Panel`의 인덱스를 나타내는 숫자를 사용할 수 있습니다:
 
 ```js
 const [activeIndex, setActiveIndex] = useState(0);
 ```
 
-When the `activeIndex` is `0`, the first panel is active, and when it's `1`, it's the second one.
+`activeIndex`가 `0`일 때 첫 번째 패널이 활성화되고, `1`일 때 두 번째 패널이 활성화됩니다.
 
-Clicking the "Show" button in either `Panel` needs to change the active index in `Accordion`. A `Panel` can't set the `activeIndex` state directly because it's defined inside the `Accordion`. The `Accordion` component needs to *explicitly allow* the `Panel` component to change its state by [passing an event handler down as a prop](/learn/responding-to-events#passing-event-handlers-as-props):
+어느 `Panel`의 "Show" 버튼을 클릭하면 `Accordion`의 활성 인덱스를 변경해야 합니다. `Panel`은 `Accordion` 내부에 정의된 `activeIndex` 상태를 직접 설정할 수 없습니다. `Accordion` 컴포넌트는 [이벤트 핸들러를 props로 전달하여](/learn/responding-to-events#passing-event-handlers-as-props) `Panel` 컴포넌트가 상태를 변경할 수 있도록 *명시적으로 허용*해야 합니다:
 
 ```js
 <>
@@ -205,7 +205,7 @@ Clicking the "Show" button in either `Panel` needs to change the active index in
 </>
 ```
 
-The `<button>` inside the `Panel` will now use the `onShow` prop as its click event handler:
+이제 `Panel` 내부의 `<button>`은 클릭 이벤트 핸들러로 `onShow` props를 사용합니다:
 
 <Sandpack>
 
@@ -266,19 +266,19 @@ h3, p { margin: 5px 0px; }
 
 </Sandpack>
 
-This completes lifting state up! Moving state into the common parent component allowed you to coordinate the two panels. Using the active index instead of two "is shown" flags ensured that only one panel is active at a given time. And passing down the event handler to the child allowed the child to change the parent's state.
+이로써 상태 올리기가 완료되었습니다! 상태를 공통 부모 컴포넌트로 이동하면 두 패널을 조정할 수 있습니다. 두 "보여짐" 플래그 대신 활성 인덱스를 사용하면 한 번에 하나의 패널만 활성화됩니다. 그리고 이벤트 핸들러를 자식에게 전달하면 자식이 부모의 상태를 변경할 수 있습니다.
 
 <DiagramGroup>
 
 <Diagram name="sharing_state_parent" height={385} width={487} alt="Diagram showing a tree of three components, one parent labeled Accordion and two children labeled Panel. Accordion contains an activeIndex value of zero which turns into isActive value of true passed to the first Panel, and isActive value of false passed to the second Panel." >
 
-Initially, `Accordion`'s `activeIndex` is `0`, so the first `Panel` receives `isActive = true`
+처음에는 `Accordion`의 `activeIndex`가 `0`이므로 첫 번째 `Panel`이 `isActive = true`를 받습니다
 
 </Diagram>
 
 <Diagram name="sharing_state_parent_clicked" height={385} width={521} alt="The same diagram as the previous, with the activeIndex value of the parent Accordion component highlighted indicating a click with the value changed to one. The flow to both of the children Panel components is also highlighted, and the isActive value passed to each child is set to the opposite: false for the first Panel and true for the second one." >
 
-When `Accordion`'s `activeIndex` state changes to `1`, the second `Panel` receives `isActive = true` instead
+`Accordion`의 `activeIndex` 상태가 `1`로 변경되면 두 번째 `Panel`이 대신 `isActive = true`를 받습니다
 
 </Diagram>
 
@@ -286,48 +286,48 @@ When `Accordion`'s `activeIndex` state changes to `1`, the second `Panel` receiv
 
 <DeepDive>
 
-#### Controlled and uncontrolled components {/*controlled-and-uncontrolled-components*/}
+#### 제어 컴포넌트와 비제어 컴포넌트 {/*controlled-and-uncontrolled-components*/}
 
-It is common to call a component with some local state "uncontrolled". For example, the original `Panel` component with an `isActive` state variable is uncontrolled because its parent cannot influence whether the panel is active or not.
+일부 로컬 상태를 가진 컴포넌트를 "비제어"라고 부르는 것이 일반적입니다. 예를 들어, `isActive` 상태 변수를 가진 원래의 `Panel` 컴포넌트는 비제어 컴포넌트입니다. 왜냐하면 부모가 패널이 활성화되었는지 여부에 영향을 미칠 수 없기 때문입니다.
 
-In contrast, you might say a component is "controlled" when the important information in it is driven by props rather than its own local state. This lets the parent component fully specify its behavior. The final `Panel` component with the `isActive` prop is controlled by the `Accordion` component.
+반대로, 중요한 정보가 로컬 상태가 아닌 props에 의해 구동되는 컴포넌트를 "제어"된다고 할 수 있습니다. 이렇게 하면 부모 컴포넌트가 그 동작을 완전히 지정할 수 있습니다. `isActive` props를 가진 최종 `Panel` 컴포넌트는 `Accordion` 컴포넌트에 의해 제어됩니다.
 
-Uncontrolled components are easier to use within their parents because they require less configuration. But they're less flexible when you want to coordinate them together. Controlled components are maximally flexible, but they require the parent components to fully configure them with props.
+비제어 컴포넌트는 부모 내에서 사용하기 더 쉽습니다. 왜냐하면 설정이 덜 필요하기 때문입니다. 하지만 함께 조정하려고 할 때는 덜 유연합니다. 제어 컴포넌트는 최대한 유연하지만, 부모 컴포넌트가 props로 완전히 설정해야 합니다.
 
-In practice, "controlled" and "uncontrolled" aren't strict technical terms--each component usually has some mix of both local state and props. However, this is a useful way to talk about how components are designed and what capabilities they offer.
+실제로 "제어"와 "비제어"는 엄격한 기술 용어가 아닙니다--각 컴포넌트는 일반적으로 로컬 상태와 props의 혼합을 가지고 있습니다. 그러나 이것은 컴포넌트가 어떻게 설계되었는지와 어떤 기능을 제공하는지에 대해 이야기하는 유용한 방법입니다.
 
-When writing a component, consider which information in it should be controlled (via props), and which information should be uncontrolled (via state). But you can always change your mind and refactor later.
+컴포넌트를 작성할 때, 그 안의 어떤 정보가 제어되어야 하는지(props를 통해)와 어떤 정보가 비제어되어야 하는지(state를 통해)를 고려하세요. 하지만 언제든지 마음을 바꾸고 나중에 리팩터링할 수 있습니다.
 
 </DeepDive>
 
-## A single source of truth for each state {/*a-single-source-of-truth-for-each-state*/}
+## 각 상태에 대한 단일 진실의 원천 {/*a-single-source-of-truth-for-each-state*/}
 
-In a React application, many components will have their own state. Some state may "live" close to the leaf components (components at the bottom of the tree) like inputs. Other state may "live" closer to the top of the app. For example, even client-side routing libraries are usually implemented by storing the current route in the React state, and passing it down by props!
+React 애플리케이션에서는 많은 컴포넌트가 자체 상태를 가질 것입니다. 일부 상태는 입력과 같은 리프 컴포넌트(트리의 하단에 있는 컴포넌트) 근처에 "살" 수 있습니다. 다른 상태는 앱의 상단에 더 가까이 "살" 수 있습니다. 예를 들어, 클라이언트 측 라우팅 라이브러리도 일반적으로 현재 경로를 React 상태에 저장하고 props로 전달하여 구현됩니다!
 
-**For each unique piece of state, you will choose the component that "owns" it.** This principle is also known as having a ["single source of truth".](https://en.wikipedia.org/wiki/Single_source_of_truth) It doesn't mean that all state lives in one place--but that for _each_ piece of state, there is a _specific_ component that holds that piece of information. Instead of duplicating shared state between components, *lift it up* to their common shared parent, and *pass it down* to the children that need it.
+**각 고유한 상태 조각에 대해, 그 상태를 "소유"하는 컴포넌트를 선택할 것입니다.** 이 원칙은 ["단일 진실의 원천"](https://en.wikipedia.org/wiki/Single_source_of_truth)으로도 알려져 있습니다. 이는 모든 상태가 한 곳에 있어야 한다는 의미는 아닙니다--하지만 _각_ 상태 조각에 대해, 그 정보를 보유하는 _특정_ 컴포넌트가 있다는 것을 의미합니다. 공유 상태를 컴포넌트 간에 중복하지 말고, *공통 부모로 올리고*, 필요한 자식에게 *전달*하세요.
 
-Your app will change as you work on it. It is common that you will move state down or back up while you're still figuring out where each piece of the state "lives". This is all part of the process!
+앱을 작업하면서 변경될 것입니다. 각 상태 조각이 "사는" 위치를 아직 파악하지 못한 동안 상태를 아래로 또는 다시 위로 이동하는 것이 일반적입니다. 이것은 모두 과정의 일부입니다!
 
-To see what this feels like in practice with a few more components, read [Thinking in React.](/learn/thinking-in-react)
+몇 가지 더 많은 컴포넌트와 함께 실제로 어떤 느낌인지 보려면 [Thinking in React](/learn/thinking-in-react)를 읽어보세요.
 
 <Recap>
 
-* When you want to coordinate two components, move their state to their common parent.
-* Then pass the information down through props from their common parent.
-* Finally, pass the event handlers down so that the children can change the parent's state.
-* It's useful to consider components as "controlled" (driven by props) or "uncontrolled" (driven by state).
+* 두 컴포넌트를 조정하려면, 상태를 공통 부모로 이동하세요.
+* 그런 다음 공통 부모로부터 props를 통해 정보를 전달하세요.
+* 마지막으로, 자식이 부모의 상태를 변경할 수 있도록 이벤트 핸들러를 전달하세요.
+* 컴포넌트를 "제어"(props에 의해 구동) 또는 "비제어"(state에 의해 구동)로 간주하는 것이 유용합니다.
 
 </Recap>
 
 <Challenges>
 
-#### Synced inputs {/*synced-inputs*/}
+#### 동기화된 입력 {/*synced-inputs*/}
 
-These two inputs are independent. Make them stay in sync: editing one input should update the other input with the same text, and vice versa. 
+이 두 입력은 독립적입니다. 입력 중 하나를 편집하면 동일한 텍스트로 다른 입력이 업데이트되도록 만드세요.
 
 <Hint>
 
-You'll need to lift their state up into the parent component.
+상태를 부모 컴포넌트로 올려야 합니다.
 
 </Hint>
 
@@ -374,7 +374,7 @@ label { display: block; }
 
 <Solution>
 
-Move the `text` state variable into the parent component along with the `handleChange` handler. Then pass them down as props to both of the `Input` components. This will keep them in sync.
+`text` 상태 변수를 부모 컴포넌트로 이동하고 `handleChange` 핸들러도 함께 이동합니다. 그런 다음 이를 두 `Input` 컴포넌트에 props로 전달합니다. 이렇게 하면 동기화됩니다.
 
 <Sandpack>
 
@@ -410,8 +410,7 @@ function Input({ label, value, onChange }) {
       {label}
       {' '}
       <input
-        value={value}
-        onChange={onChange}
+        value={value        onChange={onChange}
       />
     </label>
   );
@@ -427,17 +426,17 @@ label { display: block; }
 
 </Solution>
 
-#### Filtering a list {/*filtering-a-list*/}
+#### 목록 필터링 {/*filtering-a-list*/}
 
-In this example, the `SearchBar` has its own `query` state that controls the text input. Its parent `FilterableList` component displays a `List` of items, but it doesn't take the search query into account.
+이 예제에서 `SearchBar`는 텍스트 입력을 제어하는 자체 `query` 상태를 가지고 있습니다. 부모 `FilterableList` 컴포넌트는 항목의 `List`를 표시하지만 검색 쿼리를 고려하지 않습니다.
 
-Use the `filterItems(foods, query)` function to filter the list according to the search query. To test your changes, verify that typing "s" into the input filters down the list to "Sushi", "Shish kebab", and "Dim sum".
+`filterItems(foods, query)` 함수를 사용하여 검색 쿼리에 따라 목록을 필터링하세요. 변경 사항을 테스트하려면 입력에 "s"를 입력하여 목록이 "Sushi", "Shish kebab", "Dim sum"으로 필터링되는지 확인하세요.
 
-Note that `filterItems` is already implemented and imported so you don't need to write it yourself!
+`filterItems`는 이미 구현되어 있고 가져오기 때문에 직접 작성할 필요는 없습니다!
 
 <Hint>
 
-You will want to remove the `query` state and the `handleChange` handler from the `SearchBar`, and move them to the `FilterableList`. Then pass them down to `SearchBar` as `query` and `onChange` props.
+`query` 상태와 `handleChange` 핸들러를 `SearchBar`에서 제거하고 `FilterableList`로 이동해야 합니다. 그런 다음 이를 `query` 및 `onChange` props로 `SearchBar`에 전달하세요.
 
 </Hint>
 
@@ -528,7 +527,7 @@ export const foods = [{
 
 <Solution>
 
-Lift the `query` state up into the `FilterableList` component. Call `filterItems(foods, query)` to get the filtered list and pass it down to the `List`. Now changing the query input is reflected in the list:
+`query` 상태를 `FilterableList` 컴포넌트로 올립니다. `filterItems(foods, query)`를 호출하여 필터링된 목록을 가져오고 이를 `List`에 전달합니다. 이제 쿼리 입력을 변경하면 목록에 반영됩니다:
 
 <Sandpack>
 

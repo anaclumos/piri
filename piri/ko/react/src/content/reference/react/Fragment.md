@@ -4,7 +4,7 @@ title: <Fragment> (<>...</>)
 
 <Intro>
 
-`<Fragment>`, often used via `<>...</>` syntax, lets you group elements without a wrapper node.
+`<Fragment>`, 종종 `<>...</>` 구문을 통해 사용되며, 요소들을 래퍼 노드 없이 그룹화할 수 있게 해줍니다.
 
 ```js
 <>
@@ -19,29 +19,29 @@ title: <Fragment> (<>...</>)
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `<Fragment>` {/*fragment*/}
 
-Wrap elements in `<Fragment>` to group them together in situations where you need a single element. Grouping elements in `Fragment` has no effect on the resulting DOM; it is the same as if the elements were not grouped. The empty JSX tag `<></>` is shorthand for `<Fragment></Fragment>` in most cases.
+단일 요소가 필요한 상황에서 요소들을 그룹화하려면 `<Fragment>`로 감싸세요. `Fragment`로 요소들을 그룹화하는 것은 결과 DOM에 아무런 영향을 미치지 않습니다; 요소들이 그룹화되지 않은 것과 동일합니다. 빈 JSX 태그 `<></>`는 대부분의 경우 `<Fragment></Fragment>`의 축약형입니다.
 
 #### Props {/*props*/}
 
-- **optional** `key`: Fragments declared with the explicit `<Fragment>` syntax may have [keys.](/learn/rendering-lists#keeping-list-items-in-order-with-key)
+- **선택적** `key`: 명시적으로 `<Fragment>` 구문으로 선언된 Fragments는 [keys.](/learn/rendering-lists#keeping-list-items-in-order-with-key)를 가질 수 있습니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-- If you want to pass `key` to a Fragment, you can't use the `<>...</>` syntax. You have to explicitly import `Fragment` from `'react'` and render `<Fragment key={yourKey}>...</Fragment>`.
+- `key`를 Fragment에 전달하려면 `<>...</>` 구문을 사용할 수 없습니다. `'react'`에서 `Fragment`를 명시적으로 가져와서 `<Fragment key={yourKey}>...</Fragment>`로 렌더링해야 합니다.
 
-- React does not [reset state](/learn/preserving-and-resetting-state) when you go from rendering `<><Child /></>` to `[<Child />]` or back, or when you go from rendering `<><Child /></>` to `<Child />` and back. This only works a single level deep: for example, going from `<><><Child /></></>` to `<Child />` resets the state. See the precise semantics [here.](https://gist.github.com/clemmy/b3ef00f9507909429d8aa0d3ee4f986b)
+- React는 `<><Child /></>`에서 `[<Child />]`로 또는 그 반대로 렌더링할 때, 또는 `<><Child /></>`에서 `<Child />`로 또는 그 반대로 렌더링할 때 [상태를 리셋하지 않습니다.](/learn/preserving-and-resetting-state) 이는 단일 레벨 깊이에서만 작동합니다: 예를 들어, `<><><Child /></></>`에서 `<Child />`로 전환할 때 상태가 리셋됩니다. 정확한 의미는 [여기](https://gist.github.com/clemmy/b3ef00f9507909429d8aa0d3ee4f986b)에서 확인하세요.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Returning multiple elements {/*returning-multiple-elements*/}
+### 여러 요소 반환하기 {/*returning-multiple-elements*/}
 
-Use `Fragment`, or the equivalent `<>...</>` syntax, to group multiple elements together. You can use it to put multiple elements in any place where a single element can go. For example, a component can only return one element, but by using a Fragment you can group multiple elements together and then return them as a group:
+`Fragment` 또는 동등한 `<>...</>` 구문을 사용하여 여러 요소를 함께 그룹화하세요. 단일 요소가 들어갈 수 있는 모든 곳에 여러 요소를 넣을 수 있습니다. 예를 들어, 컴포넌트는 하나의 요소만 반환할 수 있지만, Fragment를 사용하여 여러 요소를 그룹화한 다음 그룹으로 반환할 수 있습니다:
 
 ```js {3,6}
 function Post() {
@@ -54,7 +54,7 @@ function Post() {
 }
 ```
 
-Fragments are useful because grouping elements with a Fragment has no effect on layout or styles, unlike if you wrapped the elements in another container like a DOM element. If you inspect this example with the browser tools, you'll see that all `<h1>` and `<article>` DOM nodes appear as siblings without wrappers around them:
+Fragments는 요소들을 다른 컨테이너(예: DOM 요소)로 감싸는 것과 달리 레이아웃이나 스타일에 영향을 주지 않기 때문에 유용합니다. 이 예제를 브라우저 도구로 검사하면 모든 `<h1>` 및 `<article>` DOM 노드가 래퍼 없이 형제로 나타나는 것을 볼 수 있습니다:
 
 <Sandpack>
 
@@ -94,9 +94,9 @@ function PostBody({ body }) {
 
 <DeepDive>
 
-#### How to write a Fragment without the special syntax? {/*how-to-write-a-fragment-without-the-special-syntax*/}
+#### 특수 구문 없이 Fragment 작성하기 {/*how-to-write-a-fragment-without-the-special-syntax*/}
 
-The example above is equivalent to importing `Fragment` from React:
+위 예제는 React에서 `Fragment`를 가져오는 것과 동일합니다:
 
 ```js {1,5,8}
 import { Fragment } from 'react';
@@ -111,15 +111,15 @@ function Post() {
 }
 ```
 
-Usually you won't need this unless you need to [pass a `key` to your `Fragment`.](#rendering-a-list-of-fragments)
+보통은 [Fragment에 `key`를 전달해야 하는 경우](#rendering-a-list-of-fragments)가 아니면 이 방법이 필요하지 않습니다.
 
 </DeepDive>
 
 ---
 
-### Assigning multiple elements to a variable {/*assigning-multiple-elements-to-a-variable*/}
+### 여러 요소를 변수에 할당하기 {/*assigning-multiple-elements-to-a-variable*/}
 
-Like any other element, you can assign Fragment elements to variables, pass them as props, and so on:
+다른 요소와 마찬가지로 Fragment 요소를 변수에 할당하거나 props로 전달할 수 있습니다:
 
 ```js
 function CloseDialog() {
@@ -139,9 +139,9 @@ function CloseDialog() {
 
 ---
 
-### Grouping elements with text {/*grouping-elements-with-text*/}
+### 텍스트와 함께 요소 그룹화하기 {/*grouping-elements-with-text*/}
 
-You can use `Fragment` to group text together with components:
+`Fragment`를 사용하여 텍스트와 컴포넌트를 함께 그룹화할 수 있습니다:
 
 ```js
 function DateRangePicker({ start, end }) {
@@ -158,9 +158,9 @@ function DateRangePicker({ start, end }) {
 
 ---
 
-### Rendering a list of Fragments {/*rendering-a-list-of-fragments*/}
+### Fragment 목록 렌더링하기 {/*rendering-a-list-of-fragments*/}
 
-Here's a situation where you need to write `Fragment` explicitly instead of using the `<></>` syntax. When you [render multiple elements in a loop](/learn/rendering-lists), you need to assign a `key` to each element. If the elements within the loop are Fragments, you need to use the normal JSX element syntax in order to provide the `key` attribute:
+여기서는 `<></>` 구문 대신 `Fragment`를 명시적으로 작성해야 하는 상황입니다. [반복문에서 여러 요소를 렌더링할 때](/learn/rendering-lists), 각 요소에 `key`를 할당해야 합니다. 반복문 내의 요소들이 Fragments인 경우, `key` 속성을 제공하기 위해 일반 JSX 요소 구문을 사용해야 합니다:
 
 ```js {3,6}
 function Blog() {
@@ -173,7 +173,7 @@ function Blog() {
 }
 ```
 
-You can inspect the DOM to verify that there are no wrapper elements around the Fragment children:
+DOM을 검사하여 Fragment 자식들 주위에 래퍼 요소가 없는지 확인할 수 있습니다:
 
 <Sandpack>
 

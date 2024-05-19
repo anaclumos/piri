@@ -1,25 +1,25 @@
 ---
-title: "State: A Component's Memory"
+title: 状態: コンポーネントのメモリ
 ---
 
 <Intro>
 
-Components often need to change what's on the screen as a result of an interaction. Typing into the form should update the input field, clicking "next" on an image carousel should change which image is displayed, clicking "buy" should put a product in the shopping cart. Components need to "remember" things: the current input value, the current image, the shopping cart. In React, this kind of component-specific memory is called *state*.
+コンポーネントは、インタラクションの結果として画面上の内容を変更する必要があることがよくあります。フォームに入力すると入力フィールドが更新され、画像カルーセルの「次へ」をクリックすると表示される画像が変わり、「購入」をクリックすると商品がショッピングカートに入ります。コンポーネントは、現在の入力値、現在の画像、ショッピングカートなどを「記憶」する必要があります。Reactでは、このようなコンポーネント固有のメモリを*state*と呼びます。
 
 </Intro>
 
 <YouWillLearn>
 
-* How to add a state variable with the [`useState`](/reference/react/useState) Hook
-* What pair of values the `useState` Hook returns
-* How to add more than one state variable
-* Why state is called local
+* [`useState`](/reference/react/useState)フックを使用してstate変数を追加する方法
+* `useState`フックが返す値のペア
+* 複数のstate変数を追加する方法
+* stateがローカルと呼ばれる理由
 
 </YouWillLearn>
 
-## When a regular variable isn’t enough {/*when-a-regular-variable-isnt-enough*/}
+## 通常の変数では不十分な場合 {/*when-a-regular-variable-isnt-enough*/}
 
-Here's a component that renders a sculpture image. Clicking the "Next" button should show the next sculpture by changing the `index` to `1`, then `2`, and so on. However, this **won't work** (you can try it!):
+ここに彫刻の画像をレンダリングするコンポーネントがあります。「次へ」ボタンをクリックすると、`index`を`1`、次に`2`と変更して次の彫刻を表示するはずです。しかし、これは**機能しません**（試してみてください！）：
 
 <Sandpack>
 
@@ -151,46 +151,46 @@ button {
 
 </Sandpack>
 
-The `handleClick` event handler is updating a local variable, `index`. But two things prevent that change from being visible:
+`handleClick`イベントハンドラーはローカル変数`index`を更新しています。しかし、変更が表示されない理由は2つあります：
 
-1. **Local variables don't persist between renders.** When React renders this component a second time, it renders it from scratch—it doesn't consider any changes to the local variables.
-2. **Changes to local variables won't trigger renders.** React doesn't realize it needs to render the component again with the new data.
+1. **ローカル変数はレンダリング間で持続しません。** Reactがこのコンポーネントを2回目にレンダリングするとき、ローカル変数の変更を考慮せずに最初からレンダリングします。
+2. **ローカル変数の変更はレンダリングをトリガーしません。** Reactは新しいデータでコンポーネントを再レンダリングする必要があることを認識しません。
 
-To update a component with new data, two things need to happen:
+新しいデータでコンポーネントを更新するには、次の2つのことが必要です：
 
-1. **Retain** the data between renders.
-2. **Trigger** React to render the component with new data (re-rendering).
+1. レンダリング間でデータを**保持**する。
+2. Reactに新しいデータでコンポーネントをレンダリングするように**トリガー**する（再レンダリング）。
 
-The [`useState`](/reference/react/useState) Hook provides those two things:
+[`useState`](/reference/react/useState)フックはこれら2つのことを提供します：
 
-1. A **state variable** to retain the data between renders.
-2. A **state setter function** to update the variable and trigger React to render the component again.
+1. レンダリング間でデータを保持するための**state変数**。
+2. 変数を更新し、Reactにコンポーネントを再レンダリングさせるための**state setter関数**。
 
-## Adding a state variable {/*adding-a-state-variable*/}
+## state変数を追加する {/*adding-a-state-variable*/}
 
-To add a state variable, import `useState` from React at the top of the file:
+state変数を追加するには、ファイルの先頭で`useState`をReactからインポートします：
 
 ```js
 import { useState } from 'react';
 ```
 
-Then, replace this line:
+次に、この行を置き換えます：
 
 ```js
 let index = 0;
 ```
 
-with
+次のように置き換えます：
 
 ```js
 const [index, setIndex] = useState(0);
 ```
 
-`index` is a state variable and `setIndex` is the setter function.
+`index`はstate変数で、`setIndex`はsetter関数です。
 
-> The `[` and `]` syntax here is called [array destructuring](https://javascript.info/destructuring-assignment) and it lets you read values from an array. The array returned by `useState` always has exactly two items.
+> ここでの`[`と`]`の構文は[配列の分割代入](https://javascript.info/destructuring-assignment)と呼ばれ、配列から値を読み取ることができます。`useState`が返す配列には常に2つの項目が含まれています。
 
-This is how they work together in `handleClick`:
+これが`handleClick`での動作方法です：
 
 ```js
 function handleClick() {
@@ -198,7 +198,7 @@ function handleClick() {
 }
 ```
 
-Now clicking the "Next" button switches the current sculpture:
+これで「Next」ボタンをクリックすると、現在の彫刻が切り替わります：
 
 <Sandpack>
 
@@ -331,57 +331,58 @@ button {
 
 </Sandpack>
 
-### Meet your first Hook {/*meet-your-first-hook*/}
+### 最初のフックに出会う {/*meet-your-first-hook*/}
 
-In React, `useState`, as well as any other function starting with "`use`", is called a Hook.
+Reactでは、`useState`や他の`use`で始まる関数はフックと呼ばれます。
 
-*Hooks* are special functions that are only available while React is [rendering](/learn/render-and-commit#step-1-trigger-a-render) (which we'll get into in more detail on the next page). They let you "hook into" different React features.
+*フック*は、Reactが[レンダリング](/learn/render-and-commit#step-1-trigger-a-render)している間にのみ利用できる特別な関数です（次のページで詳しく説明します）。これにより、さまざまなReactの機能に「フック」することができます。
 
-State is just one of those features, but you will meet the other Hooks later.
+stateはその機能の一
+つですが、他のフックにも後で出会うことになるでしょう。
 
 <Pitfall>
 
-**Hooks—functions starting with `use`—can only be called at the top level of your components or [your own Hooks.](/learn/reusing-logic-with-custom-hooks)** You can't call Hooks inside conditions, loops, or other nested functions. Hooks are functions, but it's helpful to think of them as unconditional declarations about your component's needs. You "use" React features at the top of your component similar to how you "import" modules at the top of your file.
+**フック—`use`で始まる関数—は、コンポーネントのトップレベルまたは[独自のフック](/learn/reusing-logic-with-custom-hooks)でのみ呼び出すことができます。** 条件、ループ、または他のネストされた関数内でフックを呼び出すことはできません。フックは関数ですが、コンポーネントのニーズについての無条件の宣言と考えると便利です。ファイルのトップでモジュールを「インポート」するのと同様に、コンポーネントのトップでReactの機能を「使用」します。
 
 </Pitfall>
 
-### Anatomy of `useState` {/*anatomy-of-usestate*/}
+### `useState`の構造 {/*anatomy-of-usestate*/}
 
-When you call [`useState`](/reference/react/useState), you are telling React that you want this component to remember something:
+[`useState`](/reference/react/useState)を呼び出すと、Reactにこのコンポーネントが何かを覚えておいてほしいと伝えます：
 
 ```js
 const [index, setIndex] = useState(0);
 ```
 
-In this case, you want React to remember `index`.
+この場合、Reactに`index`を覚えておいてほしいと伝えています。
 
 <Note>
 
-The convention is to name this pair like `const [something, setSomething]`. You could name it anything you like, but conventions make things easier to understand across projects.
+このペアを`const [something, setSomething]`のように命名するのが慣例です。何でも好きな名前を付けることができますが、慣例に従うとプロジェクト間で理解しやすくなります。
 
 </Note>
 
-The only argument to `useState` is the **initial value** of your state variable. In this example, the `index`'s initial value is set to `0` with `useState(0)`. 
+`useState`の唯一の引数は、state変数の**初期値**です。この例では、`index`の初期値は`useState(0)`で`0`に設定されています。
 
-Every time your component renders, `useState` gives you an array containing two values:
+コンポーネントがレンダリングされるたびに、`useState`は2つの値を含む配列を返します：
 
-1. The **state variable** (`index`) with the value you stored.
-2. The **state setter function** (`setIndex`) which can update the state variable and trigger React to render the component again.
+1. 保存した値を持つ**state変数**（`index`）。
+2. state変数を更新し、Reactにコンポーネントを再レンダリングさせる**state setter関数**（`setIndex`）。
 
-Here's how that happens in action:
+これが実際にどのように機能するかを示します：
 
 ```js
 const [index, setIndex] = useState(0);
 ```
 
-1. **Your component renders the first time.** Because you passed `0` to `useState` as the initial value for `index`, it will return `[0, setIndex]`. React remembers `0` is the latest state value.
-2. **You update the state.** When a user clicks the button, it calls `setIndex(index + 1)`. `index` is `0`, so it's `setIndex(1)`. This tells React to remember `index` is `1` now and triggers another render.
-3. **Your component's second render.** React still sees `useState(0)`, but because React *remembers* that you set `index` to `1`, it returns `[1, setIndex]` instead.
-4. And so on!
+1. **コンポーネントが最初にレンダリングされます。** `index`の初期値として`0`を`useState`に渡したため、`[0, setIndex]`が返されます。Reactは`0`が最新のstate値であることを覚えています。
+2. **stateを更新します。** ユーザーがボタンをクリックすると、`setIndex(index + 1)`が呼び出されます。`index`は`0`なので、`setIndex(1)`です。これにより、Reactは`index`が現在`1`であることを覚え、再度レンダリングをトリガーします。
+3. **コンポーネントの2回目のレンダリング。** Reactはまだ`useState(0)`を見ていますが、Reactは`index`を`1`に設定したことを覚えているため、代わりに`[1, setIndex]`を返します。
+4. そして続きます！
 
-## Giving a component multiple state variables {/*giving-a-component-multiple-state-variables*/}
+## コンポーネントに複数のstate変数を持たせる {/*giving-a-component-multiple-state-variables*/}
 
-You can have as many state variables of as many types as you like in one component. This component has two state variables, a number `index` and a boolean `showMore` that's toggled when you click "Show details":
+1つのコンポーネントに、任意の数のstate変数を持たせることができます。このコンポーネントには、数値の`index`と、クリックすると切り替わるブール値の`showMore`という2つのstate変数があります：
 
 <Sandpack>
 
@@ -520,19 +521,19 @@ button {
 
 </Sandpack>
 
-It is a good idea to have multiple state variables if their state is unrelated, like `index` and `showMore` in this example. But if you find that you often change two state variables together, it might be easier to combine them into one. For example, if you have a form with many fields, it's more convenient to have a single state variable that holds an object than state variable per field. Read [Choosing the State Structure](/learn/choosing-the-state-structure) for more tips.
+stateが無関係な場合は、複数のstate変数を持つことが良いアイデアです。この例では、`index`と`showMore`がそうです。しかし、2つのstate変数を一緒に変更することが多い場合は、それらを1つにまとめる方が簡単かもしれません。例えば、多くのフィールドを持つフォームがある場合、フィールドごとにstate変数を持つよりも、オブジェクトを保持する単一のstate変数を持つ方が便利です。詳細については、[Choosing the State Structure](/learn/choosing-the-state-structure)を参照してください。
 
 <DeepDive>
 
-#### How does React know which state to return? {/*how-does-react-know-which-state-to-return*/}
+#### Reactはどのstateを返すかをどうやって知るのか？ {/*how-does-react-know-which-state-to-return*/}
 
-You might have noticed that the `useState` call does not receive any information about *which* state variable it refers to. There is no "identifier" that is passed to `useState`, so how does it know which of the state variables to return? Does it rely on some magic like parsing your functions? The answer is no.
+`useState`の呼び出しが*どの*state変数を指しているかについての情報を受け取らないことに気づいたかもしれません。`useState`に渡される「識別子」はありません。それでは、どのstate変数を返すかをどうやって知るのでしょうか？関数を解析するような魔法に頼っているのでしょうか？答えはノーです。
 
-Instead, to enable their concise syntax, Hooks **rely on a stable call order on every render of the same component.** This works well in practice because if you follow the rule above ("only call Hooks at the top level"), Hooks will always be called in the same order. Additionally, a [linter plugin](https://www.npmjs.com/package/eslint-plugin-react-hooks) catches most mistakes.
+代わりに、フックの簡潔な構文を可能にするために、フックは**同じコンポーネントの各レンダリングで安定した呼び出し順序**に依存しています。これは、上記のルール（「フックはトップレベルでのみ呼び出す」）に従うと、フックは常に同じ順序で呼び出されるため、実際にはうまく機能します。さらに、[リンタープラグイン](https://www.npmjs.com/package/eslint-plugin-react-hooks)がほとんどのミスをキャッチします。
 
-Internally, React holds an array of state pairs for every component. It also maintains the current pair index, which is set to `0` before rendering. Each time you call `useState`, React gives you the next state pair and increments the index. You can read more about this mechanism in [React Hooks: Not Magic, Just Arrays.](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)
+内部的には、Reactは各コンポーネントのstateペアの配列を保持しています。また、レンダリング前に現在のペアインデックスを`0`に設定します。`useState`を呼び出すたびに、Reactは次のstateペアを提供し、インデックスをインクリメントします。このメカニズムについては、[React Hooks: Not Magic, Just Arrays.](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)で詳しく読むことができます。
 
-This example **doesn't use React** but it gives you an idea of how `useState` works internally:
+この例は**Reactを使用していません**が、`useState`が内部でどのように機能するかのアイデアを提供します：
 
 <Sandpack>
 
@@ -540,37 +541,37 @@ This example **doesn't use React** but it gives you an idea of how `useState` wo
 let componentHooks = [];
 let currentHookIndex = 0;
 
-// How useState works inside React (simplified).
+// React内部でのuseStateの動作（簡略化）。
 function useState(initialState) {
   let pair = componentHooks[currentHookIndex];
   if (pair) {
-    // This is not the first render,
-    // so the state pair already exists.
-    // Return it and prepare for next Hook call.
+    // これは最初のレンダリングではないので、
+    // stateペアは既に存在します。
+    // それを返し、次のフック呼び出しの準備をします。
     currentHookIndex++;
     return pair;
   }
 
-  // This is the first time we're rendering,
-  // so create a state pair and store it.
+  // これは最初のレンダリングなので、
+  // stateペアを作成して保存します。
   pair = [initialState, setState];
 
   function setState(nextState) {
-    // When the user requests a state change,
-    // put the new value into the pair.
+    // ユーザーがstate変更を要求すると、
+    // 新しい値をペアに入れます。
     pair[0] = nextState;
     updateDOM();
   }
 
-  // Store the pair for future renders
-  // and prepare for the next Hook call.
+  // 将来のレンダリングのためにペアを保存し、
+  // 次のフック呼び出しの準備をします。
   componentHooks[currentHookIndex] = pair;
   currentHookIndex++;
   return pair;
 }
 
 function Gallery() {
-  // Each useState() call will get the next pair.
+  // 各useState()呼び出しは次のペアを取得します。
   const [index, setIndex] = useState(0);
   const [showMore, setShowMore] = useState(false);
 
@@ -583,8 +584,8 @@ function Gallery() {
   }
 
   let sculpture = sculptureList[index];
-  // This example doesn't use React, so
-  // return an output object instead of JSX.
+  // この例はReactを使用していないので、
+  // JSXの代わりに出力オブジェクトを返します。
   return {
     onNextClick: handleNextClick,
     onMoreClick: handleMoreClick,
@@ -598,13 +599,13 @@ function Gallery() {
 }
 
 function updateDOM() {
-  // Reset the current Hook index
-  // before rendering the component.
+  // コンポーネントをレンダリングする前に
+  // 現在のフックインデックスをリセットします。
   currentHookIndex = 0;
   let output = Gallery();
 
-  // Update the DOM to match the output.
-  // This is the part React does for you.
+  // 出力に一致するようにDOMを更新します。
+  // これはReactがあなたのために行う部分です。
   nextButton.onclick = output.onNextClick;
   header.textContent = output.header;
   moreButton.onclick = output.onMoreClick;
@@ -641,7 +642,8 @@ let sculptureList = [{
   artist: 'John Woodrow Wilson',
   description: 'Wilson was known for his preoccupation with equality, social justice, as well as the essential and spiritual qualities of humankind. This massive (7ft. or 2,13m) bronze represents what he described as "a symbolic Black presence infused with a sense of universal humanity."',
   url: 'https://i.imgur.com/aTtVpES.jpg',
-  alt: 'The sculpture depicting a human head seems ever-present and solemn. It radiates calm and serenity.'
+  alt: 'The sculpture depicting a human head seems ever-present
+ and solemn. It radiates calm and serenity.'
 }, {
   name: 'Moai',
   artist: 'Unknown Artist',
@@ -698,7 +700,7 @@ let sculptureList = [{
   alt: 'A group of bronze hippo sculptures emerging from the sett sidewalk as if they were swimming.'
 }];
 
-// Make UI match the initial state.
+// 初期状態に一致するようにUIを更新します。
 updateDOM();
 ```
 
@@ -724,15 +726,15 @@ button { display: block; margin-bottom: 10px; }
 
 </Sandpack>
 
-You don't have to understand it to use React, but you might find this a helpful mental model.
+Reactを使用するためにこれを理解する必要はありませんが、これは役立つメンタルモデルかもしれません。
 
 </DeepDive>
 
-## State is isolated and private {/*state-is-isolated-and-private*/}
+## stateは分離されており、プライベートです {/*state-is-isolated-and-private*/}
 
-State is local to a component instance on the screen. In other words, **if you render the same component twice, each copy will have completely isolated state!** Changing one of them will not affect the other.
+stateは画面上のコンポーネントインスタンスにローカルです。つまり、**同じコンポーネントを2回レンダリングすると、各コピーは完全に分離されたstateを持ちます！** 1つを変更しても他のものには影響しません。
 
-In this example, the `Gallery` component from earlier is rendered twice with no changes to its logic. Try clicking the buttons inside each of the galleries. Notice that their state is independent:
+この例では、以前の`Gallery`コンポーネントがロジックに変更を加えずに2回レンダリングされています。各ギャラリー内のボタンをクリックしてみてください。それぞれのstateが独立していることに気づくでしょう：
 
 <Sandpack>
 
@@ -891,33 +893,31 @@ button {
 
 </Sandpack>
 
-This is what makes state different from regular variables that you might declare at the top of your module. State is not tied to a particular function call or a place in the code, but it's "local" to the specific place on the screen. You rendered two `<Gallery />` components, so their state is stored separately.
+これが、モジュールのトップで宣言された通常の変数とstateの違いです。stateは特定の関数呼び出しやコードの場所に結びついているのではなく、画面上の特定の場所に「ローカル」です。2つの`<Gallery />`コンポーネントをレンダリングしたので、それぞれのstateは別々に保存されます。
 
-Also notice how the `Page` component doesn't "know" anything about the `Gallery` state or even whether it has any. Unlike props, **state is fully private to the component declaring it.** The parent component can't change it. This lets you add state to any component or remove it without impacting the rest of the components.
+また、`Page`コンポーネントが`Gallery`のstateについて何も「知らない」ことにも注意してください。stateは宣言したコンポーネントに完全にプライベートです。親コンポーネントはそれを変更できません。これにより、他のコンポーネントに影響を与えることなく、任意のコンポーネントにstateを追加したり削除したりすることができます。
 
-What if you wanted both galleries to keep their states in sync? The right way to do it in React is to *remove* state from child components and add it to their closest shared parent. The next few pages will focus on organizing state of a single component, but we will return to this topic in [Sharing State Between Components.](/learn/sharing-state-between-components)
+両方のギャラリーのstateを同期させたい場合はどうすればよいでしょうか？Reactでそれを行う正しい方法は、子コンポーネントからstateを削除し、最も近い共有親に追加することです。次の数ページでは、単一のコンポーネントのstateの整理に焦点を当てますが、[コンポーネント間でのstateの共有](/learn/sharing-state-between-components)についても後で取り上げます。
 
 <Recap>
 
-* Use a state variable when a component needs to "remember" some information between renders.
-* State variables are declared by calling the `useState` Hook.
-* Hooks are special functions that start with `use`. They let you "hook into" React features like state.
-* Hooks might remind you of imports: they need to be called unconditionally. Calling Hooks, including `useState`, is only valid at the top level of a component or another Hook.
-* The `useState` Hook returns a pair of values: the current state and the function to update it.
-* You can have more than one state variable. Internally, React matches them up by their order.
-* State is private to the component. If you render it in two places, each copy gets its own state.
+* コンポーネントがレンダリング間で情報を「記憶」する必要がある場合、state変数を使用します。
+* state変数は`useState`フックを呼び出すことで宣言されます。
+* フックは`use`で始まる特別な関数です。これにより、stateのようなReactの機能に「フック」することができます。
+* フックはインポートに似ているかもしれません：無条件に呼び出す必要があります。フックの呼び出し、特に`useState`の呼び出しは、コンポーネントまたは他のフックのトップレベルでのみ有効です。
+* `useState`フックは、現在のstateとそれを更新する関数のペアを返します。
+* 複数のstate変数を持つことができます。内部的には、Reactはそれらを順序で一致させます。
+* stateはコンポーネントにプライベートです。2つの場所でレンダリングすると、それぞれのコピーが独自のstateを取得します。
 
 </Recap>
 
-
-
 <Challenges>
 
-#### Complete the gallery {/*complete-the-gallery*/}
+#### ギャラリーを完成させる {/*complete-the-gallery*/}
 
-When you press "Next" on the last sculpture, the code crashes. Fix the logic to prevent the crash. You may do this by adding extra logic to event handler or by disabling the button when the action is not possible.
+最後の彫刻で「Next」を押すと、コードがクラッシュします。クラッシュを防ぐためにロジックを修正してください。イベントハンドラーに追加のロジックを追加するか、アクションが不可能な場合にボタンを無効にすることでこれを行うことができます。
 
-After fixing the crash, add a "Previous" button that shows the previous sculpture. It shouldn't crash on the first sculpture.
+クラッシュを修正した後、前の彫刻を表示する「Previous」ボタンを追加してください。最初の彫刻でクラッシュしないようにしてください。
 
 <Sandpack>
 
@@ -972,6 +972,7 @@ export const sculptureList = [{
   alt: 'A bronze statue of two crossed hands delicately holding a human brain in their fingertips.'  
 }, {
   name: 'Floralis Genérica',
+
   artist: 'Eduardo Catalano',
   description: 'This enormous (75 ft. or 23m) silver flower is located in Buenos Aires. It is designed to move, closing its petals in the evening or when strong winds blow and opening them in the morning.',
   url: 'https://i.imgur.com/ZF6s192m.jpg',
@@ -1059,7 +1060,7 @@ img { width: 120px; height: 120px; }
 
 <Solution>
 
-This adds a guarding condition inside both event handlers and disables the buttons when needed:
+これは、両方のイベントハンドラー内にガード条件を追加し、必要に応じてボタンを無効にすることで実現します：
 
 <Sandpack>
 
@@ -1219,13 +1220,13 @@ img { width: 120px; height: 120px; }
 
 </Sandpack>
 
-Notice how `hasPrev` and `hasNext` are used *both* for the returned JSX and inside the event handlers! This handy pattern works because event handler functions ["close over"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures) any variables declared while rendering.
+`hasPrev`と`hasNext`が*返されたJSXとイベントハンドラー内の両方*でどのように使用されているかに注目してください！この便利なパターンは、イベントハンドラー関数がレンダリング中に宣言された変数を「閉じ込める」ために機能します。
 
 </Solution>
 
-#### Fix stuck form inputs {/*fix-stuck-form-inputs*/}
+#### 固定されたフォーム入力を修正する {/*fix-stuck-form-inputs*/}
 
-When you type into the input fields, nothing appears. It's like the input values are "stuck" with empty strings. The `value` of the first `<input>` is set to always match the `firstName` variable, and the `value` for the second `<input>` is set to always match the `lastName` variable. This is correct. Both inputs have `onChange` event handlers, which try to update the variables based on the latest user input (`e.target.value`). However, the variables don't seem to "remember" their values between re-renders. Fix this by using state variables instead.
+入力フィールドに入力すると、何も表示されません。入力値が空の文字列で「固定」されているようです。最初の`<input>`の`value`は常に`firstName`変数に一致するように設定されており、2番目の`<input>`の`value`は常に`lastName`変数に一致するように設定されています。これは正しいです。両方の入力には`onChange`イベントハンドラーがあり、最新のユーザー入力（`e.target.value`）に基づいて変数を更新しようとしています。しかし、変数は再レンダリング間でその値を「記憶」していないようです。これをstate変数を使用して修正してください。
 
 <Sandpack>
 
@@ -1274,7 +1275,7 @@ h1 { margin-top: 10px; }
 
 <Solution>
 
-First, import `useState` from React. Then replace `firstName` and `lastName` with state variables declared by calling `useState`. Finally, replace every `firstName = ...` assignment with `setFirstName(...)`, and do the same for `lastName`. Don't forget to update `handleReset` too so that the reset button works.
+まず、Reactから`useState`をインポートします。次に、`firstName`と`lastName`を`useState`を呼び出して宣言されたstate変数に置き換えます。最後に、すべての`firstName = ...`の代入を`setFirstName(...)`に置き換え、`lastName`についても同様にします。`handleReset`も更新して、リセットボタンが機能するようにします。
 
 <Sandpack>
 
@@ -1325,13 +1326,13 @@ h1 { margin-top: 10px; }
 
 </Solution>
 
-#### Fix a crash {/*fix-a-crash*/}
+#### クラッシュを修正する {/*fix-a-crash*/}
 
-Here is a small form that is supposed to let the user leave some feedback. When the feedback is submitted, it's supposed to display a thank-you message. However, it crashes with an error message saying "Rendered fewer hooks than expected". Can you spot the mistake and fix it?
+ここに、ユーザーがフィードバックを残すための小さなフォームがあります。フィードバックが送信されると、感謝のメッセージが表示されるはずです。しかし、「予想より少ないフックがレンダリングされました」というエラーメッセージとともにクラッシュします。間違いを見つけて修正できますか？
 
 <Hint>
 
-Are there any limitations on _where_ Hooks may be called? Does this component break any rules? Check if there are any comments disabling the linter checks--this is where the bugs often hide!
+フックを呼び出す場所に制限はありますか？このコンポーネントは何かルールを破っていますか？リンターのチェックを無効にするコメントがあるか確認してください—これはバグがよく隠れている場所です！
 
 </Hint>
 
@@ -1344,7 +1345,7 @@ export default function FeedbackForm() {
   const [isSent, setIsSent] = useState(false);
   if (isSent) {
     return <h1>Thank you!</h1>;
-  } else {
+   } else {
     // eslint-disable-next-line
     const [message, setMessage] = useState('');
     return (
@@ -1370,9 +1371,9 @@ export default function FeedbackForm() {
 
 <Solution>
 
-Hooks can only be called at the top level of the component function. Here, the first `isSent` definition follows this rule, but the `message` definition is nested in a condition.
+フックはコンポーネント関数のトップレベルでのみ呼び出すことができます。ここでは、最初の`isSent`の定義はこのルールに従っていますが、`message`の定義は条件内にネストされています。
 
-Move it out of the condition to fix the issue:
+これを条件の外に移動して問題を修正します：
 
 <Sandpack>
 
@@ -1407,9 +1408,9 @@ export default function FeedbackForm() {
 
 </Sandpack>
 
-Remember, Hooks must be called unconditionally and always in the same order!
+フックは無条件に呼び出され、常に同じ順序で呼び出される必要があります！
 
-You could also remove the unnecessary `else` branch to reduce the nesting. However, it's still important that all calls to Hooks happen *before* the first `return`.
+不要な`else`ブランチを削除してネストを減らすこともできます。ただし、すべてのフックの呼び出しが最初の`return`の*前*に行われることが重要です。
 
 <Sandpack>
 
@@ -1444,19 +1445,19 @@ export default function FeedbackForm() {
 
 </Sandpack>
 
-Try moving the second `useState` call after the `if` condition and notice how this breaks it again.
+フックの2番目の`useState`呼び出しを`if`条件の後に移動して、再びこれがどのように壊れるかを確認してください。
 
-If your linter is [configured for React](/learn/editor-setup#linting), you should see a lint error when you make a mistake like this. If you don't see an error when you try the faulty code locally, you need to set up linting for your project. 
+リンターが[React用に設定されている](/learn/editor-setup#linting)場合、間違いを犯したときにリンターエラーが表示されるはずです。ローカルで誤ったコードを試してもエラーが表示されない場合は、プロジェクトのリンティングを設定する必要があります。
 
 </Solution>
 
-#### Remove unnecessary state {/*remove-unnecessary-state*/}
+#### 不要なstateを削除する {/*remove-unnecessary-state*/}
 
-When the button is clicked, this example should ask for the user's name and then display an alert greeting them. You tried to use state to keep the name, but for some reason it always shows "Hello, !".
+ボタンがクリックされると、この例はユーザーの名前を尋ね、その後に挨拶のアラートを表示するはずです。stateを使用して名前を保持しようとしましたが、なぜか常に「Hello, !」と表示されます。
 
-To fix this code, remove the unnecessary state variable. (We will discuss about [why this didn't work](/learn/state-as-a-snapshot) later.)
+このコードを修正するために、不要なstate変数を削除してください。（後で[なぜこれが機能しなかったのか](/learn/state-as-a-snapshot)について説明します。）
 
-Can you explain why this state variable was unnecessary?
+このstate変数が不要だった理由を説明できますか？
 
 <Sandpack>
 
@@ -1483,7 +1484,7 @@ export default function FeedbackForm() {
 
 <Solution>
 
-Here is a fixed version that uses a regular `name` variable declared in the function that needs it:
+ここに、必要な関数内で宣言された通常の`name`変数を使用する修正バージョンがあります：
 
 <Sandpack>
 
@@ -1504,7 +1505,7 @@ export default function FeedbackForm() {
 
 </Sandpack>
 
-A state variable is only necessary to keep information between re-renders of a component. Within a single event handler, a regular variable will do fine. Don't introduce state variables when a regular variable works well.
+state変数は、コンポーネントの再レンダリング間で情報を保持するためにのみ必要です。単一のイベントハンドラー内では、通常の変数で十分です。通常の変数でうまくいく場合は、state変数を導入しないでください。
 
 </Solution>
 

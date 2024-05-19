@@ -4,8 +4,7 @@ title: createPortal
 
 <Intro>
 
-`createPortal` lets you render some children into a different part of the DOM.
-
+`createPortal`を使用すると、子要素をDOMの別の部分にレンダリングできます。
 
 ```js
 <div>
@@ -20,11 +19,11 @@ title: createPortal
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `createPortal(children, domNode, key?)` {/*createportal*/}
 
-To create a portal, call `createPortal`, passing some JSX, and the DOM node where it should be rendered:
+ポータルを作成するには、いくつかのJSXと、それがレンダリングされるべきDOMノードを渡して`createPortal`を呼び出します。
 
 ```js
 import { createPortal } from 'react-dom';
@@ -32,53 +31,53 @@ import { createPortal } from 'react-dom';
 // ...
 
 <div>
-  <p>This child is placed in the parent div.</p>
+  <p>この子要素は親のdivに配置されます。</p>
   {createPortal(
-    <p>This child is placed in the document body.</p>,
+    <p>この子要素はドキュメントのbodyに配置されます。</p>,
     document.body
   )}
 </div>
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-A portal only changes the physical placement of the DOM node. In every other way, the JSX you render into a portal acts as a child node of the React component that renders it. For example, the child can access the context provided by the parent tree, and events bubble up from children to parents according to the React tree.
+ポータルはDOMノードの物理的な配置のみを変更します。それ以外の点では、ポータルにレンダリングされたJSXは、それをレンダリングするReactコンポーネントの子ノードとして動作します。例えば、子要素は親ツリーによって提供されるコンテキストにアクセスでき、イベントはReactツリーに従って子から親へとバブルアップします。
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `children`: Anything that can be rendered with React, such as a piece of JSX (e.g. `<div />` or `<SomeComponent />`), a [Fragment](/reference/react/Fragment) (`<>...</>`), a string or a number, or an array of these.
+* `children`: Reactでレンダリングできるものなら何でも、例えば一片のJSX（例：`<div />`や`<SomeComponent />`）、[Fragment](/reference/react/Fragment)（`<>...</>`）、文字列や数値、またはそれらの配列。
 
-* `domNode`: Some DOM node, such as those returned by `document.getElementById()`. The node must already exist. Passing a different DOM node during an update will cause the portal content to be recreated.
+* `domNode`: `document.getElementById()`などで返されるDOMノード。ノードは既に存在している必要があります。更新時に異なるDOMノードを渡すと、ポータルの内容が再作成されます。
 
-* **optional** `key`: A unique string or number to be used as the portal's [key.](/learn/rendering-lists/#keeping-list-items-in-order-with-key)
+* **オプション** `key`: ポータルの[キー](/learn/rendering-lists/#keeping-list-items-in-order-with-key)として使用される一意の文字列または数値。
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`createPortal` returns a React node that can be included into JSX or returned from a React component. If React encounters it in the render output, it will place the provided `children` inside the provided `domNode`.
+`createPortal`は、JSXに含めたり、Reactコンポーネントから返したりできるReactノードを返します。Reactがレンダリング出力でそれに遭遇すると、提供された`children`を提供された`domNode`内に配置します。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* Events from portals propagate according to the React tree rather than the DOM tree. For example, if you click inside a portal, and the portal is wrapped in `<div onClick>`, that `onClick` handler will fire. If this causes issues, either stop the event propagation from inside the portal, or move the portal itself up in the React tree.
+* ポータルからのイベントはDOMツリーではなくReactツリーに従って伝播します。例えば、ポータル内をクリックし、ポータルが`<div onClick>`でラップされている場合、その`onClick`ハンドラが発火します。これが問題を引き起こす場合、ポータル内からイベントの伝播を停止するか、ポータル自体をReactツリーの上位に移動します。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Rendering to a different part of the DOM {/*rendering-to-a-different-part-of-the-dom*/}
+### DOMの別の部分にレンダリングする {/*rendering-to-a-different-part-of-the-dom*/}
 
-*Portals* let your components render some of their children into a different place in the DOM. This lets a part of your component "escape" from whatever containers it may be in. For example, a component can display a modal dialog or a tooltip that appears above and outside of the rest of the page.
+*ポータル*を使用すると、コンポーネントの一部の子要素をDOMの別の場所にレンダリングできます。これにより、コンポーネントの一部がどのコンテナに入っていても「脱出」することができます。例えば、コンポーネントはモーダルダイアログやツールチップを表示し、ページの残りの部分の上部および外部に表示することができます。
 
-To create a portal, render the result of `createPortal` with <CodeStep step={1}>some JSX</CodeStep> and the <CodeStep step={2}>DOM node where it should go</CodeStep>:
+ポータルを作成するには、<CodeStep step={1}>いくつかのJSX</CodeStep>と<CodeStep step={2}>それが配置されるべきDOMノード</CodeStep>を使用して`createPortal`の結果をレンダリングします。
 
-```js [[1, 8, "<p>This child is placed in the document body.</p>"], [2, 9, "document.body"]]
+```js [[1, 8, "<p>この子要素はドキュメントのbodyに配置されます。</p>"], [2, 9, "document.body"]]
 import { createPortal } from 'react-dom';
 
 function MyComponent() {
   return (
     <div style={{ border: '2px solid black' }}>
-      <p>This child is placed in the parent div.</p>
+      <p>この子要素は親のdivに配置されます。</p>
       {createPortal(
-        <p>This child is placed in the document body.</p>,
+        <p>この子要素はドキュメントのbodyに配置されます。</p>,
         document.body
       )}
     </div>
@@ -86,9 +85,9 @@ function MyComponent() {
 }
 ```
 
-React will put the DOM nodes for <CodeStep step={1}>the JSX you passed</CodeStep> inside of the <CodeStep step={2}>DOM node you provided</CodeStep>.
+Reactは<CodeStep step={1}>渡されたJSX</CodeStep>のDOMノードを<CodeStep step={2}>提供されたDOMノード</CodeStep>内に配置します。
 
-Without a portal, the second `<p>` would be placed inside the parent `<div>`, but the portal "teleported" it into the [`document.body`:](https://developer.mozilla.org/en-US/docs/Web/API/Document/body)
+ポータルがなければ、2番目の`<p>`は親の`<div>`内に配置されますが、ポータルはそれを[`document.body`](https://developer.mozilla.org/en-US/docs/Web/API/Document/body)に「テレポート」しました。
 
 <Sandpack>
 
@@ -98,9 +97,9 @@ import { createPortal } from 'react-dom';
 export default function MyComponent() {
   return (
     <div style={{ border: '2px solid black' }}>
-      <p>This child is placed in the parent div.</p>
+      <p>この子要素は親のdivに配置されます。</p>
       {createPortal(
-        <p>This child is placed in the document body.</p>,
+        <p>この子要素はドキュメントのbodyに配置されます。</p>,
         document.body
       )}
     </div>
@@ -110,30 +109,30 @@ export default function MyComponent() {
 
 </Sandpack>
 
-Notice how the second paragraph visually appears outside the parent `<div>` with the border. If you inspect the DOM structure with developer tools, you'll see that the second `<p>` got placed directly into the `<body>`:
+2番目の段落が境界線のある親の`<div>`の外に視覚的に表示されることに注意してください。開発者ツールでDOM構造を検査すると、2番目の`<p>`が直接`<body>`に配置されたことがわかります。
 
 ```html {4-6,9}
 <body>
   <div id="root">
     ...
       <div style="border: 2px solid black">
-        <p>This child is placed inside the parent div.</p>
+        <p>この子要素は親のdivに配置されます。</p>
       </div>
     ...
   </div>
-  <p>This child is placed in the document body.</p>
+  <p>この子要素はドキュメントのbodyに配置されます。</p>
 </body>
 ```
 
-A portal only changes the physical placement of the DOM node. In every other way, the JSX you render into a portal acts as a child node of the React component that renders it. For example, the child can access the context provided by the parent tree, and events still bubble up from children to parents according to the React tree.
+ポータルはDOMノードの物理的な配置のみを変更します。それ以外の点では、ポータルにレンダリングされたJSXは、それをレンダリングするReactコンポーネントの子ノードとして動作します。例えば、子要素は親ツリーによって提供されるコンテキストにアクセスでき、イベントはReactツリーに従って子から親へとバブルアップします。
 
 ---
 
-### Rendering a modal dialog with a portal {/*rendering-a-modal-dialog-with-a-portal*/}
+### ポータルを使用してモーダルダイアログをレンダリングする {/*rendering-a-modal-dialog-with-a-portal*/}
 
-You can use a portal to create a modal dialog that floats above the rest of the page, even if the component that summons the dialog is inside a container with `overflow: hidden` or other styles that interfere with the dialog.
+ポータルを使用して、ページの残りの部分の上に浮かぶモーダルダイアログを作成できます。たとえダイアログを呼び出すコンポーネントが`overflow: hidden`やその他のスタイルを持つコンテナ内にあっても、影響を受けません。
 
-In this example, the two containers have styles that disrupt the modal dialog, but the one rendered into a portal is unaffected because, in the DOM, the modal is not contained within the parent JSX elements.
+この例では、2つのコンテナにモーダルダイアログを妨げるスタイルがありますが、ポータルにレンダリングされたものは影響を受けません。なぜなら、DOM内でモーダルが親のJSX要素内に含まれていないからです。
 
 <Sandpack>
 
@@ -164,7 +163,7 @@ export default function NoPortalExample() {
   return (
     <>
       <button onClick={() => setShowModal(true)}>
-        Show modal without a portal
+        ポータルなしでモーダルを表示
       </button>
       {showModal && (
         <ModalContent onClose={() => setShowModal(false)} />
@@ -184,7 +183,7 @@ export default function PortalExample() {
   return (
     <>
       <button onClick={() => setShowModal(true)}>
-        Show modal using a portal
+        ポータルを使用してモーダルを表示
       </button>
       {showModal && createPortal(
         <ModalContent onClose={() => setShowModal(false)} />,
@@ -199,13 +198,12 @@ export default function PortalExample() {
 export default function ModalContent({ onClose }) {
   return (
     <div className="modal">
-      <div>I'm a modal dialog</div>
-      <button onClick={onClose}>Close</button>
+      <div>私はモーダルダイアログです</div>
+      <button onClick={onClose}>閉じる</button>
     </div>
   );
 }
 ```
-
 
 ```css src/styles.css
 .clipping-container {
@@ -238,17 +236,17 @@ export default function ModalContent({ onClose }) {
 
 <Pitfall>
 
-It's important to make sure that your app is accessible when using portals. For instance, you may need to manage keyboard focus so that the user can move the focus in and out of the portal in a natural way.
+ポータルを使用する際には、アプリがアクセシブルであることを確認することが重要です。例えば、ユーザーがポータル内外に自然にフォーカスを移動できるようにキーボードフォーカスを管理する必要があるかもしれません。
 
-Follow the [WAI-ARIA Modal Authoring Practices](https://www.w3.org/WAI/ARIA/apg/#dialog_modal) when creating modals. If you use a community package, ensure that it is accessible and follows these guidelines.
+モーダルを作成する際には、[WAI-ARIAモーダル作成プラクティス](https://www.w3.org/WAI/ARIA/apg/#dialog_modal)に従ってください。コミュニティパッケージを使用する場合、それがアクセシブルであり、これらのガイドラインに従っていることを確認してください。
 
 </Pitfall>
 
 ---
 
-### Rendering React components into non-React server markup {/*rendering-react-components-into-non-react-server-markup*/}
+### 非ReactサーバーマークアップにReactコンポーネントをレンダリングする {/*rendering-react-components-into-non-react-server-markup*/}
 
-Portals can be useful if your React root is only part of a static or server-rendered page that isn't built with React. For example, if your page is built with a server framework like Rails, you can create areas of interactivity within static areas such as sidebars. Compared with having [multiple separate React roots,](/reference/react-dom/client/createRoot#rendering-a-page-partially-built-with-react) portals let you treat the app as a single React tree with shared state even though its parts render to different parts of the DOM.
+ポータルは、ReactルートがReactで構築されていない静的またはサーバーレンダリングされたページの一部である場合に便利です。例えば、ページがRailsのようなサーバーフレームワークで構築されている場合、サイドバーなどの静的エリア内にインタラクティブなエリアを作成できます。複数の[別々のReactルート](/reference/react-dom/client/createRoot#rendering-a-page-partially-built-with-react)を持つ場合と比較して、ポータルを使用すると、アプリを単一のReactツリーとして扱い、状態を共有しながらも異なる部分にレンダリングできます。
 
 <Sandpack>
 
@@ -260,7 +258,7 @@ Portals can be useful if your React root is only part of a static or server-rend
     <h1>Welcome to my hybrid app</h1>
     <div class="parent">
       <div class="sidebar">
-        This is server non-React markup
+        これはサーバーの非Reactマークアップです
         <div id="sidebar-content"></div>
       </div>
       <div id="root"></div>
@@ -301,11 +299,11 @@ export default function App() {
 }
 
 function MainContent() {
-  return <p>This part is rendered by React</p>;
+  return <p>この部分はReactによってレンダリングされます</p>;
 }
 
 function SidebarContent() {
-  return <p>This part is also rendered by React!</p>;
+  return <p>この部分もReactによってレンダリングされます！</p>;
 }
 ```
 
@@ -342,15 +340,15 @@ p {
 
 ---
 
-### Rendering React components into non-React DOM nodes {/*rendering-react-components-into-non-react-dom-nodes*/}
+### 非React DOMノードにReactコンポーネントをレンダリングする {/*rendering-react-components-into-non-react-dom-nodes*/}
 
-You can also use a portal to manage the content of a DOM node that's managed outside of React. For example, suppose you're integrating with a non-React map widget and you want to render React content inside a popup. To do this, declare a `popupContainer` state variable to store the DOM node you're going to render into:
+ポータルを使用して、Reactの外部で管理されているDOMノードの内容を管理することもできます。例えば、非Reactの地図ウィジェットと統合し、ポップアップ内にReactコンテンツをレンダリングしたい場合です。これを行うには、レンダリングするDOMノードを格納するための`popupContainer`状態変数を宣言します。
 
 ```js
 const [popupContainer, setPopupContainer] = useState(null);
 ```
 
-When you create the third-party widget, store the DOM node returned by the widget so you can render into it:
+サードパーティのウィジェットを作成する際に、ウィジェットによって返されるDOMノードを格納し、それにレンダリングできるようにします。
 
 ```js {5-6}
 useEffect(() => {
@@ -363,20 +361,20 @@ useEffect(() => {
 }, []);
 ```
 
-This lets you use `createPortal` to render React content into `popupContainer` once it becomes available:
+これにより、`popupContainer`が利用可能になったら、`createPortal`を使用してReactコンテンツをレンダリングできます。
 
 ```js {3-6}
 return (
   <div style={{ width: 250, height: 250 }} ref={containerRef}>
     {popupContainer !== null && createPortal(
-      <p>Hello from React!</p>,
+      <p>Reactからこんにちは！</p>,
       popupContainer
     )}
   </div>
 );
 ```
 
-Here is a complete example you can play with:
+ここに、試してみることができる完全な例があります。
 
 <Sandpack>
 
@@ -420,7 +418,7 @@ export default function Map() {
   return (
     <div style={{ width: 250, height: 250 }} ref={containerRef}>
       {popupContainer !== null && createPortal(
-        <p>Hello from React!</p>,
+        <p>Reactからこんにちは！</p>,
         popupContainer
       )}
     </div>

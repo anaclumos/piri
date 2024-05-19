@@ -4,7 +4,7 @@ title: useDebugValue
 
 <Intro>
 
-`useDebugValue` is a React Hook that lets you add a label to a custom Hook in [React DevTools.](/learn/react-developer-tools)
+`useDebugValue` は、[React DevTools](/learn/react-developer-tools) でカスタムフックにラベルを追加できるReact Hookです。
 
 ```js
 useDebugValue(value, format?)
@@ -16,11 +16,11 @@ useDebugValue(value, format?)
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `useDebugValue(value, format?)` {/*usedebugvalue*/}
 
-Call `useDebugValue` at the top level of your [custom Hook](/learn/reusing-logic-with-custom-hooks) to display a readable debug value:
+読みやすいデバッグ値を表示するために、[カスタムフック](/learn/reusing-logic-with-custom-hooks) のトップレベルで `useDebugValue` を呼び出します:
 
 ```js
 import { useDebugValue } from 'react';
@@ -32,22 +32,22 @@ function useOnlineStatus() {
 }
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
-#### Parameters {/*parameters*/}
+#### パラメータ {/*parameters*/}
 
-* `value`: The value you want to display in React DevTools. It can have any type.
-* **optional** `format`: A formatting function. When the component is inspected, React DevTools will call the formatting function with the `value` as the argument, and then display the returned formatted value (which may have any type). If you don't specify the formatting function, the original `value` itself will be displayed.
+* `value`: React DevTools に表示したい値。任意の型を持つことができます。
+* **オプション** `format`: フォーマット関数。コンポーネントが検査されると、React DevTools は `value` を引数としてフォーマット関数を呼び出し、返されたフォーマット済みの値（任意の型を持つことができます）を表示します。フォーマット関数を指定しない場合、元の `value` 自体が表示されます。
 
-#### Returns {/*returns*/}
+#### 戻り値 {/*returns*/}
 
-`useDebugValue` does not return anything.
+`useDebugValue` は何も返しません。
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Adding a label to a custom Hook {/*adding-a-label-to-a-custom-hook*/}
+### カスタムフックにラベルを追加する {/*adding-a-label-to-a-custom-hook*/}
 
-Call `useDebugValue` at the top level of your [custom Hook](/learn/reusing-logic-with-custom-hooks) to display a readable <CodeStep step={1}>debug value</CodeStep> for [React DevTools.](/learn/react-developer-tools)
+読みやすい<CodeStep step={1}>デバッグ値</CodeStep>を表示するために、[カスタムフック](/learn/reusing-logic-with-custom-hooks) のトップレベルで `useDebugValue` を呼び出します。
 
 ```js [[1, 5, "isOnline ? 'Online' : 'Offline'"]]
 import { useDebugValue } from 'react';
@@ -59,11 +59,11 @@ function useOnlineStatus() {
 }
 ```
 
-This gives components calling `useOnlineStatus` a label like `OnlineStatus: "Online"` when you inspect them:
+これにより、`useOnlineStatus` を呼び出すコンポーネントは、検査時に `OnlineStatus: "Online"` のようなラベルを持つことになります。
 
-![A screenshot of React DevTools showing the debug value](/images/docs/react-devtools-usedebugvalue.png)
+![React DevTools のスクリーンショット、デバッグ値を表示](/images/docs/react-devtools-usedebugvalue.png)
 
-Without the `useDebugValue` call, only the underlying data (in this example, `true`) would be displayed.
+`useDebugValue` 呼び出しがない場合、基礎データ（この例では `true`）のみが表示されます。
 
 <Sandpack>
 
@@ -103,20 +103,20 @@ function subscribe(callback) {
 
 <Note>
 
-Don't add debug values to every custom Hook. It's most valuable for custom Hooks that are part of shared libraries and that have a complex internal data structure that's difficult to inspect.
+すべてのカスタムフックにデバッグ値を追加しないでください。これは、共有ライブラリの一部であり、内部データ構造が複雑で検査が難しいカスタムフックにとって最も価値があります。
 
 </Note>
 
 ---
 
-### Deferring formatting of a debug value {/*deferring-formatting-of-a-debug-value*/}
+### デバッグ値のフォーマットを遅延させる {/*deferring-formatting-of-a-debug-value*/}
 
-You can also pass a formatting function as the second argument to `useDebugValue`:
+`useDebugValue` の第二引数としてフォーマット関数を渡すこともできます:
 
 ```js [[1, 1, "date", 18], [2, 1, "date.toDateString()"]]
 useDebugValue(date, date => date.toDateString());
 ```
 
-Your formatting function will receive the <CodeStep step={1}>debug value</CodeStep> as a parameter and should return a <CodeStep step={2}>formatted display value</CodeStep>. When your component is inspected, React DevTools will call this function and display its result.
+フォーマット関数は<CodeStep step={1}>デバッグ値</CodeStep>をパラメータとして受け取り、<CodeStep step={2}>フォーマット済みの表示値</CodeStep>を返す必要があります。コンポーネントが検査されると、React DevTools はこの関数を呼び出し、その結果を表示します。
 
-This lets you avoid running potentially expensive formatting logic unless the component is actually inspected. For example, if `date` is a Date value, this avoids calling `toDateString()` on it for every render.
+これにより、コンポーネントが実際に検査されるまで、潜在的に高コストなフォーマットロジックの実行を避けることができます。例えば、`date` が Date 値である場合、これにより毎回のレンダリングで `toDateString()` を呼び出すことを避けることができます。

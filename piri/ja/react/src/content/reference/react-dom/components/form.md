@@ -1,18 +1,18 @@
 ---
-title: "<form>"
+title: <form>
 canary: true
 ---
 
 <Canary>
 
-React's extensions to `<form>` are currently only available in React's canary and experimental channels. In stable releases of React, `<form>` works only as a [built-in browser HTML component](https://react.dev/reference/react-dom/components#all-html-components). Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+Reactの`<form>`に対する拡張機能は現在、Reactのcanaryおよび実験的なチャンネルでのみ利用可能です。Reactの安定版リリースでは、`<form>`は[組み込みのブラウザHTMLコンポーネント](https://react.dev/reference/react-dom/components#all-html-components)としてのみ機能します。[Reactのリリースチャンネルについてはこちら](https://react.dev/community/versioning-policy#all-release-channels)をご覧ください。
 
 </Canary>
 
 
 <Intro>
 
-The [built-in browser `<form>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) lets you create interactive controls for submitting information.
+[組み込みのブラウザ`<form>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)を使用すると、情報を送信するためのインタラクティブなコントロールを作成できます。
 
 ```js
 <form action={search}>
@@ -27,11 +27,11 @@ The [built-in browser `<form>` component](https://developer.mozilla.org/en-US/do
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `<form>` {/*form*/}
 
-To create interactive controls for submitting information, render the [built-in browser `<form>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form).
+情報を送信するためのインタラクティブなコントロールを作成するには、[組み込みのブラウザ`<form>`コンポーネント](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)をレンダリングします。
 
 ```js
 <form action={search}>
@@ -40,25 +40,25 @@ To create interactive controls for submitting information, render the [built-in 
 </form>
 ```
 
-[See more examples below.](#usage)
+[以下の例を参照してください。](#usage)
 
 #### Props {/*props*/}
 
-`<form>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<form>`はすべての[共通要素のprops](/reference/react-dom/components/common#props)をサポートします。
 
-[`action`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action): a URL or function. When a URL is passed to `action` the form will behave like the HTML form component. When a function is passed to `action` the function will handle the form submission. The function passed to `action` may be async and will be called with a single argument containing the [form data](https://developer.mozilla.org/en-US/docs/Web/API/FormData) of the submitted form. The `action` prop can be overridden by a `formAction` attribute on a `<button>`, `<input type="submit">`, or `<input type="image">` component.
+[`action`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action): URLまたは関数。URLが`action`に渡されると、フォームはHTMLフォームコンポーネントのように動作します。関数が`action`に渡されると、その関数がフォーム送信を処理します。`action`に渡される関数は非同期であり、送信されたフォームの[フォームデータ](https://developer.mozilla.org/en-US/docs/Web/API/FormData)を含む単一の引数で呼び出されます。`action`プロップは、`<button>`、`<input type="submit">`、または`<input type="image">`コンポーネントの`formAction`属性によって上書きされることがあります。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* When a function is passed to `action` or `formAction` the HTTP method will be POST regardless of value of the `method` prop.
+* 関数が`action`または`formAction`に渡されると、`method`プロップの値に関係なくHTTPメソッドはPOSTになります。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Handle form submission on the client {/*handle-form-submission-on-the-client*/}
+### クライアントでフォーム送信を処理する {/*handle-form-submission-on-the-client*/}
 
-Pass a function to the `action` prop of form to run the function when the form is submitted. [`formData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) will be passed to the function as an argument so you can access the data submitted by the form. This differs from the conventional [HTML action](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action), which only accepts URLs.
+フォームが送信されたときに関数を実行するために、フォームの`action`プロップに関数を渡します。[`formData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)は引数として関数に渡されるため、フォームによって送信されたデータにアクセスできます。これは、URLのみを受け入れる従来の[HTML action](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action)とは異なります。
 
 <Sandpack>
 
@@ -91,13 +91,13 @@ export default function Search() {
 
 </Sandpack>
 
-### Handle form submission with a Server Action {/*handle-form-submission-with-a-server-action*/}
+### サーバーアクションでフォーム送信を処理する {/*handle-form-submission-with-a-server-action*/}
 
-Render a `<form>` with an input and submit button. Pass a Server Action (a function marked with [`'use server'`](/reference/rsc/use-server)) to the `action` prop of form to run the function when the form is submitted.
+入力と送信ボタンを持つ`<form>`をレンダリングします。フォームが送信されたときに関数を実行するために、フォームの`action`プロップにサーバーアクション（[`'use server'`](/reference/rsc/use-server)でマークされた関数）を渡します。
 
-Passing a Server Action to `<form action>` allow users to submit forms without JavaScript enabled or before the code has loaded. This is beneficial to users who have a slow connection, device, or have JavaScript disabled and is similar to the way forms work when a URL is passed to the `action` prop.
+サーバーアクションを`<form action>`に渡すことで、JavaScriptが有効になっていない場合やコードが読み込まれる前でもフォームを送信できます。これは、接続が遅い、デバイスが遅い、またはJavaScriptが無効になっているユーザーにとって有益であり、URLが`action`プロップに渡された場合のフォームの動作に似ています。
 
-You can use hidden form fields to provide data to the `<form>`'s action. The Server Action will be called with the hidden form field data as an instance of [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
+隠しフォームフィールドを使用して、`<form>`のアクションにデータを提供できます。サーバーアクションは、送信されたフォームの隠しフィールドデータを[`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)のインスタンスとして受け取ります。
 
 ```jsx
 import { updateCart } from './lib.js';
@@ -118,7 +118,7 @@ function AddToCart({productId}) {
 }
 ```
 
-In lieu of using hidden form fields to provide data to the `<form>`'s action, you can call the <CodeStep step={1}>`bind`</CodeStep> method to supply it with extra arguments. This will bind a new argument (<CodeStep step={2}>`productId`</CodeStep>) to the function in addition to the <CodeStep step={3}>`formData`</CodeStep> that is passed as an argument to the function.
+隠しフォームフィールドを使用して`<form>`のアクションにデータを提供する代わりに、<CodeStep step={1}>`bind`</CodeStep>メソッドを呼び出して追加の引数を提供できます。これにより、関数に引数<CodeStep step={2}>`productId`</CodeStep>が新たにバインドされ、関数に引数として渡される<CodeStep step={3}>`formData`</CodeStep>に加えてバインドされます。
 
 ```jsx [[1, 8, "bind"], [2,8, "productId"], [2,4, "productId"], [3,4, "formData"]]
 import { updateCart } from './lib.js';
@@ -137,12 +137,12 @@ function AddToCart({productId}) {
 }
 ```
 
-When `<form>` is rendered by a [Server Component](/reference/rsc/use-client), and a [Server Action](/reference/rsc/use-server) is passed to the `<form>`'s `action` prop, the form is [progressively enhanced](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement).
+`<form>`が[Server Component](/reference/rsc/use-client)によってレンダリングされ、[Server Action](/reference/rsc/use-server)が`<form>`の`action`プロップに渡されると、フォームは[プログレッシブエンハンスメント](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)されます。
 
-### Display a pending state during form submission {/*display-a-pending-state-during-form-submission*/}
-To display a pending state when a form is being submitted, you can call the `useFormStatus` Hook in a component rendered in a `<form>` and read the `pending` property returned.
+### フォーム送信中の保留状態を表示する {/*display-a-pending-state-during-form-submission*/}
+フォームが送信されているときに保留状態を表示するには、`useFormStatus`フックをフォーム内でレンダリングされたコンポーネントで呼び出し、返される`pending`プロパティを読み取ります。
 
-Here, we use the `pending` property to indicate the form is submitting.
+ここでは、`pending`プロパティを使用してフォームが送信中であることを示しています。
 
 <Sandpack>
 
@@ -191,12 +191,12 @@ export async function submitForm(query) {
 ```
 </Sandpack>
 
-To learn more about the `useFormStatus` Hook see the [reference documentation](/reference/react-dom/hooks/useFormStatus).
+`useFormStatus`フックの詳細については、[リファレンスドキュメント](/reference/react-dom/hooks/useFormStatus)を参照してください。
 
-### Optimistically updating form data {/*optimistically-updating-form-data*/}
-The `useOptimistic` Hook provides a way to optimistically update the user interface before a background operation, like a network request, completes. In the context of forms, this technique helps to make apps feel more responsive. When a user submits a form, instead of waiting for the server's response to reflect the changes, the interface is immediately updated with the expected outcome.
+### 楽観的にフォームデータを更新する {/*optimistically-updating-form-data*/}
+`useOptimistic`フックは、ネットワークリクエストのようなバックグラウンド操作が完了する前にユーザーインターフェースを楽観的に更新する方法を提供します。フォームのコンテキストでは、この技術はアプリをより応答性の高いものにするのに役立ちます。ユーザーがフォームを送信するとき、サーバーの応答を待つ代わりに、インターフェースはすぐに予想される結果で更新されます。
 
-For example, when a user types a message into the form and hits the "Send" button, the `useOptimistic` Hook allows the message to immediately appear in the list with a "Sending..." label, even before the message is actually sent to a server. This "optimistic" approach gives the impression of speed and responsiveness. The form then attempts to truly send the message in the background. Once the server confirms the message has been received, the "Sending..." label is removed.
+例えば、ユーザーがフォームにメッセージを入力して「送信」ボタンを押すと、`useOptimistic`フックを使用してメッセージがリストに「送信中...」ラベル付きで即座に表示されます。これはメッセージが実際にサーバーに送信される前です。この「楽観的」アプローチは、速度と応答性の印象を与えます。その後、フォームはバックグラウンドでメッセージを実際に送信しようとします。サーバーがメッセージを受信したことを確認すると、「送信中...」ラベルが削除されます。
 
 <Sandpack>
 
@@ -276,9 +276,9 @@ export async function deliverMessage(message) {
 [//]: # 'Uncomment the next line, and delete this line after the `useOptimistic` reference documentatino page is published'
 [//]: # 'To learn more about the `useOptimistic` Hook see the [reference documentation](/reference/react/hooks/useOptimistic).'
 
-### Handling form submission errors {/*handling-form-submission-errors*/}
+### フォーム送信エラーの処理 {/*handling-form-submission-errors*/}
 
-In some cases the function called by a `<form>`'s `action` prop throws an error. You can handle these errors by wrapping `<form>` in an Error Boundary. If the function called by a `<form>`'s `action` prop throws an error, the fallback for the error boundary will be displayed.
+場合によっては、`<form>`の`action`プロップによって呼び出される関数がエラーをスローすることがあります。これらのエラーを処理するには、`<form>`をエラーバウンダリでラップします。`<form>`の`action`プロップによって呼び出される関数がエラーをスローすると、エラーバウンダリのフォールバックが表示されます。
 
 <Sandpack>
 
@@ -318,15 +318,15 @@ export default function Search() {
 
 </Sandpack>
 
-### Display a form submission error without JavaScript {/*display-a-form-submission-error-without-javascript*/}
+### JavaScriptなしでフォーム送信エラーを表示する {/*display-a-form-submission-error-without-javascript*/}
 
-Displaying a form submission error message before the JavaScript bundle loads for progressive enhancement requires that:
+プログレッシブエンハンスメントのためにJavaScriptバンドルが読み込まれる前にフォーム送信エラーメッセージを表示するには、以下が必要です：
 
-1. `<form>` be rendered by a [Server Component](/reference/rsc/use-client)
-1. the function passed to the `<form>`'s `action` prop be a [Server Action](/reference/rsc/use-server)
-1. the `useActionState` Hook be used to display the error message
+1. `<form>`が[Server Component](/reference/rsc/use-client)によってレンダリングされること
+1. `<form>`の`action`プロップに渡される関数が[Server Action](/reference/rsc/use-server)であること
+1. エラーメッセージを表示するために`useActionState`フックが使用されること
 
-`useActionState` takes two parameters: a [Server Action](/reference/rsc/use-server) and an initial state. `useActionState` returns two values, a state variable and an action. The action returned by `useActionState` should be passed to the `action` prop of the form. The state variable returned by `useActionState` can be used to displayed an error message. The value returned by the [Server Action](/reference/rsc/use-server) passed to `useActionState` will be used to update the state variable.
+`useActionState`は2つのパラメータを取ります：[Server Action](/reference/rsc/use-server)と初期状態です。`useActionState`は2つの値、状態変数とアクションを返します。`useActionState`によって返されるアクションはフォームの`action`プロップに渡されるべきです。`useActionState`によって返される状態変数はエラーメッセージを表示するために使用できます。[Server Action](/reference/rsc/use-server)によって返される値は状態変数を更新するために使用されます。
 
 <Sandpack>
 
@@ -386,13 +386,13 @@ export async function signUpNewUser(newEmail) {
 
 </Sandpack>
 
-Learn more about updating state from a form action with the [`useActionState`](/reference/react/useActionState) docs
+フォームアクションから状態を更新する方法については、[`useActionState`](/reference/react/useActionState)のドキュメントを参照してください。
 
-### Handling multiple submission types {/*handling-multiple-submission-types*/}
+### 複数の送信タイプを処理する {/*handling-multiple-submission-types*/}
 
-Forms can be designed to handle multiple submission actions based on the button pressed by the user. Each button inside a form can be associated with a distinct action or behavior by setting the `formAction` prop.
+フォームは、ユーザーが押したボタンに基づいて複数の送信アクションを処理するように設計できます。フォーム内の各ボタンは、`formAction`プロップを設定することで、特定のアクションや動作に関連付けることができます。
 
-When a user taps a specific button, the form is submitted, and a corresponding action, defined by that button's attributes and action, is executed. For instance, a form might submit an article for review by default but have a separate button with `formAction` set to save the article as a draft.
+ユーザーが特定のボタンをタップすると、フォームが送信され、そのボタンの属性とアクションによって定義された対応するアクションが実行されます。例えば、フォームはデフォルトで記事をレビュー用に送信しますが、`formAction`が設定された別のボタンで記事をドラフトとして保存することができます。
 
 <Sandpack>
 

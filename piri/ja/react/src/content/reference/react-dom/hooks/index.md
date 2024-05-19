@@ -1,26 +1,26 @@
 ---
-title: "Built-in React DOM Hooks"
+title: 組み込みの React DOM フック
 ---
 
 <Intro>
 
-The `react-dom` package contains Hooks that are only supported for web applications (which run in the browser DOM environment). These Hooks are not supported in non-browser environments like iOS, Android, or Windows applications. If you are looking for Hooks that are supported in web browsers *and other environments* see [the React Hooks page](/reference/react). This page lists all the Hooks in the `react-dom` package.
+`react-dom`パッケージには、ウェブアプリケーション（ブラウザのDOM環境で実行される）でのみサポートされているHooksが含まれています。これらのHooksは、iOS、Android、またはWindowsアプリケーションのような非ブラウザ環境ではサポートされていません。ウェブブラウザ*および他の環境*でサポートされているHooksを探している場合は、[React Hooksページ](/reference/react)を参照してください。このページには、`react-dom`パッケージのすべてのHooksが一覧表示されています。
 
 </Intro>
 
 ---
 
-## Form Hooks {/*form-hooks*/}
+## フォームHooks {/*form-hooks*/}
 
 <Canary>
 
-Form Hooks are currently only available in React's canary and experimental channels. Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+フォームHooksは現在、Reactのcanaryおよび実験的チャンネルでのみ利用可能です。[Reactのリリースチャンネルについてはこちら](/community/versioning-policy#all-release-channels)で詳しく学んでください。
 
 </Canary>
 
-*Forms* let you create interactive controls for submitting information.  To manage forms in your components, use one of these Hooks:
+*フォーム*は、情報を送信するためのインタラクティブなコントロールを作成することができます。コンポーネント内でフォームを管理するには、次のいずれかのHooksを使用します：
 
-* [`useFormStatus`](/reference/react-dom/hooks/useFormStatus) allows you to make updates to the UI based on the status of the a form.
+* [`useFormStatus`](/reference/react-dom/hooks/useFormStatus)は、フォームのステータスに基づいてUIを更新することができます。
 
 ```js
 function Form({ action }) {

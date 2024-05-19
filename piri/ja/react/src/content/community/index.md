@@ -1,32 +1,32 @@
 ---
-title: React Community
+title: React コミュニティ
 ---
 
 <Intro>
 
-React has a community of millions of developers. On this page we've listed some React-related communities that you can be a part of; see the other pages in this section for additional online and in-person learning materials.
+Reactには何百万もの開発者のコミュニティがあります。このページでは、参加できるReact関連のコミュニティをいくつか紹介しています。このセクションの他のページでは、オンラインおよび対面での学習資料についても紹介しています。
 
 </Intro>
 
-## Code of Conduct {/*code-of-conduct*/}
+## 行動規範 {/*code-of-conduct*/}
 
-Before participating in React's communities, [please read our Code of Conduct.](https://github.com/facebook/react/blob/main/CODE_OF_CONDUCT.md) We have adopted the [Contributor Covenant](https://www.contributor-covenant.org/) and we expect that all community members adhere to the guidelines within.
+Reactのコミュニティに参加する前に、[行動規範をお読みください。](https://github.com/facebook/react/blob/main/CODE_OF_CONDUCT.md) 私たちは[Contributor Covenant](https://www.contributor-covenant.org/)を採用しており、すべてのコミュニティメンバーがガイドラインに従うことを期待しています。
 
 ## Stack Overflow {/*stack-overflow*/}
 
-Stack Overflow is a popular forum to ask code-level questions or if you're stuck with a specific error. Read through the [existing questions](https://stackoverflow.com/questions/tagged/reactjs) tagged with **reactjs** or [ask your own](https://stackoverflow.com/questions/ask?tags=reactjs)!
+Stack Overflowは、コードレベルの質問をしたり、特定のエラーで行き詰まったときに質問するのに人気のフォーラムです。**reactjs**タグが付いた[既存の質問](https://stackoverflow.com/questions/tagged/reactjs)を読んだり、[自分で質問](https://stackoverflow.com/questions/ask?tags=reactjs)したりできます！
 
-## Popular Discussion Forums {/*popular-discussion-forums*/}
+## 人気のディスカッションフォーラム {/*popular-discussion-forums*/}
 
-There are many online forums which are a great place for discussion about best practices and application architecture as well as the future of React. If you have an answerable code-level question, Stack Overflow is usually a better fit.
+ベストプラクティスやアプリケーションアーキテクチャ、Reactの将来について議論するのに最適なオンラインフォーラムがたくさんあります。答えられるコードレベルの質問がある場合は、通常Stack Overflowの方が適しています。
 
-Each community consists of many thousands of React users.
+各コミュニティには何千人ものReactユーザーがいます。
 
-* [DEV's React community](https://dev.to/t/react)
-* [Hashnode's React community](https://hashnode.com/n/reactjs)
-* [Reactiflux online chat](https://discord.gg/reactiflux)
-* [Reddit's React community](https://www.reddit.com/r/reactjs/)
+* [DEVのReactコミュニティ](https://dev.to/t/react)
+* [HashnodeのReactコミュニティ](https://hashnode.com/n/reactjs)
+* [Reactifluxオンラインチャット](https://discord.gg/reactiflux)
+* [RedditのReactコミュニティ](https://www.reddit.com/r/reactjs/)
 
-## News {/*news*/}
+## ニュース {/*news*/}
 
-For the latest news about React, [follow **@reactjs** on Twitter](https://twitter.com/reactjs) and the [official React blog](/blog/) on this website.
+Reactに関する最新ニュースは、[Twitterで**@reactjs**をフォロー](https://twitter.com/reactjs)し、このウェブサイトの[公式Reactブログ](/blog/)をご覧ください。

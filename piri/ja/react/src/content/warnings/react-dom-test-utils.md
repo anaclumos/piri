@@ -1,34 +1,34 @@
 ---
-title: react-dom/test-utils Deprecation Warnings
+title: react-dom/test-utils 非推奨警告
 ---
 
-## ReactDOMTestUtils.act() warning {/*reactdomtestutilsact-warning*/}
+## ReactDOMTestUtils.act() 警告 {/*reactdomtestutilsact-warning*/}
 
-`act` from `react-dom/test-utils` has been deprecated in favor of `act` from `react`.
+`react-dom/test-utils` の `act` は `react` の `act` に置き換えられました。
 
-Before:
+以前:
 
 ```js
 import {act} from 'react-dom/test-utils';
 ```
 
-After:
+以後:
 
 ```js
 import {act} from 'react';
 ```
 
-## Rest of ReactDOMTestUtils APIS {/*rest-of-reactdomtestutils-apis*/}
+## 残りの ReactDOMTestUtils API {/*rest-of-reactdomtestutils-apis*/}
 
-All APIs except `act` have been removed.
+`act` を除くすべてのAPIは削除されました。
 
-The React Team recommends migrating your tests to [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) for a modern and well supported testing experience.
+Reactチームは、モダンでサポートの充実したテスト体験のために、テストを [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) に移行することを推奨しています。
 
 ### ReactDOMTestUtils.renderIntoDocument {/*reactdomtestutilsrenderintodocument*/}
 
-`renderIntoDocument` can be replaced with `render` from `@testing-library/react`.
+`renderIntoDocument` は `@testing-library/react` の `render` に置き換えることができます。
 
-Before:
+以前:
 
 ```js
 import {renderIntoDocument} from 'react-dom/test-utils';
@@ -36,7 +36,7 @@ import {renderIntoDocument} from 'react-dom/test-utils';
 renderIntoDocument(<Component />);
 ```
 
-After:
+以後:
 
 ```js
 import {render} from '@testing-library/react';
@@ -46,9 +46,9 @@ render(<Component />);
 
 ### ReactDOMTestUtils.Simulate {/*reactdomtestutilssimulate*/}
 
-`Simulate` can be replaced with `fireEvent` from `@testing-library/react`.
+`Simulate` は `@testing-library/react` の `fireEvent` に置き換えることができます。
 
-Before:
+以前:
 
 ```js
 import {Simulate} from 'react-dom/test-utils';
@@ -57,7 +57,7 @@ const element = document.querySelector('button');
 Simulate.click(element);
 ```
 
-After:
+以後:
 
 ```js
 import {fireEvent} from '@testing-library/react';
@@ -66,9 +66,9 @@ const element = document.querySelector('button');
 fireEvent.click(element);
 ```
 
-Be aware that `fireEvent` dispatches an actual event on the element and doesn't just synthetically call the event handler.
+`fireEvent` は要素上で実際のイベントをディスパッチし、単にイベントハンドラを合成的に呼び出すだけではないことに注意してください。
 
-### List of all removed APIs {/*list-of-all-removed-apis-list-of-all-removed-apis*/}
+### 削除されたすべてのAPIのリスト {/*list-of-all-removed-apis-list-of-all-removed-apis*/}
 
 - `mockComponent()`
 - `isElement()`

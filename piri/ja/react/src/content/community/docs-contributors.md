@@ -1,42 +1,42 @@
 ---
-title: Docs Contributors
+title: ドキュメント貢献者
 ---
 
 <Intro>
 
-React documentation is written and maintained by the [React team](/community/team) and [external contributors.](https://github.com/reactjs/react.dev/graphs/contributors) On this page, we'd like to thank a few people who've made significant contributions to this site.
+Reactのドキュメントは[Reactチーム](/community/team)と[外部の貢献者](https://github.com/reactjs/react.dev/graphs/contributors)によって書かれ、維持されています。このページでは、このサイトに大きな貢献をしてくれた数名の方々に感謝の意を表したいと思います。
 
 </Intro>
 
-## Content {/*content*/}
+## コンテンツ {/*content*/}
 
-* [Rachel Nabors](https://twitter.com/RachelNabors): editing, writing, illustrating
-* [Dan Abramov](https://twitter.com/dan_abramov): writing, curriculum design
-* [Sylwia Vargas](https://twitter.com/SylwiaVargas): example code
-* [Rick Hanlon](https://twitter.com/rickhanlonii): writing
-* [David McCabe](https://twitter.com/mcc_abe): writing
-* [Sophie Alpert](https://twitter.com/sophiebits): writing
-* [Pete Hunt](https://twitter.com/floydophone): writing
-* [Andrew Clark](https://twitter.com/acdlite): writing
-* [Matt Carroll](https://twitter.com/mattcarrollcode): editing, writing
-* [Natalia Tepluhina](https://twitter.com/n_tepluhina): reviews, advice
-* [Sebastian Markbåge](https://twitter.com/sebmarkbage): feedback
+* [Rachel Nabors](https://twitter.com/RachelNabors): 編集、執筆、イラスト
+* [Dan Abramov](https://twitter.com/dan_abramov): 執筆、カリキュラムデザイン
+* [Sylwia Vargas](https://twitter.com/SylwiaVargas): サンプルコード
+* [Rick Hanlon](https://twitter.com/rickhanlonii): 執筆
+* [David McCabe](https://twitter.com/mcc_abe): 執筆
+* [Sophie Alpert](https://twitter.com/sophiebits): 執筆
+* [Pete Hunt](https://twitter.com/floydophone): 執筆
+* [Andrew Clark](https://twitter.com/acdlite): 執筆
+* [Matt Carroll](https://twitter.com/mattcarrollcode): 編集、執筆
+* [Natalia Tepluhina](https://twitter.com/n_tepluhina): レビュー、アドバイス
+* [Sebastian Markbåge](https://twitter.com/sebmarkbage): フィードバック
 
-## Design {/*design*/}
+## デザイン {/*design*/}
 
-* [Dan Lebowitz](https://twitter.com/lebo): site design
-* [Razvan Gradinar](https://dribbble.com/GradinarRazvan): sandbox design
-* [Maggie Appleton](https://maggieappleton.com/): diagram system
-* [Sophie Alpert](https://twitter.com/sophiebits): color-coded explanations
+* [Dan Lebowitz](https://twitter.com/lebo): サイトデザイン
+* [Razvan Gradinar](https://dribbble.com/GradinarRazvan): サンドボックスデザイン
+* [Maggie Appleton](https://maggieappleton.com/): ダイアグラムシステム
+* [Sophie Alpert](https://twitter.com/sophiebits): カラーコードの説明
 
-## Development {/*development*/}
+## 開発 {/*development*/}
 
-* [Jared Palmer](https://twitter.com/jaredpalmer): site development
-* [ThisDotLabs](https://www.thisdot.co/) ([Dane Grant](https://twitter.com/danecando), [Dustin Goodman](https://twitter.com/dustinsgoodman)): site development
-* [CodeSandbox](https://codesandbox.io/) ([Ives van Hoorne](https://twitter.com/CompuIves), [Alex Moldovan](https://twitter.com/alexnmoldovan), [Jasper De Moor](https://twitter.com/JasperDeMoor), [Danilo Woznica](https://twitter.com/danilowoz)): sandbox integration
-* [Dan Abramov](https://twitter.com/dan_abramov): site development
-* [Rick Hanlon](https://twitter.com/rickhanlonii): site development
-* [Harish Kumar](https://www.strek.in/): development and maintenance
-* [Luna Ruan](https://twitter.com/lunaruan): sandbox improvements
+* [Jared Palmer](https://twitter.com/jaredpalmer): サイト開発
+* [ThisDotLabs](https://www.thisdot.co/) ([Dane Grant](https://twitter.com/danecando), [Dustin Goodman](https://twitter.com/dustinsgoodman)): サイト開発
+* [CodeSandbox](https://codesandbox.io/) ([Ives van Hoorne](https://twitter.com/CompuIves), [Alex Moldovan](https://twitter.com/alexnmoldovan), [Jasper De Moor](https://twitter.com/JasperDeMoor), [Danilo Woznica](https://twitter.com/danilowoz)): サンドボックス統合
+* [Dan Abramov](https://twitter.com/dan_abramov): サイト開発
+* [Rick Hanlon](https://twitter.com/rickhanlonii): サイト開発
+* [Harish Kumar](https://www.strek.in/): 開発とメンテナンス
+* [Luna Ruan](https://twitter.com/lunaruan): サンドボックスの改善
 
-We'd also like to thank countless alpha testers and community members who gave us feedback along the way.
+また、アルファテスターやコミュニティメンバーの皆様にも、これまでのフィードバックに感謝いたします。

@@ -1,45 +1,45 @@
 ---
-title: 'You Might Not Need an Effect'
+title: 효과가 필요하지 않을 수도 있습니다
 ---
 
 <Intro>
 
-Effects are an escape hatch from the React paradigm. They let you "step outside" of React and synchronize your components with some external system like a non-React widget, network, or the browser DOM. If there is no external system involved (for example, if you want to update a component's state when some props or state change), you shouldn't need an Effect. Removing unnecessary Effects will make your code easier to follow, faster to run, and less error-prone.
+Effects는 React 패러다임에서 벗어나는 탈출구입니다. 이를 통해 React 외부로 "벗어나" 비-React 위젯, 네트워크 또는 브라우저 DOM과 같은 외부 시스템과 컴포넌트를 동기화할 수 있습니다. 외부 시스템이 관련되지 않은 경우(예: 일부 props 또는 상태가 변경될 때 컴포넌트의 상태를 업데이트하려는 경우) Effect가 필요하지 않습니다. 불필요한 Effects를 제거하면 코드가 더 쉽게 이해되고, 실행 속도가 빨라지며, 오류 발생 가능성이 줄어듭니다.
 
 </Intro>
 
 <YouWillLearn>
 
-* Why and how to remove unnecessary Effects from your components
-* How to cache expensive computations without Effects
-* How to reset and adjust component state without Effects
-* How to share logic between event handlers
-* Which logic should be moved to event handlers
-* How to notify parent components about changes
+* 컴포넌트에서 불필요한 Effects를 제거하는 이유와 방법
+* Effects 없이 비용이 많이 드는 계산을 캐시하는 방법
+* Effects 없이 컴포넌트 상태를 재설정하고 조정하는 방법
+* 이벤트 핸들러 간에 로직을 공유하는 방법
+* 이벤트 핸들러로 이동해야 하는 로직
+* 변경 사항에 대해 부모 컴포넌트에 알리는 방법
 
 </YouWillLearn>
 
-## How to remove unnecessary Effects {/*how-to-remove-unnecessary-effects*/}
+## 불필요한 Effects 제거 방법 {/*how-to-remove-unnecessary-effects*/}
 
-There are two common cases in which you don't need Effects:
+Effects가 필요하지 않은 두 가지 일반적인 경우가 있습니다:
 
-* **You don't need Effects to transform data for rendering.** For example, let's say you want to filter a list before displaying it. You might feel tempted to write an Effect that updates a state variable when the list changes. However, this is inefficient. When you update the state, React will first call your component functions to calculate what should be on the screen. Then React will ["commit"](/learn/render-and-commit) these changes to the DOM, updating the screen. Then React will run your Effects. If your Effect *also* immediately updates the state, this restarts the whole process from scratch! To avoid the unnecessary render passes, transform all the data at the top level of your components. That code will automatically re-run whenever your props or state change.
-* **You don't need Effects to handle user events.** For example, let's say you want to send an `/api/buy` POST request and show a notification when the user buys a product. In the Buy button click event handler, you know exactly what happened. By the time an Effect runs, you don't know *what* the user did (for example, which button was clicked). This is why you'll usually handle user events in the corresponding event handlers.
+* **렌더링을 위해 데이터를 변환하는 데 Effects가 필요하지 않습니다.** 예를 들어, 목록을 표시하기 전에 필터링하려고 한다고 가정해 보겠습니다. 목록이 변경될 때 상태 변수를 업데이트하는 Effect를 작성하고 싶을 수 있습니다. 그러나 이는 비효율적입니다. 상태를 업데이트하면 React는 먼저 화면에 무엇이 표시되어야 하는지 계산하기 위해 컴포넌트 함수를 호출합니다. 그런 다음 React는 이러한 변경 사항을 DOM에 ["커밋"](/learn/render-and-commit)하여 화면을 업데이트합니다. 그런 다음 React는 Effects를 실행합니다. Effect가 *즉시* 상태를 업데이트하면 전체 프로세스가 처음부터 다시 시작됩니다! 불필요한 렌더링 패스를 피하려면 컴포넌트의 최상위 수준에서 모든 데이터를 변환하십시오. 이 코드는 props 또는 상태가 변경될 때 자동으로 다시 실행됩니다.
+* **사용자 이벤트를 처리하는 데 Effects가 필요하지 않습니다.** 예를 들어, 사용자가 제품을 구매할 때 `/api/buy` POST 요청을 보내고 알림을 표시하려고 한다고 가정해 보겠습니다. 구매 버튼 클릭 이벤트 핸들러에서 무슨 일이 일어났는지 정확히 알 수 있습니다. Effect가 실행될 때는 사용자가 *무엇을* 했는지(예: 어떤 버튼을 클릭했는지) 알 수 없습니다. 이 때문에 일반적으로 해당 이벤트 핸들러에서 사용자 이벤트를 처리합니다.
 
-You *do* need Effects to [synchronize](/learn/synchronizing-with-effects#what-are-effects-and-how-are-they-different-from-events) with external systems. For example, you can write an Effect that keeps a jQuery widget synchronized with the React state. You can also fetch data with Effects: for example, you can synchronize the search results with the current search query. Keep in mind that modern [frameworks](/learn/start-a-new-react-project#production-grade-react-frameworks) provide more efficient built-in data fetching mechanisms than writing Effects directly in your components.
+외부 시스템과 [동기화](/learn/synchronizing-with-effects#what-are-effects-and-how-are-they-different-from-events)하려면 Effects가 필요합니다. 예를 들어, jQuery 위젯을 React 상태와 동기화하는 Effect를 작성할 수 있습니다. 또한 Effects를 사용하여 데이터를 가져올 수 있습니다. 예를 들어, 현재 검색 쿼리와 검색 결과를 동기화할 수 있습니다. 최신 [프레임워크](/learn/start-a-new-react-project#production-grade-react-frameworks)는 컴포넌트에서 직접 Effects를 작성하는 것보다 더 효율적인 내장 데이터 가져오기 메커니즘을 제공한다는 점을 기억하십시오.
 
-To help you gain the right intuition, let's look at some common concrete examples!
+올바른 직관을 얻기 위해 몇 가지 일반적인 구체적인 예를 살펴보겠습니다!
 
-### Updating state based on props or state {/*updating-state-based-on-props-or-state*/}
+### props 또는 상태를 기반으로 상태 업데이트 {/*updating-state-based-on-props-or-state*/}
 
-Suppose you have a component with two state variables: `firstName` and `lastName`. You want to calculate a `fullName` from them by concatenating them. Moreover, you'd like `fullName` to update whenever `firstName` or `lastName` change. Your first instinct might be to add a `fullName` state variable and update it in an Effect:
+두 개의 상태 변수 `firstName`과 `lastName`이 있는 컴포넌트가 있다고 가정해 보겠습니다. 이들을 연결하여 `fullName`을 계산하고 싶습니다. 또한 `firstName` 또는 `lastName`이 변경될 때마다 `fullName`이 업데이트되기를 원합니다. 첫 번째 본능은 `fullName` 상태 변수를 추가하고 Effect에서 업데이트하는 것입니다:
 
 ```js {5-9}
 function Form() {
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Swift');
 
-  // 🔴 Avoid: redundant state and unnecessary Effect
+  // 🔴 피해야 할 것: 중복 상태 및 불필요한 Effect
   const [fullName, setFullName] = useState('');
   useEffect(() => {
     setFullName(firstName + ' ' + lastName);
@@ -48,29 +48,29 @@ function Form() {
 }
 ```
 
-This is more complicated than necessary. It is inefficient too: it does an entire render pass with a stale value for `fullName`, then immediately re-renders with the updated value. Remove the state variable and the Effect:
+이것은 필요 이상으로 복잡합니다. 또한 비효율적입니다: `fullName`의 오래된 값으로 전체 렌더링 패스를 수행한 다음 업데이트된 값으로 즉시 다시 렌더링합니다. 상태 변수와 Effect를 제거하십시오:
 
 ```js {4-5}
 function Form() {
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Swift');
-  // ✅ Good: calculated during rendering
+  // ✅ 좋음: 렌더링 중에 계산됨
   const fullName = firstName + ' ' + lastName;
   // ...
 }
 ```
 
-**When something can be calculated from the existing props or state, [don't put it in state.](/learn/choosing-the-state-structure#avoid-redundant-state) Instead, calculate it during rendering.** This makes your code faster (you avoid the extra "cascading" updates), simpler (you remove some code), and less error-prone (you avoid bugs caused by different state variables getting out of sync with each other). If this approach feels new to you, [Thinking in React](/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state) explains what should go into state.
+**기존 props 또는 상태에서 계산할 수 있는 경우, [상태에 넣지 마십시오.](/learn/choosing-the-state-structure#avoid-redundant-state) 대신 렌더링 중에 계산하십시오.** 이렇게 하면 코드가 더 빨라지고(추가 "연쇄" 업데이트를 피함), 더 간단해지며(코드가 줄어듦), 오류 발생 가능성이 줄어듭니다(다른 상태 변수 간의 동기화 문제를 피함). 이 접근 방식이 새롭게 느껴진다면, [React 사고하기](/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state)에서 상태에 무엇을 넣어야 하는지 설명합니다.
 
-### Caching expensive calculations {/*caching-expensive-calculations*/}
+### 비용이 많이 드는 계산 캐시하기 {/*caching-expensive-calculations*/}
 
-This component computes `visibleTodos` by taking the `todos` it receives by props and filtering them according to the `filter` prop. You might feel tempted to store the result in state and update it from an Effect:
+이 컴포넌트는 props로 받은 `todos`를 `filter` prop에 따라 필터링하여 `visibleTodos`를 계산합니다. 결과를 상태에 저장하고 Effect에서 업데이트하고 싶을 수 있습니다:
 
 ```js {4-8}
 function TodoList({ todos, filter }) {
   const [newTodo, setNewTodo] = useState('');
 
-  // 🔴 Avoid: redundant state and unnecessary Effect
+  // 🔴 피해야 할 것: 중복 상태 및 불필요한 Effect
   const [visibleTodos, setVisibleTodos] = useState([]);
   useEffect(() => {
     setVisibleTodos(getFilteredTodos(todos, filter));
@@ -80,20 +80,20 @@ function TodoList({ todos, filter }) {
 }
 ```
 
-Like in the earlier example, this is both unnecessary and inefficient. First, remove the state and the Effect:
+앞의 예와 마찬가지로 이것은 불필요하고 비효율적입니다. 먼저 상태와 Effect를 제거하십시오:
 
 ```js {3-4}
 function TodoList({ todos, filter }) {
   const [newTodo, setNewTodo] = useState('');
-  // ✅ This is fine if getFilteredTodos() is not slow.
+  // ✅ getFilteredTodos()가 느리지 않다면 괜찮습니다.
   const visibleTodos = getFilteredTodos(todos, filter);
   // ...
 }
 ```
 
-Usually, this code is fine! But maybe `getFilteredTodos()` is slow or you have a lot of `todos`. In that case you don't want to recalculate `getFilteredTodos()` if some unrelated state variable like `newTodo` has changed.
+일반적으로 이 코드는 괜찮습니다! 그러나 `getFilteredTodos()`가 느리거나 `todos`가 많을 수 있습니다. 이 경우 `newTodo`와 같은 관련 없는 상태 변수가 변경되었을 때 `getFilteredTodos()`를 다시 계산하고 싶지 않습니다.
 
-You can cache (or ["memoize"](https://en.wikipedia.org/wiki/Memoization)) an expensive calculation by wrapping it in a [`useMemo`](/reference/react/useMemo) Hook:
+비용이 많이 드는 계산을 [`useMemo`](/reference/react/useMemo) Hook으로 래핑하여 캐시할 수 있습니다:
 
 ```js {5-8}
 import { useMemo, useState } from 'react';
@@ -101,35 +101,35 @@ import { useMemo, useState } from 'react';
 function TodoList({ todos, filter }) {
   const [newTodo, setNewTodo] = useState('');
   const visibleTodos = useMemo(() => {
-    // ✅ Does not re-run unless todos or filter change
+    // ✅ todos 또는 filter가 변경되지 않는 한 다시 실행되지 않음
     return getFilteredTodos(todos, filter);
   }, [todos, filter]);
   // ...
 }
 ```
 
-Or, written as a single line:
+또는 한 줄로 작성된 경우:
 
 ```js {5-6}
 import { useMemo, useState } from 'react';
 
 function TodoList({ todos, filter }) {
   const [newTodo, setNewTodo] = useState('');
-  // ✅ Does not re-run getFilteredTodos() unless todos or filter change
+  // ✅ todos 또는 filter가 변경되지 않는 한 getFilteredTodos()를 다시 실행하지 않음
   const visibleTodos = useMemo(() => getFilteredTodos(todos, filter), [todos, filter]);
   // ...
 }
 ```
 
-**This tells React that you don't want the inner function to re-run unless either `todos` or `filter` have changed.** React will remember the return value of `getFilteredTodos()` during the initial render. During the next renders, it will check if `todos` or `filter` are different. If they're the same as last time, `useMemo` will return the last result it has stored. But if they are different, React will call the inner function again (and store its result).
+**이것은 `todos` 또는 `filter`가 변경되지 않는 한 내부 함수가 다시 실행되지 않기를 원한다고 React에 알립니다.** React는 초기 렌더링 동안 `getFilteredTodos()`의 반환 값을 기억합니다. 다음 렌더링 동안 `todos` 또는 `filter`가 다른지 확인합니다. 마지막과 동일하면 `useMemo`는 저장된 마지막 결과를 반환합니다. 그러나 다르면 React는 내부 함수를 다시 호출하고(그리고 그 결과를 저장합니다).
 
-The function you wrap in [`useMemo`](/reference/react/useMemo) runs during rendering, so this only works for [pure calculations.](/learn/keeping-components-pure)
+[`useMemo`](/reference/react/useMemo)로 래핑한 함수는 렌더링 중에 실행되므로 [순수 계산](/learn/keeping-components-pure)에만 작동합니다.
 
 <DeepDive>
 
-#### How to tell if a calculation is expensive? {/*how-to-tell-if-a-calculation-is-expensive*/}
+#### 계산이 비용이 많이 드는지 확인하는 방법? {/*how-to-tell-if-a-calculation-is-expensive*/}
 
-In general, unless you're creating or looping over thousands of objects, it's probably not expensive. If you want to get more confidence, you can add a console log to measure the time spent in a piece of code:
+일반적으로 수천 개의 객체를 생성하거나 반복하지 않는 한 비용이 많이 들지 않을 가능성이 큽니다. 더 확신을 얻고 싶다면 코드 조각에서 소요된 시간을 측정하기 위해 콘솔 로그를 추가할 수 있습니다:
 
 ```js {1,3}
 console.time('filter array');
@@ -137,33 +137,33 @@ const visibleTodos = getFilteredTodos(todos, filter);
 console.timeEnd('filter array');
 ```
 
-Perform the interaction you're measuring (for example, typing into the input). You will then see logs like `filter array: 0.15ms` in your console. If the overall logged time adds up to a significant amount (say, `1ms` or more), it might make sense to memoize that calculation. As an experiment, you can then wrap the calculation in `useMemo` to verify whether the total logged time has decreased for that interaction or not:
+측정하려는 상호작용을 수행하십시오(예: 입력에 입력하기). 그런 다음 콘솔에서 `filter array: 0.15ms`와 같은 로그를 볼 수 있습니다. 전체 기록된 시간이 상당한 양(예: `1ms` 이상)으로 합산되면 해당 계산을 메모이제이션하는 것이 좋습니다. 실험으로 계산을 `useMemo`로 래핑하여 해당 상호작용에 대한 총 기록된 시간이 감소했는지 확인할 수 있습니다:
 
 ```js
 console.time('filter array');
 const visibleTodos = useMemo(() => {
-  return getFilteredTodos(todos, filter); // Skipped if todos and filter haven't changed
+  return getFilteredTodos(todos, filter); // todos와 filter가 변경되지 않은 경우 건너뜀
 }, [todos, filter]);
 console.timeEnd('filter array');
 ```
 
-`useMemo` won't make the *first* render faster. It only helps you skip unnecessary work on updates.
+`useMemo`는 *첫 번째* 렌더링을 더 빠르게 만들지 않습니다. 업데이트 시 불필요한 작업을 건너뛰는 데만 도움이 됩니다.
 
-Keep in mind that your machine is probably faster than your users' so it's a good idea to test the performance with an artificial slowdown. For example, Chrome offers a [CPU Throttling](https://developer.chrome.com/blog/new-in-devtools-61/#throttling) option for this.
+사용자의 기계가 아마도 사용자보다 더 빠르기 때문에 인위적인 지연을 통해 성능을 테스트하는 것이 좋습니다. 예를 들어, Chrome은 이를 위한 [CPU 제한](https://developer.chrome.com/blog/new-in-devtools-61/#throttling) 옵션을 제공합니다.
 
-Also note that measuring performance in development will not give you the most accurate results. (For example, when [Strict Mode](/reference/react/StrictMode) is on, you will see each component render twice rather than once.) To get the most accurate timings, build your app for production and test it on a device like your users have.
+또한 개발 중 성능을 측정하는 것은 가장 정확한 결과를 제공하지 않습니다. (예를 들어, [Strict Mode](/reference/react/StrictMode)가 켜져 있으면 각 컴포넌트가 한 번이 아닌 두 번 렌더링됩니다.) 가장 정확한 타이밍을 얻으려면 앱을 프로덕션용으로 빌드하고 사용자가 사용하는 장치에서 테스트하십시오.
 
 </DeepDive>
 
-### Resetting all state when a prop changes {/*resetting-all-state-when-a-prop-changes*/}
+### prop이 변경될 때 모든 상태 재설정 {/*resetting-all-state-when-a-prop-changes*/}
 
-This `ProfilePage` component receives a `userId` prop. The page contains a comment input, and you use a `comment` state variable to hold its value. One day, you notice a problem: when you navigate from one profile to another, the `comment` state does not get reset. As a result, it's easy to accidentally post a comment on a wrong user's profile. To fix the issue, you want to clear out the `comment` state variable whenever the `userId` changes:
+이 `ProfilePage` 컴포넌트는 `userId` prop을 받습니다. 페이지에는 댓글 입력란이 있으며, `comment` 상태 변수를 사용하여 값을 유지합니다. 어느 날, 한 프로필에서 다른 프로필로 이동할 때 `comment` 상태가 재설정되지 않는 문제를 발견합니다. 결과적으로 잘못된 사용자의 프로필에 댓글을 실수로 게시하기 쉽습니다. 이 문제를 해결하려면 `userId`가 변경될 때마다 `comment` 상태 변수를 지우고 싶습니다:
 
 ```js {4-7}
 export default function ProfilePage({ userId }) {
   const [comment, setComment] = useState('');
 
-  // 🔴 Avoid: Resetting state on prop change in an Effect
+  // 🔴 피해야 할 것: Effect에서 prop 변경 시 상태 재설정
   useEffect(() => {
     setComment('');
   }, [userId]);
@@ -171,9 +171,9 @@ export default function ProfilePage({ userId }) {
 }
 ```
 
-This is inefficient because `ProfilePage` and its children will first render with the stale value, and then render again. It is also complicated because you'd need to do this in *every* component that has some state inside `ProfilePage`. For example, if the comment UI is nested, you'd want to clear out nested comment state too.
+이것은 비효율적입니다. `ProfilePage`와 그 자식들은 먼저 오래된 값으로 렌더링되고, 그런 다음 다시 렌더링됩니다. 또한 `ProfilePage` 내부에 상태가 있는 *모든* 컴포넌트에서 이를 수행해야 하기 때문에 복잡합니다. 예를 들어, 댓글 UI가 중첩된 경우 중첩된 댓글 상태도 지우고 싶을 것입니다.
 
-Instead, you can tell React that each user's profile is conceptually a _different_ profile by giving it an explicit key. Split your component in two and pass a `key` attribute from the outer component to the inner one:
+대신 각 사용자의 프로필이 개념적으로 _다른_ 프로필임을 React에 알리고 명시적인 키를 부여할 수 있습니다. 컴포넌트를 두 개로 나누고 외부 컴포넌트에서 내부 컴포넌트로 `key` 속성을 전달하십시오:
 
 ```js {5,11-12}
 export default function ProfilePage({ userId }) {
@@ -186,28 +186,28 @@ export default function ProfilePage({ userId }) {
 }
 
 function Profile({ userId }) {
-  // ✅ This and any other state below will reset on key change automatically
+  // ✅ 이 아래의 모든 상태는 키 변경 시 자동으로 재설정됩니다.
   const [comment, setComment] = useState('');
   // ...
 }
 ```
 
-Normally, React preserves the state when the same component is rendered in the same spot. **By passing `userId` as a `key` to the `Profile` component, you're asking React to treat two `Profile` components with different `userId` as two different components that should not share any state.** Whenever the key (which you've set to `userId`) changes, React will recreate the DOM and [reset the state](/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key) of the `Profile` component and all of its children. Now the `comment` field will clear out automatically when navigating between profiles.
+일반적으로 React는 동일한 위치에 동일한 컴포넌트를 렌더링할 때 상태를 유지합니다. **`userId`를 `Profile` 컴포넌트에 `key`로 전달함으로써, React에게 다른 `userId`를 가진 두 개의 `Profile` 컴포넌트를 상태를 공유하지 않는 두 개의 다른 컴포넌트로 취급하도록 요청하는 것입니다.** 키(여기서는 `userId`로 설정됨)가 변경될 때마다 React는 `Profile` 컴포넌트와 그 자식 컴포넌트의 상태를 재설정하고 DOM을 다시 생성합니다. 이제 프로필 간에 탐색할 때 `comment` 필드가 자동으로 지워집니다.
 
-Note that in this example, only the outer `ProfilePage` component is exported and visible to other files in the project. Components rendering `ProfilePage` don't need to pass the key to it: they pass `userId` as a regular prop. The fact `ProfilePage` passes it as a `key` to the inner `Profile` component is an implementation detail.
+이 예에서 외부 `ProfilePage` 컴포넌트만 프로젝트의 다른 파일에 내보내지고 표시된다는 점에 유의하십시오. `ProfilePage`를 렌더링하는 컴포넌트는 `key`를 전달할 필요가 없습니다: `userId`를 일반 prop으로 전달합니다. `ProfilePage`가 내부 `Profile` 컴포넌트에 `key`로 전달하는 것은 구현 세부 사항입니다.
 
-### Adjusting some state when a prop changes {/*adjusting-some-state-when-a-prop-changes*/}
+### prop이 변경될 때 일부 상태 조정 {/*adjusting-some-state-when-a-prop-changes*/}
 
-Sometimes, you might want to reset or adjust a part of the state on a prop change, but not all of it.
+때때로 prop 변경 시 상태의 일부를 재설정하거나 조정하고 싶을 수 있습니다.
 
-This `List` component receives a list of `items` as a prop, and maintains the selected item in the `selection` state variable. You want to reset the `selection` to `null` whenever the `items` prop receives a different array:
+이 `List` 컴포넌트는 `items`라는 prop으로 항목 목록을 받고, `selection` 상태 변수에 선택된 항목을 유지합니다. `items` prop이 다른 배열을 받을 때 `selection`을 `null`로 재설정하려고 합니다:
 
 ```js {5-8}
 function List({ items }) {
   const [isReverse, setIsReverse] = useState(false);
   const [selection, setSelection] = useState(null);
 
-  // 🔴 Avoid: Adjusting state on prop change in an Effect
+  // 🔴 피해야 할 것: Effect에서 prop 변경 시 상태 조정
   useEffect(() => {
     setSelection(null);
   }, [items]);
@@ -215,16 +215,16 @@ function List({ items }) {
 }
 ```
 
-This, too, is not ideal. Every time the `items` change, the `List` and its child components will render with a stale `selection` value at first. Then React will update the DOM and run the Effects. Finally, the `setSelection(null)` call will cause another re-render of the `List` and its child components, restarting this whole process again.
+이것도 이상적이지 않습니다. `items`가 변경될 때마다 `List`와 그 자식 컴포넌트는 먼저 오래된 `selection` 값으로 렌더링됩니다. 그런 다음 React는 DOM을 업데이트하고 Effects를 실행합니다. 마지막으로 `setSelection(null)` 호출은 `List`와 그 자식 컴포넌트를 다시 렌더링하여 이 전체 프로세스를 다시 시작합니다.
 
-Start by deleting the Effect. Instead, adjust the state directly during rendering:
+Effect를 삭제하십시오. 대신 렌더링 중에 상태를 직접 조정하십시오:
 
 ```js {5-11}
 function List({ items }) {
   const [isReverse, setIsReverse] = useState(false);
   const [selection, setSelection] = useState(null);
 
-  // Better: Adjust the state while rendering
+  // 더 나은 방법: 렌더링 중에 상태 조정
   const [prevItems, setPrevItems] = useState(items);
   if (items !== prevItems) {
     setPrevItems(items);
@@ -234,34 +234,35 @@ function List({ items }) {
 }
 ```
 
-[Storing information from previous renders](/reference/react/useState#storing-information-from-previous-renders) like this can be hard to understand, but it’s better than updating the same state in an Effect. In the above example, `setSelection` is called directly during a render. React will re-render the `List` *immediately* after it exits with a `return` statement. React has not rendered the `List` children or updated the DOM yet, so this lets the `List` children skip rendering the stale `selection` value.
+[이전 렌더링의 정보 저장](/reference/react/useState#storing-information-from-previous-renders)은 이해하기 어려울 수 있지만, Effect에서 동일한 상태를 업데이트하는 것보다 낫습니다. 위의 예에서 `setSelection`은 렌더링 중에 직접 호출됩니다. React는 `return` 문으로 종료된 직후 `List`를 *즉시* 다시 렌더링합니다. React는 아직 `List` 자식들을 렌더링하거나 DOM을 업데이트하지 않았으므로 `List` 자식들이 오래된 `selection` 값을 렌더링하는 것을 건너뛸 수 있습니다.
 
-When you update a component during rendering, React throws away the returned JSX and immediately retries rendering. To avoid very slow cascading retries, React only lets you update the *same* component's state during a render. If you update another component's state during a render, you'll see an error. A condition like `items !== prevItems` is necessary to avoid loops. You may adjust state like this, but any other side effects (like changing the DOM or setting timeouts) should stay in event handlers or Effects to [keep components pure.](/learn/keeping-components-pure)
+렌더링 중에 컴포넌트를 업데이트하면 React는 반환된 JSX를 버리고 즉시 렌더링을 다시 시도합니다. 매우 느린 연쇄 재시도를 피하기 위해 React는 렌더링 중에 *동일한* 컴포넌트의 상태만 업데이트할 수 있도록 합니다. 렌더링 중에 다른 컴포넌트의 상태를 업데이트하면 오류가 발생합니다. `items !== prevItems`와 같은 조건은 루프를 피하기 위해 필요합니다. 이렇게 상태를 조정할 수 있지만, DOM 변경 또는 타임아웃 설정과 같은 다른 부작용은 이벤트 핸들러 또는 Effects에 남겨두어 [컴포넌트를 순수하게 유지](/learn/keeping-components-pure)해야 합니다.
 
-**Although this pattern is more efficient than an Effect, most components shouldn't need it either.** No matter how you do it, adjusting state based on props or other state makes your data flow more difficult to understand and debug. Always check whether you can [reset all state with a key](#resetting-all-state-when-a-prop-changes) or [calculate everything during rendering](#updating-state-based-on-props-or-state) instead. For example, instead of storing (and resetting) the selected *item*, you can store the selected *item ID:*
+**이 패턴이 Effect보다 더 효율적이지만, 대부분의 컴포넌트는 이 패턴이 필요하지 않습니다.** 어떻게 하든지 간에, props 또는 다른 상태를 기반으로 상태를 조정하는 것은 데이터 흐름을 이해하고 디버그하기 어렵게 만듭니다. 항상 [키로 모든 상태를 재설정할 수 있는지](#resetting-all-state-when-a-prop-changes) 또는 [렌더링 중에 모든 것을 계산할 수 있는지](#updating-state-based-on-props-or-state) 확인하십시오. 예를 들어, 선택된 *항목*을 저장하고(및 재설정) 대신 선택된 *항목 ID*를 저장할 수 있습니다:
 
 ```js {3-5}
 function List({ items }) {
   const [isReverse, setIsReverse] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
-  // ✅ Best: Calculate everything during rendering
+  const [selectedId, setSelectedId] = useState
+(null);
+  // ✅ 최선: 렌더링 중에 모든 것을 계산
   const selection = items.find(item => item.id === selectedId) ?? null;
   // ...
 }
 ```
 
-Now there is no need to "adjust" the state at all. If the item with the selected ID is in the list, it remains selected. If it's not, the `selection` calculated during rendering will be `null` because no matching item was found. This behavior is different, but arguably better because most changes to `items` preserve the selection.
+이제 상태를 "조정"할 필요가 없습니다. 선택된 ID를 가진 항목이 목록에 있으면 선택된 상태로 유지됩니다. 그렇지 않으면 렌더링 중에 계산된 `selection`은 일치하는 항목이 없기 때문에 `null`이 됩니다. 이 동작은 다르지만, 대부분의 `items` 변경이 선택을 유지하기 때문에 더 나은 동작일 수 있습니다.
 
-### Sharing logic between event handlers {/*sharing-logic-between-event-handlers*/}
+### 이벤트 핸들러 간에 로직 공유하기 {/*sharing-logic-between-event-handlers*/}
 
-Let's say you have a product page with two buttons (Buy and Checkout) that both let you buy that product. You want to show a notification whenever the user puts the product in the cart. Calling `showNotification()` in both buttons' click handlers feels repetitive so you might be tempted to place this logic in an Effect:
+제품 페이지에 두 개의 버튼(구매 및 체크아웃)이 있다고 가정해 보겠습니다. 두 버튼 모두 해당 제품을 구매할 수 있습니다. 사용자가 제품을 장바구니에 넣을 때 알림을 표시하고 싶습니다. 두 버튼의 클릭 핸들러에서 `showNotification()`을 호출하는 것이 반복적으로 느껴질 수 있으므로 이 로직을 Effect에 넣고 싶을 수 있습니다:
 
 ```js {2-7}
 function ProductPage({ product, addToCart }) {
-  // 🔴 Avoid: Event-specific logic inside an Effect
+  // 🔴 피해야 할 것: 이벤트별 로직을 Effect 내부에 넣기
   useEffect(() => {
     if (product.isInCart) {
-      showNotification(`Added ${product.name} to the shopping cart!`);
+      showNotification(`${product.name}이(가) 장바구니에 추가되었습니다!`);
     }
   }, [product]);
 
@@ -277,16 +278,16 @@ function ProductPage({ product, addToCart }) {
 }
 ```
 
-This Effect is unnecessary. It will also most likely cause bugs. For example, let's say that your app "remembers" the shopping cart between the page reloads. If you add a product to the cart once and refresh the page, the notification will appear again. It will keep appearing every time you refresh that product's page. This is because `product.isInCart` will already be `true` on the page load, so the Effect above will call `showNotification()`.
+이 Effect는 불필요합니다. 또한 버그를 유발할 가능성이 큽니다. 예를 들어, 앱이 페이지를 새로 고침할 때 장바구니를 "기억"한다고 가정해 보겠습니다. 제품을 한 번 장바구니에 추가하고 페이지를 새로 고침하면 알림이 다시 나타납니다. 해당 제품의 페이지를 새로 고칠 때마다 계속 나타납니다. 이는 페이지 로드 시 `product.isInCart`가 이미 `true`이기 때문에 위의 Effect가 `showNotification()`을 호출하기 때문입니다.
 
-**When you're not sure whether some code should be in an Effect or in an event handler, ask yourself *why* this code needs to run. Use Effects only for code that should run *because* the component was displayed to the user.** In this example, the notification should appear because the user *pressed the button*, not because the page was displayed! Delete the Effect and put the shared logic into a function called from both event handlers:
+**코드가 Effect에 있어야 하는지 이벤트 핸들러에 있어야 하는지 확실하지 않은 경우, 이 코드가 실행되어야 하는 *이유*를 자문해 보십시오. 컴포넌트가 사용자에게 표시되었기 때문에 실행되어야 하는 코드에만 Effects를 사용하십시오.** 이 예에서는 알림이 표시되어야 하는 이유가 사용자가 *버튼을 눌렀기 때문*이지 페이지가 표시되었기 때문이 아닙니다! Effect를 삭제하고 공유 로직을 두 이벤트 핸들러에서 호출되는 함수에 넣으십시오:
 
 ```js {2-6,9,13}
 function ProductPage({ product, addToCart }) {
-  // ✅ Good: Event-specific logic is called from event handlers
+  // ✅ 좋음: 이벤트별 로직이 이벤트 핸들러에서 호출됨
   function buyProduct() {
     addToCart(product);
-    showNotification(`Added ${product.name} to the shopping cart!`);
+    showNotification(`${product.name}이(가) 장바구니에 추가되었습니다!`);
   }
 
   function handleBuyClick() {
@@ -301,23 +302,23 @@ function ProductPage({ product, addToCart }) {
 }
 ```
 
-This both removes the unnecessary Effect and fixes the bug.
+이렇게 하면 불필요한 Effect가 제거되고 버그가 수정됩니다.
 
-### Sending a POST request {/*sending-a-post-request*/}
+### POST 요청 보내기 {/*sending-a-post-request*/}
 
-This `Form` component sends two kinds of POST requests. It sends an analytics event when it mounts. When you fill in the form and click the Submit button, it will send a POST request to the `/api/register` endpoint:
+이 `Form` 컴포넌트는 두 가지 종류의 POST 요청을 보냅니다. 마운트될 때 분석 이벤트를 보냅니다. 양식을 작성하고 제출 버튼을 클릭하면 `/api/register` 엔드포인트에 POST 요청을 보냅니다:
 
 ```js {5-8,10-16}
 function Form() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  // ✅ Good: This logic should run because the component was displayed
+  // ✅ 좋음: 이 로직은 컴포넌트가 표시되었기 때문에 실행되어야 합니다.
   useEffect(() => {
     post('/analytics/event', { eventName: 'visit_form' });
   }, []);
 
-  // 🔴 Avoid: Event-specific logic inside an Effect
+  // 🔴 피해야 할 것: 이벤트별 로직을 Effect 내부에 넣기
   const [jsonToSubmit, setJsonToSubmit] = useState(null);
   useEffect(() => {
     if (jsonToSubmit !== null) {
@@ -333,36 +334,36 @@ function Form() {
 }
 ```
 
-Let's apply the same criteria as in the example before.
+앞의 예와 동일한 기준을 적용해 보겠습니다.
 
-The analytics POST request should remain in an Effect. This is because the _reason_ to send the analytics event is that the form was displayed. (It would fire twice in development, but [see here](/learn/synchronizing-with-effects#sending-analytics) for how to deal with that.)
+분석 POST 요청은 Effect에 남아 있어야 합니다. 이는 양식이 표시되었기 때문에 분석 이벤트를 보내야 하기 때문입니다. (개발 중에는 두 번 실행되지만, [여기](/learn/synchronizing-with-effects#sending-analytics)에서 이를 처리하는 방법을 참조하십시오.)
 
-However, the `/api/register` POST request is not caused by the form being _displayed_. You only want to send the request at one specific moment in time: when the user presses the button. It should only ever happen _on that particular interaction_. Delete the second Effect and move that POST request into the event handler:
+그러나 `/api/register` POST 요청은 양식이 *표시되었기* 때문에 발생하는 것이 아닙니다. 특정 순간에만 요청을 보내고 싶습니다: 사용자가 버튼을 눌렀을 때. 특정 상호작용에서만 발생해야 합니다. 두 번째 Effect를 삭제하고 해당 POST 요청을 이벤트 핸들러로 이동하십시오:
 
 ```js {12-13}
 function Form() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  // ✅ Good: This logic runs because the component was displayed
+  // ✅ 좋음: 이 로직은 컴포넌트가 표시되었기 때문에 실행됩니다.
   useEffect(() => {
     post('/analytics/event', { eventName: 'visit_form' });
   }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
-    // ✅ Good: Event-specific logic is in the event handler
+    // ✅ 좋음: 이벤트별 로직이 이벤트 핸들러에 있습니다.
     post('/api/register', { firstName, lastName });
   }
   // ...
 }
 ```
 
-When you choose whether to put some logic into an event handler or an Effect, the main question you need to answer is _what kind of logic_ it is from the user's perspective. If this logic is caused by a particular interaction, keep it in the event handler. If it's caused by the user _seeing_ the component on the screen, keep it in the Effect.
+로직을 이벤트 핸들러에 넣을지 Effect에 넣을지 선택할 때, 사용자의 관점에서 *어떤 종류의 로직*인지가 주요 질문입니다. 이 로직이 특정 상호작용에 의해 발생하는 경우, 이벤트 핸들러에 유지하십시오. 사용자가 컴포넌트를 화면에서 *보았기* 때문에 발생하는 경우, Effect에 유지하십시오.
 
-### Chains of computations {/*chains-of-computations*/}
+### 계산 체인 {/*chains-of-computations*/}
 
-Sometimes you might feel tempted to chain Effects that each adjust a piece of state based on other state:
+때때로 각 상태를 다른 상태에 따라 조정하는 Effect 체인을 작성하고 싶을 수 있습니다:
 
 ```js {7-29}
 function Game() {
@@ -371,7 +372,7 @@ function Game() {
   const [round, setRound] = useState(1);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  // 🔴 Avoid: Chains of Effects that adjust the state solely to trigger each other
+  // 🔴 피해야 할 것: 서로를 트리거하기 위해 상태를 조정하는 Effect 체인
   useEffect(() => {
     if (card !== null && card.gold) {
       setGoldCardCount(c => c + 1);
@@ -406,13 +407,13 @@ function Game() {
   // ...
 ```
 
-There are two problems with this code.
+이 코드에는 두 가지 문제가 있습니다.
 
-One problem is that it is very inefficient: the component (and its children) have to re-render between each `set` call in the chain. In the example above, in the worst case (`setCard` → render → `setGoldCardCount` → render → `setRound` → render → `setIsGameOver` → render) there are three unnecessary re-renders of the tree below.
+하나는 매우 비효율적이라는 것입니다: 체인에서 각 `set` 호출 사이에 컴포넌트(및 자식들)가 다시 렌더링되어야 합니다. 위의 예에서 최악의 경우(`setCard` → 렌더링 → `setGoldCardCount` → 렌더링 → `setRound` → 렌더링 → `setIsGameOver` → 렌더링) 트리 아래의 세 번의 불필요한 다시 렌더링이 발생합니다.
 
-Even if it weren't slow, as your code evolves, you will run into cases where the "chain" you wrote doesn't fit the new requirements. Imagine you are adding a way to step through the history of the game moves. You'd do it by updating each state variable to a value from the past. However, setting the `card` state to a value from the past would trigger the Effect chain again and change the data you're showing. Such code is often rigid and fragile.
+느리지 않더라도 코드가 발전함에 따라 작성한 "체인"이 새로운 요구 사항에 맞지 않는 경우가 발생할 것입니다. 게임 이동의 역사를 단계별로 볼 수 있는 방법을 추가한다고 상상해 보십시오. 각 상태 변수를 과거의 값으로 업데이트하여 수행할 것입니다. 그러나 `card` 상태를 과거의 값으로 설정하면 Effect 체인이 다시 트리거되어 표시하는 데이터가 변경됩니다. 이러한 코드는 종종 경직되고 취약합니다.
 
-In this case, it's better to calculate what you can during rendering, and adjust the state in the event handler:
+이 경우 렌더링 중에 계산할 수 있는 것을 계산하고 이벤트 핸들러에서 상태를 조정하는 것이 좋습니다:
 
 ```js {6-7,14-26}
 function Game() {
@@ -420,7 +421,7 @@ function Game() {
   const [goldCardCount, setGoldCardCount] = useState(0);
   const [round, setRound] = useState(1);
 
-  // ✅ Calculate what you can during rendering
+  // ✅ 렌더링 중에 계산할 수 있는 것을 계산
   const isGameOver = round > 5;
 
   function handlePlaceCard(nextCard) {
@@ -428,7 +429,7 @@ function Game() {
       throw Error('Game already ended.');
     }
 
-    // ✅ Calculate all the next state in the event handler
+    // ✅ 이벤트 핸들러에서 모든 다음 상태를 계산
     setCard(nextCard);
     if (nextCard.gold) {
       if (goldCardCount <= 3) {
@@ -446,21 +447,21 @@ function Game() {
   // ...
 ```
 
-This is a lot more efficient. Also, if you implement a way to view game history, now you will be able to set each state variable to a move from the past without triggering the Effect chain that adjusts every other value. If you need to reuse logic between several event handlers, you can [extract a function](#sharing-logic-between-event-handlers) and call it from those handlers.
+이것은 훨씬 더 효율적입니다. 또한 게임 역사를 볼 수 있는 방법을 구현하면 이제 Effect 체인을 트리거하지 않고 각 상태 변수를 과거의 이동으로 설정할 수 있습니다. 여러 이벤트 핸들러 간에 로직을 재사용해야 하는 경우, [함수를 추출](#sharing-logic-between-event-handlers)하고 해당 핸들러에서 호출할 수 있습니다.
 
-Remember that inside event handlers, [state behaves like a snapshot.](/learn/state-as-a-snapshot) For example, even after you call `setRound(round + 1)`, the `round` variable will reflect the value at the time the user clicked the button. If you need to use the next value for calculations, define it manually like `const nextRound = round + 1`.
+이벤트 핸들러 내부에서 [상태는 스냅샷처럼 동작](/learn/state-as-a-snapshot)한다는 점을 기억하십시오. 예를 들어, `setRound(round + 1)`을 호출한 후에도 `round` 변수는 사용자가 버튼을 클릭한 시점의 값을 반영합니다. 계산에 다음 값을 사용해야 하는 경우, `const nextRound = round + 1`과 같이 수동으로 정의하십시오.
 
-In some cases, you *can't* calculate the next state directly in the event handler. For example, imagine a form with multiple dropdowns where the options of the next dropdown depend on the selected value of the previous dropdown. Then, a chain of Effects is appropriate because you are synchronizing with network.
+일부 경우에는 이벤트 핸들러에서 직접 다음 상태를 계산할 수 없습니다. 예를 들어, 이전 드롭다운의 선택된 값에 따라 다음 드롭다운의 옵션이 달라지는 여러 드롭다운이 있는 양식을 상상해 보십시오. 그런 경우, 네트워크와 동기화하기 때문에 Effect 체인이 적절합니다.
 
-### Initializing the application {/*initializing-the-application*/}
+### 애플리케이션 초기화 {/*initializing-the-application*/}
 
-Some logic should only run once when the app loads.
+일부 로직은 앱이 로드될 때 한 번만 실행되어야 합니다.
 
-You might be tempted to place it in an Effect in the top-level component:
+최상위 컴포넌트의 Effect에 넣고 싶을 수 있습니다:
 
 ```js {2-6}
 function App() {
-  // 🔴 Avoid: Effects with logic that should only ever run once
+  // 🔴 피해야 할 것: 한 번만 실행되어야 하는 로직이 있는 Effects
   useEffect(() => {
     loadDataFromLocalStorage();
     checkAuthToken();
@@ -469,9 +470,9 @@ function App() {
 }
 ```
 
-However, you'll quickly discover that it [runs twice in development.](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) This can cause issues--for example, maybe it invalidates the authentication token because the function wasn't designed to be called twice. In general, your components should be resilient to being remounted. This includes your top-level `App` component.
+그러나 개발 중에 [두 번 실행된다는 것을](/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) 빠르게 발견할 것입니다. 이는 문제를 일으킬 수 있습니다. 예를 들어, 함수가 두 번 호출되도록 설계되지 않은 경우 인증 토큰을 무효화할 수 있습니다. 일반적으로 컴포넌트는 다시 마운트되는 것에 대해 탄력적이어야 합니다. 여기에는 최상위 `App` 컴포넌트도 포함됩니다.
 
-Although it may not ever get remounted in practice in production, following the same constraints in all components makes it easier to move and reuse code. If some logic must run *once per app load* rather than *once per component mount*, add a top-level variable to track whether it has already executed:
+실제로 프로덕션에서 다시 마운트되지 않을 수 있지만, 모든 컴포넌트에서 동일한 제약을 따르는 것은 코드 이동 및 재사용을 더 쉽게 만듭니다. *앱 로드당 한 번* 실행되어야 하는 로직이 *컴포넌트 마운트당 한 번* 실행되어야 하는 로직이 아니라면, 이미 실행되었는지 추적하기 위해 최상위 변수를 추가하십시오:
 
 ```js {1,5-6,10}
 let didInit = false;
@@ -480,7 +481,7 @@ function App() {
   useEffect(() => {
     if (!didInit) {
       didInit = true;
-      // ✅ Only runs once per app load
+      // ✅ 앱 로드당 한 번만 실행됨
       loadDataFromLocalStorage();
       checkAuthToken();
     }
@@ -489,11 +490,11 @@ function App() {
 }
 ```
 
-You can also run it during module initialization and before the app renders:
+또는 모듈 초기화 중에 앱이 렌더링되기 전에 실행할 수 있습니다:
 
 ```js {1,5}
-if (typeof window !== 'undefined') { // Check if we're running in the browser.
-   // ✅ Only runs once per app load
+if (typeof window !== 'undefined') { // 브라우저에서 실행 중인지 확인합니다.
+   // ✅ 앱 로드당 한 번만 실행됨
   checkAuthToken();
   loadDataFromLocalStorage();
 }
@@ -503,17 +504,17 @@ function App() {
 }
 ```
 
-Code at the top level runs once when your component is imported--even if it doesn't end up being rendered. To avoid slowdown or surprising behavior when importing arbitrary components, don't overuse this pattern. Keep app-wide initialization logic to root component modules like `App.js` or in your application's entry point.
+최상위 코드가 컴포넌트가 가져올 때 한 번 실행됩니다. 렌더링되지 않더라도. 임의의 컴포넌트를 가져올 때 느려지거나 놀라운 동작을 피하기 위해 이 패턴을 과도하게 사용하지 마십시오. 앱 전체 초기화 로직을 `App.js`와 같은 루트 컴포넌트 모듈이나 애플리케이션의 진입점에 유지하십시오.
 
-### Notifying parent components about state changes {/*notifying-parent-components-about-state-changes*/}
+### 상태 변경에 대해 부모 컴포넌트에 알리기 {/*notifying-parent-components-about-state-changes*/}
 
-Let's say you're writing a `Toggle` component with an internal `isOn` state which can be either `true` or `false`. There are a few different ways to toggle it (by clicking or dragging). You want to notify the parent component whenever the `Toggle` internal state changes, so you expose an `onChange` event and call it from an Effect:
+`isOn` 상태가 `true` 또는 `false`일 수 있는 내부 `isOn` 상태를 가진 `Toggle` 컴포넌트를 작성한다고 가정해 보겠습니다. 클릭하거나 드래그하여 토글할 수 있는 몇 가지 방법이 있습니다. `Toggle` 내부 상태가 변경될 때마다 부모 컴포넌트에 알리고 싶습니다. 그래서 `onChange` 이벤트를 노출하고 Effect에서 호출합니다:
 
 ```js {4-7}
 function Toggle({ onChange }) {
   const [isOn, setIsOn] = useState(false);
 
-  // 🔴 Avoid: The onChange handler runs too late
+  // 🔴 피해야 할 것: onChange 핸들러가 너무 늦게 실행됨
   useEffect(() => {
     onChange(isOn);
   }, [isOn, onChange])
@@ -534,16 +535,16 @@ function Toggle({ onChange }) {
 }
 ```
 
-Like earlier, this is not ideal. The `Toggle` updates its state first, and React updates the screen. Then React runs the Effect, which calls the `onChange` function passed from a parent component. Now the parent component will update its own state, starting another render pass. It would be better to do everything in a single pass.
+앞서와 마찬가지로, 이것은 이상적이지 않습니다. `Toggle`은 먼저 상태를 업데이트하고, React는 화면을 업데이트합니다. 그런 다음 React는 Effect를 실행하여 부모 컴포넌트에서 전달된 `onChange` 함수를 호출합니다. 이제 부모 컴포넌트는 자신의 상태를 업데이트하여 또 다른 렌더링 패스를 시작합니다. 한 번에 모든 작업을 수행하는 것이 좋습니다.
 
-Delete the Effect and instead update the state of *both* components within the same event handler:
+Effect를 삭제하고 이벤트 핸들러 내에서 *두* 컴포넌트의 상태를 업데이트하십시오:
 
 ```js {5-7,11,16,18}
 function Toggle({ onChange }) {
   const [isOn, setIsOn] = useState(false);
 
   function updateToggle(nextIsOn) {
-    // ✅ Good: Perform all updates during the event that caused them
+    // ✅ 좋음: 이벤트를 발생시킨 동안 모든 업데이트 수행
     setIsOn(nextIsOn);
     onChange(nextIsOn);
   }
@@ -564,12 +565,12 @@ function Toggle({ onChange }) {
 }
 ```
 
-With this approach, both the `Toggle` component and its parent component update their state during the event. React [batches updates](/learn/queueing-a-series-of-state-updates) from different components together, so there will only be one render pass.
+이 접근 방식에서는 `Toggle` 컴포넌트와 부모 컴포넌트가 이벤트 동안 상태를 업데이트합니다. React는 [다른 컴포넌트의 업데이트를 일괄 처리](/learn/queueing-a-series-of-state-updates)하므로 렌더링 패스는 한 번만 발생합니다.
 
-You might also be able to remove the state altogether, and instead receive `isOn` from the parent component:
+상태를 완전히 제거하고 부모 컴포넌트에서 `isOn`을 받는 것도 가능합니다:
 
 ```js {1,2}
-// ✅ Also good: the component is fully controlled by its parent
+// ✅ 또한 좋음: 컴포넌트가 부모에 의해 완전히 제어됨
 function Toggle({ isOn, onChange }) {
   function handleClick() {
     onChange(!isOn);
@@ -587,11 +588,11 @@ function Toggle({ isOn, onChange }) {
 }
 ```
 
-["Lifting state up"](/learn/sharing-state-between-components) lets the parent component fully control the `Toggle` by toggling the parent's own state. This means the parent component will have to contain more logic, but there will be less state overall to worry about. Whenever you try to keep two different state variables synchronized, try lifting state up instead!
+["상태 올리기"](/learn/sharing-state-between-components)를 통해 부모 컴포넌트가 자신의 상태를 토글하여 `Toggle`을 완전히 제어할 수 있습니다. 이는 부모 컴포넌트가 더 많은 로직을 포함해야 함을 의미하지만, 전체적으로 걱정할 상태가 줄어듭니다. 서로 다른 컴포넌트의 두 상태 변수를 동기화하려고 할 때마다 상태를 올리는 것을 고려하십시오!
 
-### Passing data to the parent {/*passing-data-to-the-parent*/}
+### 부모에게 데이터 전달하기 {/*passing-data-to-the-parent*/}
 
-This `Child` component fetches some data and then passes it to the `Parent` component in an Effect:
+이 `Child` 컴포넌트는 일부 데이터를 가져온 다음 Effect에서 `Parent` 컴포넌트에 전달합니다:
 
 ```js {9-14}
 function Parent() {
@@ -602,7 +603,7 @@ function Parent() {
 
 function Child({ onFetched }) {
   const data = useSomeAPI();
-  // 🔴 Avoid: Passing data to the parent in an Effect
+  // 🔴 피해야 할 것: Effect에서 부모에게 데이터 전달
   useEffect(() => {
     if (data) {
       onFetched(data);
@@ -612,13 +613,14 @@ function Child({ onFetched }) {
 }
 ```
 
-In React, data flows from the parent components to their children. When you see something wrong on the screen, you can trace where the information comes from by going up the component chain until you find which component passes the wrong prop or has the wrong state. When child components update the state of their parent components in Effects, the data flow becomes very difficult to trace. Since both the child and the parent need the same data, let the parent component fetch that data, and *pass it down* to the child instead:
+React에서는 데이터가 부모 컴포넌트에서 자식 컴포넌트로 흐릅니다. 화면에 잘못된 것이 보이면, 정보가 어디에서 왔는지 추적할 수 있습니다. 잘못된 prop을 전달하거나 잘못된 상태를 가진 컴포넌트를 찾을 때까지 컴포넌트 체인을 따라 올라갑니다. 자식 컴포넌트가 Effect에서 부모 컴포넌트의 상태를 업데이트하면 데이터 흐
+름을 추적하기가 매우 어려워집니다. 자식 컴포넌트와 부모 컴포넌트가 동일한 데이터를 필요로 하는 경우, 부모 컴포넌트가 해당 데이터를 가져오고 *자식에게 전달*하도록 하십시오:
 
 ```js {4-5}
 function Parent() {
   const data = useSomeAPI();
   // ...
-  // ✅ Good: Passing data down to the child
+  // ✅ 좋음: 자식에게 데이터를 전달
   return <Child data={data} />;
 }
 
@@ -627,15 +629,15 @@ function Child({ data }) {
 }
 ```
 
-This is simpler and keeps the data flow predictable: the data flows down from the parent to the child.
+이것은 더 간단하고 데이터 흐름을 예측 가능하게 유지합니다: 데이터는 부모에서 자식으로 흐릅니다.
 
-### Subscribing to an external store {/*subscribing-to-an-external-store*/}
+### 외부 스토어 구독 {/*subscribing-to-an-external-store*/}
 
-Sometimes, your components may need to subscribe to some data outside of the React state. This data could be from a third-party library or a built-in browser API. Since this data can change without React's knowledge, you need to manually subscribe your components to it. This is often done with an Effect, for example:
+때때로 컴포넌트는 React 상태 외부의 일부 데이터에 구독해야 할 수 있습니다. 이 데이터는 서드파티 라이브러리 또는 내장 브라우저 API에서 올 수 있습니다. 이 데이터는 React의 인식 없이 변경될 수 있으므로, 수동으로 컴포넌트를 구독해야 합니다. 이는 종종 Effect로 수행됩니다. 예를 들어:
 
 ```js {2-17}
 function useOnlineStatus() {
-  // Not ideal: Manual store subscription in an Effect
+  // 이상적이지 않음: Effect에서 수동 스토어 구독
   const [isOnline, setIsOnline] = useState(true);
   useEffect(() => {
     function updateState() {
@@ -660,9 +662,9 @@ function ChatIndicator() {
 }
 ```
 
-Here, the component subscribes to an external data store (in this case, the browser `navigator.onLine` API). Since this API does not exist on the server (so it can't be used for the initial HTML), initially the state is set to `true`. Whenever the value of that data store changes in the browser, the component updates its state.
+여기서 컴포넌트는 외부 데이터 스토어(이 경우 브라우저 `navigator.onLine` API)에 구독합니다. 이 API는 서버에 존재하지 않으므로(따라서 초기 HTML에는 사용할 수 없음), 초기 상태는 `true`로 설정됩니다. 브라우저에서 해당 데이터 스토어의 값이 변경될 때마다 컴포넌트는 상태를 업데이트합니다.
 
-Although it's common to use Effects for this, React has a purpose-built Hook for subscribing to an external store that is preferred instead. Delete the Effect and replace it with a call to [`useSyncExternalStore`](/reference/react/useSyncExternalStore):
+이것은 일반적으로 Effect를 사용하여 수행되지만, React에는 외부 스토어에 구독하기 위한 목적에 맞는 Hook이 있습니다. Effect를 삭제하고 [`useSyncExternalStore`](/reference/react/useSyncExternalStore) 호출로 대체하십시오:
 
 ```js {11-16}
 function subscribe(callback) {
@@ -675,11 +677,11 @@ function subscribe(callback) {
 }
 
 function useOnlineStatus() {
-  // ✅ Good: Subscribing to an external store with a built-in Hook
+  // ✅ 좋음: 내장 Hook으로 외부 스토어에 구독
   return useSyncExternalStore(
-    subscribe, // React won't resubscribe for as long as you pass the same function
-    () => navigator.onLine, // How to get the value on the client
-    () => true // How to get the value on the server
+    subscribe, // 동일한 함수를 전달하는 한 React는 다시 구독하지 않습니다.
+    () => navigator.onLine, // 클라이언트에서 값을 얻는 방법
+    () => true // 서버에서 값을 얻는 방법
   );
 }
 
@@ -689,11 +691,11 @@ function ChatIndicator() {
 }
 ```
 
-This approach is less error-prone than manually syncing mutable data to React state with an Effect. Typically, you'll write a custom Hook like `useOnlineStatus()` above so that you don't need to repeat this code in the individual components. [Read more about subscribing to external stores from React components.](/reference/react/useSyncExternalStore)
+이 접근 방식은 Effect로 가변 데이터를 React 상태와 수동으로 동기화하는 것보다 오류가 적습니다. 일반적으로 `useOnlineStatus()`와 같은 커스텀 Hook을 작성하여 개별 컴포넌트에서 이 코드를 반복할 필요가 없도록 합니다. [React 컴포넌트에서 외부 스토어에 구독하는 방법에 대해 자세히 알아보십시오.](/reference/react/useSyncExternalStore)
 
-### Fetching data {/*fetching-data*/}
+### 데이터 가져오기 {/*fetching-data*/}
 
-Many apps use Effects to kick off data fetching. It is quite common to write a data fetching Effect like this:
+많은 앱이 데이터를 가져오기 위해 Effects를 사용합니다. 데이터 가져오기 Effect를 다음과 같이 작성하는 것이 일반적입니다:
 
 ```js {5-10}
 function SearchResults({ query }) {
@@ -701,7 +703,7 @@ function SearchResults({ query }) {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    // 🔴 Avoid: Fetching without cleanup logic
+    // 🔴 피해야 할 것: 정리 로직 없이 데이터 가져오기
     fetchResults(query, page).then(json => {
       setResults(json);
     });
@@ -714,15 +716,15 @@ function SearchResults({ query }) {
 }
 ```
 
-You *don't* need to move this fetch to an event handler.
+이 데이터를 이벤트 핸들러로 이동할 필요는 없습니다.
 
-This might seem like a contradiction with the earlier examples where you needed to put the logic into the event handlers! However, consider that it's not *the typing event* that's the main reason to fetch. Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
+이전 예제에서 로직을 이벤트 핸들러에 넣어야 했던 것과 모순처럼 보일 수 있습니다! 그러나 *타이핑 이벤트*가 데이터를 가져오는 주된 이유가 아니라는 점을 고려하십시오. 검색 입력은 종종 URL에서 미리 채워지며, 사용자는 입력을 건드리지 않고 뒤로 및 앞으로 탐색할 수 있습니다.
 
-It doesn't matter where `page` and `query` come from. While this component is visible, you want to keep `results` [synchronized](/learn/synchronizing-with-effects) with data from the network for the current `page` and `query`. This is why it's an Effect.
+`page`와 `query`가 어디에서 왔는지는 중요하지 않습니다. 이 컴포넌트가 표시되는 동안, 현재 `page`와 `query`에 대한 데이터를 네트워크에서 가져와 `results`를 [동기화](/learn/synchronizing-with-effects)하고 싶습니다. 이것이 Effect인 이유입니다.
 
-However, the code above has a bug. Imagine you type `"hello"` fast. Then the `query` will change from `"h"`, to `"he"`, `"hel"`, `"hell"`, and `"hello"`. This will kick off separate fetches, but there is no guarantee about which order the responses will arrive in. For example, the `"hell"` response may arrive *after* the `"hello"` response. Since it will call `setResults()` last, you will be displaying the wrong search results. This is called a ["race condition"](https://en.wikipedia.org/wiki/Race_condition): two different requests "raced" against each other and came in a different order than you expected.
+그러나 위의 코드에는 버그가 있습니다. "hello"를 빠르게 입력한다고 상상해 보십시오. 그러면 `query`는 "h", "he", "hel", "hell", "hello"로 변경됩니다. 이는 별도의 fetch를 시작하지만, 응답이 도착하는 순서에 대한 보장은 없습니다. 예를 들어, "hell" 응답이 "hello" 응답 *후에* 도착할 수 있습니다. 마지막으로 `setResults()`를 호출하므로 잘못된 검색 결과를 표시하게 됩니다. 이를 "경쟁 조건"(race condition)이라고 합니다: 두 개의 다른 요청이 서로 "경쟁"하여 예상과 다른 순서로 도착했습니다.
 
-**To fix the race condition, you need to [add a cleanup function](/learn/synchronizing-with-effects#fetching-data) to ignore stale responses:**
+**경쟁 조건을 해결하려면 정리 함수를 추가하여 오래된 응답을 무시해야 합니다:**
 
 ```js {5,7,9,11-13}
 function SearchResults({ query }) {
@@ -747,13 +749,13 @@ function SearchResults({ query }) {
 }
 ```
 
-This ensures that when your Effect fetches data, all responses except the last requested one will be ignored.
+이렇게 하면 Effect가 데이터를 가져올 때 마지막으로 요청된 응답을 제외한 모든 응답이 무시됩니다.
 
-Handling race conditions is not the only difficulty with implementing data fetching. You might also want to think about caching responses (so that the user can click Back and see the previous screen instantly), how to fetch data on the server (so that the initial server-rendered HTML contains the fetched content instead of a spinner), and how to avoid network waterfalls (so that a child can fetch data without waiting for every parent).
+경쟁 조건을 처리하는 것만이 데이터 가져오기를 구현하는 데 어려운 점은 아닙니다. 응답을 캐시하여(사용자가 뒤로 클릭하면 이전 화면이 즉시 표시되도록), 서버에서 데이터를 가져오는 방법(초기 서버 렌더링된 HTML이 스피너 대신 가져온 콘텐츠를 포함하도록), 네트워크 워터폴을 피하는 방법(모든 부모가 기다리지 않고 자식이 데이터를 가져올 수 있도록)도 고려해야 할 수 있습니다.
 
-**These issues apply to any UI library, not just React. Solving them is not trivial, which is why modern [frameworks](/learn/start-a-new-react-project#production-grade-react-frameworks) provide more efficient built-in data fetching mechanisms than fetching data in Effects.**
+**이 문제는 React뿐만 아니라 모든 UI 라이브러리에 적용됩니다. 이를 해결하는 것은 간단하지 않기 때문에 최신 [프레임워크](/learn/start-a-new-react-project#production-grade-react-frameworks)는 Effect에서 데이터를 가져오는 것보다 더 효율적인 내장 데이터 가져오기 메커니즘을 제공합니다.**
 
-If you don't use a framework (and don't want to build your own) but would like to make data fetching from Effects more ergonomic, consider extracting your fetching logic into a custom Hook like in this example:
+프레임워크를 사용하지 않거나(또는 자체적으로 구축하지 않으려는 경우) Effect에서 데이터를 가져오는 것을 더 편리하게 만들고 싶다면, 다음 예제와 같이 커스텀 Hook으로 가져오기 로직을 추출하는 것을 고려하십시오:
 
 ```js {4}
 function SearchResults({ query }) {
@@ -786,30 +788,30 @@ function useData(url) {
 }
 ```
 
-You'll likely also want to add some logic for error handling and to track whether the content is loading. You can build a Hook like this yourself or use one of the many solutions already available in the React ecosystem. **Although this alone won't be as efficient as using a framework's built-in data fetching mechanism, moving the data fetching logic into a custom Hook will make it easier to adopt an efficient data fetching strategy later.**
+오류 처리 로직을 추가하고 콘텐츠가 로드 중인지 추적하는 로직도 추가하고 싶을 것입니다. 이러한 Hook을 직접 작성하거나 React 생태계에서 이미 사용 가능한 솔루션 중 하나를 사용할 수 있습니다. **이것만으로는 프레임워크의 내장 데이터 가져오기 메커니즘을 사용하는 것만큼 효율적이지 않지만, 커스텀 Hook으로 데이터 가져오기 로직을 이동하면 나중에 효율적인 데이터 가져오기 전략을 채택하기가 더 쉬워집니다.**
 
-In general, whenever you have to resort to writing Effects, keep an eye out for when you can extract a piece of functionality into a custom Hook with a more declarative and purpose-built API like `useData` above. The fewer raw `useEffect` calls you have in your components, the easier you will find to maintain your application.
+일반적으로, Effect를 작성해야 할 때마다, `useData`와 같은 더 선언적이고 목적에 맞는 API를 가진 커스텀 Hook으로 기능을 추출할 수 있는지 주의하십시오. 컴포넌트에서 원시 `useEffect` 호출이 적을수록 애플리케이션을 유지 관리하기가 더 쉬워질 것입니다.
 
 <Recap>
 
-- If you can calculate something during render, you don't need an Effect.
-- To cache expensive calculations, add `useMemo` instead of `useEffect`.
-- To reset the state of an entire component tree, pass a different `key` to it.
-- To reset a particular bit of state in response to a prop change, set it during rendering.
-- Code that runs because a component was *displayed* should be in Effects, the rest should be in events.
-- If you need to update the state of several components, it's better to do it during a single event.
-- Whenever you try to synchronize state variables in different components, consider lifting state up.
-- You can fetch data with Effects, but you need to implement cleanup to avoid race conditions.
+- 렌더링 중에 무언가를 계산할 수 있다면, Effect가 필요하지 않습니다.
+- 비용이 많이 드는 계산을 캐시하려면 `useEffect` 대신 `useMemo`를 추가하십시오.
+- 전체 컴포넌트 트리의 상태를 재설정하려면 다른 `key`를 전달하십시오.
+- prop 변경에 응답하여 특정 상태를 재설정하려면 렌더링 중에 설정하십시오.
+- 컴포넌트가 *표시되었기* 때문에 실행되는 코드는 Effects에 있어야 하고, 나머지는 이벤트에 있어야 합니다.
+- 여러 컴포넌트의 상태를 업데이트해야 하는 경우, 단일 이벤트 동안 업데이트하는 것이 좋습니다.
+- 서로 다른 컴포넌트의 상태 변수를 동기화하려고 할 때마다 상태를 올리는 것을 고려하십시오.
+- Effect로 데이터를 가져올 수 있지만, 경쟁 조건을 피하기 위해 정리를 구현해야 합니다.
 
 </Recap>
 
 <Challenges>
 
-#### Transform data without Effects {/*transform-data-without-effects*/}
+#### Effects 없이 데이터 변환 {/*transform-data-without-effects*/}
 
-The `TodoList` below displays a list of todos. When the "Show only active todos" checkbox is ticked, completed todos are not displayed in the list. Regardless of which todos are visible, the footer displays the count of todos that are not yet completed.
+아래의 `TodoList`는 할 일 목록을 표시합니다. "활성 할 일만 표시" 체크박스를 선택하면 완료된 할 일이 목록에 표시되지 않습니다. 표시되는 할 일과 상관없이, 푸터는 아직 완료되지 않은 할 일의 수를 표시합니다.
 
-Simplify this component by removing all the unnecessary state and Effects.
+모든 불필요한 상태와 Effects를 제거하여 이 컴포넌트를 단순화하십시오.
 
 <Sandpack>
 
@@ -909,15 +911,15 @@ input { margin-top: 10px; }
 
 <Hint>
 
-If you can calculate something during rendering, you don't need state or an Effect that updates it.
+렌더링 중에 무언가를 계산할 수 있다면, 상태나 이를 업데이트하는 Effect가 필요하지 않습니다.
 
 </Hint>
 
 <Solution>
 
-There are only two essential pieces of state in this example: the list of `todos` and the `showActive` state variable which represents whether the checkbox is ticked. All of the other state variables are [redundant](/learn/choosing-the-state-structure#avoid-redundant-state) and can be calculated during rendering instead. This includes the `footer` which you can move directly into the surrounding JSX.
+이 예제에서 필수적인 상태는 두 가지뿐입니다: `todos` 목록과 체크박스가 선택되었는지를 나타내는 `showActive` 상태 변수입니다. 나머지 상태 변수는 [중복](/learn/choosing-the-state-structure#avoid-redundant-state)이며, 대신 렌더링 중에 계산할 수 있습니다. 여기에는 푸터도 포함되며, 이를 주변 JSX로 직접 이동할 수 있습니다.
 
-Your result should end up looking like this:
+결과는 다음과 같아야 합니다:
 
 <Sandpack>
 
@@ -1002,15 +1004,15 @@ input { margin-top: 10px; }
 
 </Solution>
 
-#### Cache a calculation without Effects {/*cache-a-calculation-without-effects*/}
+#### Effects 없이 계산 캐시하기 {/*cache-a-calculation-without-effects*/}
 
-In this example, filtering the todos was extracted into a separate function called `getVisibleTodos()`. This function contains a `console.log()` call inside of it which helps you notice when it's being called. Toggle "Show only active todos" and notice that it causes `getVisibleTodos()` to re-run. This is expected because visible todos change when you toggle which ones to display.
+이 예제에서는 할 일을 필터링하는 작업이 `getVisibleTodos()`라는 별도의 함수로 추출되었습니다. 이 함수에는 호출될 때마다 로그를 출력하는 `console.log()` 호출이 포함되어 있습니다. "활성 할 일만 표시"를 토글하면 `getVisibleTodos()`가 다시 실행됩니다. 이는 표시할 할 일이 변경되기 때문에 예상된 것입니다.
 
-Your task is to remove the Effect that recomputes the `visibleTodos` list in the `TodoList` component. However, you need to make sure that `getVisibleTodos()` does *not* re-run (and so does not print any logs) when you type into the input.
+당신의 과제는 `TodoList` 컴포넌트에서 `visibleTodos` 목록을 다시 계산하는 Effect를 제거하는 것입니다. 그러나 `getVisibleTodos()`가 다시 실행되지 않도록(따라서 로그가 출력되지 않도록) 해야 합니다.
 
 <Hint>
 
-One solution is to add a `useMemo` call to cache the visible todos. There is also another, less obvious solution.
+하나의 해결책은 `useMemo` 호출을 추가하여 표시할 할 일을 캐시하는 것입니다. 또 다른 덜 명백한 해결책도 있습니다.
 
 </Hint>
 
@@ -1066,7 +1068,7 @@ let nextId = 0;
 let calls = 0;
 
 export function getVisibleTodos(todos, showActive) {
-  console.log(`getVisibleTodos() was called ${++calls} times`);
+  console.log(`getVisibleTodos()가 ${++calls}번 호출되었습니다`);
   const activeTodos = todos.filter(todo => !todo.completed);
   const visibleTodos = showActive ? activeTodos : todos;
   return visibleTodos;
@@ -1088,7 +1090,7 @@ export const initialTodos = [
 ```
 
 ```css
-label { display: block; }
+label { display: block;}
 input { margin-top: 10px; }
 ```
 
@@ -1096,7 +1098,7 @@ input { margin-top: 10px; }
 
 <Solution>
 
-Remove the state variable and the Effect, and instead add a `useMemo` call to cache the result of calling `getVisibleTodos()`:
+상태 변수와 Effect를 제거하고, 대신 `getVisibleTodos()` 호출 결과를 캐시하기 위해 `useMemo` 호출을 추가하십시오:
 
 <Sandpack>
 
@@ -1149,7 +1151,7 @@ let nextId = 0;
 let calls = 0;
 
 export function getVisibleTodos(todos, showActive) {
-  console.log(`getVisibleTodos() was called ${++calls} times`);
+  console.log(`getVisibleTodos()가 ${++calls}번 호출되었습니다`);
   const activeTodos = todos.filter(todo => !todo.completed);
   const visibleTodos = showActive ? activeTodos : todos;
   return visibleTodos;
@@ -1177,9 +1179,9 @@ input { margin-top: 10px; }
 
 </Sandpack>
 
-With this change, `getVisibleTodos()` will be called only if `todos` or `showActive` change. Typing into the input only changes the `text` state variable, so it does not trigger a call to `getVisibleTodos()`.
+이 변경으로 `getVisibleTodos()`는 `todos` 또는 `showActive`가 변경되지 않는 한 호출되지 않습니다. 입력에 입력하는 것은 `text` 상태 변수만 변경하므로 `getVisibleTodos()` 호출을 트리거하지 않습니다.
 
-There is also another solution which does not need `useMemo`. Since the `text` state variable can't possibly affect the list of todos, you can extract the `NewTodo` form into a separate component, and move the `text` state variable inside of it:
+또한 `useMemo`가 필요 없는 또 다른 해결책도 있습니다. `text` 상태 변수가 할 일 목록에 영향을 미칠 수 없으므로, `NewTodo` 폼을 별도의 컴포넌트로 추출하고 `text` 상태 변수를 내부로 이동할 수 있습니다:
 
 <Sandpack>
 
@@ -1238,7 +1240,7 @@ let nextId = 0;
 let calls = 0;
 
 export function getVisibleTodos(todos, showActive) {
-  console.log(`getVisibleTodos() was called ${++calls} times`);
+  console.log(`getVisibleTodos()가 ${++calls}번 호출되었습니다`);
   const activeTodos = todos.filter(todo => !todo.completed);
   const visibleTodos = showActive ? activeTodos : todos;
   return visibleTodos;
@@ -1266,15 +1268,15 @@ input { margin-top: 10px; }
 
 </Sandpack>
 
-This approach satisfies the requirements too. When you type into the input, only the `text` state variable updates. Since the `text` state variable is in the child `NewTodo` component, the parent `TodoList` component won't get re-rendered. This is why `getVisibleTodos()` doesn't get called when you type. (It would still be called if the `TodoList` re-renders for another reason.)
+이 접근 방식도 요구 사항을 충족합니다. 입력에 입력할 때 `text` 상태 변수만 업데이트됩니다. `text` 상태 변수가 자식 `NewTodo` 컴포넌트에 있으므로 부모 `TodoList` 컴포넌트는 다시 렌더링되지 않습니다. 이 때문에 `getVisibleTodos()`는 입력할 때 호출되지 않습니다. (다른 이유로 `TodoList`가 다시 렌더링되면 여전히 호출됩니다.)
 
 </Solution>
 
-#### Reset state without Effects {/*reset-state-without-effects*/}
+#### Effects 없이 상태 재설정 {/*reset-state-without-effects*/}
 
-This `EditContact` component receives a contact object shaped like `{ id, name, email }` as the `savedContact` prop. Try editing the name and email input fields. When you press Save, the contact's button above the form updates to the edited name. When you press Reset, any pending changes in the form are discarded. Play around with this UI to get a feel for it.
+이 `EditContact` 컴포넌트는 `savedContact` prop으로 `{ id, name, email }` 형식의 연락처 객체를 받습니다. 이름과 이메일 입력 필드를 편집해 보십시오. 저장을 누르면 양식 위의 연락처 버튼이 편집된 이름으로 업데이트됩니다. 재설정을 누르면 양식의 모든 대기 중인 변경 사항이 취소됩니다. 이 UI를 사용해 보면서 익숙해지십시오.
 
-When you select a contact with the buttons at the top, the form resets to reflect that contact's details. This is done with an Effect inside `EditContact.js`. Remove this Effect. Find another way to reset the form when `savedContact.id` changes.
+상단의 버튼으로 연락처를 선택하면 양식이 해당 연락처의 세부 정보로 재설정됩니다. 이는 `EditContact.js` 내부의 Effect로 수행됩니다. 이 Effect를 제거하십시오. `savedContact.id`가 변경될 때 양식을 재설정하는 다른 방법을 찾으십시오.
 
 <Sandpack>
 
@@ -1432,13 +1434,13 @@ button {
 
 <Hint>
 
-It would be nice if there was a way to tell React that when `savedContact.id` is different, the `EditContact` form is conceptually a _different contact's form_ and should not preserve state. Do you recall any such way?
+`savedContact.id`가 다를 때 React에게 `EditContact` 양식이 개념적으로 _다른 연락처의 양식_이며 상태를 유지하지 않아야 한다고 알릴 수 있는 방법이 있으면 좋을 것입니다. 그런 방법이 기억나십니까?
 
 </Hint>
 
 <Solution>
 
-Split the `EditContact` component in two. Move all the form state into the inner `EditForm` component. Export the outer `EditContact` component, and make it pass `savedContact.id` as the `key` to the inner `EditForm` component. As a result, the inner `EditForm` component resets all of the form state and recreates the DOM whenever you select a different contact.
+`EditContact` 컴포넌트를 두 개로 나누십시오. 모든 양식 상태를 내부 `EditForm` 컴포넌트로 이동하십시오. 외부 `EditContact` 컴포넌트를 내보내고, `savedContact.id`를 내부 `EditForm` 컴포넌트에 `key`로 전달하십시오. 결과적으로, 내부 `EditForm` 컴포넌트는 다른 연락처를 선택할 때마다 모든 양식 상태를 재설정하고 DOM을 다시 생성합니다.
 
 <Sandpack>
 
@@ -1600,17 +1602,17 @@ button {
 
 </Solution>
 
-#### Submit a form without Effects {/*submit-a-form-without-effects*/}
+#### Effects 없이 양식 제출하기 {/*submit-a-form-without-effects*/}
 
-This `Form` component lets you send a message to a friend. When you submit the form, the `showForm` state variable is set to `false`. This triggers an Effect calling `sendMessage(message)`, which sends the message (you can see it in the console). After the message is sent, you see a "Thank you" dialog with an "Open chat" button that lets you get back to the form.
+이 `Form` 컴포넌트는 친구에게 메시지를 보낼 수 있게 합니다. 양식을 제출하면 `showForm` 상태 변수가 `false`로 설정됩니다. 이는 `sendMessage(message)`를 호출하는 Effect를 트리거하여 메시지를 보냅니다(콘솔에서 확인할 수 있습니다). 메시지가 전송된 후 "감사합니다" 대화 상자가 표시되며, "채팅 열기" 버튼을 클릭하면 다시 양식으로 돌아갈 수 있습니다.
 
-Your app's users are sending way too many messages. To make chatting a little bit more difficult, you've decided to show the "Thank you" dialog *first* rather than the form. Change the `showForm` state variable to initialize to `false` instead of `true`. As soon as you make that change, the console will show that an empty message was sent. Something in this logic is wrong!
+사용자가 너무 많은 메시지를 보내고 있습니다. 채팅을 조금 더 어렵게 만들기 위해, 양식 대신 먼저 "감사합니다" 대화 상자를 표시하기로 결정했습니다. `showForm` 상태 변수를 `true` 대신 `false`로 초기화하십시오. 이 변경을 하자마자 콘솔에 빈 메시지가 전송되었다는 메시지가 표시됩니다. 이 논리에는 뭔가 잘못되었습니다!
 
-What's the root cause of this problem? And how can you fix it?
+이 문제의 근본 원인은 무엇입니까? 그리고 어떻게 해결할 수 있습니까?
 
 <Hint>
 
-Should the message be sent _because_ the user saw the "Thank you" dialog? Or is it the other way around?
+메시지는 사용자가 "감사합니다" 대화 상자를 보았기 때문에 전송되어야 합니까? 아니면 그 반대입니까?
 
 </Hint>
 
@@ -1675,7 +1677,7 @@ label, textarea { margin-bottom: 10px; display: block; }
 
 <Solution>
 
-The `showForm` state variable determines whether to show the form or the "Thank you" dialog. However, you aren't sending the message because the "Thank you" dialog was _displayed_. You want to send the message because the user has _submitted the form._ Delete the misleading Effect and move the `sendMessage` call inside the `handleSubmit` event handler:
+`showForm` 상태 변수는 양식 또는 "감사합니다" 대화 상자를 표시할지 여부를 결정합니다. 그러나 메시지를 보내는 이유는 "감사합니다" 대화 상자가 *표시되었기* 때문이 아닙니다. 메시지를 보내는 이유는 사용자가 *양식을 제출했기* 때문입니다. 오해의 소지가 있는 Effect를 삭제하고 `sendMessage` 호출을 `handleSubmit` 이벤트 핸들러로 이동하십시오:
 
 <Sandpack>
 
@@ -1731,7 +1733,7 @@ label, textarea { margin-bottom: 10px; display: block; }
 
 </Sandpack>
 
-Notice how in this version, only _submitting the form_ (which is an event) causes the message to be sent. It works equally well regardless of whether `showForm` is initially set to `true` or `false`. (Set it to `false` and notice no extra console messages.)
+이 버전에서는 *양식을 제출하는 것*만이 메시지를 보내는 원인이 됩니다. `showForm`이 처음에 `true` 또는 `false`로 설정되었는지에 관계없이 동일하게 작동합니다. (이를 `false`로 설정하고 추가 콘솔 메시지가 없는지 확인하십시오.)
 
 </Solution>
 

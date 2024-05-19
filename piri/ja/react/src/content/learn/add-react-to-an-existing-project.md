@@ -1,59 +1,59 @@
 ---
-title: Add React to an Existing Project
+title: 既存のプロジェクトにReactを追加する
 ---
 
 <Intro>
 
-If you want to add some interactivity to your existing project, you don't have to rewrite it in React. Add React to your existing stack, and render interactive React components anywhere.
+既存のプロジェクトにインタラクティブな要素を追加したい場合、Reactに書き直す必要はありません。既存のスタックにReactを追加し、どこにでもインタラクティブなReactコンポーネントをレンダリングできます。
 
 </Intro>
 
 <Note>
 
-**You need to install [Node.js](https://nodejs.org/en/) for local development.** Although you can [try React](/learn/installation#try-react) online or with a simple HTML page, realistically most JavaScript tooling you'll want to use for development requires Node.js.
+**ローカル開発には[Node.js](https://nodejs.org/en/)をインストールする必要があります。** オンラインやシンプルなHTMLページで[Reactを試す](/learn/installation#try-react)こともできますが、実際には開発に使用するほとんどのJavaScriptツールはNode.jsを必要とします。
 
 </Note>
 
-## Using React for an entire subroute of your existing website {/*using-react-for-an-entire-subroute-of-your-existing-website*/}
+## 既存のウェブサイトのサブルート全体にReactを使用する {/*using-react-for-an-entire-subroute-of-your-existing-website*/}
 
-Let's say you have an existing web app at `example.com` built with another server technology (like Rails), and you want to implement all routes starting with `example.com/some-app/` fully with React.
+例えば、`example.com`で別のサーバーテクノロジー（Railsなど）を使用して構築された既存のウェブアプリがあり、`example.com/some-app/`で始まるすべてのルートを完全にReactで実装したいとします。
 
-Here's how we recommend to set it up:
+以下の手順で設定することをお勧めします：
 
-1. **Build the React part of your app** using one of the [React-based frameworks](/learn/start-a-new-react-project).
-2. **Specify `/some-app` as the *base path*** in your framework's configuration (here's how: [Next.js](https://nextjs.org/docs/api-reference/next.config.js/basepath), [Gatsby](https://www.gatsbyjs.com/docs/how-to/previews-deploys-hosting/path-prefix/)).
-3. **Configure your server or a proxy** so that all requests under `/some-app/` are handled by your React app.
+1. **アプリのReact部分を構築する** [Reactベースのフレームワーク](/learn/start-a-new-react-project)のいずれかを使用します。
+2. **フレームワークの設定で`/some-app`を*ベースパス*として指定する**（設定方法はこちら：[Next.js](https://nextjs.org/docs/api-reference/next.config.js/basepath)、[Gatsby](https://www.gatsbyjs.com/docs/how-to/previews-deploys-hosting/path-prefix/)）。
+3. **サーバーまたはプロキシを設定する** すべての`/some-app/`以下のリクエストがReactアプリによって処理されるようにします。
 
-This ensures the React part of your app can [benefit from the best practices](/learn/start-a-new-react-project#can-i-use-react-without-a-framework) baked into those frameworks.
+これにより、アプリのReact部分がこれらのフレームワークに組み込まれた[ベストプラクティスの恩恵を受ける](/learn/start-a-new-react-project#can-i-use-react-without-a-framework)ことができます。
 
-Many React-based frameworks are full-stack and let your React app take advantage of the server. However, you can use the same approach even if you can't or don't want to run JavaScript on the server. In that case, serve the HTML/CSS/JS export ([`next export` output](https://nextjs.org/docs/advanced-features/static-html-export) for Next.js, default for Gatsby) at `/some-app/` instead.
+多くのReactベースのフレームワークはフルスタックであり、Reactアプリがサーバーの利点を活用できるようにします。ただし、サーバーでJavaScriptを実行できない場合や実行したくない場合でも、同じアプローチを使用できます。その場合、HTML/CSS/JSエクスポート（Next.jsの場合は[`next export`の出力](https://nextjs.org/docs/advanced-features/static-html-export)、Gatsbyの場合はデフォルト）を`/some-app/`で提供します。
 
-## Using React for a part of your existing page {/*using-react-for-a-part-of-your-existing-page*/}
+## 既存ページの一部にReactを使用する {/*using-react-for-a-part-of-your-existing-page*/}
 
-Let's say you have an existing page built with another technology (either a server one like Rails, or a client one like Backbone), and you want to render interactive React components somewhere on that page. That's a common way to integrate React--in fact, it's how most React usage looked at Meta for many years!
+例えば、別のテクノロジー（Railsのようなサーバー側のものやBackboneのようなクライアント側のもの）で構築された既存のページがあり、そのページのどこかにインタラクティブなReactコンポーネントをレンダリングしたいとします。これはReactを統合する一般的な方法で、実際にはMetaでの多くのReact使用例がこの方法でした！
 
-You can do this in two steps:
+これを行うには2つのステップがあります：
 
-1. **Set up a JavaScript environment** that lets you use the [JSX syntax](/learn/writing-markup-with-jsx), split your code into modules with the [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) / [`export`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) syntax, and use packages (for example, React) from the [npm](https://www.npmjs.com/) package registry.
-2. **Render your React components** where you want to see them on the page.
+1. **JavaScript環境を設定する** [JSX構文](/learn/writing-markup-with-jsx)を使用し、コードを[`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) / [`export`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)構文でモジュールに分割し、[npm](https://www.npmjs.com/)パッケージレジストリからパッケージ（例えばReact）を使用できるようにします。
+2. **Reactコンポーネントをページの任意の場所にレンダリングする**。
 
-The exact approach depends on your existing page setup, so let's walk through some details.
+具体的なアプローチは既存のページの設定によりますので、詳細を見ていきましょう。
 
-### Step 1: Set up a modular JavaScript environment {/*step-1-set-up-a-modular-javascript-environment*/}
+### ステップ1: モジュール化されたJavaScript環境を設定する {/*step-1-set-up-a-modular-javascript-environment*/}
 
-A modular JavaScript environment lets you write your React components in individual files, as opposed to writing all of your code in a single file. It also lets you use all the wonderful packages published by other developers on the [npm](https://www.npmjs.com/) registry--including React itself! How you do this depends on your existing setup:
+モジュール化されたJavaScript環境では、Reactコンポーネントを個別のファイルに書くことができ、すべてのコードを1つのファイルに書く必要がありません。また、[npm](https://www.npmjs.com/)レジストリに公開されている他の開発者による素晴らしいパッケージ（React自体を含む）を使用することもできます。これを行う方法は既存の設定によります：
 
-* **If your app is already split into files that use `import` statements,** try to use the setup you already have. Check whether writing `<div />` in your JS code causes a syntax error. If it causes a syntax error, you might need to [transform your JavaScript code with Babel](https://babeljs.io/setup), and enable the [Babel React preset](https://babeljs.io/docs/babel-preset-react) to use JSX.
+* **アプリがすでに`import`文を使用してファイルに分割されている場合、** 既存の設定を使用してみてください。JSコードで`<div />`を書くと構文エラーが発生するかどうかを確認してください。構文エラーが発生する場合は、[BabelでJavaScriptコードを変換](https://babeljs.io/setup)し、JSXを使用するために[Babel Reactプリセット](https://babeljs.io/docs/babel-preset-react)を有効にする必要があるかもしれません。
 
-* **If your app doesn't have an existing setup for compiling JavaScript modules,** set it up with [Vite](https://vitejs.dev/). The Vite community maintains [many integrations with backend frameworks](https://github.com/vitejs/awesome-vite#integrations-with-backends), including Rails, Django, and Laravel. If your backend framework is not listed, [follow this guide](https://vitejs.dev/guide/backend-integration.html) to manually integrate Vite builds with your backend.
+* **アプリにJavaScriptモジュールをコンパイルする既存の設定がない場合、** [Vite](https://vitejs.dev/)で設定します。Viteコミュニティは、Rails、Django、Laravelを含む[多くのバックエンドフレームワークとの統合](https://github.com/vitejs/awesome-vite#integrations-with-backends)を維持しています。バックエンドフレームワークがリストにない場合は、[このガイド](https://vitejs.dev/guide/backend-integration.html)に従ってViteビルドをバックエンドに手動で統合します。
 
-To check whether your setup works, run this command in your project folder:
+設定が機能するかどうかを確認するには、プロジェクトフォルダで次のコマンドを実行します：
 
 <TerminalBlock>
 npm install react react-dom
 </TerminalBlock>
 
-Then add these lines of code at the top of your main JavaScript file (it might be called `index.js` or `main.js`):
+次に、メインのJavaScriptファイルの先頭に次のコード行を追加します（`index.js`や`main.js`と呼ばれるかもしれません）：
 
 <Sandpack>
 
@@ -62,7 +62,7 @@ Then add these lines of code at the top of your main JavaScript file (it might b
 <html>
   <head><title>My app</title></head>
   <body>
-    <!-- Your existing page content (in this example, it gets replaced) -->
+    <!-- 既存のページコンテンツ（この例では置き換えられます） -->
   </body>
 </html>
 ```
@@ -70,52 +70,52 @@ Then add these lines of code at the top of your main JavaScript file (it might b
 ```js src/index.js active
 import { createRoot } from 'react-dom/client';
 
-// Clear the existing HTML content
+// 既存のHTMLコンテンツをクリア
 document.body.innerHTML = '<div id="app"></div>';
 
-// Render your React component instead
+// 代わりにReactコンポーネントをレンダリング
 const root = createRoot(document.getElementById('app'));
 root.render(<h1>Hello, world</h1>);
 ```
 
 </Sandpack>
 
-If the entire content of your page was replaced by a "Hello, world!", everything worked! Keep reading.
+ページの全コンテンツが「Hello, world!」に置き換えられた場合、すべてが正常に動作しています！続けて読み進めてください。
 
 <Note>
 
-Integrating a modular JavaScript environment into an existing project for the first time can feel intimidating, but it's worth it! If you get stuck, try our [community resources](/community) or the [Vite Chat](https://chat.vitejs.dev/).
+既存のプロジェクトにモジュール化されたJavaScript環境を初めて統合するのは難しいと感じるかもしれませんが、それだけの価値があります！行き詰まった場合は、[コミュニティリソース](/community)や[Vite Chat](https://chat.vitejs.dev/)を試してみてください。
 
 </Note>
 
-### Step 2: Render React components anywhere on the page {/*step-2-render-react-components-anywhere-on-the-page*/}
+### ステップ2: ページの任意の場所にReactコンポーネントをレンダリングする {/*step-2-render-react-components-anywhere-on-the-page*/}
 
-In the previous step, you put this code at the top of your main file:
+前のステップでは、メインファイルの先頭に次のコードを追加しました：
 
 ```js
 import { createRoot } from 'react-dom/client';
 
-// Clear the existing HTML content
+// 既存のHTMLコンテンツをクリア
 document.body.innerHTML = '<div id="app"></div>';
 
-// Render your React component instead
+// 代わりにReactコンポーネントをレンダリング
 const root = createRoot(document.getElementById('app'));
 root.render(<h1>Hello, world</h1>);
 ```
 
-Of course, you don't actually want to clear the existing HTML content!
+もちろん、既存のHTMLコンテンツをクリアしたくはありません！
 
-Delete this code.
+このコードを削除します。
 
-Instead, you probably want to render your React components in specific places in your HTML. Open your HTML page (or the server templates that generate it) and add a unique [`id`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id) attribute to any tag, for example:
+代わりに、HTMLの特定の場所にReactコンポーネントをレンダリングしたいでしょう。HTMLページ（またはそれを生成するサーバーテンプレート）を開き、任意のタグに一意の[`id`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id)属性を追加します。例えば：
 
 ```html
-<!-- ... somewhere in your html ... -->
+<!-- ... htmlのどこかに ... -->
 <nav id="navigation"></nav>
-<!-- ... more html ... -->
+<!-- ... さらにhtml ... -->
 ```
 
-This lets you find that HTML element with [`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById) and pass it to [`createRoot`](/reference/react-dom/client/createRoot) so that you can render your own React component inside:
+これにより、[`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById)を使用してそのHTML要素を見つけ、[`createRoot`](/reference/react-dom/client/createRoot)に渡して、その中に自分のReactコンポーネントをレンダリングできます：
 
 <Sandpack>
 
@@ -124,9 +124,9 @@ This lets you find that HTML element with [`document.getElementById`](https://de
 <html>
   <head><title>My app</title></head>
   <body>
-    <p>This paragraph is a part of HTML.</p>
+    <p>この段落はHTMLの一部です。</p>
     <nav id="navigation"></nav>
-    <p>This paragraph is also a part of HTML.</p>
+    <p>この段落もHTMLの一部です。</p>
   </body>
 </html>
 ```
@@ -135,7 +135,7 @@ This lets you find that HTML element with [`document.getElementById`](https://de
 import { createRoot } from 'react-dom/client';
 
 function NavigationBar() {
-  // TODO: Actually implement a navigation bar
+  // TODO: 実際にナビゲーションバーを実装する
   return <h1>Hello from React!</h1>;
 }
 
@@ -146,10 +146,10 @@ root.render(<NavigationBar />);
 
 </Sandpack>
 
-Notice how the original HTML content from `index.html` is preserved, but your own `NavigationBar` React component now appears inside the `<nav id="navigation">` from your HTML. Read the [`createRoot` usage documentation](/reference/react-dom/client/createRoot#rendering-a-page-partially-built-with-react) to learn more about rendering React components inside an existing HTML page.
+`index.html`の元のHTMLコンテンツが保持されていることに注意してください。しかし、HTMLの`<nav id="navigation">`内に自分の`NavigationBar` Reactコンポーネントが表示されるようになりました。既存のHTMLページ内にReactコンポーネントをレンダリングする方法については、[`createRoot`使用ドキュメント](/reference/react-dom/client/createRoot#rendering-a-page-partially-built-with-react)を参照してください。
 
-When you adopt React in an existing project, it's common to start with small interactive components (like buttons), and then gradually keep "moving upwards" until eventually your entire page is built with React. If you ever reach that point, we recommend migrating to [a React framework](/learn/start-a-new-react-project) right after to get the most out of React.
+既存のプロジェクトにReactを採用する際には、小さなインタラクティブコンポーネント（ボタンなど）から始めて、徐々に「上に移動」して最終的にはページ全体がReactで構築されるまで進めるのが一般的です。その時点に達した場合は、Reactの利点を最大限に活用するために、[Reactフレームワーク](/learn/start-a-new-react-project)への移行をお勧めします。
 
-## Using React Native in an existing native mobile app {/*using-react-native-in-an-existing-native-mobile-app*/}
+## 既存のネイティブモバイルアプリにReact Nativeを使用する {/*using-react-native-in-an-existing-native-mobile-app*/}
 
-[React Native](https://reactnative.dev/) can also be integrated into existing native apps incrementally. If you have an existing native app for Android (Java or Kotlin) or iOS (Objective-C or Swift), [follow this guide](https://reactnative.dev/docs/integration-with-existing-apps) to add a React Native screen to it.
+[React Native](https://reactnative.dev/)も既存のネイティブアプリに段階的に統合できます。Android（JavaまたはKotlin）やiOS（Objective-CまたはSwift）の既存のネイティブアプリがある場合は、[このガイド](https://reactnative.dev/docs/integration-with-existing-apps)に従ってReact Native画面を追加します。

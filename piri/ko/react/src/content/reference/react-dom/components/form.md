@@ -1,18 +1,18 @@
 ---
-title: "<form>"
+title: <form>
 canary: true
 ---
 
 <Canary>
 
-React's extensions to `<form>` are currently only available in React's canary and experimental channels. In stable releases of React, `<form>` works only as a [built-in browser HTML component](https://react.dev/reference/react-dom/components#all-html-components). Learn more about [React's release channels here](/community/versioning-policy#all-release-channels).
+React의 `<form>`에 대한 확장은 현재 React의 canary 및 실험 채널에서만 사용할 수 있습니다. 안정적인 React 릴리스에서는 `<form>`이 [내장 브라우저 HTML 컴포넌트](https://react.dev/reference/react-dom/components#all-html-components)로만 작동합니다. [React의 릴리스 채널에 대해 자세히 알아보세요](/community/versioning-policy#all-release-channels).
 
 </Canary>
 
 
 <Intro>
 
-The [built-in browser `<form>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) lets you create interactive controls for submitting information.
+[내장 브라우저 `<form>` 컴포넌트](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)를 사용하면 정보를 제출하기 위한 인터랙티브 컨트롤을 만들 수 있습니다.
 
 ```js
 <form action={search}>
@@ -27,11 +27,11 @@ The [built-in browser `<form>` component](https://developer.mozilla.org/en-US/do
 
 ---
 
-## Reference {/*reference*/}
+## 참고 {/*reference*/}
 
 ### `<form>` {/*form*/}
 
-To create interactive controls for submitting information, render the [built-in browser `<form>` component](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form).
+정보를 제출하기 위한 인터랙티브 컨트롤을 만들려면 [내장 브라우저 `<form>` 컴포넌트](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)를 렌더링하세요.
 
 ```js
 <form action={search}>
@@ -40,25 +40,25 @@ To create interactive controls for submitting information, render the [built-in 
 </form>
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
 #### Props {/*props*/}
 
-`<form>` supports all [common element props.](/reference/react-dom/components/common#props)
+`<form>`은 모든 [공통 요소 props](/reference/react-dom/components/common#props)를 지원합니다.
 
-[`action`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action): a URL or function. When a URL is passed to `action` the form will behave like the HTML form component. When a function is passed to `action` the function will handle the form submission. The function passed to `action` may be async and will be called with a single argument containing the [form data](https://developer.mozilla.org/en-US/docs/Web/API/FormData) of the submitted form. The `action` prop can be overridden by a `formAction` attribute on a `<button>`, `<input type="submit">`, or `<input type="image">` component.
+[`action`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action): URL 또는 함수. `action`에 URL이 전달되면 폼은 HTML 폼 컴포넌트처럼 동작합니다. `action`에 함수가 전달되면 함수가 폼 제출을 처리합니다. `action`에 전달된 함수는 비동기일 수 있으며 제출된 폼의 [폼 데이터](https://developer.mozilla.org/en-US/docs/Web/API/FormData)를 포함하는 단일 인수로 호출됩니다. `action` prop은 `<button>`, `<input type="submit">`, 또는 `<input type="image">` 컴포넌트의 `formAction` 속성으로 재정의할 수 있습니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* When a function is passed to `action` or `formAction` the HTTP method will be POST regardless of value of the `method` prop.
+* `action` 또는 `formAction`에 함수가 전달되면 `method` prop의 값과 상관없이 HTTP 메서드는 POST가 됩니다.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Handle form submission on the client {/*handle-form-submission-on-the-client*/}
+### 클라이언트에서 폼 제출 처리 {/*handle-form-submission-on-the-client*/}
 
-Pass a function to the `action` prop of form to run the function when the form is submitted. [`formData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) will be passed to the function as an argument so you can access the data submitted by the form. This differs from the conventional [HTML action](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action), which only accepts URLs.
+폼이 제출될 때 함수를 실행하려면 폼의 `action` prop에 함수를 전달하세요. [`formData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)는 폼이 제출될 때 함수의 인수로 전달되어 폼에 의해 제출된 데이터를 액세스할 수 있습니다. 이는 URL만을 허용하는 기존의 [HTML action](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action)과 다릅니다.
 
 <Sandpack>
 
@@ -91,13 +91,13 @@ export default function Search() {
 
 </Sandpack>
 
-### Handle form submission with a Server Action {/*handle-form-submission-with-a-server-action*/}
+### Server Action으로 폼 제출 처리 {/*handle-form-submission-with-a-server-action*/}
 
-Render a `<form>` with an input and submit button. Pass a Server Action (a function marked with [`'use server'`](/reference/rsc/use-server)) to the `action` prop of form to run the function when the form is submitted.
+입력 및 제출 버튼이 있는 `<form>`을 렌더링하세요. 폼이 제출될 때 함수를 실행하려면 폼의 `action` prop에 Server Action (['use server'](/reference/rsc/use-server)로 표시된 함수)을 전달하세요.
 
-Passing a Server Action to `<form action>` allow users to submit forms without JavaScript enabled or before the code has loaded. This is beneficial to users who have a slow connection, device, or have JavaScript disabled and is similar to the way forms work when a URL is passed to the `action` prop.
+Server Action을 `<form action>`에 전달하면 사용자는 JavaScript가 활성화되지 않았거나 코드가 로드되기 전에 폼을 제출할 수 있습니다. 이는 느린 연결, 장치 또는 JavaScript가 비활성화된 사용자를 위해 유익하며, URL이 `action` prop에 전달될 때 폼이 작동하는 방식과 유사합니다.
 
-You can use hidden form fields to provide data to the `<form>`'s action. The Server Action will be called with the hidden form field data as an instance of [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
+숨겨진 폼 필드를 사용하여 `<form>`의 action에 데이터를 제공할 수 있습니다. Server Action은 제출된 폼의 숨겨진 필드 데이터를 [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) 인스턴스로 호출합니다.
 
 ```jsx
 import { updateCart } from './lib.js';
@@ -118,7 +118,7 @@ function AddToCart({productId}) {
 }
 ```
 
-In lieu of using hidden form fields to provide data to the `<form>`'s action, you can call the <CodeStep step={1}>`bind`</CodeStep> method to supply it with extra arguments. This will bind a new argument (<CodeStep step={2}>`productId`</CodeStep>) to the function in addition to the <CodeStep step={3}>`formData`</CodeStep> that is passed as an argument to the function.
+숨겨진 폼 필드를 사용하여 `<form>`의 action에 데이터를 제공하는 대신, <CodeStep step={1}>`bind`</CodeStep> 메서드를 호출하여 추가 인수로 제공할 수 있습니다. 이는 함수에 전달된 <CodeStep step={3}>`formData`</CodeStep> 외에 새로운 인수(<CodeStep step={2}>`productId`</CodeStep>)를 함수에 바인딩합니다.
 
 ```jsx [[1, 8, "bind"], [2,8, "productId"], [2,4, "productId"], [3,4, "formData"]]
 import { updateCart } from './lib.js';
@@ -137,12 +137,12 @@ function AddToCart({productId}) {
 }
 ```
 
-When `<form>` is rendered by a [Server Component](/reference/rsc/use-client), and a [Server Action](/reference/rsc/use-server) is passed to the `<form>`'s `action` prop, the form is [progressively enhanced](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement).
+`<form>`이 [Server Component](/reference/rsc/use-client)에 의해 렌더링되고, [Server Action](/reference/rsc/use-server)이 `<form>`의 `action` prop에 전달되면, 폼은 [점진적 향상](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)됩니다.
 
-### Display a pending state during form submission {/*display-a-pending-state-during-form-submission*/}
-To display a pending state when a form is being submitted, you can call the `useFormStatus` Hook in a component rendered in a `<form>` and read the `pending` property returned.
+### 폼 제출 중 대기 상태 표시 {/*display-a-pending-state-during-form-submission*/}
+폼이 제출되는 동안 대기 상태를 표시하려면 `<form>`에 렌더링된 컴포넌트에서 `useFormStatus` Hook을 호출하고 반환된 `pending` 속성을 읽을 수 있습니다.
 
-Here, we use the `pending` property to indicate the form is submitting.
+여기서는 폼이 제출 중임을 나타내기 위해 `pending` 속성을 사용합니다.
 
 <Sandpack>
 
@@ -191,12 +191,12 @@ export async function submitForm(query) {
 ```
 </Sandpack>
 
-To learn more about the `useFormStatus` Hook see the [reference documentation](/reference/react-dom/hooks/useFormStatus).
+`useFormStatus` Hook에 대해 자세히 알아보려면 [참고 문서](/reference/react-dom/hooks/useFormStatus)를 참조하세요.
 
-### Optimistically updating form data {/*optimistically-updating-form-data*/}
-The `useOptimistic` Hook provides a way to optimistically update the user interface before a background operation, like a network request, completes. In the context of forms, this technique helps to make apps feel more responsive. When a user submits a form, instead of waiting for the server's response to reflect the changes, the interface is immediately updated with the expected outcome.
+### 폼 데이터 낙관적 업데이트 {/*optimistically-updating-form-data*/}
+`useOptimistic` Hook은 네트워크 요청과 같은 백그라운드 작업이 완료되기 전에 사용자 인터페이스를 낙관적으로 업데이트하는 방법을 제공합니다. 폼의 맥락에서 이 기술은 앱이 더 반응성이 있는 것처럼 느껴지도록 도와줍니다. 사용자가 폼을 제출할 때 서버의 응답을 기다리지 않고 예상 결과로 인터페이스가 즉시 업데이트됩니다.
 
-For example, when a user types a message into the form and hits the "Send" button, the `useOptimistic` Hook allows the message to immediately appear in the list with a "Sending..." label, even before the message is actually sent to a server. This "optimistic" approach gives the impression of speed and responsiveness. The form then attempts to truly send the message in the background. Once the server confirms the message has been received, the "Sending..." label is removed.
+예를 들어, 사용자가 폼에 메시지를 입력하고 "Send" 버튼을 누르면 `useOptimistic` Hook을 사용하여 메시지가 실제로 서버에 전송되기 전에 "Sending..." 레이블과 함께 목록에 즉시 나타나게 할 수 있습니다. 이 "낙관적" 접근 방식은 속도와 반응성을 주는 인상을 줍니다. 그런 다음 폼은 백그라운드에서 실제로 메시지를 보내려고 시도합니다. 서버가 메시지를 수신했음을 확인하면 "Sending..." 레이블이 제거됩니다.
 
 <Sandpack>
 
@@ -273,12 +273,12 @@ export async function deliverMessage(message) {
 
 </Sandpack>
 
-[//]: # 'Uncomment the next line, and delete this line after the `useOptimistic` reference documentatino page is published'
-[//]: # 'To learn more about the `useOptimistic` Hook see the [reference documentation](/reference/react/hooks/useOptimistic).'
+[//]: # 'useOptimistic 참조 문서 페이지가 게시된 후 다음 줄의 주석을 해제하고 이 줄을 삭제하세요'
+[//]: # 'useOptimistic Hook에 대해 자세히 알아보려면 [참고 문서](/reference/react/hooks/useOptimistic)를 참조하세요.'
 
-### Handling form submission errors {/*handling-form-submission-errors*/}
+### 폼 제출 오류 처리 {/*handling-form-submission-errors*/}
 
-In some cases the function called by a `<form>`'s `action` prop throws an error. You can handle these errors by wrapping `<form>` in an Error Boundary. If the function called by a `<form>`'s `action` prop throws an error, the fallback for the error boundary will be displayed.
+일부 경우 `<form>`의 `action` prop에 의해 호출된 함수가 오류를 발생시킬 수 있습니다. 이러한 오류를 처리하려면 `<form>`을 Error Boundary로 감싸세요. `<form>`의 `action` prop에 의해 호출된 함수가 오류를 발생시키면 오류 경계의 폴백이 표시됩니다.
 
 <Sandpack>
 
@@ -318,15 +318,15 @@ export default function Search() {
 
 </Sandpack>
 
-### Display a form submission error without JavaScript {/*display-a-form-submission-error-without-javascript*/}
+### JavaScript 없이 폼 제출 오류 표시 {/*display-a-form-submission-error-without-javascript*/}
 
-Displaying a form submission error message before the JavaScript bundle loads for progressive enhancement requires that:
+점진적 향상을 위해 JavaScript 번들이 로드되기 전에 폼 제출 오류 메시지를 표시하려면 다음이 필요합니다:
 
-1. `<form>` be rendered by a [Server Component](/reference/rsc/use-client)
-1. the function passed to the `<form>`'s `action` prop be a [Server Action](/reference/rsc/use-server)
-1. the `useActionState` Hook be used to display the error message
+1. `<form>`이 [Server Component](/reference/rsc/use-client)에 의해 렌더링됩니다.
+1. `<form>`의 `action` prop에 전달된 함수가 [Server Action](/reference/rsc/use-server)입니다.
+1. 오류 메시지를 표시하기 위해 `useActionState` Hook이 사용됩니다.
 
-`useActionState` takes two parameters: a [Server Action](/reference/rsc/use-server) and an initial state. `useActionState` returns two values, a state variable and an action. The action returned by `useActionState` should be passed to the `action` prop of the form. The state variable returned by `useActionState` can be used to displayed an error message. The value returned by the [Server Action](/reference/rsc/use-server) passed to `useActionState` will be used to update the state variable.
+`useActionState`는 두 개의 매개변수를 받습니다: [Server Action](/reference/rsc/use-server)과 초기 상태. `useActionState`는 상태 변수와 액션 두 가지 값을 반환합니다. `useActionState`에서 반환된 액션은 폼의 `action` prop에 전달되어야 합니다. `useActionState`에서 반환된 상태 변수는 오류 메시지를 표시하는 데 사용할 수 있습니다. `useActionState`에 전달된 [Server Action](/reference/rsc/use-server)에서 반환된 값은 상태 변수를 업데이트하는 데 사용됩니다.
 
 <Sandpack>
 
@@ -386,13 +386,13 @@ export async function signUpNewUser(newEmail) {
 
 </Sandpack>
 
-Learn more about updating state from a form action with the [`useActionState`](/reference/react/useActionState) docs
+폼 액션에서 상태를 업데이트하는 방법에 대해 자세히 알아보려면 [`useActionState`](/reference/react/useActionState) 문서를 참조하세요.
 
-### Handling multiple submission types {/*handling-multiple-submission-types*/}
+### 여러 제출 유형 처리 {/*handling-multiple-submission-types*/}
 
-Forms can be designed to handle multiple submission actions based on the button pressed by the user. Each button inside a form can be associated with a distinct action or behavior by setting the `formAction` prop.
+폼은 사용자가 누른 버튼에 따라 여러 제출 작업을 처리하도록 설계될 수 있습니다. 폼 내부의 각 버튼은 `formAction` prop을 설정하여 고유한 작업 또는 동작과 연결될 수 있습니다.
 
-When a user taps a specific button, the form is submitted, and a corresponding action, defined by that button's attributes and action, is executed. For instance, a form might submit an article for review by default but have a separate button with `formAction` set to save the article as a draft.
+사용자가 특정 버튼을 누르면 폼이 제출되고 해당 버튼의 속성과 작업에 정의된 동작이 실행됩니다. 예를 들어, 폼은 기본적으로 기사를 검토를 위해 제출할 수 있지만, `formAction`이 설정된 별도의 버튼을 사용하여 기사를 초안으로 저장할 수 있습니다.
 
 <Sandpack>
 

@@ -1,11 +1,11 @@
 ---
-title: Server Actions
+title: サーバーアクション
 canary: true
 ---
 
 <Intro>
 
-Server Actions allow Client Components to call async functions executed on the server.
+Server Actionsは、Client Componentsがサーバーで実行される非同期関数を呼び出すことを可能にします。
 
 </Intro>
 
@@ -13,21 +13,21 @@ Server Actions allow Client Components to call async functions executed on the s
 
 <Note>
 
-#### How do I build support for Server Actions? {/*how-do-i-build-support-for-server-actions*/}
+#### Server Actionsのサポートを構築するにはどうすればよいですか？ {/*how-do-i-build-support-for-server-actions*/}
 
-While Server Actions in React 19 are stable and will not break between major versions, the underlying APIs used to implement Server Actions in a React Server Components bundler or framework do not follow semver and may break between minors in React 19.x. 
+React 19のServer Actionsは安定しており、メジャーバージョン間で壊れることはありませんが、React Server ComponentsバンドラーやフレームワークでServer Actionsを実装するために使用される基礎的なAPIはsemverに従わず、React 19.xのマイナーバージョン間で壊れる可能性があります。
 
-To support Server Actions as a bundler or framework, we recommend pinning to a specific React version, or using the Canary release. We will continue working with bundlers and frameworks to stabilize the APIs used to implement Server Actions in the future.
+バンドラーやフレームワークとしてServer Actionsをサポートするには、特定のReactバージョンに固定するか、Canaryリリースを使用することをお勧めします。将来的には、Server Actionsを実装するために使用されるAPIを安定させるために、バンドラーやフレームワークと協力し続けます。
 
 </Note>
 
-When a Server Action is defined with the `"use server"` directive, your framework will automatically create a reference to the server function, and pass that reference to the Client Component. When that function is called on the client, React will send a request to the server to execute the function, and return the result.
+Server Actionが`"use server"`ディレクティブで定義されると、フレームワークは自動的にサーバー関数への参照を作成し、その参照をClient Componentに渡します。その関数がクライアントで呼び出されると、Reactはサーバーにリクエストを送信して関数を実行し、結果を返します。
 
-Server Actions can be created in Server Components and passed as props to Client Components, or they can be imported and used in Client Components.
+Server ActionsはServer Componentsで作成され、Client Componentsにプロップとして渡すことができます。また、インポートしてClient Componentsで使用することもできます。
 
-### Creating a Server Action from a Server Component {/*creating-a-server-action-from-a-server-component*/}
+### Server ComponentからServer Actionを作成する {/*creating-a-server-action-from-a-server-component*/}
 
-Server Components can define Server Actions with the `"use server"` directive:
+Server Componentsは`"use server"`ディレクティブでServer Actionsを定義できます：
 
 ```js [[2, 7, "'use server'"], [1, 5, "createNoteAction"], [1, 12, "createNoteAction"]]
 // Server Component
@@ -45,7 +45,7 @@ function EmptyNote () {
 }
 ```
 
-When React renders the `EmptyNote` Server Component, it will create a reference to the `createNoteAction` function, and pass that reference to the `Button` Client Component. When the button is clicked, React will send a request to the server to execute the `createNoteAction` function with the reference provided:
+Reactが`EmptyNote` Server Componentをレンダリングすると、`createNoteAction`関数への参照を作成し、その参照を`Button` Client Componentに渡します。ボタンがクリックされると、Reactは提供された参照を使用して`createNoteAction`関数を実行するためにサーバーにリクエストを送信します：
 
 ```js {5}
 "use client";
@@ -57,12 +57,12 @@ export default function Button({onClick}) {
 }
 ```
 
-For more, see the docs for [`"use server"`](/reference/rsc/use-server).
+詳細については、[`"use server"`](/reference/rsc/use-server)のドキュメントを参照してください。
 
 
-### Importing Server Actions from Client Components {/*importing-server-actions-from-client-components*/}
+### Client ComponentsからServer Actionsをインポートする {/*importing-server-actions-from-client-components*/}
 
-Client Components can import Server Actions from files that use the `"use server"` directive:
+Client Componentsは`"use server"`ディレクティブを使用するファイルからServer Actionsをインポートできます：
 
 ```js [[1, 3, "createNoteAction"]]
 "use server";
@@ -73,7 +73,7 @@ export async function createNoteAction() {
 
 ```
 
-When the bundler builds the `EmptyNote` Client Component, it will create a reference to the `createNoteAction` function in the bundle. When the `button` is clicked, React will send a request to the server to execute the `createNoteAction` function using the reference provided:
+バンドラーが`EmptyNote` Client Componentをビルドすると、バンドル内の`createNoteAction`関数への参照を作成します。`button`がクリックされると、Reactは提供された参照を使用して`createNoteAction`関数を実行するためにサーバーにリクエストを送信します：
 
 ```js [[1, 2, "createNoteAction"], [1, 5, "createNoteAction"], [1, 7, "createNoteAction"]]
 "use client";
@@ -86,11 +86,11 @@ function EmptyNote() {
 }
 ```
 
-For more, see the docs for [`"use server"`](/reference/rsc/use-server).
+詳細については、[`"use server"`](/reference/rsc/use-server)のドキュメントを参照してください。
 
-### Composing Server Actions with Actions {/*composing-server-actions-with-actions*/}
+### ActionsとServer Actionsの合成 {/*composing-server-actions-with-actions*/}
 
-Server Actions can be composed with Actions on the client:
+Server Actionsはクライアント上のActionsと合成できます：
 
 ```js [[1, 3, "updateName"]]
 "use server";
@@ -134,16 +134,15 @@ function UpdateName() {
 }
 ```
 
-This allows you to access the `isPending` state of the Server Action by wrapping it in an Action on the client.
+これにより、クライアント上のActionでServer Actionの`isPending`状態にアクセスできます。
 
-For more, see the docs for [Calling a Server Action outside of `<form>`](/reference/rsc/use-server#calling-a-server-action-outside-of-form)
+詳細については、[`<form>`の外でServer Actionを呼び出す](/reference/rsc/use-server#calling-a-server-action-outside-of-form)のドキュメントを参照してください。
 
-### Form Actions with Server Actions {/*form-actions-with-server-actions*/}
+### Server Actionsを使用したフォームアクション {/*form-actions-with-server-actions*/}
 
-Server Actions work with the new Form features in React 19.
+Server ActionsはReact 19の新しいフォーム機能と連携します。
 
-You can pass a Server Action to a Form to automatically submit the form to the server:
-
+フォームにServer Actionを渡して、フォームを自動的にサーバーに送信することができます：
 
 ```js [[1, 3, "updateName"], [1, 7, "updateName"]]
 "use client";
@@ -159,13 +158,13 @@ function UpdateName() {
 }
 ```
 
-When the Form submission succeeds, React will automatically reset the form. You can add `useActionState` to access the pending state, last response, or to support progressive enhancement.
+フォーム送信が成功すると、Reactは自動的にフォームをリセットします。`useActionState`を追加して、保留状態、最後の応答、またはプログレッシブエンハンスメントをサポートすることができます。
 
-For more, see the docs for [Server Actions in Forms](/reference/rsc/use-server#server-actions-in-forms).
+詳細については、[フォーム内のServer Actions](/reference/rsc/use-server#server-actions-in-forms)のドキュメントを参照してください。
 
-### Server Actions with `useActionState` {/*server-actions-with-use-action-state*/}
+### `useActionState`を使用したServer Actions {/*server-actions-with-use-action-state*/}
 
-You can compose Server Actions with `useActionState` for the common case where you just need access to the action pending state and last returned response:
+`useActionState`を使用して、アクションの保留状態と最後に返された応答にアクセスする一般的なケースでServer Actionsを合成できます：
 
 ```js [[1, 3, "updateName"], [1, 6, "updateName"], [2, 6, "submitAction"], [2, 9, "submitAction"]]
 "use client";
@@ -184,13 +183,13 @@ function UpdateName() {
 }
 ```
 
-When using `useActionState` with Server Actions, React will also automatically replay form submissions entered before hydration finishes. This means users can interact with your app even before the app has hydrated.
+Server Actionsで`useActionState`を使用する場合、Reactはハイドレーションが完了する前に入力されたフォーム送信を自動的に再生します。これにより、ユーザーはアプリがハイドレートされる前でもアプリと対話できます。
 
-For more, see the docs for [`useActionState`](/reference/react-dom/hooks/useFormState).
+詳細については、[`useActionState`](/reference/react-dom/hooks/useFormState)のドキュメントを参照してください。
 
-### Progressive enhancement with `useActionState` {/*progressive-enhancement-with-useactionstate*/}
+### `useActionState`を使用したプログレッシブエンハンスメント {/*progressive-enhancement-with-useactionstate*/}
 
-Server Actions also support progressive enhancement with the third argument of `useActionState`.
+Server Actionsは`useActionState`の第3引数を使用してプログレッシブエンハンスメントをサポートします。
 
 ```js [[1, 3, "updateName"], [1, 6, "updateName"], [2, 6, "/name/update"], [3, 6, "submitAction"], [3, 9, "submitAction"]]
 "use client";
@@ -208,6 +207,6 @@ function UpdateName() {
 }
 ```
 
-When the <CodeStep step={2}>permalink</CodeStep> is provided to `useActionState`, React will redirect to the provided URL if the form is submitted before the JavaScript bundle loads.
+<CodeStep step={2}>permalink</CodeStep>が`useActionState`に提供されると、JavaScriptバンドルが読み込まれる前にフォームが送信された場合、Reactは提供されたURLにリダイレクトします。
 
-For more, see the docs for [`useActionState`](/reference/react-dom/hooks/useFormState).
+詳細については、[`useActionState`](/reference/react-dom/hooks/useFormState)のドキュメントを参照してください。

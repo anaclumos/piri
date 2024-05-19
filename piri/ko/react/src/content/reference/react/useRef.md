@@ -4,7 +4,7 @@ title: useRef
 
 <Intro>
 
-`useRef` is a React Hook that lets you reference a value that's not needed for rendering.
+`useRef`는 렌더링에 필요하지 않은 값을 참조할 수 있게 해주는 React Hook입니다.
 
 ```js
 const ref = useRef(initialValue)
@@ -16,11 +16,11 @@ const ref = useRef(initialValue)
 
 ---
 
-## Reference {/*reference*/}
+## 참조 {/*reference*/}
 
 ### `useRef(initialValue)` {/*useref*/}
 
-Call `useRef` at the top level of your component to declare a [ref.](/learn/referencing-values-with-refs)
+컴포넌트의 최상위 레벨에서 `useRef`를 호출하여 [ref를 선언](/learn/referencing-values-with-refs)합니다.
 
 ```js
 import { useRef } from 'react';
@@ -31,34 +31,34 @@ function MyComponent() {
   // ...
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
-#### Parameters {/*parameters*/}
+#### 매개변수 {/*parameters*/}
 
-* `initialValue`: The value you want the ref object's `current` property to be initially. It can be a value of any type. This argument is ignored after the initial render.
+* `initialValue`: ref 객체의 `current` 속성에 초기 설정할 값입니다. 이 값은 어떤 타입이든 될 수 있습니다. 이 인수는 초기 렌더링 이후에는 무시됩니다.
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-`useRef` returns an object with a single property:
+`useRef`는 단일 속성을 가진 객체를 반환합니다:
 
-* `current`: Initially, it's set to the `initialValue` you have passed. You can later set it to something else. If you pass the ref object to React as a `ref` attribute to a JSX node, React will set its `current` property.
+* `current`: 처음에는 전달한 `initialValue`로 설정됩니다. 나중에 다른 값으로 설정할 수 있습니다. ref 객체를 JSX 노드의 `ref` 속성으로 React에 전달하면, React는 `current` 속성을 설정합니다.
 
-On the next renders, `useRef` will return the same object.
+다음 렌더링 시, `useRef`는 동일한 객체를 반환합니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* You can mutate the `ref.current` property. Unlike state, it is mutable. However, if it holds an object that is used for rendering (for example, a piece of your state), then you shouldn't mutate that object.
-* When you change the `ref.current` property, React does not re-render your component. React is not aware of when you change it because a ref is a plain JavaScript object.
-* Do not write _or read_ `ref.current` during rendering, except for [initialization.](#avoiding-recreating-the-ref-contents) This makes your component's behavior unpredictable.
-* In Strict Mode, React will **call your component function twice** in order to [help you find accidental impurities.](/reference/react/useState#my-initializer-or-updater-function-runs-twice) This is development-only behavior and does not affect production. Each ref object will be created twice, but one of the versions will be discarded. If your component function is pure (as it should be), this should not affect the behavior.
+* `ref.current` 속성은 변경할 수 있습니다. 상태와 달리, 이는 변경 가능합니다. 그러나 렌더링에 사용되는 객체를 포함하고 있다면(예: 상태의 일부), 해당 객체를 변경해서는 안 됩니다.
+* `ref.current` 속성을 변경해도 React는 컴포넌트를 다시 렌더링하지 않습니다. ref는 단순한 JavaScript 객체이기 때문에 React는 이를 변경할 때 인식하지 못합니다.
+* 렌더링 중에는 `ref.current`를 읽거나 쓰지 마세요, [초기화](#avoiding-recreating-the-ref-contents)를 제외하고. 이는 컴포넌트의 동작을 예측할 수 없게 만듭니다.
+* Strict Mode에서는, React가 **컴포넌트 함수를 두 번 호출**하여 [우연한 불순물을 찾도록 돕습니다.](/reference/react/useState#my-initializer-or-updater-function-runs-twice) 이는 개발 전용 동작이며, 프로덕션에는 영향을 미치지 않습니다. 각 ref 객체는 두 번 생성되지만, 하나의 버전은 폐기됩니다. 컴포넌트 함수가 순수하다면(그렇게 되어야 합니다), 이는 동작에 영향을 미치지 않습니다.
 
 ---
 
-## Usage {/*usage*/}
+## 사용법 {/*usage*/}
 
-### Referencing a value with a ref {/*referencing-a-value-with-a-ref*/}
+### ref로 값 참조하기 {/*referencing-a-value-with-a-ref*/}
 
-Call `useRef` at the top level of your component to declare one or more [refs.](/learn/referencing-values-with-refs)
+컴포넌트의 최상위 레벨에서 `useRef`를 호출하여 하나 이상의 [ref를 선언](/learn/referencing-values-with-refs)합니다.
 
 ```js [[1, 4, "intervalRef"], [3, 4, "0"]]
 import { useRef } from 'react';
@@ -68,11 +68,11 @@ function Stopwatch() {
   // ...
 ```
 
-`useRef` returns a <CodeStep step={1}>ref object</CodeStep> with a single <CodeStep step={2}>`current` property</CodeStep> initially set to the <CodeStep step={3}>initial value</CodeStep> you provided.
+`useRef`는 <CodeStep step={1}>ref 객체</CodeStep>를 반환하며, 이 객체는 단일 <CodeStep step={2}>`current` 속성</CodeStep>을 가지고 있으며, 초기에는 제공한 <CodeStep step={3}>초기 값</CodeStep>으로 설정됩니다.
 
-On the next renders, `useRef` will return the same object. You can change its `current` property to store information and read it later. This might remind you of [state](/reference/react/useState), but there is an important difference.
+다음 렌더링 시, `useRef`는 동일한 객체를 반환합니다. `current` 속성을 변경하여 정보를 저장하고 나중에 읽을 수 있습니다. 이는 [상태](/reference/react/useState)를 연상시킬 수 있지만, 중요한 차이점이 있습니다.
 
-**Changing a ref does not trigger a re-render.** This means refs are perfect for storing information that doesn't affect the visual output of your component. For example, if you need to store an [interval ID](https://developer.mozilla.org/en-US/docs/Web/API/setInterval) and retrieve it later, you can put it in a ref. To update the value inside the ref, you need to manually change its <CodeStep step={2}>`current` property</CodeStep>:
+**ref를 변경해도 다시 렌더링되지 않습니다.** 이는 ref가 컴포넌트의 시각적 출력에 영향을 미치지 않는 정보를 저장하는 데 적합하다는 것을 의미합니다. 예를 들어, [interval ID](https://developer.mozilla.org/en-US/docs/Web/API/setInterval)를 저장하고 나중에 검색해야 하는 경우, 이를 ref에 넣을 수 있습니다. ref 내부의 값을 업데이트하려면, 수동으로 <CodeStep step={2}>`current` 속성</CodeStep>을 변경해야 합니다:
 
 ```js [[2, 5, "intervalRef.current"]]
 function handleStartClick() {
@@ -83,7 +83,7 @@ function handleStartClick() {
 }
 ```
 
-Later, you can read that interval ID from the ref so that you can call [clear that interval](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval):
+나중에, ref에서 해당 interval ID를 읽어 [해당 interval을 지울](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval) 수 있습니다:
 
 ```js [[2, 2, "intervalRef.current"]]
 function handleStopClick() {
@@ -92,19 +92,19 @@ function handleStopClick() {
 }
 ```
 
-By using a ref, you ensure that:
+ref를 사용하면 다음을 보장할 수 있습니다:
 
-- You can **store information** between re-renders (unlike regular variables, which reset on every render).
-- Changing it **does not trigger a re-render** (unlike state variables, which trigger a re-render).
-- The **information is local** to each copy of your component (unlike the variables outside, which are shared).
+- **정보를 다시 렌더링 사이에 저장**할 수 있습니다 (매 렌더링 시 초기화되는 일반 변수와 달리).
+- 변경해도 **다시 렌더링되지 않습니다** (다시 렌더링을 트리거하는 상태 변수와 달리).
+- **정보가 각 컴포넌트 복사본에 로컬**입니다 (외부 변수와 달리, 외부 변수는 공유됩니다).
 
-Changing a ref does not trigger a re-render, so refs are not appropriate for storing information you want to display on the screen. Use state for that instead. Read more about [choosing between `useRef` and `useState`.](/learn/referencing-values-with-refs#differences-between-refs-and-state)
+ref를 변경해도 다시 렌더링되지 않으므로, 화면에 표시하려는 정보를 저장하는 데는 적합하지 않습니다. 대신 상태를 사용하세요. [`useRef`와 `useState` 사이의 선택에 대해 더 읽어보세요.](/learn/referencing-values-with-refs#differences-between-refs-and-state)
 
-<Recipes titleText="Examples of referencing a value with useRef" titleId="examples-value">
+<Recipes titleText="useRef로 값 참조 예제" titleId="examples-value">
 
-#### Click counter {/*click-counter*/}
+#### 클릭 카운터 {/*click-counter*/}
 
-This component uses a ref to keep track of how many times the button was clicked. Note that it's okay to use a ref instead of state here because the click count is only read and written in an event handler.
+이 컴포넌트는 버튼이 클릭된 횟수를 추적하기 위해 ref를 사용합니다. 클릭 수는 이벤트 핸들러에서만 읽고 쓰기 때문에, 여기서는 상태 대신 ref를 사용하는 것이 괜찮습니다.
 
 <Sandpack>
 
@@ -129,13 +129,13 @@ export default function Counter() {
 
 </Sandpack>
 
-If you show `{ref.current}` in the JSX, the number won't update on click. This is because setting `ref.current` does not trigger a re-render. Information that's used for rendering should be state instead.
+JSX에서 `{ref.current}`를 표시하면, 클릭 시 숫자가 업데이트되지 않습니다. 이는 `ref.current`를 설정해도 다시 렌더링되지 않기 때문입니다. 렌더링에 사용되는 정보는 상태여야 합니다.
 
 <Solution />
 
-#### A stopwatch {/*a-stopwatch*/}
+#### 스톱워치 {/*a-stopwatch*/}
 
-This example uses a combination of state and refs. Both `startTime` and `now` are state variables because they are used for rendering. But we also need to hold an [interval ID](https://developer.mozilla.org/en-US/docs/Web/API/setInterval) so that we can stop the interval on button press. Since the interval ID is not used for rendering, it's appropriate to keep it in a ref, and manually update it.
+이 예제는 상태와 ref의 조합을 사용합니다. `startTime`과 `now`는 렌더링에 사용되기 때문에 상태 변수입니다. 그러나 버튼을 눌러 interval을 중지할 수 있도록 [interval ID](https://developer.mozilla.org/en-US/docs/Web/API/setInterval)를 보유해야 합니다. interval ID는 렌더링에 사용되지 않으므로, ref에 보관하고 수동으로 업데이트하는 것이 적절합니다.
 
 <Sandpack>
 
@@ -188,57 +188,57 @@ export default function Stopwatch() {
 
 <Pitfall>
 
-**Do not write _or read_ `ref.current` during rendering.**
+**렌더링 중에 `ref.current`를 읽거나 쓰지 마세요.**
 
-React expects that the body of your component [behaves like a pure function](/learn/keeping-components-pure):
+React는 컴포넌트의 본문이 [순수 함수처럼 동작하기를 기대합니다](/learn/keeping-components-pure):
 
-- If the inputs ([props](/learn/passing-props-to-a-component), [state](/learn/state-a-components-memory), and [context](/learn/passing-data-deeply-with-context)) are the same, it should return exactly the same JSX.
-- Calling it in a different order or with different arguments should not affect the results of other calls.
+- 입력값([props](/learn/passing-props-to-a-component), [state](/learn/state-a-components-memory), [context](/learn/passing-data-deeply-with-context))이 동일하면, 정확히 동일한 JSX를 반환해야 합니다.
+- 다른 순서로 호출하거나 다른 인수로 호출해도 다른 호출의 결과에 영향을 미치지 않아야 합니다.
 
-Reading or writing a ref **during rendering** breaks these expectations.
+렌더링 중에 ref를 읽거나 쓰는 것은 이러한 기대를 깨뜨립니다.
 
 ```js {3-4,6-7}
 function MyComponent() {
   // ...
-  // 🚩 Don't write a ref during rendering
+  // 🚩 렌더링 중에 ref를 쓰지 마세요
   myRef.current = 123;
   // ...
-  // 🚩 Don't read a ref during rendering
+  // 🚩 렌더링 중에 ref를 읽지 마세요
   return <h1>{myOtherRef.current}</h1>;
 }
 ```
 
-You can read or write refs **from event handlers or effects instead**.
+대신 **이벤트 핸들러나 효과에서** ref를 읽거나 쓸 수 있습니다.
 
 ```js {4-5,9-10}
 function MyComponent() {
   // ...
   useEffect(() => {
-    // ✅ You can read or write refs in effects
+    // ✅ 효과에서 ref를 읽거나 쓸 수 있습니다
     myRef.current = 123;
   });
   // ...
   function handleClick() {
-    // ✅ You can read or write refs in event handlers
+    // ✅ 이벤트 핸들러에서 ref를 읽거나 쓸 수 있습니다
     doSomething(myOtherRef.current);
   }
   // ...
 }
 ```
 
-If you *have to* read [or write](/reference/react/useState#storing-information-from-previous-renders) something during rendering, [use state](/reference/react/useState) instead.
+렌더링 중에 [무언가를 읽거나](/reference/react/useState#storing-information-from-previous-renders) 써야 한다면, 대신 [상태를 사용](/reference/react/useState)하세요.
 
-When you break these rules, your component might still work, but most of the newer features we're adding to React will rely on these expectations. Read more about [keeping your components pure.](/learn/keeping-components-pure#where-you-_can_-cause-side-effects)
+이 규칙을 어기면 컴포넌트가 여전히 작동할 수 있지만, React에 추가하는 대부분의 새로운 기능은 이러한 기대에 의존하게 됩니다. [컴포넌트를 순수하게 유지하는 방법](https://react.dev/learn/keeping-components-pure#where-you-_can_-cause-side-effects)에 대해 더 읽어보세요.
 
 </Pitfall>
 
 ---
 
-### Manipulating the DOM with a ref {/*manipulating-the-dom-with-a-ref*/}
+### ref로 DOM 조작하기 {/*manipulating-the-dom-with-a-ref*/}
 
-It's particularly common to use a ref to manipulate the [DOM.](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API) React has built-in support for this.
+ref를 사용하여 [DOM을 조작](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API)하는 것은 특히 일반적입니다. React는 이를 위한 내장 지원을 제공합니다.
 
-First, declare a <CodeStep step={1}>ref object</CodeStep> with an <CodeStep step={3}>initial value</CodeStep> of `null`:
+먼저, <CodeStep step={1}>ref 객체</CodeStep>를 `null`의 <CodeStep step={3}>초기 값</CodeStep>으로 선언합니다:
 
 ```js [[1, 4, "inputRef"], [3, 4, "null"]]
 import { useRef } from 'react';
@@ -248,14 +248,14 @@ function MyComponent() {
   // ...
 ```
 
-Then pass your ref object as the `ref` attribute to the JSX of the DOM node you want to manipulate:
+그런 다음, ref 객체를 조작하려는 DOM 노드의 JSX에 `ref` 속성으로 전달합니다:
 
 ```js [[1, 2, "inputRef"]]
   // ...
   return <input ref={inputRef} />;
 ```
 
-After React creates the DOM node and puts it on the screen, React will set the <CodeStep step={2}>`current` property</CodeStep> of your ref object to that DOM node. Now you can access the `<input>`'s DOM node and call methods like [`focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus):
+React가 DOM 노드를 생성하고 화면에 표시한 후, React는 ref 객체의 <CodeStep step={2}>`current` 속성</CodeStep>을 해당 DOM 노드로 설정합니다. 이제 `<input>`의 DOM 노드에 접근하여 [`focus()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus)와 같은 메서드를 호출할 수 있습니다:
 
 ```js [[2, 2, "inputRef.current"]]
   function handleClick() {
@@ -263,15 +263,15 @@ After React creates the DOM node and puts it on the screen, React will set the <
   }
 ```
 
-React will set the `current` property back to `null` when the node is removed from the screen.
+React는 노드가 화면에서 제거될 때 `current` 속성을 `null`로 다시 설정합니다.
 
-Read more about [manipulating the DOM with refs.](/learn/manipulating-the-dom-with-refs)
+[ref로 DOM 조작하기](https://react.dev/learn/manipulating-the-dom-with-refs)에 대해 더 읽어보세요.
 
-<Recipes titleText="Examples of manipulating the DOM with useRef" titleId="examples-dom">
+<Recipes titleText="useRef로 DOM 조작 예제" titleId="examples-dom">
 
-#### Focusing a text input {/*focusing-a-text-input*/}
+#### 텍스트 입력에 포커스 맞추기 {/*focusing-a-text-input*/}
 
-In this example, clicking the button will focus the input:
+이 예제에서는 버튼을 클릭하면 입력란에 포커스가 맞춰집니다:
 
 <Sandpack>
 
@@ -300,9 +300,9 @@ export default function Form() {
 
 <Solution />
 
-#### Scrolling an image into view {/*scrolling-an-image-into-view*/}
+#### 이미지를 뷰로 스크롤하기 {/*scrolling-an-image-into-view*/}
 
-In this example, clicking the button will scroll an image into view. It uses a ref to the list DOM node, and then calls DOM [`querySelectorAll`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) API to find the image we want to scroll to.
+이 예제에서는 버튼을 클릭하면 이미지가 뷰로 스크롤됩니다. 이는 리스트 DOM 노드에 대한 ref를 사용하고, DOM [`querySelectorAll`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) API를 호출하여 스크롤할 이미지를 찾습니다.
 
 <Sandpack>
 
@@ -314,7 +314,7 @@ export default function CatFriends() {
 
   function scrollToIndex(index) {
     const listNode = listRef.current;
-    // This line assumes a particular DOM structure:
+    // 이 줄은 특정 DOM 구조를 가정합니다:
     const imgNode = listNode.querySelectorAll('li > img')[index];
     imgNode.scrollIntoView({
       behavior: 'smooth',
@@ -393,9 +393,9 @@ li {
 
 <Solution />
 
-#### Playing and pausing a video {/*playing-and-pausing-a-video*/}
+#### 비디오 재생 및 일시 정지 {/*playing-and-pausing-a-video*/}
 
-This example uses a ref to call [`play()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play) and [`pause()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause) on a `<video>` DOM node.
+이 예제는 ref를 사용하여 `<video>` DOM 노드에서 [`play()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play) 및 [`pause()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause)를 호출합니다.
 
 <Sandpack>
 
@@ -446,9 +446,9 @@ button { display: block; margin-bottom: 20px; }
 
 <Solution />
 
-#### Exposing a ref to your own component {/*exposing-a-ref-to-your-own-component*/}
+#### 자신의 컴포넌트에 ref 노출하기 {/*exposing-a-ref-to-your-own-component*/}
 
-Sometimes, you may want to let the parent component manipulate the DOM inside of your component. For example, maybe you're writing a `MyInput` component, but you want the parent to be able to focus the input (which the parent has no access to). You can use a combination of `useRef` to hold the input and [`forwardRef`](/reference/react/forwardRef) to expose it to the parent component. Read a [detailed walkthrough](/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes) here.
+때로는 부모 컴포넌트가 컴포넌트 내부의 DOM을 조작할 수 있도록 하고 싶을 수 있습니다. 예를 들어, `MyInput` 컴포넌트를 작성하고 있지만, 부모가 입력란에 포커스를 맞출 수 있도록 하고 싶을 수 있습니다(부모는 입력란에 접근할 수 없습니다). `useRef`를 사용하여 입력란을 보유하고 [`forwardRef`](/reference/react/forwardRef)를 사용하여 부모 컴포넌트에 노출할 수 있습니다. [자세한 설명](https://react.dev/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)을 여기에서 읽어보세요.
 
 <Sandpack>
 
@@ -485,9 +485,9 @@ export default function Form() {
 
 ---
 
-### Avoiding recreating the ref contents {/*avoiding-recreating-the-ref-contents*/}
+### ref 내용 재생성 방지하기 {/*avoiding-recreating-the-ref-contents*/}
 
-React saves the initial ref value once and ignores it on the next renders.
+React는 초기 ref 값을 한 번 저장하고 다음 렌더링 시 무시합니다.
 
 ```js
 function Video() {
@@ -495,26 +495,26 @@ function Video() {
   // ...
 ```
 
-Although the result of `new VideoPlayer()` is only used for the initial render, you're still calling this function on every render. This can be wasteful if it's creating expensive objects.
+`new VideoPlayer()`의 결과는 초기 렌더링에만 사용되지만, 여전히 매 렌더링 시 이 함수를 호출하고 있습니다. 이는 비싼 객체를 생성하는 경우 낭비가 될 수 있습니다.
 
-To solve it, you may initialize the ref like this instead:
+이를 해결하려면, 대신 ref를 다음과 같이 초기화할 수 있습니다:
 
 ```js
 function Video() {
   const playerRef = useRef(null);
-  if (playerRef.current === null) {
+  if ((playerRef.current === null) {
     playerRef.current = new VideoPlayer();
   }
   // ...
 ```
 
-Normally, writing or reading `ref.current` during render is not allowed. However, it's fine in this case because the result is always the same, and the condition only executes during initialization so it's fully predictable.
+일반적으로, 렌더링 중에 `ref.current`를 읽거나 쓰는 것은 허용되지 않습니다. 그러나 이 경우에는 결과가 항상 동일하고 조건이 초기화 중에만 실행되므로 완전히 예측 가능합니다.
 
 <DeepDive>
 
-#### How to avoid null checks when initializing useRef later {/*how-to-avoid-null-checks-when-initializing-use-ref-later*/}
+#### useRef를 나중에 초기화할 때 null 검사를 피하는 방법 {/*how-to-avoid-null-checks-when-initializing-use-ref-later*/}
 
-If you use a type checker and don't want to always check for `null`, you can try a pattern like this instead:
+타입 체커를 사용하고 항상 `null`을 검사하고 싶지 않다면, 대신 다음과 같은 패턴을 시도할 수 있습니다:
 
 ```js
 function Video() {
@@ -532,17 +532,17 @@ function Video() {
   // ...
 ```
 
-Here, the `playerRef` itself is nullable. However, you should be able to convince your type checker that there is no case in which `getPlayer()` returns `null`. Then use `getPlayer()` in your event handlers.
+여기서, `playerRef` 자체는 nullable입니다. 그러나 `getPlayer()`가 `null`을 반환하지 않는 경우가 없음을 타입 체커에게 납득시킬 수 있어야 합니다. 그런 다음 이벤트 핸들러에서 `getPlayer()`를 사용하세요.
 
 </DeepDive>
 
 ---
 
-## Troubleshooting {/*troubleshooting*/}
+## 문제 해결 {/*troubleshooting*/}
 
-### I can't get a ref to a custom component {/*i-cant-get-a-ref-to-a-custom-component*/}
+### 커스텀 컴포넌트에 ref를 얻을 수 없습니다 {/*i-cant-get-a-ref-to-a-custom-component*/}
 
-If you try to pass a `ref` to your own component like this:
+다음과 같이 `ref`를 자신의 컴포넌트에 전달하려고 하면:
 
 ```js
 const inputRef = useRef(null);
@@ -550,17 +550,17 @@ const inputRef = useRef(null);
 return <MyInput ref={inputRef} />;
 ```
 
-You might get an error in the console:
+콘솔에 오류가 발생할 수 있습니다:
 
 <ConsoleBlock level="error">
 
-Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?
+경고: 함수 컴포넌트에 ref를 줄 수 없습니다. 이 ref에 접근하려는 시도는 실패합니다. React.forwardRef()를 사용하려고 했습니까?
 
 </ConsoleBlock>
 
-By default, your own components don't expose refs to the DOM nodes inside them.
+기본적으로, 자신의 컴포넌트는 내부의 DOM 노드에 ref를 노출하지 않습니다.
 
-To fix this, find the component that you want to get a ref to:
+이를 해결하려면, ref를 얻고자 하는 컴포넌트를 찾으세요:
 
 ```js
 export default function MyInput({ value, onChange }) {
@@ -573,7 +573,7 @@ export default function MyInput({ value, onChange }) {
 }
 ```
 
-And then wrap it in [`forwardRef`](/reference/react/forwardRef) like this:
+그런 다음 이를 [`forwardRef`](/reference/react/forwardRef)로 다음과 같이 감싸세요:
 
 ```js {3,8}
 import { forwardRef } from 'react';
@@ -591,6 +591,6 @@ const MyInput = forwardRef(({ value, onChange }, ref) => {
 export default MyInput;
 ```
 
-Then the parent component can get a ref to it.
+그런 다음 부모 컴포넌트는 이에 대한 ref를 얻을 수 있습니다.
 
-Read more about [accessing another component's DOM nodes.](/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)
+[다른 컴포넌트의 DOM 노드에 접근하기](https://react.dev/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)에 대해 더 읽어보세요.

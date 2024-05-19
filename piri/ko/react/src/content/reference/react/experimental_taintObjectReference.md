@@ -4,30 +4,30 @@ title: experimental_taintObjectReference
 
 <Wip>
 
-**This API is experimental and is not available in a stable version of React yet.**
+**이 API는 실험적이며 아직 안정적인 버전의 React에서는 사용할 수 없습니다.**
 
-You can try it by upgrading React packages to the most recent experimental version:
+React 패키지를 최신 실험 버전으로 업그레이드하여 시도해 볼 수 있습니다:
 
 - `react@experimental`
 - `react-dom@experimental`
 - `eslint-plugin-react-hooks@experimental`
 
-Experimental versions of React may contain bugs. Don't use them in production.
+React의 실험 버전은 버그가 있을 수 있습니다. 프로덕션 환경에서는 사용하지 마세요.
 
-This API is only available inside React Server Components.
+이 API는 React Server Components 내에서만 사용할 수 있습니다.
 
 </Wip>
 
 
 <Intro>
 
-`taintObjectReference` lets you prevent a specific object instance from being passed to a Client Component like a `user` object.
+`taintObjectReference`는 `user` 객체와 같은 특정 객체 인스턴스가 Client Component로 전달되지 않도록 방지할 수 있습니다.
 
 ```js
 experimental_taintObjectReference(message, object);
 ```
 
-To prevent passing a key, hash or token, see [`taintUniqueValue`](/reference/react/experimental_taintUniqueValue).
+키, 해시 또는 토큰의 전달을 방지하려면 [`taintUniqueValue`](/reference/react/experimental_taintUniqueValue)를 참조하세요.
 
 </Intro>
 
@@ -39,36 +39,36 @@ To prevent passing a key, hash or token, see [`taintUniqueValue`](/reference/rea
 
 ### `taintObjectReference(message, object)` {/*taintobjectreference*/}
 
-Call `taintObjectReference` with an object to register it with React as something that should not be allowed to be passed to the Client as is:
+객체를 `taintObjectReference`로 호출하여 React에 클라이언트로 그대로 전달되지 않도록 등록합니다:
 
 ```js
 import {experimental_taintObjectReference} from 'react';
 
 experimental_taintObjectReference(
-  'Do not pass ALL environment variables to the client.',
+  '모든 환경 변수를 클라이언트에 전달하지 마세요.',
   process.env
 );
 ```
 
-[See more examples below.](#usage)
+[아래에서 더 많은 예제를 확인하세요.](#usage)
 
 #### Parameters {/*parameters*/}
 
-* `message`: The message you want to display if the object gets passed to a Client Component. This message will be displayed as a part of the Error that will be thrown if the object gets passed to a Client Component.
+* `message`: 객체가 Client Component로 전달될 경우 표시할 메시지입니다. 이 메시지는 객체가 Client Component로 전달될 경우 발생하는 오류의 일부로 표시됩니다.
 
-* `object`: The object to be tainted. Functions and class instances can be passed to `taintObjectReference` as `object`. Functions and classes are already blocked from being passed to Client Components but the React's default error message will be replaced by what you defined in `message`. When a specific instance of a Typed Array is passed to `taintObjectReference` as `object`, any other copies of the Typed Array will not be tainted.
+* `object`: 오염시킬 객체입니다. 함수와 클래스 인스턴스는 `object`로 `taintObjectReference`에 전달될 수 있습니다. 함수와 클래스는 이미 Client Components로 전달되는 것이 차단되지만, React의 기본 오류 메시지는 `message`에 정의된 내용으로 대체됩니다. 특정 Typed Array 인스턴스가 `object`로 `taintObjectReference`에 전달되면, 다른 모든 Typed Array 복사본은 오염되지 않습니다.
 
 #### Returns {/*returns*/}
 
-`experimental_taintObjectReference` returns `undefined`.
+`experimental_taintObjectReference`는 `undefined`를 반환합니다.
 
 #### Caveats {/*caveats*/}
 
-- Recreating or cloning a tainted object creates a new untainted object which may contain sensitive data. For example, if you have a tainted `user` object, `const userInfo = {name: user.name, ssn: user.ssn}` or `{...user}` will create new objects which are not tainted. `taintObjectReference` only protects against simple mistakes when the object is passed through to a Client Component unchanged.
+- 오염된 객체를 재생성하거나 복제하면 민감한 데이터를 포함할 수 있는 새로운 오염되지 않은 객체가 생성됩니다. 예를 들어, 오염된 `user` 객체가 있는 경우, `const userInfo = {name: user.name, ssn: user.ssn}` 또는 `{...user}`는 오염되지 않은 새로운 객체를 생성합니다. `taintObjectReference`는 객체가 변경되지 않은 상태로 Client Component에 전달될 때 발생하는 단순한 실수를 방지하는 데만 보호 기능을 제공합니다.
 
 <Pitfall>
 
-**Do not rely on just tainting for security.** Tainting an object doesn't prevent leaking of every possible derived value. For example, the clone of a tainted object will create a new untainted object. Using data from a tainted object (e.g. `{secret: taintedObj.secret}`) will create a new value or object that is not tainted. Tainting is a layer of protection; a secure app will have multiple layers of protection, well designed APIs, and isolation patterns.
+**보안 목적으로 오염에만 의존하지 마세요.** 객체를 오염시키는 것은 모든 가능한 파생 값을 누출하는 것을 방지하지 않습니다. 예를 들어, 오염된 객체의 복제본은 새로운 오염되지 않은 객체를 생성합니다. 오염된 객체의 데이터를 사용하는 것(e.g. `{secret: taintedObj.secret}`)은 새로운 값이나 오염되지 않은 객체를 생성합니다. 오염은 보호의 한 층일 뿐입니다; 안전한 앱은 여러 보호 층, 잘 설계된 API, 격리 패턴을 갖추고 있어야 합니다.
 
 </Pitfall>
 
@@ -76,9 +76,9 @@ experimental_taintObjectReference(
 
 ## Usage {/*usage*/}
 
-### Prevent user data from unintentionally reaching the client {/*prevent-user-data-from-unintentionally-reaching-the-client*/}
+### 사용자 데이터가 의도치 않게 클라이언트에 도달하는 것을 방지하기 {/*prevent-user-data-from-unintentionally-reaching-the-client*/}
 
-A Client Component should never accept objects that carry sensitive data. Ideally, the data fetching functions should not expose data that the current user should not have access to. Sometimes mistakes happen during refactoring. To protect against these mistakes happening down the line we can "taint" the user object in our data API.
+Client Component는 민감한 데이터를 포함한 객체를 절대 받아서는 안 됩니다. 이상적으로는 데이터 가져오기 함수가 현재 사용자가 접근할 수 없는 데이터를 노출하지 않아야 합니다. 때때로 리팩토링 중에 실수가 발생할 수 있습니다. 이러한 실수를 방지하기 위해 데이터 API에서 사용자 객체를 "오염"시킬 수 있습니다.
 
 ```js
 import {experimental_taintObjectReference} from 'react';
@@ -86,21 +86,21 @@ import {experimental_taintObjectReference} from 'react';
 export async function getUser(id) {
   const user = await db`SELECT * FROM users WHERE id = ${id}`;
   experimental_taintObjectReference(
-    'Do not pass the entire user object to the client. ' +
-      'Instead, pick off the specific properties you need for this use case.',
+    '전체 사용자 객체를 클라이언트에 전달하지 마세요. ' +
+      '대신, 이 사용 사례에 필요한 특정 속성을 선택하세요.',
     user,
   );
   return user;
 }
 ```
 
-Now whenever anyone tries to pass this object to a Client Component, an error will be thrown with the passed in error message instead.
+이제 누군가가 이 객체를 Client Component에 전달하려고 하면, 전달된 오류 메시지와 함께 오류가 발생합니다.
 
 <DeepDive>
 
-#### Protecting against leaks in data fetching {/*protecting-against-leaks-in-data-fetching*/}
+#### 데이터 가져오기에서 누출 방지하기 {/*protecting-against-leaks-in-data-fetching*/}
 
-If you're running a Server Components environment that has access to sensitive data, you have to be careful not to pass objects straight through:
+민감한 데이터에 접근할 수 있는 Server Components 환경을 실행 중인 경우, 객체를 바로 전달하지 않도록 주의해야 합니다:
 
 ```js
 // api.js
@@ -116,7 +116,7 @@ import { InfoCard } from 'components.js';
 
 export async function Profile(props) {
   const user = await getUser(props.userId);
-  // DO NOT DO THIS
+  // 이렇게 하지 마세요
   return <InfoCard user={user} />;
 }
 ```
@@ -130,8 +130,7 @@ export async function InfoCard({ user }) {
 }
 ```
 
-Ideally, the `getUser` should not expose data that the current user should not have access to. To prevent passing the `user` object to a Client Component down the line we can "taint" the user object:
-
+이상적으로는 `getUser`가 현재 사용자가 접근할 수 없는 데이터를 노출하지 않아야 합니다. `user` 객체를 Client Component에 전달하지 않도록 하기 위해 사용자 객체를 "오염"시킬 수 있습니다:
 
 ```js
 // api.js
@@ -140,14 +139,14 @@ import {experimental_taintObjectReference} from 'react';
 export async function getUser(id) {
   const user = await db`SELECT * FROM users WHERE id = ${id}`;
   experimental_taintObjectReference(
-    'Do not pass the entire user object to the client. ' +
-      'Instead, pick off the specific properties you need for this use case.',
+    '전체 사용자 객체를 클라이언트에 전달하지 마세요. ' +
+      '대신, 이 사용 사례에 필요한 특정 속성을 선택하세요.',
     user,
   );
   return user;
 }
 ```
 
-Now if anyone tries to pass the `user` object to a Client Component, an error will be thrown with the passed in error message.
+이제 누군가가 `user` 객체를 Client Component에 전달하려고 하면, 전달된 오류 메시지와 함께 오류가 발생합니다.
 
 </DeepDive>

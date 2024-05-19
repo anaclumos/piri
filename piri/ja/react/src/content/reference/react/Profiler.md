@@ -4,7 +4,7 @@ title: <Profiler>
 
 <Intro>
 
-`<Profiler>` lets you measure rendering performance of a React tree programmatically.
+`<Profiler>`を使用すると、Reactツリーのレンダリングパフォーマンスをプログラムで測定できます。
 
 ```js
 <Profiler id="App" onRender={onRender}>
@@ -18,11 +18,11 @@ title: <Profiler>
 
 ---
 
-## Reference {/*reference*/}
+## リファレンス {/*reference*/}
 
 ### `<Profiler>` {/*profiler*/}
 
-Wrap a component tree in a `<Profiler>` to measure its rendering performance.
+コンポーネントツリーを`<Profiler>`でラップして、そのレンダリングパフォーマンスを測定します。
 
 ```js
 <Profiler id="App" onRender={onRender}>
@@ -30,43 +30,43 @@ Wrap a component tree in a `<Profiler>` to measure its rendering performance.
 </Profiler>
 ```
 
-#### Props {/*props*/}
+#### プロパティ {/*props*/}
 
-* `id`: A string identifying the part of the UI you are measuring.
-* `onRender`: An [`onRender` callback](#onrender-callback) that React calls every time components within the profiled tree update. It receives information about what was rendered and how much time it took.
+* `id`: 測定しているUIの部分を識別する文字列。
+* `onRender`: プロファイルされたツリー内のコンポーネントが更新されるたびにReactが呼び出す[`onRender`コールバック](#onrender-callback)。レンダリングされた内容と所要時間に関する情報を受け取ります。
 
-#### Caveats {/*caveats*/}
+#### 注意点 {/*caveats*/}
 
-* Profiling adds some additional overhead, so **it is disabled in the production build by default.** To opt into production profiling, you need to enable a [special production build with profiling enabled.](https://fb.me/react-profiling)
+* プロファイリングには追加のオーバーヘッドが発生するため、**デフォルトでは本番ビルドで無効になっています。** 本番プロファイリングを有効にするには、プロファイリングが有効になっている[特別な本番ビルドを有効にする必要があります。](https://fb.me/react-profiling)
 
 ---
 
-### `onRender` callback {/*onrender-callback*/}
+### `onRender`コールバック {/*onrender-callback*/}
 
-React will call your `onRender` callback with information about what was rendered.
+Reactはレンダリングされた内容に関する情報を持って`onRender`コールバックを呼び出します。
 
 ```js
 function onRender(id, phase, actualDuration, baseDuration, startTime, commitTime) {
-  // Aggregate or log render timings...
+  // レンダリング時間を集計またはログに記録...
 }
 ```
 
-#### Parameters {/*onrender-parameters*/}
+#### パラメータ {/*onrender-parameters*/}
 
-* `id`: The string `id` prop of the `<Profiler>` tree that has just committed. This lets you identify which part of the tree was committed if you are using multiple profilers.
-* `phase`: `"mount"`, `"update"` or `"nested-update"`. This lets you know whether the tree has just been mounted for the first time or re-rendered due to a change in props, state, or Hooks.
-* `actualDuration`: The number of milliseconds spent rendering the `<Profiler>` and its descendants for the current update. This indicates how well the subtree makes use of memoization (e.g. [`memo`](/reference/react/memo) and [`useMemo`](/reference/react/useMemo)). Ideally this value should decrease significantly after the initial mount as many of the descendants will only need to re-render if their specific props change.
-* `baseDuration`: The number of milliseconds estimating how much time it would take to re-render the entire `<Profiler>` subtree without any optimizations. It is calculated by summing up the most recent render durations of each component in the tree. This value estimates a worst-case cost of rendering (e.g. the initial mount or a tree with no memoization). Compare `actualDuration` against it to see if memoization is working.
-* `startTime`: A numeric timestamp for when React began rendering the current update.
-* `commitTime`: A numeric timestamp for when React committed the current update. This value is shared between all profilers in a commit, enabling them to be grouped if desirable.
+* `id`: コミットされたばかりの`<Profiler>`ツリーの文字列`id`プロパティ。複数のプロファイラを使用している場合、どの部分のツリーがコミットされたかを識別できます。
+* `phase`: `"mount"`、`"update"`または`"nested-update"`。ツリーが初めてマウントされたのか、プロパティ、状態、またはHooksの変更によって再レンダリングされたのかを知ることができます。
+* `actualDuration`: 現在の更新のために`<Profiler>`とその子孫をレンダリングするのに費やされたミリ秒数。この値は、サブツリーがメモ化をどれだけうまく利用しているかを示します（例：[`memo`](/reference/react/memo)および[`useMemo`](/reference/react/useMemo)）。理想的には、この値は初回マウント後に大幅に減少するはずです。多くの子孫は特定のプロパティが変更された場合にのみ再レンダリングが必要です。
+* `baseDuration`: 最適化なしで`<Profiler>`サブツリー全体を再レンダリングするのにかかる時間をミリ秒単位で推定したもの。これはツリー内の各コンポーネントの最新のレンダリング時間を合計することで計算されます。この値は、レンダリングの最悪のコスト（例：初回マウントやメモ化なしのツリー）を推定します。`actualDuration`と比較して、メモ化が機能しているかどうかを確認します。
+* `startTime`: Reactが現在の更新のレンダリングを開始したときの数値タイムスタンプ。
+* `commitTime`: Reactが現在の更新をコミットしたときの数値タイムスタンプ。この値はコミット内のすべてのプロファイラ間で共有され、必要に応じてグループ化できます。
 
 ---
 
-## Usage {/*usage*/}
+## 使用法 {/*usage*/}
 
-### Measuring rendering performance programmatically {/*measuring-rendering-performance-programmatically*/}
+### レンダリングパフォーマンスをプログラムで測定する {/*measuring-rendering-performance-programmatically*/}
 
-Wrap the `<Profiler>` component around a React tree to measure its rendering performance.
+`<Profiler>`コンポーネントをReactツリーの周りにラップして、そのレンダリングパフォーマンスを測定します。
 
 ```js {2,4}
 <App>
@@ -77,25 +77,25 @@ Wrap the `<Profiler>` component around a React tree to measure its rendering per
 </App>
 ```
 
-It requires two props: an `id` (string) and an `onRender` callback (function) which React calls any time a component within the tree "commits" an update.
+これには2つのプロパティが必要です：`id`（文字列）と`onRender`コールバック（関数）。Reactはツリー内のコンポーネントが更新を「コミット」するたびにこれを呼び出します。
 
 <Pitfall>
 
-Profiling adds some additional overhead, so **it is disabled in the production build by default.** To opt into production profiling, you need to enable a [special production build with profiling enabled.](https://fb.me/react-profiling)
+プロファイリングには追加のオーバーヘッドが発生するため、**デフォルトでは本番ビルドで無効になっています。** 本番プロファイリングを有効にするには、プロファイリングが有効になっている[特別な本番ビルドを有効にする必要があります。](https://fb.me/react-profiling)
 
 </Pitfall>
 
 <Note>
 
-`<Profiler>` lets you gather measurements programmatically. If you're looking for an interactive profiler, try the Profiler tab in [React Developer Tools](/learn/react-developer-tools). It exposes similar functionality as a browser extension.
+`<Profiler>`を使用すると、プログラムで測定値を収集できます。インタラクティブなプロファイラを探している場合は、[React Developer Tools](/learn/react-developer-tools)のプロファイラタブを試してください。これはブラウザ拡張機能として同様の機能を提供します。
 
 </Note>
 
 ---
 
-### Measuring different parts of the application {/*measuring-different-parts-of-the-application*/}
+### アプリケーションの異なる部分を測定する {/*measuring-different-parts-of-the-application*/}
 
-You can use multiple `<Profiler>` components to measure different parts of your application:
+複数の`<Profiler>`コンポーネントを使用して、アプリケーションの異なる部分を測定できます：
 
 ```js {5,7}
 <App>
@@ -108,7 +108,7 @@ You can use multiple `<Profiler>` components to measure different parts of your 
 </App>
 ```
 
-You can also nest `<Profiler>` components:
+また、`<Profiler>`コンポーネントをネストすることもできます：
 
 ```js {5,7,9,12}
 <App>
@@ -126,7 +126,7 @@ You can also nest `<Profiler>` components:
 </App>
 ```
 
-Although `<Profiler>` is a lightweight component, it should be used only when necessary. Each use adds some CPU and memory overhead to an application.
+`<Profiler>`は軽量なコンポーネントですが、必要な場合にのみ使用するべきです。各使用はアプリケーションにいくらかのCPUおよびメモリのオーバーヘッドを追加します。
 
 ---
 

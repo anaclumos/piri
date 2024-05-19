@@ -1,30 +1,30 @@
 ---
-title: "Built-in React APIs"
+title: 組み込みReact API
 ---
 
 <Intro>
 
-In addition to [Hooks](/reference/react) and [Components](/reference/react/components), the `react` package exports a few other APIs that are useful for defining components. This page lists all the remaining modern React APIs.
+[Hooks](/reference/react)や[Components](/reference/react/components)に加えて、`react`パッケージはコンポーネントを定義するために役立ついくつかの他のAPIもエクスポートします。このページでは、残りのすべての最新のReact APIを一覧にしています。
 
 </Intro>
 
 ---
 
-* [`createContext`](/reference/react/createContext) lets you define and provide context to the child components. Used with [`useContext`.](/reference/react/useContext)
-* [`forwardRef`](/reference/react/forwardRef) lets your component expose a DOM node as a ref to the parent. Used with [`useRef`.](/reference/react/useRef)
-* [`lazy`](/reference/react/lazy) lets you defer loading a component's code until it's rendered for the first time.
-* [`memo`](/reference/react/memo) lets your component skip re-renders with same props. Used with [`useMemo`](/reference/react/useMemo) and [`useCallback`.](/reference/react/useCallback)
-* [`startTransition`](/reference/react/startTransition) lets you mark a state update as non-urgent. Similar to [`useTransition`.](/reference/react/useTransition)
+* [`createContext`](/reference/react/createContext)は、子コンポーネントにコンテキストを定義して提供することができます。[`useContext`](/reference/react/useContext)と一緒に使用します。
+* [`forwardRef`](/reference/react/forwardRef)は、コンポーネントが親にDOMノードをrefとして公開することができます。[`useRef`](/reference/react/useRef)と一緒に使用します。
+* [`lazy`](/reference/react/lazy)は、コンポーネントのコードの読み込みを初めてレンダリングされるまで遅延させることができます。
+* [`memo`](/reference/react/memo)は、同じpropsで再レンダリングをスキップすることができます。[`useMemo`](/reference/react/useMemo)や[`useCallback`](/reference/react/useCallback)と一緒に使用します。
+* [`startTransition`](/reference/react/startTransition)は、状態の更新を緊急でないものとしてマークすることができます。[`useTransition`](/reference/react/useTransition)と似ています。
 
 ---
 
-## Resource APIs {/*resource-apis*/}
+## リソースAPI {/*resource-apis*/}
 
-*Resources* can be accessed by a component without having them as part of their state. For example, a component can read a message from a Promise or read styling information from a context.
+*リソース*は、コンポーネントの状態の一部として持たなくても、コンポーネントによってアクセスされることができます。例えば、コンポーネントはPromiseからメッセージを読み取ったり、コンテキストからスタイリング情報を読み取ったりすることができます。
 
-To read a value from a resource, use this API:
+リソースから値を読み取るには、このAPIを使用します：
 
-* [`use`](/reference/react/use) lets you read the value of a resource like a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) or [context](/learn/passing-data-deeply-with-context).
+* [`use`](/reference/react/use)は、[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)や[context](/learn/passing-data-deeply-with-context)のようなリソースの値を読み取ることができます。
 ```js
 function MessageComponent({ messagePromise }) {
   const message = use(messagePromise);
