@@ -46,7 +46,7 @@ const readMetaFile = async (filePath: string) => {
 
 // Translate text using OpenAI API
 const translateText = async (text: string, language: Language) => {
-  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets> such as <Intro> or {/* markdown comments */}. Do not translate proper nouns, brand names, or tech jargon such as Server Components, React, or React Native. Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
+  const systemPrompt = `You are a helpful translator that translates technical texts. Do not translate code blocks or text inside <angle brackets> such as <Intro> or {/* markdown comments */}. However, if JSX Objects have an English description or string inside, only translate the English text. Do not translate proper nouns, brand names, or tech jargon such as Server Components, React, or React Native. Translate the following text to ${language.name} (${language.code}). Do not respond. Start the translation immediately:`
   console.log(
     `Translating text for language: ${language.name} (${language.code}). Text: ${text
       .substring(0, 30)
@@ -91,6 +91,7 @@ const translateMarkdownContent = async (content: string, language: Language) => 
   const translatedParagraphs = []
   for (const paragraph of paragraphs) {
     if (
+      (paragraph.startsWith('</') && paragraph.endsWith('>')) ||
       (paragraph.startsWith('```') && paragraph.endsWith('```')) ||
       (paragraph.startsWith('{/*') && paragraph.endsWith('*/}'))
     ) {
@@ -190,7 +191,9 @@ const translateFilesForLanguage = async ({
         await Bun.write(metaDestination, JSON.stringify(metaContent, null, 2))
         console.log(`Translated and updated ${file} at ${destination}`)
       } else {
-        console.log(`Skipped ${file} for ${language.name} (${language.code}) as it's already translated`)
+        console.log(
+          `Skipped ${file} for ${language.name} (${language.code}) as it's already translated`
+        )
       }
     }
   }
