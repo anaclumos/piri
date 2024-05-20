@@ -42,7 +42,7 @@ const calculateHash = (content: string): string => {
   return createHash('sha256').update(content).digest('hex')
 }
 
-// Read .meta.json file and return its content as a JSON object
+// Read .piri.json file and return its content as a JSON object
 const readMetaFile = async (filePath: string) => {
   try {
     const content = await readFile(filePath, 'utf8')
@@ -147,7 +147,7 @@ const translateMarkdownFile = async (inputContent: string, language: Language) =
   return translatedContent
 }
 
-// Copy .md files and create corresponding .meta.json files if needed
+// Copy .md files and create corresponding .piri.json files if needed
 const copyFilesForLanguage = async ({
   content,
   language,
@@ -163,7 +163,7 @@ const copyFilesForLanguage = async ({
     if (file.endsWith('.md') || file.endsWith('.mdx')) {
       const relativePath = relative(sourcePath, join(sourcePath, file))
       const destination = join(targetPath, relativePath)
-      const metaDestination = `${destination}.meta.json`
+      const metaDestination = `${destination}.piri.json`
 
       const inputFile = Bun.file(join(sourcePath, file))
       const inputContent = await inputFile.text()
@@ -208,7 +208,7 @@ const translateFilesForLanguage = async ({
       limit(async () => {
         if (file.endsWith('.md') || file.endsWith('.mdx')) {
           const destination = join(targetPath, file)
-          const metaDestination = `${destination}.meta.json`
+          const metaDestination = `${destination}.piri.json`
 
           let metaContent = await readMetaFile(metaDestination)
 
